@@ -1,0 +1,44 @@
+#!/bin/sh
+
+#   fix_diff - compare the noise component list from two classification output files
+#
+#   Gholamreza Salimi-Khorshidi and Stephen Smith, FMRIB Analysis Group
+#
+#   Copyright (C) 2012-2013 University of Oxford
+#
+#   SHCOPYRIGHT
+
+#############################################################
+
+Usage() {
+    cat <<EOF
+
+fix_diff <true_classification.txt> <fix_auto_classification.txt>
+
+e.g.:  fix_diff hand_labels_noise.txt fix4melview_HCP2000_thr5.txt
+
+EOF
+    exit 1
+}
+
+#############################################################
+
+[ "$2" = "" ] && Usage
+
+in1=$1
+in2=$2
+
+i=1
+while [ $i -lt `wc -l $in1 $in2 | tail -n 1 | awk '{print $1}'` ] ; do
+  in1y=`tail -n 1 $in1 | sed 's/\[/,/g' | sed 's/\]/,/g' | sed 's/ //g' | grep ,${i}, | wc -l`
+  in2y=`tail -n 1 $in2 | sed 's/\[/,/g' | sed 's/\]/,/g' | sed 's/ //g' | grep ,${i}, | wc -l`
+  if [ $in1y != $in2y ] ; then
+    if [ $in1y == 1 ] ; then
+      echo component $i only classed as noise in input 1
+    else
+      echo component $i only classed as noise in input 2
+    fi
+  fi
+  i=`echo "$i 1 + p" | dc -`
+done
+

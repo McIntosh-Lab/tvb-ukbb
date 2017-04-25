@@ -1,0 +1,57 @@
+#!/bin/sh
+#
+# Script name: bb_IDP
+#
+# Description: Script to generate the IDPs for a certain subject.
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+set -x
+
+origDir=`pwd`
+
+dirScript=`dirname $0`
+
+dirSubject=`pwd`/$1
+
+if [[ "$dirSubject" == "" ]] ; then
+    echo "Error: The selected subject does not exist"
+    exit 0
+fi
+
+mkdir -p $dirSubject/IDP_files
+
+if [[ "$2" == "-remove" ]] ; then
+    rm -f $dirSubject/IDP_files/*
+fi
+
+result="$1"
+
+for elem in `cat $dirScript/list.txt | awk '{print $3}' | uniq` ; do
+    if [ -f $dirSubject/IDP_files/${elem}.txt ] ; then
+        result="$result `cat $dirSubject/IDP_files/${elem}.txt`"
+    else
+        result="$result `$dirScript/scripts/$elem $1`"
+    fi
+done
+
+result=`echo $result | sed 's/  / /g'`
+
+echo $result > $dirSubject/IDP_files/IDPs.txt
+echo $result
+

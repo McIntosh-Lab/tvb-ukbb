@@ -1,0 +1,39 @@
+# Name of reference image
+--ref=FMRIB58_FA_1mm
+# If =1, use implicit masking based on value in --ref image. Default =1
+--imprefm=1
+# If =1, use implicit masking based on value in --in image, Default =1
+--impinm=1
+# Value to mask out in --ref image. Default =0.0
+--imprefval=0
+# Value to mask out in --in image. Default =0.0
+--impinval=0
+# sub-sampling scheme, default 4,2,1,1
+--subsamp=1
+# Max # of non-linear iterations, default 5,5,5,5
+--miter=50
+# FWHM (in mm) of gaussian smoothing kernel for input volume, default 6,4,2,2
+--infwhm=1
+# FWHM (in mm) of gaussian smoothing kernel for ref volume, default 4,2,0,0
+--reffwhm=1
+# Weigth of membrane energy regularisation, default depending on --ssqlambda and --regmod switches. See user documetation.
+--lambda=100
+# Estimate intensity-mapping if set, deafult 1 (true)
+--estint=0
+# (approximate) resolution (in mm) of warp basis in x-, y- and z-direction, default 10,10,10
+#--warpres=2,2,2
+# If set (=1), lambda is weighted by current ssq, default 1
+--ssqlambda=1
+# Model for regularisation of warp-field [membrane_energy bending_energy], default bending_energy
+--regmod=bending_energy
+# Model for intensity-mapping [none global_linear global_non_linear local_linear global_non_linear_with_bias local_non_linear]
+--intmod=global_linear
+# Use the scaled conjugate gradient minimization method
+--minmet=scg
+# Use the --refmask if one is supplied
+--applyrefmask=1
+# Use the --inmask if one is supplied
+--applyinmask=1
+# settings varied in optimization
+# set resolution
+--warpres=2,2,2

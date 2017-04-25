@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+#
+# Script name: bb_prepare_struct_fieldmap
+#
+# Description: Script to prepare the dMRI data for topup.
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
+
+numAP=1
+numPA=1
+
+if [ ! -d $1/fieldmap ] ; then
+    mkdir $1/fieldmap
+fi
+
+
+# Creation of acqparam file
+numlines=`${FSLDIR}/bin/fslval $1/dMRI/raw/AP.nii.gz dim2`
+dtiDwell=`$BB_BIN_DIR/bb_pipeline_tools/bb_get_dwell_time $1/dMRI/raw/AP.nii.gz`
+topupValue="0"`echo "scale=4;("$dtiDwell" * ("$numlines" -1.0)) / 1000.0 "| bc`
+
+cat /dev/null > $1/fieldmap/acqparams.txt 
+
+for i in `seq 1 $numAP`;
+do
+    printf "0 -1 0 $topupValue\n" >>$1/fieldmap/acqparams.txt
+done   
+
+for i in `seq 1 $numPA`;
+do
+    printf "0 1 0 $topupValue\n" >>$1/fieldmap/acqparams.txt
+done   
+
+
+# Topup expect the number of slices in the Z direction to be multiple of the sub-sampling level (2)
+# Therefore, In case the number of slices in z direction is not even, take out one of them
+
+Zslices=`${FSLDIR}/bin/fslval $1/fieldmap/B0_AP_PA dim3`
+rem=`expr $Zslices \% 2`
+if [ ! $rem == 0 ]; then
+   echo "odd number of slices";
+   ${FSLDIR}/bin/fslroi $1/fieldmap/B0_AP_PA $1/fieldmap/B0_AP_PA 0 -1 0 -1 0 `expr $Zslices - 1`
+fi
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 

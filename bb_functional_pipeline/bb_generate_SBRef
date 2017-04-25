@@ -1,0 +1,76 @@
+#!/bin/sh
+#
+# Script name: bb_generate_SBRef
+#
+# Description: Script to generate the SBRef file form an fMRI dataset.
+#
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+origIN=`$FSLDIR/bin/remove_ext $1`
+IN=${origIN}_tmp
+OUT=${origIN}_SBREF
+
+$FSLDIR/bin/fslroi $origIN $IN 0 5
+
+rm -rf ${OUT}_tmp
+mkdir ${OUT}_tmp
+$FSLDIR/bin/fslsplit $IN ${OUT}_tmp/grot
+pushd ${OUT}_tmp
+
+N=`$FSLDIR/bin/imglob grot*`
+N=`echo $N | wc -w`
+
+if [ $N = 1 ] ; then
+  popd
+  $FSLDIR/bin/imcp $IN $OUT
+  rm -rf ${OUT}_tmp
+  exit
+fi
+
+for f in `$FSLDIR/bin/imglob grot*` ; do
+  ff=`echo $f | sed 's/grot//g'`
+  scores[$ff]=0
+done
+
+for f in `$FSLDIR/bin/imglob grot*` ; do
+  ff=`echo $f | sed 's/grot//g'`
+  for g in `$FSLDIR/bin/imglob grot*` ; do
+    gg=`echo $g | sed 's/grot//g'`
+    if [ $gg -gt $ff ] ; then
+      $FSLDIR/bin/flirt -in $f -ref $g -nosearch -dof 6 -o blah -omat blah.mat
+      score=`$FSLDIR/bin/fslcc -t -1 -p 10 $g blah | awk '{print $3}'`
+      scores[$ff]=`echo 10 k ${scores[$ff]} $score + p | dc -`
+      scores[$gg]=`echo 10 k ${scores[$gg]} $score + p | dc -`
+      #echo $f $g $score ${scores[$ff]} ${scores[$gg]}
+    fi
+  done
+done
+
+for f in `$FSLDIR/bin/imglob grot*` ; do
+  ff=`echo $f | sed 's/grot//g'`
+  echo $ff ${scores[$ff]} >> scores.txt
+done
+#cat scores.txt
+
+best=`cat scores.txt | sort -k 2 -n -r | head -n 1 | awk '{print $1}'`
+popd
+$FSLDIR/bin/immv ${OUT}_tmp/grot$best $OUT
+rm -rf ${OUT}_tmp
+${FSLDIR}/bin/imrm ${IN}
+

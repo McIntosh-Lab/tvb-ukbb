@@ -1,0 +1,66 @@
+#! /bin/sh
+#
+# Script name: bb_swi_reg
+#
+# Description: Script to run the swMRI processing
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
+
+cd $1/SWI
+
+T1dir="../T1/"
+
+if [ -d $T1dir/unusable ] ; then
+    T1dir="../T1/unusable/"
+fi
+
+if [ `${FSLDIR}/bin/imtest SWI_TOTAL_MAG` = 0 ] ; then
+  echo No SWI_TOTAL_MAG in $1
+  exit
+fi
+if [ `${FSLDIR}/bin/imtest SWI_TOTAL_MAG_orig` = 0 ] ; then
+  ${FSLDIR}/bin/immv SWI_TOTAL_MAG SWI_TOTAL_MAG_orig
+  ${FSLDIR}/bin/imcp SWI_TOTAL_MAG_TE2 SWI_TOTAL_MAG_TE2_orig
+fi
+
+#Combine magnitude coils to generate SOS_TE1, SOS_TE2, R* and T2*.
+$BB_BIN_DIR/bb_structural_pipeline/bb_swi_dir/bb_proc_swi ..
+
+#Matlab function to generate filtered_phase and SWI
+$BB_BIN_DIR/bb_structural_pipeline/bb_swi_dir/fsl_swi .. $1
+
+#Calculate and apply the Gradient Distortion Unwarp
+$BB_BIN_DIR/bb_pipeline_tools/bb_GDC_half_voxel --workingdir=./GDC/ --in=SWI_TOTAL_MAG_orig.nii.gz --out=SWI_TOTAL_MAG.nii.gz --owarp=SWI_TOTAL_MAG_orig_ud_warp.nii.gz
+
+${FSLDIR}/bin/flirt -in SWI_TOTAL_MAG -ref $T1dir/T1 -dof 6 -omat SWI_to_T1.mat -o SWI_TOTAL_MAG_to_T1
+${FSLDIR}/bin/convert_xfm -omat T1_to_SWI.mat -inverse SWI_to_T1.mat
+
+#TODO: BINARISE BRAIN MASK?
+${FSLDIR}/bin/flirt -in $T1dir/T1_brain_mask -ref SWI_TOTAL_MAG -applyxfm -init T1_to_SWI.mat -out brain_mask -interp trilinear
+
+${FSLDIR}/bin/applywarp --rel -i T2star -r $T1dir/T1 -o T2star_to_T1 -w SWI_TOTAL_MAG_orig_ud_warp --postmat=SWI_to_T1.mat --interp=trilinear
+${FSLDIR}/bin/fslmaths T2star_to_T1 -mul $T1dir/T1_brain_mask T2star_to_T1
+
+#TODO: Change name of SWI to venogram?
+for f in R2star T2star SOS_TE1 SOS_TE2 SOS_ratio filtered_phase SWI ; do
+  ${FSLDIR}/bin/applywarp --rel -i $f -r $f -o $f -w SWI_TOTAL_MAG_orig_ud_warp --interp=trilinear
+  ${FSLDIR}/bin/fslmaths $f -mul brain_mask $f
+done
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 

@@ -1,0 +1,230 @@
+#!/bin/sh
+#
+# Script name: bb_struct_init
+#
+# Description: Main script with all the processing for T1, T2 FLAIR and swMRI.
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
+
+cd $1/T1
+
+if [ `${FSLDIR}/bin/imtest T1` = 0 ] ; then
+  echo No T1 in $1
+  exit
+fi
+
+if [ `${FSLDIR}/bin/imtest T1_orig` = 0 ] ; then
+  ${FSLDIR}/bin/immv T1 T1_orig
+fi
+
+#Calculate and apply the Gradient Distortion Unwarp
+$BB_BIN_DIR/bb_pipeline_tools/bb_GDC --workingdir=./T1_GDC/ --in=T1_orig.nii.gz --out=T1_orig_ud.nii.gz --owarp=T1_orig_ud_warp.nii.gz
+
+#Calculate where does the brain start in the z dimension and then extract the roi
+head_top=`${FSLDIR}/bin/robustfov -i T1_orig_ud | grep -v Final | head -n 1 | awk '{print $5}'`
+${FSLDIR}/bin/fslmaths T1_orig_ud -roi 0 -1 0 -1 $head_top 170 0 1 T1_tmp
+
+#Run a (Recursive) brain extraction on the roi
+${FSLDIR}/bin/bet T1_tmp T1_tmp_brain -R
+
+#Reduces the FOV of T1_orig_ud by calculating a registration from T1_tmp_brain to ssref and applies it to T1_orig_ud
+${FSLDIR}/bin/standard_space_roi T1_tmp_brain T1_tmp2 -maskNONE -ssref $FSLDIR/data/standard/MNI152_T1_1mm_brain -altinput T1_orig_ud -d
+
+${FSLDIR}/bin/immv T1_tmp2 T1
+
+#Generate the actual affine from the orig_ud volume to the cut version we have now and combine it to have an affine matrix from orig_ud to MNI
+${FSLDIR}/bin/flirt -in T1 -ref T1_orig_ud -omat T1_to_T1_orig_ud.mat -schedule $FSLDIR/etc/flirtsch/xyztrans.sch 
+${FSLDIR}/bin/convert_xfm -omat T1_orig_ud_to_T1.mat -inverse T1_to_T1_orig_ud.mat
+${FSLDIR}/bin/convert_xfm -omat T1_to_MNI_linear.mat -concat T1_tmp2_tmp_to_std.mat T1_to_T1_orig_ud.mat
+
+#Non-linear registration to MNI using the previously calculated alignment
+${FSLDIR}/bin/fnirt --in=T1 --ref=$FSLDIR/data/standard/MNI152_T1_1mm --aff=T1_to_MNI_linear.mat \
+  --config=$BB_BIN_DIR/bb_data/bb_fnirt.cnf --refmask=$templ/MNI152_T1_1mm_brain_mask_dil_GD7 \
+  --logout=../logs/bb_T1_to_MNI_fnirt.log --cout=T1_to_MNI_warp_coef --fout=T1_to_MNI_warp \
+  --jout=T1_to_MNI_warp_jac --iout=T1_tmp4.nii.gz --interp=spline
+
+#Combine both transforms (Gradient Distortion Unwarp and T1 to MNI) into one and then apply it.
+${FSLDIR}/bin/convertwarp --ref=$FSLDIR/data/standard/MNI152_T1_1mm --warp1=T1_orig_ud_warp --midmat=T1_orig_ud_to_T1.mat --warp2=T1_to_MNI_warp --out=T1_orig_to_MNI_warp
+${FSLDIR}/bin/applywarp --rel -i T1_orig -r $FSLDIR/data/standard/MNI152_T1_1mm -w T1_orig_to_MNI_warp -o T1_brain_to_MNI --interp=spline
+
+#Create brain mask
+${FSLDIR}/bin/invwarp --ref=T1 -w T1_to_MNI_warp_coef -o T1_to_MNI_warp_coef_inv
+${FSLDIR}/bin/applywarp --rel --interp=trilinear --in=$templ/MNI152_T1_1mm_brain_mask --ref=T1 -w T1_to_MNI_warp_coef_inv -o T1_brain_mask
+${FSLDIR}/bin/fslmaths T1 -mul T1_brain_mask T1_brain
+${FSLDIR}/bin/fslmaths T1_brain_to_MNI -mul $templ/MNI152_T1_1mm_brain_mask T1_brain_to_MNI
+
+#Defacing T1
+${FSLDIR}/bin/convert_xfm -omat grot.mat -concat T1_to_MNI_linear.mat T1_orig_ud_to_T1.mat
+${FSLDIR}/bin/convert_xfm -omat grot.mat -concat $templ/MNI_to_MNI_BigFoV_facemask.mat grot.mat
+${FSLDIR}/bin/convert_xfm -omat grot.mat -inverse grot.mat
+${FSLDIR}/bin/flirt -in $templ/MNI152_T1_1mm_BigFoV_facemask -ref T1_orig -out grot -applyxfm -init grot.mat
+#${FSLDIR}/bin/fslmaths grot -mul -1 -add 1 -mul T1_orig T1_orig_defaced
+${FSLDIR}/bin/fslmaths grot -binv -mul T1_orig T1_orig_defaced
+
+cp T1.nii.gz T1_not_defaced_tmp.nii.gz  
+${FSLDIR}/bin/convert_xfm -omat grot.mat -concat $templ/MNI_to_MNI_BigFoV_facemask.mat T1_to_MNI_linear.mat
+${FSLDIR}/bin/convert_xfm -omat grot.mat -inverse grot.mat
+${FSLDIR}/bin/flirt -in $templ/MNI152_T1_1mm_BigFoV_facemask -ref T1 -out grot -applyxfm -init grot.mat
+${FSLDIR}/bin/fslmaths grot -binv -mul T1 T1
+
+#Generation of QC value: Number of voxels in which the defacing mask goes into the brain mask
+${FSLDIR}/bin/fslmaths T1_brain_mask -thr 0.5 -bin grot_brain_mask 
+${FSLDIR}/bin/fslmaths grot -thr 0.5 -bin -add grot_brain_mask -thr 2 grot_QC
+${FSLDIR}/bin/fslstats grot_QC.nii.gz -V | awk '{print $ 1}' > T1_QC_face_mask_inside_brain_mask.txt
+
+rm grot*
+
+
+#Clean and reorganize
+rm *tmp*
+mkdir transforms
+mv *MNI* transforms
+mv *warp*.* transforms
+mv *_to_* transforms
+mv transforms/T1_brain_to_MNI.nii.gz .
+
+cd ..
+
+#Warping for T2_FLAIR
+if [ `${FSLDIR}/bin/imtest T2_FLAIR/T2_FLAIR` = 0 ] ; then
+  echo "WARNING: No T2 in $1"
+else
+
+    cd T2_FLAIR
+
+    if [ `${FSLDIR}/bin/imtest T2_FLAIR_orig` = 0 ] ; then
+      ${FSLDIR}/bin/immv T2_FLAIR T2_FLAIR_orig
+    fi
+
+    #Gradient Distortion Unwarp
+    $BB_BIN_DIR/bb_pipeline_tools/bb_GDC --workingdir=./T2_FLAIR_GDC/ --in=T2_FLAIR_orig.nii.gz --out=T2_FLAIR_orig_ud.nii.gz --owarp=T2_FLAIR_orig_ud_warp.nii.gz
+
+    #Take T2 to T1 and also the brain mask
+    ${FSLDIR}/bin/flirt -in T2_FLAIR_orig_ud -ref ../T1/T1_orig_ud -out T2_FLAIR_tmp -omat T2_FLAIR_tmp.mat -dof 6
+    ${FSLDIR}/bin/convert_xfm -omat T2_FLAIR_tmp2.mat -concat ../T1/transforms/T1_orig_ud_to_T1.mat  T2_FLAIR_tmp.mat
+    ${FSLDIR}/bin/flirt -in T2_FLAIR_orig_ud -ref ../T1/T1_brain -refweight ../T1/T1_brain_mask -nosearch -init T2_FLAIR_tmp2.mat -omat T2_FLAIR_orig_ud_to_T2_FLAIR.mat -dof 6
+    ${FSLDIR}/bin/applywarp --rel  -i T2_FLAIR_orig -r ../T1/T1_brain -o T2_FLAIR -w T2_FLAIR_orig_ud_warp --postmat=T2_FLAIR_orig_ud_to_T2_FLAIR.mat --interp=spline
+    cp ../T1/T1_brain_mask.nii.gz T2_FLAIR_brain_mask.nii.gz
+    ${FSLDIR}/bin/fslmaths T2_FLAIR -mul T2_FLAIR_brain_mask T2_FLAIR_brain
+
+    #Generate the linear matrix from T2 to MNI (Needed for defacing)
+    ${FSLDIR}/bin/convert_xfm -omat T2_FLAIR_orig_ud_to_MNI_linear.mat -concat ../T1/transforms/T1_to_MNI_linear.mat T2_FLAIR_orig_ud_to_T2_FLAIR.mat
+    cp ../T1/transforms/T1_to_MNI_linear.mat T2_FLAIR_to_MNI_linear.mat 
+
+    #Generate the non-linearly warped T2 in MNI (Needed for post-freesurfer processing)
+    ${FSLDIR}/bin/convertwarp --ref=$FSLDIR/data/standard/MNI152_T1_1mm --warp1=T2_FLAIR_orig_ud_warp --midmat=T2_FLAIR_orig_ud_to_T2_FLAIR.mat --warp2=../T1/transforms/T1_to_MNI_warp --out=T2_FLAIR_orig_to_MNI_warp
+    ${FSLDIR}/bin/applywarp --rel  -i T2_FLAIR_orig -r $FSLDIR/data/standard/MNI152_T1_1mm -w T2_FLAIR_orig_to_MNI_warp -o T2_FLAIR_brain_to_MNI --interp=spline
+    ${FSLDIR}/bin/fslmaths T2_FLAIR_brain_to_MNI -mul $templ/MNI152_T1_1mm_brain_mask T2_FLAIR_brain_to_MNI
+
+    #Defacing T2_FLAIR
+    ${FSLDIR}/bin/convert_xfm -omat grot.mat -concat T2_FLAIR_to_MNI_linear.mat T2_FLAIR_orig_ud_to_T2_FLAIR.mat
+    ${FSLDIR}/bin/convert_xfm -omat grot.mat -concat $templ/MNI_to_MNI_BigFoV_facemask.mat grot.mat
+    ${FSLDIR}/bin/convert_xfm -omat grot.mat -inverse grot.mat
+    ${FSLDIR}/bin/flirt -in $templ/MNI152_T1_1mm_BigFoV_facemask -ref T2_FLAIR_orig -out grot -applyxfm -init grot.mat
+    ${FSLDIR}/bin/fslmaths grot -binv -mul T2_FLAIR_orig T2_FLAIR_orig_defaced
+
+    cp T2_FLAIR.nii.gz T2_FLAIR_not_defaced_tmp.nii.gz  
+    ${FSLDIR}/bin/convert_xfm -omat grot.mat -concat $templ/MNI_to_MNI_BigFoV_facemask.mat T2_FLAIR_to_MNI_linear.mat
+    ${FSLDIR}/bin/convert_xfm -omat grot.mat -inverse grot.mat
+    ${FSLDIR}/bin/flirt -in $templ/MNI152_T1_1mm_BigFoV_facemask -ref T2_FLAIR -out grot -applyxfm -init grot.mat
+    ${FSLDIR}/bin/fslmaths grot -binv -mul T2_FLAIR T2_FLAIR
+    rm grot*
+
+    #Clean and reorganize
+    rm *_tmp*
+    mkdir transforms
+    mv *.mat transforms
+    mv *warp*.* transforms
+    
+    cd ..
+
+fi
+
+cd T1
+
+#Run fast
+mkdir T1_fast
+${FSLDIR}/bin/fast -b -o T1_fast/T1_brain T1_brain
+
+#Binarize PVE masks
+if [ -f T1_fast/T1_brain_pveseg.nii.gz ] ; then
+    $FSLDIR/bin/fslmaths T1_fast/T1_brain_pve_0.nii.gz -thr 0.5 -bin T1_fast/T1_brain_CSF_mask.nii.gz
+    $FSLDIR/bin/fslmaths T1_fast/T1_brain_pve_1.nii.gz -thr 0.5 -bin T1_fast/T1_brain_GM_mask.nii.gz
+    $FSLDIR/bin/fslmaths T1_fast/T1_brain_pve_2.nii.gz -thr 0.5 -bin T1_fast/T1_brain_WM_mask.nii.gz
+fi
+
+#Apply bias field correction to T1
+if [ -f T1_fast/T1_brain_bias.nii.gz ] ; then
+    ${FSLDIR}/bin/fslmaths T1.nii.gz -div T1_fast/T1_brain_bias.nii.gz T1_unbiased.nii.gz
+    ${FSLDIR}/bin/fslmaths T1_brain.nii.gz -div T1_fast/T1_brain_bias.nii.gz T1_unbiased_brain.nii.gz
+else
+    echo "WARNING: There was no bias field estimation. Bias field correction cannot be applied to T1."
+fi
+
+#Run First
+mkdir T1_first
+
+#Creates a link inside T1_first to ./T1_unbiased_brain.nii.gz (In the present working directory)
+ln -s ../T1_unbiased_brain.nii.gz T1_first/T1_unbiased_brain.nii.gz
+${FSLDIR}/bin/run_first_all -i T1_first/T1_unbiased_brain -b -o T1_first/T1_first
+
+
+#Run Siena
+$BB_BIN_DIR/bb_structural_pipeline/bb_sienax `pwd`/..
+
+#Run VBM
+$BB_BIN_DIR/bb_structural_pipeline/bb_vbm `pwd`/..
+
+cd ..
+
+#Generate noise-related QC metrics
+$BB_BIN_DIR/bb_structural_pipeline/bb_QC_COG ../$1
+$BB_BIN_DIR/bb_structural_pipeline/bb_QC_CNR_eyes ../$1
+$BB_BIN_DIR/bb_structural_pipeline/bb_QC_CNR_corners_complete ../$1
+
+
+
+#The rest of the script works with T2 only if there is one.
+if [ `${FSLDIR}/bin/imtest T2_FLAIR/T2_FLAIR_orig` = 0 ] ; then
+  echo "WARNING: No T2 in $1"
+  . $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
+  exit
+fi
+
+cd T2_FLAIR
+
+#Apply bias field correction to T2_FLAIR warped
+if [ -f ../T1/T1_fast/T1_brain_bias.nii.gz ] ; then
+    ${FSLDIR}/bin/fslmaths T2_FLAIR.nii.gz -div ../T1/T1_fast/T1_brain_bias.nii.gz T2_FLAIR_unbiased.nii.gz
+    ${FSLDIR}/bin/fslmaths T2_FLAIR_brain.nii.gz -div ../T1/T1_fast/T1_brain_bias.nii.gz T2_FLAIR_unbiased_brain.nii.gz
+else
+    echo "WARNING: There was no bias field estimation. Bias field correction cannot be applied to T2."
+fi
+
+cd ../..
+
+#Run BIANCA
+$BB_BIN_DIR/bb_structural_pipeline/bb_BIANCA $1
+
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
+
+set +x
+

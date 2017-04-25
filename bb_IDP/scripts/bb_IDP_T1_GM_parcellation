@@ -1,0 +1,49 @@
+#!/bin/bash 
+#
+# Script name: bb_IDP_T1_GM_parcellation
+#
+# Description: Script to generate the IDPs related to Grey Matter parcellation.
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+origDir=`pwd`
+scriptName=`basename "$0"`
+direc=$1
+
+
+#Setting the string of NaN in case there is a problem.
+numVars="139"
+result="";
+for i in $(seq 1 $numVars) ; do 
+    result="NaN $result" ; 
+done 
+
+if [ -f $direc/T1/transforms/T1_to_MNI_warp_coef_inv.nii.gz ] ; then
+    if [ -f $direc/T1/T1_fast/T1_brain_pve_1.nii.gz ] ; then
+        ${FSLDIR}/bin/applywarp -i $templ/GMatlas/GMatlas -o $direc/T1/GMatlas_to_T1 -r $direc/T1/T1 -w $direc/T1/transforms/T1_to_MNI_warp_coef_inv.nii.gz --interp=nn
+        result=`${FSLDIR}/bin/fslstats -K $direc/T1/GMatlas_to_T1.nii.gz $direc/T1/T1_fast/T1_brain_pve_1.nii.gz -m -v | xargs -n 3 | awk '{print "("$1"*"$2")"}' | bc `
+    fi
+fi 
+
+mkdir -p $direc/IDP_files
+
+echo $result > $direc/IDP_files/$scriptName.txt
+echo $result
+    
+cd $origDir
+

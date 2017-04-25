@@ -1,0 +1,53 @@
+#!/bin/sh
+#
+# Script name: bb_tbss_2_reg
+#
+# Description: Script to run the second phase of TBSS.
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+TARGET="$FSLDIR"/data/standard/FMRIB58_FA_1mm
+
+$FSLDIR/bin/imcp "$TARGET" FA/MNI
+
+logFile=../logs/bb_tbss_fnirt
+
+cd FA
+
+ref="MNI"
+input="dti_FA"
+parameterName="$BB_BIN_DIR/bb_data/dMRI_reg_optimal_parameters/oxford"
+output="$input"_to_$ref
+invOutput="$ref"_to_"$input"
+
+if [ ! -f ${o}_warp.msf ] ; then
+
+    #New Optimal Registration
+    ${FSLDIR}/bin/flirt -ref "$ref" -in "$input" -inweight "$input"_mask -omat "$output"_affine.mat
+
+    # perform FNIRT cascade of registrations
+    $FSLDIR/bin/fnirt --ref="$ref" --in="$input" --cout="$output"_warp_s1 --config="$parameterName"_s1.cnf --aff="$output"_affine.mat --intout="$output"_int --logout="$logFile"_1.log
+    $FSLDIR/bin/fnirt --ref="$ref" --in="$input" --cout="$output"_warp_s2 --config="$parameterName"_s2.cnf --inwarp="$output"_warp_s1 --intin="$output"_int.txt --logout="$logFile"_2.log
+    $FSLDIR/bin/fnirt --ref="$ref" --in="$input" --cout="$output"_warp --iout="$output" --config="$parameterName"_s3.cnf --inwarp="$output"_warp_s2 --intin="$output"_int.txt --logout="$logFile"_3.log
+    $FSLDIR/bin/invwarp -w "$output"_warp -r "$input" -o "$invOutput"_warp
+
+    # now estimate the mean deformation
+    ${FSLDIR}/bin/fslmaths "$output"_warp -sqr -Tmean "$output"_tmp
+    ${FSLDIR}/bin/fslstats "$output"_tmp -M -P 50 > "$output"_warp.msf
+    ${FSLDIR}/bin/imrm "$output"_tmp
+
+fi

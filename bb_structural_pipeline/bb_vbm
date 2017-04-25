@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+#
+# Script name: bb_vbm
+#
+# Description: Script to run subject-level VBM adapted to UK Biobank needs.
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+T1_dir=$1/T1
+
+if [ -d $T1_dir/unusable ] ; then
+    T1_dir=$T1_dir/unusable;
+fi
+
+VBM_dir=$T1_dir/T1_vbm/
+GM_file=$T1_dir/T1_fast/T1_brain_pve_1.nii.gz
+
+if [ -f $GM_file ] ; then
+    if [ ! -d $VBM_dir ] ; then
+        mkdir $VBM_dir
+    fi
+
+    ${FSLDIR}/bin/fsl_reg $GM_file $templ/template_GM $VBM_dir/T1_GM_to_template_GM -fnirt "--config=GM_2_MNI152GM_2mm.cnf --jout=$VBM_dir/T1_GM_JAC_nl --logout=$1/logs/bb_vbm_fnirt.log"; 
+    $FSLDIR/bin/fslmaths $VBM_dir/T1_GM_to_template_GM -mul $VBM_dir/T1_GM_JAC_nl $VBM_dir/T1_GM_to_template_GM_mod -odt float
+fi
+

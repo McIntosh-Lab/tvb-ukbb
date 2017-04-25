@@ -1,0 +1,41 @@
+#!/bin/sh
+
+#   bb_fix - wrapper script for FIX, for UK Biobank pipelines
+#
+#   Stephen Smith, FMRIB Analysis Group
+#
+#   Copyright (C) 2015 University of Oxford
+#
+#   SHCOPYRIGHT
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
+
+# All fix settings are held in the settings.sh file - edit this file to suit your setup
+. ${FSL_FIXDIR}/settings.sh
+origDir=`pwd`
+
+#############################################################
+
+[ "$1" = "" ] && exit
+
+if [ -d $1/fMRI/rfMRI.ica ] ; then 
+
+    cd $1/fMRI/rfMRI.ica
+
+    ${FSLDIR}/bin/imcp ../../T1/T1_fast/T1_brain_pveseg reg/highres_pveseg
+    ${FSLDIR}/bin/invwarp --ref=reg/example_func -w reg/example_func2standard_warp -o reg/standard2example_func_warp
+    ${FSL_FIXDIR}/fix . ${FSL_FIXDIR}/training_files/UKBiobank.RData 20 -m -h 100
+
+    mkdir -p reg_standard
+    ${FSLDIR}/bin/applywarp --ref=reg/standard --in=filtered_func_data_clean --out=reg_standard/filtered_func_data_clean --warp=reg/example_func2standard_warp --interp=spline
+
+    ${FSLDIR}/bin/fslmaths reg_standard/filtered_func_data_clean -mas $templ/MNI152_T1_2mm_brain_mask_bin reg_standard/filtered_func_data_clean
+    ${FSLDIR}/bin/fslmaths reg_standard/filtered_func_data_clean -Tstd -bin reg_standard/filtered_func_data_clean_stdmask
+
+    cd $origDir
+else
+    echo "No rfMRI directory for subject $1"
+fi
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
+

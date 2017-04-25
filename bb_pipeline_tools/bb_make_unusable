@@ -1,0 +1,96 @@
+#!/usr/bin/env bash
+#
+# Script name: bb_make_unusable
+#
+# Description: Script to make a modality (and the dependent modalities) unusable
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+Usage() {
+  echo
+  echo "`basename $0`: Tool to mark some subject modalities as unusable "
+  echo " "
+  echo "Usage: `basename $0` <modality> <directory with the subject> \"<Comment>\""
+  echo "              modality: (T1, fieldmap, dMRI, fMRI)"
+  echo
+
+}
+
+# Just give usage if no arguments specified
+if [ $# -eq 0 ] ; then Usage; exit 0; fi
+# check for correct options
+if [ $# -lt 3 ] ; then Usage; exit 1; fi
+# check for correct options
+if [ $# -gt 3 ] ; then Usage; exit 1; fi
+
+if [ ! -d $2 ] ; then
+    echo "The directory with the subject does not exist"
+    exit 0
+fi
+
+
+case $1 in
+T1)
+  modalities=( "fieldmap" "fMRI" "SWI" "T1" "T2_FLAIR" "dMRI" )
+  ;;
+fieldmap) 
+  modalities=( "fieldmap" "fMRI" "dMRI" )
+  ;;
+dMRI)
+  modalities=( "dMRI" )
+  ;;
+fMRI)
+  modalities=( "fMRI" )
+  ;;
+T2_FLAIR)
+  modalities=( "T2_FLAIR" )
+  ;;
+SWI)
+  modalities=( "SWI" )
+  ;;
+*)
+    echo "Sorry, you chose a wrong modality"
+    exit 0
+esac
+
+#Actual work
+direc=`pwd`
+cd $2
+
+for modality in "${modalities[@]}"
+do
+    if [ -d $modality ] ; then
+         
+        cd $modality
+
+        if [ ! -d unusable ] ; then 
+            mkdir unusable
+            mv * unusable 2> /dev/null
+            if [[ $modality == $1 ]] ; then
+                echo "$modality $3" >> info.txt
+            else
+                echo "$modality 4 0  No $1" >> info.txt
+            fi        
+        fi
+        cd ..
+    fi
+done
+
+echo "$1 $3" >> logs/reason_unusable.txt
+
+cd $direc

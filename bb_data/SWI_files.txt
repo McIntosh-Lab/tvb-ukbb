@@ -1,0 +1,17 @@
+
+SWI files (134 files):
+
+   - *_e2.nii.gz --> Second echo time (67 files)
+   - *.nii,gz    --> First  echo time (67 files)
+
+   - SWI_3mm_Updated_v1.1_17(_c*).nii.gz --> Magnitude images per coil - First echo time(32 files)
+   - SWI_3mm_Updated_v1.1_17(_c*)_e2.nii.gz --> Magnitude images per coil - Second echo time (32 files)
+   - SWI_3mm_Updated_v1.1_18.nii.gz --> Total magnitude image - First echo time (1 file)
+   - SWI_3mm_Updated_v1.1_18_e2.nii.gz --> Total magnitude image - Second echo time (1 file)
+   - SWI_3mm_Updated_v1.1_19.nii.gz --> Total magnitude image (normalised) - First echo time (1 file)
+   - SWI_3mm_Updated_v1.1_19_e2.nii.gz --> Total magnitude image (normalised) - Second echo time (1 file)
+   - SWI_3mm_Updated_v1.1_20(_c*).nii.gz --> Phase images per coil - First echo time(32 files)
+   - SWI_3mm_Updated_v1.1_20(_c*)_e2.nii.gz --> Phase images per coil - Second echo time (32 files)
+   - SWI_3mm_Updated_v1.1_21.nii.gz --> Total phase image - First echo time (1 file)
+   - SWI_3mm_Updated_v1.1_21_e2.nii.gz --> Total phase image - Second echo time (1 file)
+

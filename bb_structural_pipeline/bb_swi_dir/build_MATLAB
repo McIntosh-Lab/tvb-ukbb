@@ -1,0 +1,8 @@
+#!/bin/sh
+. $( cd $(dirname $0) ; pwd)/settings.sh
+export FSL_SWI_OS FSL_SWI_ARCH
+export FSL_SWI_MATLAB FSL_SWI_MOPTS
+export FSL_SWI_MATLAB_ROOT FSL_SWI_MLCDIR
+export FSL_SWI_MCC FSL_SWI_FSLMATLAB
+export FSL_SWI_CIFTIRW
+make $@

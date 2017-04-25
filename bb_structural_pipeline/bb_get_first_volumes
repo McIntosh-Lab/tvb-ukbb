@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+#
+# Script name: bb_get_first_volumes
+#
+# Description: Script to calculate the volumes of the subcortical structures 
+#			   from FIRST.
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+fil=$1/T1/T1.anat/first_results/T1_first_all_fast_firstseg.nii.gz
+
+rm -f $2
+
+while read label name ; 
+do
+    ${FSLDIR}/bin/fslmaths $fil -thr $label -uthr $label -bin grot.nii.gz
+    vol=`${FSLDIR}/bin/fslstats grot.nii.gz -V | awk '{print $2}'`   
+    echo "$name $vol">>$2   
+    rm grot.nii.gz 
+done < $BB_BIN_DIR/bb_data/first_labels.txt

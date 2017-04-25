@@ -1,0 +1,13 @@
+#!/bin/sh
+
+fslmaths sag_mask -bin sag_mask0
+
+for i in 1 2 3 ; do
+  fslmaths sag_mask -thr $i -uthr $i -bin sag_mask$i
+done
+
+for i in 0 1 2 3 ; do
+  fslmaths sag_mask$i -dilF sag_mask${i}dil
+  fslmaths sag_mask$i -dilF -dilF sag_mask${i}dil2
+done
+

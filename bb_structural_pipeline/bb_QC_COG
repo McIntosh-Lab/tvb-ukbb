@@ -1,0 +1,65 @@
+#!/bin/sh
+#
+# Script name: bb_QC_COG
+#
+# Description: Script to calculate the COG from a subject.
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+set -x
+
+referenceSubjectId="4908980" # Reference subject. If changed, measures will change.
+dirT1=$1/T1
+
+if [ -d $dirT1/unusable ] ; then
+	dirT1=$dirT1/unusable
+fi
+
+if [ x`imtest $dirT1/T1_brain_mask` = x1 ] ; then
+
+    if [ x`imtest $dirT1/T1` = x1 ] ; then
+
+        COG_coord=`fslstats $dirT1/T1_brain_mask.nii.gz -C`
+        X=`echo $COG_coord | awk '{print $1}'`
+        Y=`echo $COG_coord | awk '{print $2}'`
+        Z=`echo $COG_coord | awk '{print $3}'`
+
+        qform_row1=`fslhd $dirT1/T1.nii.gz | grep "qto_xyz:1" | awk '{print "["$2", "$3", "$4", "$5"]"}'`
+        qform_row2=`fslhd $dirT1/T1.nii.gz | grep "qto_xyz:2" | awk '{print "["$2", "$3", "$4", "$5"]"}'`
+        qform_row3=`fslhd $dirT1/T1.nii.gz | grep "qto_xyz:3" | awk '{print "["$2", "$3", "$4", "$5"]"}'`
+        qform_row4=`fslhd $dirT1/T1.nii.gz | grep "qto_xyz:4" | awk '{print "["$2", "$3", "$4", "$5"]"}'`
+
+        qform_python="[$qform_row1, $qform_row2, $qform_row3, $qform_row4]"
+        COG_python="[$X, $Y, $Z, 1]"
+
+        python_line="import numpy as np; a = np.array($qform_python); b=np.array($COG_python); print(a.dot(b)) ;"
+        newCoord=`python -c "$python_line"| awk '{print $2" "$3" "$4}'`
+        newX=`echo $newCoord | awk '{print $1}'`
+        newZ=`echo $newCoord | awk '{print $3}'`
+
+        fslmaths $dirT1/T1_brain_mask -thr 0.5 -bin $dirT1/grot_brain_mask_bin
+        flirt -in $dirT1/grot_brain_mask_bin -ref $subjdir/$referenceSubjectId/T1/ref -out $dirT1/grot_mask -applyxfm -usesqform -interp nearestneighbour
+        newY=`fslstats $dirT1/grot_mask -w | awk '{print $3}'`
+
+        rm $dirT1/grot*
+
+        echo $newX $newY $newZ >> $dirT1/T1_QC_COG.txt
+
+    fi ; 
+
+fi

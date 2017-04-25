@@ -1,0 +1,15 @@
+#!/bin/sh
+folders=$1
+# erode
+fslmaths ${folders}/mask   -eroF ${folders}/fix/maske1
+fslmaths ${folders}/fix/maske1 -eroF ${folders}/fix/maske2
+fslmaths ${folders}/fix/maske2 -eroF ${folders}/fix/maske3
+fslmaths ${folders}/fix/maske3 -eroF ${folders}/fix/maske4
+fslmaths ${folders}/fix/maske4 -eroF ${folders}/fix/maske5
+
+fslmaths ${folders}/mask -sub ${folders}/fix/maske1 ${folders}/fix/edge1
+fslmaths ${folders}/mask -sub ${folders}/fix/maske2 ${folders}/fix/edge2
+fslmaths ${folders}/mask -sub ${folders}/fix/maske3 ${folders}/fix/edge3
+fslmaths ${folders}/mask -sub ${folders}/fix/maske4 ${folders}/fix/edge4
+fslmaths ${folders}/mask -sub ${folders}/fix/maske5 ${folders}/fix/edge5
+

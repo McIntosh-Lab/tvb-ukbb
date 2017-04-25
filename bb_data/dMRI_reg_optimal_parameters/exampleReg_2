@@ -1,0 +1,28 @@
+#!/bin/bash
+
+Usage() {
+    echo ""
+    echo "Usage: exampleReg <input> <parameterName> <output>"
+    echo ""
+    echo "With parameterName one of:"
+    echo "  oxford"
+    echo "  rotterdam"
+    echo ""
+    echo "Performs registration as deemed optimal in the registration evaluation"
+    echo "performed in De Groot et al., NeuroImage 2013. Parameter name translates"
+    echo "to the dataset on which the optimal settings were identified."
+    exit 1
+}
+
+[ "$3" = "" ] && Usage
+input=`${FSLDIR}/bin/remove_ext $1`
+parameterName=$2
+output=$3
+refim=/vols/Data/biobank/QC_SUBJECTS_2/testing_reg_FA_to_MNI/template_opt_FA_better.nii.gz
+
+flirt -ref $refim -in $input -omat ${output}_affine.mat
+# perform FNIRT cascade of registrations
+$FSLDIR/bin/fnirt --ref=$refim --in=$input --cout=${output}_warp_s1 --config=${parameterName}_s1.cnf --aff=${output}_affine.mat --intout=${output}_int
+$FSLDIR/bin/fnirt --ref=$refim --in=$input --cout=${output}_warp_s2 --config=${parameterName}_s2.cnf --inwarp=${output}_warp_s1 --intin=${output}_int.txt
+$FSLDIR/bin/fnirt --ref=$refim --in=$input --cout=${output}_warp --iout=${output} --config=${parameterName}_s3.cnf --inwarp=${output}_warp_s2 --intin=${output}_int.txt
+

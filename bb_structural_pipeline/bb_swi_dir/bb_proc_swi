@@ -1,0 +1,60 @@
+#! /bin/sh
+#
+# Script name: bb_proc_swi
+#
+# Description: Script to combine channels and process the swMRI images.
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson	
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+set -x
+
+SUBJDIR=${1}/SWI
+SOS=${SUBJDIR}/SOS
+R2STAR=${SUBJDIR}/R2star
+T2STAR=${SUBJDIR}/T2star
+
+echo "combining channels for TE1"
+FLIST=`${FSLDIR}/bin/imglob ${SUBJDIR}/MAG_TE1/*`
+EXAMP=`echo $FLIST | awk '{print $1}'`
+${FSLDIR}/bin/fslmaths ${EXAMP} -mul 0 ${SOS}_TE1
+for F in $FLIST ; do
+  ${FSLDIR}/bin/fslmaths $F -sqr -add ${SOS}_TE1 ${SOS}_TE1
+done
+${FSLDIR}/bin/fslmaths ${SOS}_TE1 -sqrt ${SOS}_TE1
+
+echo "combining channels for TE2"
+FLIST=`${FSLDIR}/bin/imglob ${SUBJDIR}/MAG_TE2/*`
+EXAMP=`echo $FLIST | awk '{print $1}'`
+${FSLDIR}/bin/fslmaths ${EXAMP} -mul 0 ${SOS}_TE2
+for F in $FLIST ; do
+  ${FSLDIR}/bin/fslmaths $F -sqr -add ${SOS}_TE2 ${SOS}_TE2
+done
+${FSLDIR}/bin/fslmaths ${SOS}_TE2 -sqrt ${SOS}_TE2
+
+echo "calculating R2*"
+#TODO: Change this to read the info from conf files]
+TE1=9.42
+TE2=20
+TE_DIFF=`echo $TE2 - $TE1 | bc -l`
+${FSLDIR}/bin/fslmaths ${SOS}_TE1 -div ${SOS}_TE2 ${SOS}_ratio
+${FSLDIR}/bin/fslmaths ${SOS}_ratio -log -div ${TE_DIFF} ${R2STAR}
+
+${FSLDIR}/bin/fslmaths ${R2STAR} -recip -uthr 80 -thr 5 -kernel 2D -fmedian -kernel sphere 3 -dilM ${T2STAR}
+
+
+set +x

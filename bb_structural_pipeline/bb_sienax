@@ -1,0 +1,87 @@
+#!/bin/sh
+#
+# Script name: bb_sienax
+#
+# Description: Script to run a reduced version of sienax.
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+[ _$1 = _ ] && exit
+
+cd $1/T1
+
+mkdir T1_sienax
+cd T1_sienax
+
+${FSLDIR}/bin/bet ../T1 T1_brain -s 
+${FSLDIR}/bin/imrm T1_brain
+
+${FSLDIR}/bin/pairreg ${FSLDIR}/data/standard/MNI152_T1_2mm_brain ../T1_brain ${FSLDIR}/data/standard/MNI152_T1_2mm_skull T1_brain_skull T1_to_MNI_linear.mat >> report.sienax 2>&1
+
+${FSLDIR}/bin/avscale T1_to_MNI_linear.mat ${FSLDIR}/data/standard/MNI152_T1_2mm > T1_to_MNI_linear.avscale
+xscale=`grep Scales T1_to_MNI_linear.avscale | awk '{print $4}'`
+yscale=`grep Scales T1_to_MNI_linear.avscale | awk '{print $5}'`
+zscale=`grep Scales T1_to_MNI_linear.avscale | awk '{print $6}'`
+vscale=`echo "10 k $xscale $yscale * $zscale * p"|dc -`
+echo "VSCALING $vscale" >> report.sienax
+
+${FSLDIR}/bin/flirt -in ../T1          -ref ${FSLDIR}/data/standard/MNI152_T1_1mm -o T1_to_MNI_linear             -applyxfm -init T1_to_MNI_linear.mat -interp spline
+${FSLDIR}/bin/flirt -in T1_brain_skull -ref ${FSLDIR}/data/standard/MNI152_T1_1mm -o T1_brain_skull_to_MNI_linear -applyxfm -init T1_to_MNI_linear.mat -interp trilinear
+
+${FSLDIR}/bin/applywarp --rel --interp=trilinear --in=${FSLDIR}/data/standard/MNI152_T1_2mm_strucseg_periph --ref=../T1 -w ../transforms/T1_to_MNI_warp_coef_inv -o T1_segperiph
+${FSLDIR}/bin/fslmaths T1_segperiph -thr 0.5 -bin T1_segperiph
+
+${FSLDIR}/bin/fslmaths ${FSLDIR}/data/standard/MNI152_T1_2mm_strucseg -thr 4.5 -bin T1_segvent
+${FSLDIR}/bin/applywarp --rel --interp=nn --in=T1_segvent --ref=../T1 -w ../transforms/T1_to_MNI_warp_coef_inv -o T1_segvent
+
+echo "tissue             volume    unnormalised-volume" >> report.sienax
+
+${FSLDIR}/bin/fslmaths ../T1_fast/T1_brain_pve_1 -mas T1_segperiph T1_pve_1_segperiph -odt float
+S=`${FSLDIR}/bin/fslstats T1_pve_1_segperiph -m -v`
+xa=`echo $S | awk '{print $1}'`
+xb=`echo $S | awk '{print $3}'`
+uxg=`echo "2 k $xa $xb * 1 / p" | dc -`
+xg=`echo "2 k $xa $xb * $vscale * 1 / p" | dc -`
+echo "pgrey              $xg $uxg (peripheral grey)" >> report.sienax
+
+${FSLDIR}/bin/fslmaths ../T1_fast/T1_brain_pve_0 -mas T1_segvent T1_pve_0_segvent -odt float
+S=`${FSLDIR}/bin/fslstats T1_pve_0_segvent -m -v`
+xa=`echo $S | awk '{print $1}'`
+xb=`echo $S | awk '{print $3}'`
+uxg=`echo "2 k $xa $xb * 1 / p" | dc -`
+xg=`echo "2 k $xa $xb * $vscale * 1 / p" | dc -`
+echo "vcsf               $xg $uxg (ventricular CSF)" >> report.sienax
+
+S=`${FSLDIR}/bin/fslstats ../T1_fast/T1_brain_pve_1 -m -v`
+xa=`echo $S | awk '{print $1}'`
+xb=`echo $S | awk '{print $3}'`
+ugrey=`echo "2 k $xa $xb * 1 / p" | dc -`
+ngrey=`echo "2 k $xa $xb * $vscale * 1 / p" | dc -`
+echo "GREY               $ngrey $ugrey" >> report.sienax
+
+S=`${FSLDIR}/bin/fslstats ../T1_fast/T1_brain_pve_2 -m -v`
+xa=`echo $S | awk '{print $1}'`
+xb=`echo $S | awk '{print $3}'`
+uwhite=`echo "2 k $xa $xb * 1 / p" | dc -`
+nwhite=`echo "2 k $xa $xb * $vscale * 1 / p" | dc -`
+echo "WHITE              $nwhite $uwhite" >> report.sienax
+
+ubrain=`echo "2 k $uwhite $ugrey + 1 / p" | dc -`
+nbrain=`echo "2 k $nwhite $ngrey + 1 / p" | dc -`
+echo "BRAIN              $nbrain $ubrain" >> report.sienax
+

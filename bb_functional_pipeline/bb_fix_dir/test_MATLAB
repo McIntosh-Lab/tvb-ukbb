@@ -1,0 +1,74 @@
+#!/bin/sh
+
+. $( cd $(dirname $0) ; pwd)/settings.sh
+fixsettings=`set | grep FSL_FIX | awk -F= '{print $1}'`
+for setting in $fixsettings; do
+  export $setting
+done
+mkdir -p testfolder
+cd testfolder
+FSL_FIX_MLCDIR=${FSL_FIXDIR}/testfolder
+export FSL_FIX_MLCDIR
+MCCOPTS='-mv -R -nojvm -R -nodisplay'
+ECHO=echo
+if [ `uname -s` = "Linux" ]; then
+	ECHO="echo -e"
+fi
+$ECHO "disp('hello')" > test_1.m
+$ECHO "function test_2()\ndisp('hello')\n" > test_2.m
+$ECHO "function test_3(int_variable)\nif (isdeployed)\n	int_variable = str2num(int_variable)\nend\nif ischar(int_variable)\n    exit(1);\nend" > test_3.m
+$ECHO "disp('hello')" > test_4.m
+$ECHO "function test_5(int_variable)\nif (isdeployed)\n int_variable = str2num(int_variable)\nend\nint_variable = int_variable + 1\nif int_variable == 50\n exit(1);\nend" > test_5.m
+
+function runtest {
+	cmd=$@
+	
+	echo "$cmd" | sh
+	result=$?
+	if [ ${result} -ne 0 ]; then
+	   echo "$cmd failed (${result})!"
+	   exit 1
+	fi
+	echo $result
+}
+
+function runtestfails {
+	cmd=$@
+	echo "$cmd" | sh
+	result=$?
+	if [ ${result} -eq 0 ]; then
+	   echo "$cmd did not fail (${result})!"
+	   exit 1
+	fi
+}
+
+if [ "$1" != "SkipComp" ]; then
+	for i in 1 2 3; do
+		${FSL_FIX_MCC} ${MCCOPTS} -d . test_${i}.m
+	done
+fi
+
+runtest "../call_matlab.sh -b . -f test_2"
+runtest "../call_matlab.sh -b . -f test_3 1"
+
+runtest "../call_matlab.sh -z 1 -m test_1.m"
+runtest "../call_matlab.sh -z 1 -f test_2"
+runtest "../call_matlab.sh -z 1 -f test_3 1"
+
+if [ -x "${FSL_FIX_OCTAVE}" ]; then
+    runtest "../call_matlab.sh -z 2 -m test_1.m"
+    runtest "../call_matlab.sh -z 2 -f test_3 1"
+    runtest "../call_matlab.sh -z 2 -f test_2"
+	runtest "../call_matlab.sh -z 2 -r \"disp('hello'), i=3.14159, sin(i)\""
+fi
+
+runtest "../call_matlab.sh -r \"disp('hello'), i=3.14159, sin(i)\""
+
+runtestfails "../call_matlab.sh -z 3 -r \"disp('hello'), i=3.14159, sin(i)\""
+echo "Running test 4"
+runtest "../call_matlab.sh -b . -f test_4"
+echo "Running test 5"
+runtest "../call_matlab.sh -b . -f test_5 1"
+
+cd ..
+#rm -rf testfolder

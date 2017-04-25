@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+#
+# Script name: bb_ICA_dual_regression
+#
+# Description: Script to run dual regression on ICA outputs.
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
+
+wDir=`pwd`
+
+cd $1/fMRI
+
+for D in 25 100 ; do
+ 
+  if [ -f rfMRI.ica/reg_standard/filtered_func_data_clean.nii.gz ] ; then
+    mkdir -p rfMRI_${D}.dr
+    fsl_glm -i rfMRI.ica/reg_standard/filtered_func_data_clean -d $templ/group/melodic_IC_${D} -o rfMRI_${D}.dr/dr_stage1.txt --demean -m $FSLDIR/data/standard/MNI152_T1_2mm_brain_mask
+  fi
+done
+
+matlab -nojvm -nodisplay -nosplash -r "addpath('$BB_BIN_DIR/bb_functional_pipeline/');bb_netmats('$1','$wDir'); exit"
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 

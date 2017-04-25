@@ -1,0 +1,70 @@
+#!/bin/sh
+#
+# Script name: bb_NODDI
+#
+# Description: Script to generate the NODDI outputs for dMRI
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
+
+cd $1
+
+SUBDIR=`pwd`
+SUB=`basename $SUBDIR`
+
+cd ..
+ANALSUBROOT=`pwd`
+ANALSUBROOT=`basename $ANALSUBROOT`
+
+cd ..
+ANALROOT=`pwd`
+
+if [ -d $SUBDIR/dMRI/dMRI ] ; then
+
+    cd $SUBDIR/dMRI/dMRI
+
+    gunzip -c data_ud.nii.gz  > amtmp.nii
+    gunzip -c nodif_brain_mask_ud.nii.gz > amtmp_mask.nii
+
+    # following is one long line
+    $BB_BIN_DIR/bb_ext_tools/AMICO/run_NODDI.sh $BB_BIN_DIR/bb_ext_tools/AMICO/MCR81/v81  $ANALROOT/  $ANALSUBROOT $SUB/dMRI/dMRI dwi amtmp.nii scheme NODDI_DWI.scheme bvals bvals bvecs bvecs mask amtmp_mask.nii bvals_round 100
+
+    /bin/rm amtmp.nii amtmp_mask.nii
+    gzip -9 AMICO/NODDI/*.nii
+    mv AMICO/NODDI/FIT_ICVF.nii.gz NODDI_ICVF.nii.gz
+    mv AMICO/NODDI/FIT_OD.nii.gz NODDI_OD.nii.gz
+    mv AMICO/NODDI/FIT_ISOVF.nii.gz NODDI_ISOVF.nii.gz
+
+    cd ../TBSS/stats
+
+    dtifitDir=../../dMRI/
+
+    suffix="ICVF OD ISOVF"
+
+    for elem in $suffix ; do
+        $FSLDIR/bin/applywarp --rel -i $dtifitDir/NODDI_$elem -o all_${elem} -r $FSLDIR/data/standard/FMRIB58_FA_1mm -w ../FA/dti_FA_to_MNI_warp
+        $FSLDIR/bin/fslmaths all_${elem} -mas mean_FA_skeleton_mask all_${elem}_skeletonised
+        $FSLDIR/bin/fslstats -K ${FSLDIR}/data/atlases/JHU/JHU-ICBM-labels-1mm all_${elem}_skeletonised.nii.gz -M >JHUrois_${elem}.txt
+    done
+
+fi;
+
+cd $ANALROOT
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 

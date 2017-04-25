@@ -1,0 +1,35 @@
+#!/bin/sh
+#
+# Script name: bb_tbss_4_prestats
+#
+# Description: Script to run the fourth phase of TBSS.
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+echo [`date`] [`hostname`] [`uname -a`] [`pwd`] [$0 $@]
+
+thresh="$1"
+
+cd stats
+
+echo "creating skeleton mask using threshold $thresh"
+echo "$thresh" > thresh.txt
+
+"$FSLDIR"/bin/fslmaths mean_FA_skeleton -thr "$thresh" -bin mean_FA_skeleton_mask
+"$FSLDIR"/bin/fslmaths all_FA -mas mean_FA_skeleton_mask all_FA_skeletonised
+"$FSLDIR"/bin/fslstats -K "$FSLDIR"/data/atlases/JHU/JHU-ICBM-labels-1mm all_FA_skeletonised.nii.gz -M >JHUrois_FA.txt
+

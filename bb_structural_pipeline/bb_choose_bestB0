@@ -1,0 +1,100 @@
+#!/bin/sh
+#
+# Script name: bb_choose_bestB0
+#
+# Description: Script to choose the best B0 image in a dMRI file.
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson	
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
+
+IN=`$FSLDIR/bin/imglob $1`
+OUT=`$FSLDIR/bin/remove_ext $2`
+
+inName=`${FSLDIR}/bin/remove_ext \`basename $1\``
+
+count=0
+
+rm -rf ${OUT}_tmp
+mkdir ${OUT}_tmp
+$FSLDIR/bin/fslsplit $IN ${OUT}_tmp/grot
+pushd ${OUT}_tmp > /dev/null
+
+N=`$FSLDIR/bin/imglob grot*`
+N=`echo $N | wc -w`
+
+if [ $N = 1 ] ; then
+  popd
+  $FSLDIR/bin/imcp $IN $OUT
+  rm -rf ${OUT}_tmp
+  exit
+fi
+
+for f in `$FSLDIR/bin/imglob grot*` ; do
+  ff=`echo $f | sed 's/grot//g'`
+  scores[$ff]=0
+done
+
+for f in `$FSLDIR/bin/imglob grot*` ; do
+  ff=`echo $f | sed 's/grot//g'`
+  for g in `$FSLDIR/bin/imglob grot*` ; do
+    gg=`echo $g | sed 's/grot//g'`
+    if [ $gg -gt $ff ] ; then
+      $FSLDIR/bin/flirt -in $f -ref $g -nosearch -dof 6 -o blah -omat blah.mat
+      score=`$FSLDIR/bin/fslcc -t -1 -p 10 $g blah | awk '{print $3}'`
+      scores[$ff]=`echo 10 k ${scores[$ff]} $score + p | dc -`
+      scores[$gg]=`echo 10 k ${scores[$gg]} $score + p | dc -`
+      #echo $f $g $score ${scores[$ff]} ${scores[$gg]}
+    fi
+  done
+  count=`echo $count  + 1  |bc`
+done
+
+for f in `$FSLDIR/bin/imglob grot*` ; do
+  ff=`echo $f | sed 's/grot//g'`
+  echo $ff `echo "${scores[$ff]}  / ($count -1)" | bc -l` >> scores.txt
+done
+
+#If the first B0 has a value of 0.98 or higher, the first B0 will be considered the best (Jesper's criteria)
+scoreFirst=`cat scores.txt | head -n 1 | awk '{print $2}'`
+
+#This complicated line is due to the way in which bc handles POSIXLY incorrect expressions
+#TODO: Pass this script to python
+if [ $(echo "x=0;if ($scoreFirst >= 0.98) x=1;x" | bc -l) -eq 1 ]; then
+#if (( $(bc <<< "$scoreFirst >= 0.98") ==1 )); then
+    best=0000;
+    bestScore=$scoreFirst
+else
+    best=`cat scores.txt | sort -k 2 -n -r | head -n 1 | awk '{print $1}'`;
+    bestScore=`cat scores.txt | sort -k 2 -n -r | head -n 1 | awk '{print $2}'`
+fi
+
+
+#If the best B0 has less than 0.95, there is something wrong. We should flag that subject
+#if (( $(bc <<< "$bestScore < 0.95") ==1 )); then
+if [ $(echo "x=0; if ($bestScore < 0.95) x=1;x" | bc -l) -eq 1 ] ; then
+    echo "The best score was $bestScore. The subject will probably have problems with this DWI data\n" > ../fieldmap_flag.txt 
+fi
+
+cat ../${inName}_indices.txt | awk -v "bestB0=$best" '{print $(bestB0 +1)}' > ../${inName}_best_index.txt
+popd > /dev/null
+
+$FSLDIR/bin/immv ${OUT}_tmp/grot$best $OUT
+rm -rf ${OUT}_tmp
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
+

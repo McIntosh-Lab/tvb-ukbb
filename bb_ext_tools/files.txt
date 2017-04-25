@@ -1,0 +1,7 @@
+d spm12
+d ROBEX
+d BrainSuite15c
+d AMICO
+d matlab_canny
+d workbench
+f dcm2niix

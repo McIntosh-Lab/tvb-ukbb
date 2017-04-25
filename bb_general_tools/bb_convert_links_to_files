@@ -1,0 +1,38 @@
+#!/bin/bash
+#
+# Script name: bb_convert_links_to_files
+#
+# Description: Script to convert symbolic links into their linked files.
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+origDir=`pwd`
+
+for elem in `find .` ; do 
+    if [ ! -d $elem ] ; then
+        if [ -L $elem ] ; then 
+            dirN=`dirname $elem`; 
+            baseN=`basename $elem`; 
+            cd $dirN ;
+            dest=`readlink $baseN` ; 
+            rm $baseN ; 
+            cp $dest $baseN ;
+            cd $origDir ; 
+        fi ;
+    fi ; 
+done

@@ -1,0 +1,17 @@
+T1/T1_orig.nii.gz T1/T1.nii.gz
+T2_FLAIR/T2_FLAIR_orig.nii.gz T2_FLAIR/T2_FLAIR.nii.gz
+dMRI/raw/AP.nii.gz dMRI/raw/AP.nii.gz
+dMRI/raw/AP.bval dMRI/raw/AP.bval
+dMRI/raw/AP.bvec dMRI/raw/AP.bvec
+dMRI/raw/PA.nii.gz dMRI/raw/PA.nii.gz
+dMRI/raw/PA.bval dMRI/raw/PA.bval
+dMRI/raw/PA.bvec dMRI/raw/PA.bvec
+fMRI/rfMRI.nii.gz fMRI/rfMRI.nii.gz
+fMRI/rfMRI_SBREF.nii.gz fMRI/rfMRI_SBREF.nii.gz
+fMRI/tfMRI.nii.gz fMRI/tfMRI.nii.gz
+fMRI/tfMRI_SBREF.nii.gz fMRI/tfMRI_SBREF.nii.gz
+SWI/SWI_TOTAL_PHA.nii.gz SWI/SWI_TOTAL_PHA.nii.gz
+SWI/SWI_TOTAL_PHA_TE2.nii.gz SWI/SWI_TOTAL_PHA_TE2.nii.gz
+SWI/SWI_TOTAL_MAG_orig.nii.gz SWI/SWI_TOTAL_MAG.nii.gz
+SWI/SWI_TOTAL_MAG_TE2_orig.nii.gz SWI/SWI_TOTAL_MAG_TE2.nii.gz
+logs/file_descriptor.txt logs/file_descriptor.txt

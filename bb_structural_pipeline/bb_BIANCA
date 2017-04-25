@@ -1,0 +1,66 @@
+#!/bin/sh
+#
+# Script name: bb_BIANCA
+#
+# Description: Script to run BIANCA to get the WMH from T1 and T2 FLAIR.
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
+
+origDir=`pwd`
+
+dirT1=$1/T1
+dirT2=$1/T2_FLAIR
+
+#Check if all required files are in place. In case one is missing, BIANCA will not run
+for required_file in "$dirT1/T1_unbiased_brain.nii.gz" "$dirT1/T1_unbiased.nii.gz" "$dirT2/T2_FLAIR_unbiased.nii.gz" "$dirT1/transforms/T1_to_MNI_warp_coef_inv.nii.gz" "$dirT1/transforms/T1_to_MNI_linear.mat" "$dirT1/T1_fast/T1_brain_pve_0.nii.gz" ; do
+    if [ ! -f $required_file ] ; then
+        echo "Problem running Bianca. File $required_file is missing"
+        exit 1
+    fi
+done
+
+#TODO: Include last version of BIANCA in $FSLDIR
+
+cd $dirT1
+
+#Create an inclusion mask with T1 --> Used to remove GM from BIANCA results
+$FSLDIR/bin/make_bianca_mask T1_unbiased.nii.gz T1_fast/T1_brain_pve_0.nii.gz transforms/T1_to_MNI_warp_coef_inv.nii.gz
+
+cd $origDir
+mkdir -p $dirT2/lesions
+
+#Move the inclusion mask to T2_FLAIR/lesions directory
+mv $dirT1/T1_unbiased_bianca_mask.nii.gz $dirT1/T1_unbiased_ventmask.nii.gz $dirT1/T1_unbiased_brain_mask.nii.gz $dirT2/lesions/
+
+
+
+#Generate the configuration file to run Bianca
+echo $origDir/$dirT1/T1_unbiased_brain.nii.gz $origDir/$dirT2/T2_FLAIR_unbiased.nii.gz $origDir/$dirT1/transforms/T1_to_MNI_linear.mat > $dirT2/lesions/conf_file.txt;
+
+#Run BIANCA
+$FSLDIR/bin/bianca --singlefile=$dirT2/lesions/conf_file.txt --querysubjectnum=1 --brainmaskfeaturenum=1 --loadclassifierdata=$BB_BIN_DIR/bb_data/bianca_class_data --matfeaturenum=3 --featuresubset=1,2 -o $dirT2/lesions/bianca_mask
+
+#Apply the inclusion mask to BIANCA output to get the final thresholded mask
+fslmaths $dirT2/lesions/bianca_mask -mul $dirT2/lesions/T1_unbiased_bianca_mask.nii.gz -thr 0.8 -bin $dirT2/lesions/final_mask
+
+#Get the volume of the lesions
+fslstats $dirT2/lesions/final_mask -V | awk '{print $1}' > $dirT2/lesions/volume.txt
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 

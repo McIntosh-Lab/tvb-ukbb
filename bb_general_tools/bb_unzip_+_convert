@@ -1,0 +1,61 @@
+#!/bin/sh
+#
+# Script name: bb_unzip_+_convert
+#
+# Description: Script to unzip a downloaded subject and convert the DICOMs.
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+
+set -x
+
+f=$1
+
+if [ -d "$f" ] ; then
+
+    cd $f
+
+else
+    name_obj=` unzip -l "$f" | tail -n 5 | head -n 1 | awk '{$1=""; $2=""; $3=""; print $0}' | awk -F  "/" '{print $1}' |xargs`
+    name_no_white=`echo "$name_obj" | sed 's/ /_/g'`
+    unzip "$f"> zip.log 2>&1
+    mv "$name_obj" $name_no_white
+    cd $name_no_white
+fi
+
+mkdir DICOM
+mv *.dcm DICOM/
+
+$BB_BIN_DIR/bb_ext_tools/dcm2niix -b y -z y -f %p_coil%a_echo%e_%2s -o . DICOM/ > DICOM/log4 2>&1
+
+for elem in *.nii ; do
+    echo "File $elem was not properly compressed. Doing it out of dcm2niix." > DICOM/log4
+    $FSLDIR/bin/fslchfiletype $elem $elem.gz
+done
+
+$BB_BIN_DIR/bb_general_tools/bb_correct_image_names.py ./ > DICOM/log4
+
+if [ "$2" == "" ] ; then
+
+    rm DICOM/*dcm
+
+fi
+
+
+
+cd ..

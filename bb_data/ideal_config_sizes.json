@@ -1,0 +1,20 @@
+{
+    "T1":                           {"path": "T1/T1.nii.gz",                        "dims": [208, 256, 256, 1],   "dep_dirs": ["T1", "T2_FLAIR", "fMRI", "dMRI", "SWI", "fieldmap"]},
+    "T2":                           {"path": "T2_FLAIR/T2_FLAIR.nii.gz",            "dims": [192, 256, 256, 1],   "dep_dirs": ["T2_FLAIR"]},
+    "AP":                           {"path": "dMRI/raw/AP.nii.gz",                  "dims": [104, 104, 72,  105], "dep_dirs": ["fMRI", "dMRI", "fieldmap"]},
+    "PA":                           {"path": "dMRI/raw/PA.nii.gz",                  "dims": [104, 104, 72,  6],   "dep_dirs": ["fMRI", "dMRI", "fieldmap"]},
+    "rfMRI":                        {"path": "fMRI/rfMRI.nii.gz",                   "dims": [88,  88,  64,  490], "dep_dirs": ["fMRI"]},
+    "rfMRI_SBRef":                  {"path": "fMRI/rfMRI_SBREF.nii.gz",             "dims": [88,  88,  64,  1],   "dep_dirs": ["fMRI"]},
+    "tfMRI":                        {"path": "fMRI/tfMRI.nii.gz",                   "dims": [88,  88,  64,  332], "dep_dirs": ["fMRI"]},
+    "tfMRI_SBRef":                  {"path": "fMRI/tfMRI_SBREF.nii.gz",             "dims": [88,  88,  64,  1],   "dep_dirs": ["fMRI"]},
+    "SWI_TOTAL_MAG":                {"path": "SWI/SWI_TOTAL_MAG.nii.gz",            "dims": [256, 288, 48,  1],   "dep_dirs": ["SWI"]},
+    "SWI_TOTAL_MAG_TE2":            {"path": "SWI/SWI_TOTAL_MAG_TE2.nii.gz",        "dims": [256, 288, 48,  1],   "dep_dirs": ["SWI"]},
+    "SWI_TOTAL_MAG_notNorm":        {"path": "raw/SWI_TOTAL_MAG_notNorm.nii.gz",    "dims": [256, 288, 48,  1],   "dep_dirs": ["SWI"]},
+    "SWI_TOTAL_MAG_notNorm_TE2":    {"path": "raw/SWI_TOTAL_MAG_notNorm_TE2.nii.gz","dims": [256, 288, 48,  1],   "dep_dirs": ["SWI"]},
+    "SWI_TOTAL_PHA":                {"path": "SWI/SWI_TOTAL_PHA.nii.gz",            "dims": [256, 288, 48,  1],   "dep_dirs": ["SWI"]},
+    "SWI_TOTAL_PHA_TE2":            {"path": "SWI/SWI_TOTAL_PHA_TE2.nii.gz",        "dims": [256, 288, 48,  1],   "dep_dirs": ["SWI"]},
+    "SWI_MAG_TE1":                  {"path": "SWI/MAG_TE1/",                        "dims": [256, 288, 48,  1],   "dep_dirs": ["SWI"]},
+    "SWI_MAG_TE2":                  {"path": "SWI/MAG_TE2/",                        "dims": [256, 288, 48,  1],   "dep_dirs": ["SWI"]},
+    "SWI_PHA_TE1":                  {"path": "SWI/PHA_TE1/",                        "dims": [256, 288, 48,  1],   "dep_dirs": ["SWI"]},
+    "SWI_PHA_TE2":                  {"path": "SWI/PHA_TE2/",                        "dims": [256, 288, 48,  1],   "dep_dirs": ["SWI"]}
+}

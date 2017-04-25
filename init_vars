@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+#
+# Script name: init_vars
+#
+# Description: Script to initalise the variables needed for the pipeline.
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+###########################################
+#                                         #
+#   USER MUST MODIFY THE INDICATED LINES  #
+#                                         #
+###########################################
+
+#PYTHON VERSION                                #RECOMMENDED
+pyVersion="3.5.1"
+
+#SETUP FSL  
+export FSLDIR=@@@ #TO BE MODIFIED BY USER
+. $FSLDIR/etc/fslconf/fsl.sh
+export FSLCONFDIR=${FSLDIR}/config
+export FSLOUTPUTTYPE="NIFTI_GZ"
+export FSLGECUDAQ=@@@                       #TO BE MODIFIED BY USER
+export FSL_FIXDIR=@@@                       #TO BE MODIFIED BY USER
+
+#SETUP FREESURFER 
+export FREESURFER_HOME=@@@                  #TO BE MODIFIED BY USER
+source $FREESURFER_HOME/SetUpFreeSurfer.sh  > /dev/null
+
+#Move $FSLDIR/bin before $FREESURFER_HOME in the path
+FSLDIRseddable=`echo $FSLDIR | sed 's|/|\\\/|g'`
+PATH=`echo $PATH | sed "s|$FSLDIR/bin||g"`
+export PATH="$FSLDIR/bin:$PATH"
+
+#SETUP EXTERNAL LIBRARIES
+export R_LIBS=@@@                           #TO BE MODIFIED BY USER
+
+#SET LOCALE FOR FLOATING POINT FORMATTING
+export LC_ALL=C
+
+#SET DYNAMIC LIBRARIES FOR BEDPOSTX           
+export LD_LIBRARY_PATH=@@@                   #TO BE MODIFIED BY USER
+
+#ENV VARIABLES FOR BIOBANK
+export BBDIR=@@@                             #TO BE MODIFIED BY USER
+export BB_BIN_DIR=$BBDIR/fbp/public_pipeline
+export FSLGPUDIR=$BB_BIN_DIR/bb_diffusion_pipeline/bedpostx
+export MNI="$FSLDIR/data/standard/MNI152_T1_1mm.nii.gz"
+export MNI_mask="$FSLDIR/data/standard/MNI152_T1_1mm_brain_mask.nii.gz"
+export MNI_brain="$FSLDIR/data/standard/MNI152_T1_1mm_brain.nii.gz"
+export MNI_dir="$FSLDIR/data/standard"
+export templ="$BBDIR/fbp/templates"
+export PYTHONPATH=$BB_BIN_DIR:$PYTHONPATH
+
+
+#INCLUDE 3 MAIN BIOBANK DIRECTORIES IN PATH
+export PATH=$BB_BIN_DIR/bb_pipeline_tools/:$BB_BIN_DIR/bb_general_tools/:$PATH
+
+#ACTIVATE BIOBANK'S PYTHON VERSION
+. $BB_BIN_DIR/bb_python/bb_python-${pyVersion}/bin/activate
+

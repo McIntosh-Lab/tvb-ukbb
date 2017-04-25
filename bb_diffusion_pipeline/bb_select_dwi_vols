@@ -1,0 +1,74 @@
+#!/bin/sh
+#
+# Script name: bb_select_dwi_vols
+#
+# Description: Script to generate a volume with a certain b-value
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+if [ "$4" == "" ];then
+    echo ""
+    echo "Usage: bb_select_dwi_vols.sh <data> <bvals> <output> <approx_bval(to within 100 s/mm2)> <includeb0s> [bvecs] [-m|-v]"
+    echo " includeb0s : 1 for including b0s (anything with b<100), 0 otherwise "
+    echo " -m|-v : output mean|variance instead of concat"
+    echo " also produces <output>.bval and <output>.bvec"
+    echo ""
+    exit 1
+fi
+
+d=$1
+b=`cat $2`
+o=$3
+b0s_flag=$5
+
+lim=`cat $BB_BIN_DIR/bb_data/b0_threshold.txt`
+
+cnt=0
+list="" 
+cmd="awk '{"
+for i in $b;do
+    j=`echo $i | awk -F"E" 'BEGIN{OFMT="%10.10f"} {print $1 * (10 ^ $2)}' `
+    j=${j/.*}   
+    if [ "$j" -lt "$lim" ] && [ $b0s_flag -eq 1 ];then
+	j=$j
+    else
+	j=`echo "$j - $4" |bc | awk ' { if($1>=0) { print $1} else {print $1*-1 }}'`
+    fi
+    if [ "$j" -lt "$lim" ];then
+	if [ "${list}" == "" ];then
+	    list="${cnt}"
+	    cmd="$cmd print \$$(($cnt+1))"
+	else
+	    list="${list},${cnt}"
+	    cmd="$cmd \" \" \$$(($cnt+1))"
+	fi
+    fi
+    cnt=$(($cnt + 1))
+done
+cmd="$cmd }'"
+
+bcmd="cat $2 | `echo $cmd` > ${o}.bval"
+eval $bcmd
+if [ -f $6 ];then
+    vcmd="cat $6 | `echo $cmd` > ${o}.bvec"
+    eval $vcmd
+fi
+
+$FSLDIR/bin/fslselectvols -i $d -o $o --vols=$list $7
+
+

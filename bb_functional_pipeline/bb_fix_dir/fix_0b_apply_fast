@@ -1,0 +1,30 @@
+#!/bin/sh
+
+folders=$1
+
+exfunc=${folders}/reg/example_func
+
+if [ `imtest ${folders}/reg/highres_pveseg` = 1 ] ; then
+  imcp ${folders}/reg/highres_pveseg ${folders}/fix/fastsg_pveseg
+else
+  fast -t 1 -o ${folders}/fix/fastsg ${folders}/reg/highres
+fi
+
+if [ `$FSLDIR/bin/imtest ${folders}/reg/wmparc` = 1 ] ; then
+  fslmaths ${folders}/reg/wmparc -mul 0 ${folders}/fix/subcort
+  for f in 10 11 12 13 49 50 51 52 26 58 ; do
+    fslmaths ${folders}/reg/wmparc -thr $f -uthr $f -bin -add ${folders}/fix/subcort -bin ${folders}/fix/subcort
+  done
+  fslmaths ${folders}/fix/subcort -mul -1 -add 1 -mul ${folders}/fix/fastsg_pveseg -add ${folders}/fix/subcort -add ${folders}/fix/subcort ${folders}/fix/fastsg_pveseg
+fi
+
+flirt -in ${folders}/fix/fastsg_pveseg -ref $exfunc -applyxfm -init ${folders}/reg/highres2example_func.mat -interp nearestneighbour -out ${folders}/fix/hr2exf
+
+#flirt -in ${folders}/fix/fastsg_pve_0 -ref $exfunc -applyxfm -init ${folders}/reg/highres2example_func.mat -datatype float -out ${folders}/fix/exfcsf
+#flirt -in ${folders}/fix/fastsg_pve_1 -ref $exfunc -applyxfm -init ${folders}/reg/highres2example_func.mat -datatype float -out ${folders}/fix/exfgm
+#flirt -in ${folders}/fix/fastsg_pve_2 -ref $exfunc -applyxfm -init ${folders}/reg/highres2example_func.mat -datatype float -out ${folders}/fix/exfwm
+  
+#fslmaths ${folders}/fix/hr2exf -thr 3 ${folders}/fix/hr2exf_wm
+#fslmaths ${folders}/fix/hr2exf -thr 2 -sub ${folders}/fix/hr2exf_wm ${folders}/fix/hr2exf_gm
+#fslmaths ${folders}/fix/hr2exf -thr 1 -sub ${folders}/fix/hr2exf_wm -sub ${folders}/fix/hr2exf_gm ${folders}/fix/hr2exf_csf
+

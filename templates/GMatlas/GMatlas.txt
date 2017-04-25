@@ -1,0 +1,139 @@
+Left Frontal Pole
+Right Frontal Pole
+Left Insular Cortex
+Right Insular Cortex
+Left Superior Frontal Gyrus
+Right Superior Frontal Gyrus
+Left Middle Frontal Gyrus
+Right Middle Frontal Gyrus
+Left Inferior Frontal Gyrus, pars triangularis
+Right Inferior Frontal Gyrus, pars triangularis
+Left Inferior Frontal Gyrus, pars opercularis
+Right Inferior Frontal Gyrus, pars opercularis
+Left Precentral Gyrus
+Right Precentral Gyrus
+Left Temporal Pole
+Right Temporal Pole
+Left Superior Temporal Gyrus, anterior division
+Right Superior Temporal Gyrus, anterior division
+Left Superior Temporal Gyrus, posterior division
+Right Superior Temporal Gyrus, posterior division
+Left Middle Temporal Gyrus, anterior division
+Right Middle Temporal Gyrus, anterior division
+Left Middle Temporal Gyrus, posterior division
+Right Middle Temporal Gyrus, posterior division
+Left Middle Temporal Gyrus, temporooccipital part
+Right Middle Temporal Gyrus, temporooccipital part
+Left Inferior Temporal Gyrus, anterior division
+Right Inferior Temporal Gyrus, anterior division
+Left Inferior Temporal Gyrus, posterior division
+Right Inferior Temporal Gyrus, posterior division
+Left Inferior Temporal Gyrus, temporooccipital part
+Right Inferior Temporal Gyrus, temporooccipital part
+Left Postcentral Gyrus
+Right Postcentral Gyrus
+Left Superior Parietal Lobule
+Right Superior Parietal Lobule
+Left Supramarginal Gyrus, anterior division
+Right Supramarginal Gyrus, anterior division
+Left Supramarginal Gyrus, posterior division
+Right Supramarginal Gyrus, posterior division
+Left Angular Gyrus
+Right Angular Gyrus
+Left Lateral Occipital Cortex, superior division
+Right Lateral Occipital Cortex, superior division
+Left Lateral Occipital Cortex, inferior division
+Right Lateral Occipital Cortex, inferior division
+Left Intracalcarine Cortex
+Right Intracalcarine Cortex
+Left Frontal Medial Cortex
+Right Frontal Medial Cortex
+Left Juxtapositional Lobule Cortex (formerly Supplementary Motor Cortex)
+Right Juxtapositional Lobule Cortex (formerly Supplementary Motor Cortex)
+Left Subcallosal Cortex
+Right Subcallosal Cortex
+Left Paracingulate Gyrus
+Right Paracingulate Gyrus
+Left Cingulate Gyrus, anterior division
+Right Cingulate Gyrus, anterior division
+Left Cingulate Gyrus, posterior division
+Right Cingulate Gyrus, posterior division
+Left Precuneous Cortex
+Right Precuneous Cortex
+Left Cuneal Cortex
+Right Cuneal Cortex
+Left Frontal Orbital Cortex
+Right Frontal Orbital Cortex
+Left Parahippocampal Gyrus, anterior division
+Right Parahippocampal Gyrus, anterior division
+Left Parahippocampal Gyrus, posterior division
+Right Parahippocampal Gyrus, posterior division
+Left Lingual Gyrus
+Right Lingual Gyrus
+Left Temporal Fusiform Cortex, anterior division
+Right Temporal Fusiform Cortex, anterior division
+Left Temporal Fusiform Cortex, posterior division
+Right Temporal Fusiform Cortex, posterior division
+Left Temporal Occipital Fusiform Cortex
+Right Temporal Occipital Fusiform Cortex
+Left Occipital Fusiform Gyrus
+Right Occipital Fusiform Gyrus
+Left Frontal Operculum Cortex
+Right Frontal Operculum Cortex
+Left Central Opercular Cortex
+Right Central Opercular Cortex
+Left Parietal Operculum Cortex
+Right Parietal Operculum Cortex
+Left Planum Polare
+Right Planum Polare
+Left Heschl's Gyrus (includes H1 and H2)
+Right Heschl's Gyrus (includes H1 and H2)
+Left Planum Temporale
+Right Planum Temporale
+Left Supracalcarine Cortex
+Right Supracalcarine Cortex
+Left Occipital Pole
+Right Occipital Pole
+Left Thalamus
+Right Thalamus
+Left Caudate
+Right Caudate
+Left Putamen
+Right Putamen
+Left Pallidum
+Right Pallidum
+Left Hippocampus
+Right Hippocampus
+Left Amygdala
+Right Amygdala
+Left Ventral Striatum
+Right Ventral Striatum
+Brain-Stem
+Left I-IV Cerebellum
+Right I-IV Cerebellum
+Left V Cerebellum
+Right V Cerebellum
+Left VI Cerebellum
+Vermis VI Cerebellum
+Right VI Cerebellum
+Left Crus I Cerebellum
+Vermis Crus I Cerebellum
+Right Crus I Cerebellum
+Left Crus II Cerebellum
+Vermis Crus II Cerebellum
+Right Crus II Cerebellum
+Left VIIb Cerebellum
+Vermis VIIb Cerebellum
+Right VIIb Cerebellum
+Left VIIIa Cerebellum
+Vermis VIIIa Cerebellum
+Right VIIIa Cerebellum
+Left VIIIb Cerebellum
+Vermis VIIIb Cerebellum
+Right VIIIb Cerebellum
+Left IX Cerebellum
+Vermis IX Cerebellum
+Right IX Cerebellum
+Left X Cerebellum
+Vermis X Cerebellum
+Right X Cerebellum

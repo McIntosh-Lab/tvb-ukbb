@@ -1,0 +1,39 @@
+#!/bin/sh
+
+folders=$1
+fixdir=$2
+
+exfunc=$folders/reg/example_func
+
+if [ `imtest ${folders}/reg/standard2example_func_warp` = 1 ] ; then
+
+  for m in 0 1 2 3 ; do
+    applywarp --in=$fixdir/mask_files/sag_mask${m}     --ref=$exfunc -w ${folders}/reg/standard2example_func_warp -o ${folders}/fix/std1mm2exfunc${m}    
+    applywarp --in=$fixdir/mask_files/sag_mask${m}dil  --ref=$exfunc -w ${folders}/reg/standard2example_func_warp -o ${folders}/fix/std1mm2exfunc${m}dil 
+    applywarp --in=$fixdir/mask_files/sag_mask${m}dil2 --ref=$exfunc -w ${folders}/reg/standard2example_func_warp -o ${folders}/fix/std1mm2exfunc${m}dil2
+  done
+
+else
+
+  if [ -f ${folders}/reg/standard2example_func.mat ] ; then
+    /bin/cp ${folders}/reg/standard2example_func.mat $folders/fix/std2exfunc.mat
+  else
+    flirt -in $folders/reg/highres -ref $FSLDIR/data/standard/MNI152_T1_1mm_brain -omat $folders/fix/highres2std.mat
+    convert_xfm -omat $folders/fix/std2highres.mat -inverse $folders/fix/highres2std.mat
+    convert_xfm -omat $folders/fix/std2exfunc.mat -concat $folders/reg/highres2example_func.mat $folders/fix/std2highres.mat
+  fi
+
+  for m in 0 1 2 3 ; do
+    flirt -in $fixdir/mask_files/sag_mask${m}     -ref $exfunc -applyxfm -init ${folders}/fix/std2exfunc.mat -out ${folders}/fix/std1mm2exfunc${m}     -datatype float
+    flirt -in $fixdir/mask_files/sag_mask${m}dil  -ref $exfunc -applyxfm -init ${folders}/fix/std2exfunc.mat -out ${folders}/fix/std1mm2exfunc${m}dil  -datatype float
+    flirt -in $fixdir/mask_files/sag_mask${m}dil2 -ref $exfunc -applyxfm -init ${folders}/fix/std2exfunc.mat -out ${folders}/fix/std1mm2exfunc${m}dil2 -datatype float
+  done
+
+fi
+
+if [ `imtest $folders/reg/veins_exf` = 1 ] ; then
+  imcp $folders/reg/veins_exf ${folders}/fix/std1mm2exfunc0
+  fslmaths ${folders}/fix/std1mm2exfunc0 -dilF ${folders}/fix/std1mm2exfunc0dil
+  fslmaths ${folders}/fix/std1mm2exfunc0 -dilF -dilF ${folders}/fix/std1mm2exfunc0dil2
+fi
+

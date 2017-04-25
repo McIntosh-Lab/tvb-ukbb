@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+#
+# Script name: bb_prepare_tfMRI
+#
+# Description: Script to generate the FEAT configuration file for task fMRI.
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson	
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
+
+nameDir="$PWD/$1"
+
+cp $BB_BIN_DIR/bb_data/design_TASK.fsf $1/fMRI/tfMRI.fsf
+
+for elem in `cat $1/fMRI/tfMRI.fsf | grep -oP '_--_\K.*?(?=_-_)' | sort | uniq` ; do
+    val=`echo ${!elem} | sed 's|/|\\\/|g'`
+    sed -i "s/_--_${elem}_-_/${val}/g" $1/fMRI/tfMRI.fsf
+done 
+
+fmriNumVol=`${FSLDIR}/bin/fslval $1/fMRI/tfMRI.nii.gz dim4`
+fmriTR=`${FSLDIR}/bin/fslval $1/fMRI/tfMRI.nii.gz pixdim4`
+descrip=`${FSLDIR}/bin/fslval $1/fMRI/tfMRI.nii.gz descrip`
+descrip=(`echo $descrip | tr ';' ' '`)
+fmriTE=${descrip[0]:3}
+fmriDwell=`bb_get_dwell_time $1/fMRI/tfMRI.nii.gz`
+
+$BB_BIN_DIR/bb_pipeline_tools/bb_GDC_half_voxel --workingdir=$1/fMRI/tfMRI_SBREF_GDC --in=$1/fMRI/tfMRI_SBREF.nii.gz --out=$1/fMRI/tfMRI_SBREF_ud.nii.gz --owarp=$1/fMRI/tfMRI_SBREF_ud_warp.nii.gz
+
+echo "set fmri(outputdir)     \""$nameDir"/fMRI/tfMRI.feat\"" >> $1/fMRI/tfMRI.fsf
+echo "set feat_files(1)       \""$nameDir"/fMRI/tfMRI.nii.gz\"" >> $1/fMRI/tfMRI.fsf
+echo "set alt_ex_func(1)      \""$nameDir"/fMRI/tfMRI_SBREF.nii.gz\"" >> $1/fMRI/tfMRI.fsf
+echo "set unwarp_files(1)     \""$nameDir"/fieldmap/fieldmap_fout_to_T1_brain_rad.nii.gz\"" >> $1/fMRI/tfMRI.fsf
+echo "set unwarp_files_mag(1) \""$nameDir"/fMRI/symlink/T1_brain.nii.gz\"" >> $1/fMRI/tfMRI.fsf
+echo "set highres_files(1)    \""$nameDir"/fMRI/symlink/T1_brain.nii.gz\"" >> $1/fMRI/tfMRI.fsf
+echo "set fmri(gdc)           \""$nameDir"/fMRI/tfMRI_SBREF_ud_warp.nii.gz\"" >> $1/fMRI/tfMRI.fsf
+echo "set fmri(tr) $fmriTR" >> $1/fMRI/tfMRI.fsf
+echo "set fmri(npts) $fmriNumVol"  >> $1/fMRI/tfMRI.fsf
+echo "set fmri(dwell) $fmriDwell" >> $1/fMRI/tfMRI.fsf
+echo "set fmri(te) $fmriTE" >> $1/fMRI/tfMRI.fsf
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 

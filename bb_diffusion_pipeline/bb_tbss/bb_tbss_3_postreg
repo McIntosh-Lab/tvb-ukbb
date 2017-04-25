@@ -1,0 +1,51 @@
+#!/bin/sh
+#
+# Script name: bb_tbss_3_postreg
+#
+# Description: Script to run the third phase of TBSS.
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+SKELETON=1
+
+echo [`date`] [`hostname`] [`uname -a`] [`pwd`] [$0 $@]
+
+cd FA
+
+/bin/rm -f all.msf
+
+best=MNI
+
+echo "$best" > best.msf
+
+mkdir -p ../stats
+
+f='dti_FA'
+
+"$FSLDIR"/bin/applywarp -i "$f" -o "$f"_to_MNI -r MNI -w "$f"_to_MNI_warp --rel
+
+echo "merging all upsampled FA images into single 4D image"
+cd ../stats 
+"$FSLDIR"/bin/imcp ../FA/dti_FA_to_MNI all_FA
+
+# create mean FA
+echo "creating valid mask and mean FA"
+"$FSLDIR"/bin/fslmaths all_FA -bin -mul "$FSLDIR"/data/standard/FMRIB58_FA_1mm -bin mean_FA_mask
+"$FSLDIR"/bin/fslmaths all_FA -mas mean_FA_mask all_FA
+"$FSLDIR"/bin/fslmaths "$FSLDIR"/data/standard/FMRIB58_FA_1mm -mas mean_FA_mask mean_FA
+"$FSLDIR"/bin/fslmaths "$FSLDIR"/data/standard/FMRIB58_FA-skeleton_1mm -mas mean_FA_mask mean_FA_skeleton
+

@@ -1,0 +1,4 @@
+File bianca_class_data is neded for BIANCA. It can be downloaded from:
+
+www.fmrib.ox.ac.uk/datasets/ukbiobank/bianca_class_data
+

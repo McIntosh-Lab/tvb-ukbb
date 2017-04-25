@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+#
+# Script name: bb_pre_eddy
+#
+# Description: Script to prepare the dMRI data for eddy
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
+
+direc=$PWD/$1
+mkdir -p $direc/dMRI/dMRI/
+
+# Prepare data for eddy, dtifit and bedpostx.
+ln -s ../raw/AP.nii.gz $direc/dMRI/dMRI/AP.nii.gz
+ln -s ../../fieldmap/fieldmap_iout_mean.nii.gz $direc/dMRI/dMRI/nodif.nii.gz
+ln -s ../../fieldmap/fieldmap_mask.nii.gz $direc/dMRI/dMRI/nodif_brain_mask.nii.gz
+ln -s ../../fieldmap/fieldmap_mask_ud.nii.gz $direc/dMRI/dMRI/nodif_brain_mask_ud.nii.gz
+
+#fslmaths $direc/dMRI/dMRI/nodif.nii.gz -mul $direc/dMRI/dMRI/nodif_brain_mask.nii.gz $direc/dMRI/dMRI/nodif_brain.nii.gz
+cp $direc/dMRI/raw/AP.bval $direc/dMRI/dMRI/bvals
+cp $direc/dMRI/raw/AP.bvec $direc/dMRI/dMRI/bvecs
+
+indx=""
+
+n=`${FSLDIR}/bin/fslval $direc/dMRI/raw/AP.nii.gz dim4`
+
+for ((i=1;i<=${n};i++));do
+    indx="$indx 1"
+done
+
+echo $indx > $direc/dMRI/dMRI/eddy_index.txt
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
+

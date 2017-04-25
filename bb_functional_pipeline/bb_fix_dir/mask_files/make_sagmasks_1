@@ -1,0 +1,3 @@
+flirt -in ~/hcp/Phase2/means/T1T2r/T1T2r_median.nii.gz -ref sag_mask_orig -applyxfm -out T1T2r_median
+fslmaths sag_mask_orig -dilD -dilD -dilD -dilD -dilD -dilD -dilD -dilD sag_mask
+fslmaths T1T2r_median -thr 8 -bin -mul sag_mask sag_mask -odt char

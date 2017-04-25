@@ -1,0 +1,64 @@
+#!/bin/sh
+#
+# Script name: bb_IDP_T1_noise_ratio
+#
+# Description: Script to generate the IDPs related to noise in T1.
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+origDir=`pwd`
+scriptName=`basename "$0"`
+direc=$1
+
+cd $direc
+
+baseT1="T1"
+#if [ -d T1/unusable ] ; then
+#    baseT1="T1/unusable"
+#fi
+
+#Setting the string of NaN in case there is a problem.
+numVars="2"
+result="";
+for i in $(seq 1 $numVars) ; do 
+    result="NaN $result" ; 
+done 
+
+if [ -f $baseT1/T1_fast/T1_brain_pveseg.nii.gz ] ; then
+  ${FSLDIR}/bin/fslmaths $baseT1/T1_fast/T1_brain_pveseg -thr 2 -uthr 2 -ero /tmp/tmpsnr_$1
+  TheGrey=`${FSLDIR}/bin/fslstats $baseT1/T1 -k /tmp/tmpsnr_$1 -m`
+  ${FSLDIR}/bin/fslmaths $baseT1/T1_fast/T1_brain_pveseg -thr 3 -uthr 3 -ero /tmp/tmpsnr_$1
+  TheWhite=`${FSLDIR}/bin/fslstats $baseT1/T1 -k /tmp/tmpsnr_$1 -m`
+  ${FSLDIR}/bin/imrm /tmp/tmpsnr_$1
+  TheBrain=`echo "1 k $TheGrey $TheWhite + 2 / p" | dc -`
+  TheContrast=`echo "1 k $TheWhite $TheGrey - p" | dc -`
+  TheThresh=`echo "$TheBrain 10 / p" | dc -`
+  TheNoise=`${FSLDIR}/bin/fslstats $baseT1/T1 -l 0.001 -u $TheThresh -s`
+  TheSNRrecip=`echo "10 k $TheNoise $TheBrain    / p" | dc -`
+  TheCNRrecip=`echo "10 k $TheNoise $TheContrast / p" | dc -`
+  result="$TheSNRrecip $TheCNRrecip" 
+fi
+
+mkdir -p IDP_files
+
+echo $result > IDP_files/$scriptName.txt
+echo $result
+    
+cd $origDir
+
+

@@ -1,0 +1,89 @@
+#!/bin/bash
+#
+# Script name: bb_QC_CNR_corners_complete
+#
+# Description: Script to calculate the CNR from the 4 corners of the image.
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+set -x
+
+result="NaN"
+
+dirT1=$1/T1
+dirRaw=$1/raw
+
+if [ -d $dirT1/unusable ] ; then
+	dirT1=$dirT1/unusable
+fi
+
+T1_cut=$dirT1/T1
+
+dirOut=$dirT1
+
+for T1_input in "$dirT1/T1_orig" "$dirRaw/T1_notNorm" ; do
+
+    if [ x`imtest $T1_cut` = x1 ] ; then
+
+        if [ x`imtest $T1_input` = x1 ] ; then
+            
+            T1nam=`basename $T1_input`
+
+            if [ x`imtest $dirT1/T1_fast/T1_brain_pveseg` = x1 ] ; then
+
+                fslroi $T1_input $dirOut/${T1nam}_grot_roi_1_1_lower 1 10 1 10 0 10
+                fslroi $T1_input $dirOut/${T1nam}_grot_roi_1_245_lower 1 10 245 10 0 10
+                fslroi $T1_input $dirOut/${T1nam}_grot_roi_197_1_lower 197 10 1 10 0 10
+                fslroi $T1_input $dirOut/${T1nam}_grot_roi_197_245_lower 197 10 245 10 0 10
+                fslmerge -x $dirOut/${T1nam}_grot_roi_x_1_lower $dirOut/${T1nam}_grot_roi_1_1_lower   $dirOut/${T1nam}_grot_roi_197_1_lower
+                fslmerge -x $dirOut/${T1nam}_grot_roi_x_245_lower $dirOut/${T1nam}_grot_roi_1_245_lower $dirOut/${T1nam}_grot_roi_197_245_lower
+                fslmerge -y $dirOut/${T1nam}_grot_roi_lower $dirOut/${T1nam}_grot_roi_x_1_lower $dirOut/${T1nam}_grot_roi_x_245_lower
+
+                fslroi $T1_input $dirOut/${T1nam}_grot_roi_1_1_higher 1 10 1 10 245 10
+                fslroi $T1_input $dirOut/${T1nam}_grot_roi_1_245_higher 1 10 245 10 245 10
+                fslroi $T1_input $dirOut/${T1nam}_grot_roi_197_1_higher 197 10 1 10 245 10
+                fslroi $T1_input $dirOut/${T1nam}_grot_roi_197_245_higher 197 10 245 10 245 10
+                fslmerge -x $dirOut/${T1nam}_grot_roi_x_1_higher $dirOut/${T1nam}_grot_roi_1_1_higher   $dirOut/${T1nam}_grot_roi_197_1_higher
+                fslmerge -x $dirOut/${T1nam}_grot_roi_x_245_higher $dirOut/${T1nam}_grot_roi_1_245_higher $dirOut/${T1nam}_grot_roi_197_245_higher
+                fslmerge -y $dirOut/${T1nam}_grot_roi_higher $dirOut/${T1nam}_grot_roi_x_1_higher $dirOut/${T1nam}_grot_roi_x_245_higher
+
+                subj=$1
+
+                if [ -f $dirT1/T1_fast/T1_brain_GM_mask.nii.gz ] ; then
+                  TheGrey=`fslstats $T1_cut -k $dirT1/T1_fast/T1_brain_GM_mask.nii.gz -m`
+                  TheWhite=`fslstats $T1_cut -k $dirT1/T1_fast/T1_brain_WM_mask.nii.gz -m`
+                  threshold1=`fslstats $T1_cut -k $dirT1/T1_fast/T1_brain_GM_mask.nii.gz -P 1`
+                  threshold2=`echo "$threshold1 / 2 "| bc`
+                  fslmaths $dirOut/${T1nam}_grot_roi_lower.nii.gz  -uthr $threshold2 $dirOut/${T1nam}_grot_roi_lower_2.nii.gz
+                  fslmaths $dirOut/${T1nam}_grot_roi_higher.nii.gz -uthr $threshold2 $dirOut/${T1nam}_grot_roi_higher_2.nii.gz
+                  TheNoise_lower=`fslstats  $dirOut/${T1nam}_grot_roi_lower_2.nii.gz -S`
+                  TheNoise_higher=`fslstats $dirOut/${T1nam}_grot_roi_higher_2.nii.gz -S`
+                  TheBrain=`echo "1 k $TheGrey $TheWhite + 2 / p" | dc -`
+                  result_lower=`echo "10 k $TheNoise_lower $TheBrain / p" | dc -`
+                  result_higher=`echo "10 k $TheNoise_higher $TheBrain / p" | dc -`
+                fi
+                   
+                rm  $dirOut/${T1nam}_grot_roi*nii.gz
+                 
+                echo $result_lower > $dirOut/${T1nam}_QC_CNR_lower.txt
+                echo $result_higher > $dirOut/${T1nam}_QC_CNR_upper.txt
+
+            fi ;
+        fi ;
+    fi
+done

@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+#
+# Script name: bb_postprocess_struct
+#
+# Description: Script to prepare symlinks from structural images for fMRI processing.
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson	
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
+
+direc=$PWD/$1/
+
+linkDir=$direc/fMRI/symlink
+
+mkdir $linkDir
+
+ln -s ../../T1/T1.nii.gz $linkDir/T1.nii.gz
+ln -s ../../T1/T1_brain.nii.gz $linkDir/T1_brain.nii.gz
+ln -s ../../T1/transforms/T1_to_MNI_warp.nii.gz $linkDir/T1_brain2MNI152_T1_2mm_brain_warp.nii.gz
+ln -s ../../T1/transforms/T1_to_MNI_linear.mat $linkDir/T1_brain2MNI152_T1_2mm_brain.mat
+
+$FSLDIR/bin/fslmaths $direc/T1/T1_fast/T1_brain_pve_2.nii.gz -thr 0.5 -bin $linkDir/T1_brain_wmseg.nii.gz
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 

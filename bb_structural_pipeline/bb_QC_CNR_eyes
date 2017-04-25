@@ -1,0 +1,117 @@
+#!/bin/bash
+#
+# Script name: bb_QC_CNR_eyes
+#
+# Description: Script to calculate the CNR from 2 cuboids in front of the eyes.
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+set -x
+
+result="NaN"
+
+dir=$1/T1
+
+if [ -d $dir/unusable ] ; then
+	dir=$dir/unusable
+fi
+
+T1_cut=$dir/T1
+T1=$1/raw/T1_notNorm
+
+if [ x`imtest $T1_cut` = x1 ] ; then
+
+    if [ x`imtest $T1` = x1 ] ; then
+        
+        if [ x`imtest $dir/T1_fast/T1_brain_pveseg` = x1 ] ; then
+
+            if [ ! x`imtest $dir/T1_QC_eyes/T1_eyes_cuboid_mask.nii.gz` = x1 ] ; then
+
+                if [ ! x`imtest $dir/transforms/T1_orig_ud_warp.nii.gz` = x1 ] ; then
+                     $BB_BIN_DIR/bb_pipeline_tools/bb_GDC --workingdir=$dir/grot_dir/ --in=$dir/T1_orig.nii.gz --out=$dir/grot.nii.gz --owarp=$dir/transforms/T1_orig_ud_warp.nii.gz
+                fi
+
+                if [ ! x`imtest $dir/transforms/T1_orig_ud_warp_inv.nii.gz` = x1 ] ; then
+                    ${FSLDIR}/bin/invwarp --ref=$dir/T1_orig -w $dir/transforms/T1_orig_ud_warp.nii.gz -o $dir/transforms/T1_orig_ud_warp_inv.nii.gz
+                fi
+                
+                if [ ! x`imtest $dir/T1_fast/T1_brain_GM_mask.nii.gz` = x1 ] ; then
+                    fslmaths $dir/T1_fast/T1_brain_pve_1.nii.gz -thr 0.5 -bin $dir/T1_fast/T1_brain_GM_mask.nii.gz
+                    fslmaths $dir/T1_fast/T1_brain_pve_2.nii.gz -thr 0.5 -bin $dir/T1_fast/T1_brain_WM_mask.nii.gz
+                fi
+
+               
+                ${FSLDIR}/bin/applywarp  -i $dir/T1_fast/T1_brain_GM_mask.nii.gz -o $dir/T1_fast/T1_brain_GM_mask_orig.nii.gz -r $dir/T1_orig.nii.gz -w $dir/transforms/T1_orig_ud_warp_inv.nii.gz --premat=$dir/transforms/T1_to_T1_orig_ud.mat --interp=nn
+                ${FSLDIR}/bin/applywarp  -i $dir/T1_fast/T1_brain_WM_mask.nii.gz -o $dir/T1_fast/T1_brain_WM_mask_orig.nii.gz -r $dir/T1_orig.nii.gz -w $dir/transforms/T1_orig_ud_warp_inv.nii.gz --premat=$dir/transforms/T1_to_T1_orig_ud.mat --interp=nn
+
+                ${FSLDIR}/bin/convert_xfm -omat $dir/transforms/T1_orig_ud_to_MNI.mat -concat $dir/transforms/T1_to_MNI_linear.mat $dir/transforms/T1_orig_ud_to_T1.mat
+                ${FSLDIR}/bin/convert_xfm -omat $dir/transforms/MNI_to_T1_orig_ud.mat -inverse $dir/transforms/T1_orig_ud_to_MNI.mat
+                ${FSLDIR}/bin/flirt -in $templ/MNI152_T1_1mm_left_eye_dil.nii.gz  -ref $dir/T1_orig -out $dir/left_eye_flirted  -applyxfm -init $dir/transforms/MNI_to_T1_orig_ud.mat  -interp nearestneighbour
+                ${FSLDIR}/bin/flirt -in $templ/MNI152_T1_1mm_right_eye_dil.nii.gz -ref $dir/T1_orig -out $dir/right_eye_flirted -applyxfm -init $dir/transforms/MNI_to_T1_orig_ud.mat  -interp nearestneighbour
+
+                printf "%.0f %.0f %.0f %.0f %.0f %.0f" $(fslstats $dir/left_eye_flirted -C ; fslstats $dir/right_eye_flirted -C ;) > $dir/eyes_COG_coordinates.txt
+
+                
+                size="40"
+                halfsize=`echo $size / 2 | bc`
+
+                dimY=`echo "\`fslval $dir/T1_orig dim2\` -$size" | bc`
+
+                lDimX=`echo "\`cat $dir/eyes_COG_coordinates.txt | awk '{print $1}' \`" - $halfsize | bc`
+                lDimZ=`echo "\`cat $dir/eyes_COG_coordinates.txt | awk '{print $3}' \`" - $halfsize | bc`
+                rDimX=`echo "\`cat $dir/eyes_COG_coordinates.txt | awk '{print $4}' \`" - $halfsize | bc`
+                rDimZ=`echo "\`cat $dir/eyes_COG_coordinates.txt | awk '{print $6}' \`" - $halfsize | bc`
+
+                fslmaths $dir/T1_orig -mul 0 -add 1 -roi $lDimX $size $dimY $size $lDimZ $size 0 1 $dir/lmask
+                fslmaths $dir/T1_orig -mul 0 -add 1 -roi $rDimX $size $dimY $size $rDimZ $size 0 1 $dir/rmask
+
+                fslmaths $dir/rmask -add $dir/lmask $dir/T1_eyes_cuboid_mask
+
+                mkdir -p $dir/T1_QC_eyes
+
+                mv $dir/T1_eyes_cuboid_mask.nii.gz  $dir/right_eye_flirted.nii.gz $dir/left_eye_flirted.nii.gz $dir/T1_QC_eyes 
+                
+                rm  $dir/transforms/T1_orig_ud_warp_inv.nii.gz $dir/eyes_COG_coordinates.txt
+
+            fi
+
+            fslmaths $dir/T1_QC_eyes/T1_eyes_cuboid_mask -mul $T1 ${T1_cut}_grot_roi
+
+            #Calculate the noise in the slice 
+            subj=$1
+
+            if [ -f $dir/T1_fast/T1_brain_GM_mask_orig.nii.gz ] ; then
+              TheGrey=`fslstats $T1 -k $dir/T1_fast/T1_brain_GM_mask_orig.nii.gz -m`
+              TheWhite=`fslstats $T1 -k $dir/T1_fast/T1_brain_WM_mask_orig.nii.gz -m`
+              threshold1=`fslstats $T1 -k $dir/T1_fast/T1_brain_GM_mask_orig.nii.gz -P 3`
+              threshold2=`echo "$threshold1 / 1 "| bc`
+              fslmaths ${T1_cut}_grot_roi -uthr $threshold2 ${T1_cut}_grot_roi_2.nii.gz
+              fslmaths ${T1_cut}_grot_roi_2.nii.gz -bin -dilM -dilM -ero -ero -ero -ero -mul $T1 ${T1_cut}_grot_roi_3.nii.gz
+
+              TheNoise=`fslstats ${T1_cut}_grot_roi_3.nii.gz -S`
+              TheBrain=`echo "1 k $TheGrey $TheWhite + 2 / p" | dc -`
+              result=`echo "10 k $TheNoise $TheBrain / p" | dc -`
+            fi
+            
+            rm  ${T1_cut}_grot_roi*nii.gz 
+             
+            echo $result > ${T1_cut}_QC_CNR_eyes.txt
+
+        fi ;
+    fi ;
+fi

@@ -1,0 +1,146 @@
+#!/usr/bin/env bash
+#   Automated probabilistic tractography plugin for FSL; tractography script.
+#
+#   Performs tractography as used in De Groot et al., NeuroImage 2013.
+#   2013, Marius de Groot
+#
+#   Modifications in 2016: Fidel Alfaro-Almagro
+#
+#   LICENCE
+#
+#   AutoPtx, plugin for FSL, Release 0.1 (c) 2013, Erasmus MC, University
+#   Medical Center (the "Software")
+#
+#   The Software remains the property of the Erasmus MC, University Medical
+#   Center ("the University").
+#
+#   The Software is distributed "AS IS" under this Licence solely for
+#   non-commercial use in the hope that it will be useful, but in order
+#   that the University as a charitable foundation protects its assets for
+#   the benefit of its educational and research purposes, the University
+#   makes clear that no condition is made or to be implied, nor is any
+#   warranty given or to be implied, as to the accuracy of the Software, or
+#   that it will be suitable for any particular purpose or for use under
+#   any specific conditions.  Furthermore, the University disclaims all
+#   responsibility for the use which is made of the Software.  It further
+#   disclaims any liability for the outcomes arising from using the
+#   Software.
+#
+#   The Licensee agrees to indemnify the University and hold the University
+#   harmless from and against any and all claims, damages and liabilities
+#   asserted by third parties (including claims for negligence) which arise
+#   directly or indirectly from the use of the Software or the sale of any
+#   products based on the Software.
+#
+#   No part of the Software may be reproduced, modified, transmitted or
+#   transferred in any form or by any means, electronic or mechanical,
+#   without the express permission of the University.  The permission of
+#   the University is not required if the said reproduction, modification,
+#   transmission or transference is done without financial return, the
+#   conditions of this Licence are imposed upon the receiver of the
+#   product, and all original and amended source code is included in any
+#   transmitted product.  You may be held legally responsible for any
+#   copyright infringement that is caused or encouraged by your failure to
+#   abide by these terms and conditions.
+#
+#   You are not permitted under this Licence to use this Software
+#   commercially.  Use for which any financial return is received shall be
+#   defined as commercial use, and includes (1) integration of all or part
+#   of the source code or the Software into a product for sale or license
+#   by or on behalf of Licensee to third parties or (2) use of the Software
+#   or any derivative of it for research with the final aim of developing
+#   software products for sale or license to a third party or (3) use of
+#   the Software or any derivative of it for research with the final aim of
+#   developing non-software products for sale or license to a third party,
+#   or (4) use of the Software to provide any service to an external
+#   organisation for which payment is received.  If you are interested in
+#   using the Software commercially, please contact the technology transfer
+#   company of the University to negotiate a licence.  Contact details are:
+#   tto@erasmusmc.nl quoting reference SOPHIA #2013-012 and the
+#   accompanying paper DOI: 10.1016/j.neuroimage.2013.03.015.
+#
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
+
+sub=$1
+struct=$2
+MNI_to_FA_warp=$4
+FA_to_MNI_warp=$5
+nSeed=300
+execPath=`dirname $0`
+
+# apply seed multiplier if set
+if [ "$3" != "" ]; then
+  nSeed=$(echo "scale=0; $nSeed * ${3} / 1"|bc)
+fi
+
+echo "running automated tractography of subject ${sub}, structure ${struct}, using $nSeed seeds per voxel."
+
+
+# sources
+masks=$execPath/protocols/$struct
+bpdata=../../../${sub}/dMRI.bedpostX
+# output
+tracts=tracts/$struct
+
+mkdir -p $tracts
+
+# cleanup possible previous run
+rm -f $tracts/tracts/waytotal
+${FSLDIR}/bin/imrm $tracts/tracts/tractsNorm
+rm -rf $tracts/tracts
+
+# is there a stop criterion defined in the protocol for this struct?
+if [ -e $masks/stop.nii.gz ]; then
+  useStop=1
+  stopOpt="--stop=$tracts/stop"
+else
+  useStop=0
+  stopOpt=""
+fi
+# does the protocol defines a second run with inverted seed / target masks
+if [ -e $masks/invert ]; then
+  symtrack=1
+  rm -f $tracts/tractsInv/waytotal
+else
+  symtrack=0
+fi
+
+jobMATH4="1"
+
+#Copy the seed, target and exclude files
+${FSLDIR}/bin/imcp $masks/seed $tracts/seed 
+${FSLDIR}/bin/imcp $masks/target $tracts/target 
+${FSLDIR}/bin/imcp $masks/exclude $tracts/exclude
+if [ "$useStop" -eq "1" ]; then
+  ${FSLDIR}/bin/imcp $masks/stop $tracts/stop
+fi
+
+# process structure
+seedOpt=" -x $tracts/seed --waypoints=$tracts/target --dir=$tracts/tracts "
+$FSLDIR/bin/probtrackx -s $bpdata/merged -m ../dMRI/nodif_brain_mask $seedOpt $stopOpt -o density --nsamples=${nSeed} --opd --avoid=$tracts/exclude -l --forcedir --xfm=$MNI_to_FA_warp --invxfm=$FA_to_MNI_warp --sampvox --rseed=`echo $RANDOM`
+
+if [ "$symtrack" -eq "1" ]; then
+  seedOpt=" -x $tracts/target --waypoints=$tracts/seed  --dir=$tracts/tractsInv "
+  $FSLDIR/bin/probtrackx -s $bpdata/merged -m ../dMRI/nodif_brain_mask $seedOpt $stopOpt -o density --nsamples=${nSeed} --opd --avoid=$tracts/exclude -l --forcedir --xfm=$MNI_to_FA_warp --invxfm=$FA_to_MNI_warp --sampvox --rseed=`echo $RANDOM`
+fi
+
+# merge runs for forward and inverted tractography runs
+if [ "$symtrack" = "1" ]; then
+  $FSLDIR/bin/immv $tracts/tracts/density $tracts/tractsInv/fwDensity
+  $FSLDIR/bin/fslmaths $tracts/tractsInv/fwDensity -add $tracts/tractsInv/density $tracts/tracts/density
+  way1=`cat $tracts/tracts/waytotal | sed 's/e/\\*10^/' | tr -d '+' `
+  rm -f $tracts/tracts/waytotal
+  way2=`cat $tracts/tractsInv/waytotal | sed 's/e/\\*10^/' | tr -d '+' `
+  way=$(echo "scale=5; $way1 + $way2 "|bc)
+  echo $way > $tracts/tracts/waytotal 
+fi
+
+# perform normalisation for waytotal
+waytotal=`cat $tracts/tracts/waytotal`
+$FSLDIR/bin/fslmaths $tracts/tracts/density -div $waytotal -range $tracts/tracts/tractsNorm -odt float
+
+cd ../../
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
+

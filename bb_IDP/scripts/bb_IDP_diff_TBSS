@@ -1,0 +1,65 @@
+#!/bin/sh
+#
+# Script name: bb_IDP_diff_TBSS
+#
+# Description: Script to generate the IDPs related to tracts with TBSS
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+origDir=`pwd`
+scriptName=`basename "$0"`
+direc=$1
+
+cd $direc
+
+basedMRI="dMRI"
+#if [ -d $basedMRI/unusable ] ; then
+#    basedMRI="$basedMRI/unusable"
+#elif [ -d $basedMRI/incompatible ] ; then
+#    basedMRI="$basedMRI/incompatible"
+#fi
+
+#Setting the string of NaN in case there is a problem.
+numVars="48"
+nanResult="";
+for i in $(seq 1 $numVars) ; do 
+    nanResult="NaN $nanResult" ; 
+done
+
+result="" 
+
+for i in FA MD MO L1 L2 L3 ICVF OD ISOVF ; do
+  if [ -f $basedMRI/TBSS/stats/JHUrois_${i}.txt ] ; then
+    if [ `cat $basedMRI/TBSS/stats/JHUrois_${i}.txt | wc -w` = 48 ] ; then
+      miniResult=`cat $basedMRI/TBSS/stats/JHUrois_${i}.txt`
+    else
+      miniResult="$nanResult"
+    fi
+  else
+      miniResult="$nanResult"
+  fi
+  result="$result $miniResult"
+done
+
+mkdir -p IDP_files
+
+echo $result > IDP_files/$scriptName.txt
+echo $result
+
+cd $origDir
+
+

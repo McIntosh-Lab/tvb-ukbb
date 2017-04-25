@@ -1,0 +1,23 @@
+cat designSFx.txt | grep -v grep | grep "\-S" | awk '{print $2 " " $3 " 1"}' > designS.txt
+cat designSFx.txt | grep -v grep | grep "\-F" | awk '{print $2 " " $3 " 1"}' > designF.txt
+exit
+
+SFxFSxSFxFSxSF
+(10x21) + (4x8) = 210 + 32 = 242
+
+-S   0 21
+-F  21 21
+-x  42  8
+-F  50 21
+-S  71 21
+-x  92  8
+-S 100 21
+-F 121 21
+-x 142  8
+-F 150 21
+-S 171 21
+-x 192  8
+-S 200 21
+-F 221 21
+   242
+
