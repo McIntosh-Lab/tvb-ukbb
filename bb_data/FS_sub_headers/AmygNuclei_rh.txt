@@ -1,0 +1,10 @@
+Lateral-nucleus
+Basal-nucleus
+Accessory-Basal-nucleus
+Anterior-amygdaloid-area-AAA
+Central-nucleus
+Medial-nucleus
+Cortical-nucleus
+Corticoamygdaloid-transitio
+Paralaminar-nucleus
+Whole_amygdala

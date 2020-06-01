@@ -1,0 +1,2 @@
+lh.BA_exvivo.thickness lh_BA1_exvivo_thickness lh_BA2_exvivo_thickness lh_BA3a_exvivo_thickness lh_BA3b_exvivo_thickness lh_BA4a_exvivo_thickness lh_BA4p_exvivo_thickness lh_BA6_exvivo_thickness lh_BA44_exvivo_thickness lh_BA45_exvivo_thickness lh_V1_exvivo_thickness lh_V2_exvivo_thickness lh_MT_exvivo_thickness lh_perirhinal_exvivo_thickness lh_entorhinal_exvivo_thickness BrainSegVolNotVent eTIV
+NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN
