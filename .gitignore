@@ -1,0 +1,7 @@
+__pycache__/
+*.py[cod]
+.*.py[cod]
+.*.sw[op]
+.nfs*
+bb_python/python_installation/gradunwarp_FMRIB/
+

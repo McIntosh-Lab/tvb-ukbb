@@ -29,7 +29,7 @@ origDir=`pwd`
 #Python version to install and name of the
 #runnable python binary in the bin directory
 
-py_v="3.5.1"
+py_v="3.6.0"
 py_r="python3"
 
 #Get, configure and install the proper Python version
@@ -68,7 +68,7 @@ pip install sphinx==1.4.6
 
 
 #Get and install gradunwarp from HCP github
-#git clone https://github.com/Washington-University/gradunwarp.git
+# git clone https://github.com/Washington-University/gradunwarp.git
 
 # Using our own version of gradunwarp
 # This version includes the half-voxel 

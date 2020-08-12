@@ -25,13 +25,26 @@
 import bb_pipeline_tools.bb_logging_tool as LT
 import os.path
 
+
 def bb_IDP(subject, jobHold, fileConfiguration):
 
     logger = LT.initLogging(__file__, subject)
-    logDir  = logger.logDir
-    baseDir = logDir[0:logDir.rfind('/logs/')]
+    logDir = logger.logDir
+    baseDir = logDir[0 : logDir.rfind("/logs/")]
 
-    jobIDP = LT.runCommand(logger, '${FSLDIR}/bin/fsl_sub -T 30 -N "bb_IDP_' + subject + '" -j ' + jobHold + '  -l ' + logDir + ' $BB_BIN_DIR/bb_IDP/bb_IDP ' + subject)
+    subname = subject.replace("/", "_")
+
+    jobIDP = LT.runCommand(
+        logger,
+        #'${FSLDIR}/bin/fsl_sub -T 30 -N "bb_IDP_'
+        '${FSLDIR}/bin/fsl_sub -q all.q -N "bb_IDP_'
+        + subname
+        + '" -j '
+        + jobHold
+        + "  -l "
+        + logDir
+        + " $BB_BIN_DIR/bb_IDP/bb_IDP "
+        + subject,
+    )
+    print("FINISH IDP")
     return jobIDP
-        
-

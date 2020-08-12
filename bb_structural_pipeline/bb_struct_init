@@ -35,7 +35,9 @@ if [ `${FSLDIR}/bin/imtest T1_orig` = 0 ] ; then
 fi
 
 #Calculate and apply the Gradient Distortion Unwarp
-$BB_BIN_DIR/bb_pipeline_tools/bb_GDC --workingdir=./T1_GDC/ --in=T1_orig.nii.gz --out=T1_orig_ud.nii.gz --owarp=T1_orig_ud_warp.nii.gz
+# $BB_BIN_DIR/bb_pipeline_tools/bb_GDC --workingdir=./T1_GDC/ --in=T1_orig.nii.gz --out=T1_orig_ud.nii.gz --owarp=T1_orig_ud_warp.nii.gz
+
+cp T1_orig.nii.gz T1_orig_ud.nii.gz
 
 #Calculate where does the brain start in the z dimension and then extract the roi
 head_top=`${FSLDIR}/bin/robustfov -i T1_orig_ud | grep -v Final | head -n 1 | awk '{print $5}'`
@@ -61,8 +63,9 @@ ${FSLDIR}/bin/fnirt --in=T1 --ref=$FSLDIR/data/standard/MNI152_T1_1mm --aff=T1_t
   --jout=T1_to_MNI_warp_jac --iout=T1_tmp4.nii.gz --interp=spline
 
 #Combine both transforms (Gradient Distortion Unwarp and T1 to MNI) into one and then apply it.
-${FSLDIR}/bin/convertwarp --ref=$FSLDIR/data/standard/MNI152_T1_1mm --warp1=T1_orig_ud_warp --midmat=T1_orig_ud_to_T1.mat --warp2=T1_to_MNI_warp --out=T1_orig_to_MNI_warp
-${FSLDIR}/bin/applywarp --rel -i T1_orig -r $FSLDIR/data/standard/MNI152_T1_1mm -w T1_orig_to_MNI_warp -o T1_brain_to_MNI --interp=spline
+# ${FSLDIR}/bin/convertwarp --ref=$FSLDIR/data/standard/MNI152_T1_1mm --warp1=T1_orig_ud_warp --midmat=T1_orig_ud_to_T1.mat --warp2=T1_to_MNI_warp --out=T1_orig_to_MNI_warp
+# ${FSLDIR}/bin/applywarp --rel -i T1_orig -r $FSLDIR/data/standard/MNI152_T1_1mm -w T1_orig_to_MNI_warp -o T1_brain_to_MNI --interp=spline
+${FSLDIR}/bin/applywarp --rel -i T1_orig -r $FSLDIR/data/standard/MNI152_T1_1mm -w T1_to_MNI_warp -o T1_brain_to_MNI --interp=spline
 
 #Create brain mask
 ${FSLDIR}/bin/invwarp --ref=T1 -w T1_to_MNI_warp_coef -o T1_to_MNI_warp_coef_inv

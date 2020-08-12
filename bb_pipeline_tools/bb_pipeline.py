@@ -26,7 +26,7 @@ import os
 import glob
 import time
 import logging
-import sys,argparse,os.path
+import sys, argparse, os.path
 import bb_logging_tool as LT
 from bb_file_manager import bb_file_manager
 from bb_basic_QC import bb_basic_QC
@@ -35,43 +35,58 @@ from bb_functional_pipeline.bb_pipeline_func import bb_pipeline_func
 from bb_diffusion_pipeline.bb_pipeline_diff import bb_pipeline_diff
 from bb_IDP.bb_IDP import bb_IDP
 
+
 class MyParser(argparse.ArgumentParser):
     def error(self, message):
-        sys.stderr.write('error: %s\n' % message)
+        sys.stderr.write("error: %s\n" % message)
         self.print_help()
         sys.exit(2)
+
 
 class Usage(Exception):
     def __init__(self, msg):
         self.msg = msg
 
-def main(): 
-  
-    parser = MyParser(description='BioBank Pipeline Manager')
-    parser.add_argument("subjectFolder", help='Subject Folder')
+
+def main():
+
+    parser = MyParser(description="BioBank Pipeline Manager")
+    parser.add_argument("subjectFolder", help="Subject Folder")
 
     argsa = parser.parse_args()
 
     subject = argsa.subjectFolder
     subject = subject.strip()
 
-    if subject[-1] =='/':
-        subject = subject[0:len(subject)-1]
-    
+    if subject[-1] == "/":
+        subject = subject[0 : len(subject) - 1]
+
     logger = LT.initLogging(__file__, subject)
 
-    logger.info('Running file manager') 
+    logger.info("Running file manager")
     fileConfig = bb_file_manager(subject)
+
+    logger.info("File configuration before QC: " + str(fileConfig))
+
     fileConfig = bb_basic_QC(subject, fileConfig)
 
     logger.info("File configuration after running file manager: " + str(fileConfig))
 
     # runTopup ==> Having fieldmap
-    if not (( ('AP' in fileConfig ) and  (fileConfig['AP'] != '')) and (('PA' in fileConfig ) and  (fileConfig['PA'] != ''))):
-        logger.error("There is no proper DWI data. Thus, the B0 file cannot be generated in order to run topup")
+    if not (
+        (("AP" in fileConfig) and (fileConfig["AP"] != ""))
+        and (("PA" in fileConfig) and (fileConfig["PA"] != ""))
+    ):
+        logger.error(
+            "There is no proper DWI data. Thus, the B0 file cannot be generated in order to run topup"
+        )
         runTopup = False
+        print("NO TOPUP")
     else:
-        runTopup = True    
+        runTopup = True
+
+    # set for now
+    # runTopup = True
 
     # Default value for job id. SGE does not wait for a job with this id.
     jobSTEP1 = "-1"
@@ -79,14 +94,18 @@ def main():
     jobSTEP3 = "-1"
 
     jobSTEP1 = bb_pipeline_struct(subject, runTopup, fileConfig)
+    # jobSTEP1 = int(jobSTEP1)
 
-    if runTopup:
-        jobSTEP2 = bb_pipeline_func(subject, jobSTEP1, fileConfig)
-        jobSTEP3 = bb_pipeline_diff(subject, jobSTEP1, fileConfig)
-        
-    jobSTEP4 = bb_IDP(subject, jobSTEP1 + "," + jobSTEP2 + "," + jobSTEP3, fileConfig)
+    # if runTopup:
+    jobSTEP2 = bb_pipeline_func(subject, jobSTEP1, fileConfig)
+    jobSTEP3 = bb_pipeline_diff(subject, jobSTEP1, fileConfig)
+
+    jobSTEP4 = bb_IDP(
+        subject, str(jobSTEP1) + "," + str(jobSTEP2) + "," + str(jobSTEP3), fileConfig
+    )
 
     LT.finishLogging(logger)
-             
+
+
 if __name__ == "__main__":
     main()
