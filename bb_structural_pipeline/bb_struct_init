@@ -34,7 +34,7 @@ if [ `${FSLDIR}/bin/imtest T1_orig` = 0 ] ; then
   ${FSLDIR}/bin/immv T1 T1_orig
 fi
 
-#Calculate and apply the Gradient Distortion Unwarp
+#Calculate and apply the Gradient Distortion Unwarp ###NO GDC###
 # $BB_BIN_DIR/bb_pipeline_tools/bb_GDC --workingdir=./T1_GDC/ --in=T1_orig.nii.gz --out=T1_orig_ud.nii.gz --owarp=T1_orig_ud_warp.nii.gz
 
 cp T1_orig.nii.gz T1_orig_ud.nii.gz
@@ -46,7 +46,7 @@ ${FSLDIR}/bin/fslmaths T1_orig_ud -roi 0 -1 0 -1 $head_top 170 0 1 T1_tmp
 #Run a (Recursive) brain extraction on the roi
 ${FSLDIR}/bin/bet T1_tmp T1_tmp_brain -R
 
-#Reduces the FOV of T1_orig_ud by calculating a registration from T1_tmp_brain to ssref and applies it to T1_orig_ud
+#Reduces the FOV of T1_orig_ud by calculating a registration from T1_tmp_brain to ssref and applies it to T1_orig_ud. Keeps intermediate outputs for concatenation in next step (T1_tmp2_tmp_to_std.mat)
 ${FSLDIR}/bin/standard_space_roi T1_tmp_brain T1_tmp2 -maskNONE -ssref $FSLDIR/data/standard/MNI152_T1_1mm_brain -altinput T1_orig_ud -d
 
 ${FSLDIR}/bin/immv T1_tmp2 T1
@@ -56,18 +56,17 @@ ${FSLDIR}/bin/flirt -in T1 -ref T1_orig_ud -omat T1_to_T1_orig_ud.mat -schedule 
 ${FSLDIR}/bin/convert_xfm -omat T1_orig_ud_to_T1.mat -inverse T1_to_T1_orig_ud.mat
 ${FSLDIR}/bin/convert_xfm -omat T1_to_MNI_linear.mat -concat T1_tmp2_tmp_to_std.mat T1_to_T1_orig_ud.mat
 
-#Non-linear registration to MNI using the previously calculated alignment
+#Non-linear registration of T1 to MNI using the previously calculated alignment
 ${FSLDIR}/bin/fnirt --in=T1 --ref=$FSLDIR/data/standard/MNI152_T1_1mm --aff=T1_to_MNI_linear.mat \
   --config=$BB_BIN_DIR/bb_data/bb_fnirt.cnf --refmask=$templ/MNI152_T1_1mm_brain_mask_dil_GD7 \
   --logout=../logs/bb_T1_to_MNI_fnirt.log --cout=T1_to_MNI_warp_coef --fout=T1_to_MNI_warp \
-  --jout=T1_to_MNI_warp_jac --iout=T1_tmp4.nii.gz --interp=spline
+  --jout=T1_to_MNI_warp_jac --iout=T1_brain_to_MNI.nii.gz --interp=spline
 
-#Combine both transforms (Gradient Distortion Unwarp and T1 to MNI) into one and then apply it.
+#Combine both transforms (Gradient Distortion Unwarp and T1 to MNI) into one and then apply it. ###NO GDC###
 # ${FSLDIR}/bin/convertwarp --ref=$FSLDIR/data/standard/MNI152_T1_1mm --warp1=T1_orig_ud_warp --midmat=T1_orig_ud_to_T1.mat --warp2=T1_to_MNI_warp --out=T1_orig_to_MNI_warp
 # ${FSLDIR}/bin/applywarp --rel -i T1_orig -r $FSLDIR/data/standard/MNI152_T1_1mm -w T1_orig_to_MNI_warp -o T1_brain_to_MNI --interp=spline
-${FSLDIR}/bin/applywarp --rel -i T1_orig -r $FSLDIR/data/standard/MNI152_T1_1mm -w T1_to_MNI_warp -o T1_brain_to_MNI --interp=spline
 
-#Create brain mask
+#Create brain mask and mask T1
 ${FSLDIR}/bin/invwarp --ref=T1 -w T1_to_MNI_warp_coef -o T1_to_MNI_warp_coef_inv
 ${FSLDIR}/bin/applywarp --rel --interp=trilinear --in=$templ/MNI152_T1_1mm_brain_mask --ref=T1 -w T1_to_MNI_warp_coef_inv -o T1_brain_mask
 ${FSLDIR}/bin/fslmaths T1 -mul T1_brain_mask T1_brain
