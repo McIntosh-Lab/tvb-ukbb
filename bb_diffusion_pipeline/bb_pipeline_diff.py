@@ -39,7 +39,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     jobPREPARE = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 5   -N "bb_pre_eddy_'
-        '${FSLDIR}/bin/fsl_sub -q all.q   -N "bb_pre_eddy_'
+        '${FSLDIR}/bin/fsl_sub -q bigmem_16.q   -N "bb_pre_eddy_'
         + subname
         + '" -j '
         + jobHold
@@ -51,7 +51,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     jobEDDY = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 75  -N "bb_eddy_'
-        '${FSLDIR}/bin/fsl_sub -q all.q  -N "bb_eddy_'
+        '${FSLDIR}/bin/fsl_sub -q bigmem_16.q  -N "bb_eddy_'
         + subname
         + '" -j '
         + jobPREPARE
@@ -63,7 +63,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     jobPOSTEDDY = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 60  -N "bb_post_eddy_'
-        '${FSLDIR}/bin/fsl_sub -q all.q  -N "bb_post_eddy_'
+        '${FSLDIR}/bin/fsl_sub -q bigmem_16.q  -N "bb_post_eddy_'
         + subname
         + '" -j '
         + jobEDDY
@@ -75,7 +75,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     jobDTIFIT = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 5   -N "bb_dtifit_'
-        '${FSLDIR}/bin/fsl_sub -q all.q   -N "bb_dtifit_'
+        '${FSLDIR}/bin/fsl_sub -q bigmem_16.q   -N "bb_dtifit_'
         + subname
         + '" -j '
         + jobPOSTEDDY
@@ -96,7 +96,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     jobTBSS = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 240 -N "bb_tbss_'
-        '${FSLDIR}/bin/fsl_sub -q all.q -N "bb_tbss_'
+        '${FSLDIR}/bin/fsl_sub -q bigmem_16.q -N "bb_tbss_'
         + subname
         + '" -j '
         + jobDTIFIT
@@ -108,7 +108,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     jobNODDI = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 100 -N "bb_NODDI_'
-        '${FSLDIR}/bin/fsl_sub -q all.q -N "bb_NODDI_'
+        '${FSLDIR}/bin/fsl_sub -q bigmem_16.q -N "bb_NODDI_'
         + subname
         + '" -j '
         + jobTBSS
@@ -120,7 +120,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     jobPREBEDPOSTX = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 5   -N "bb_pre_bedpostx_gpu_'
-        '${FSLDIR}/bin/fsl_sub -q all.q   -N "bb_pre_bedpostx_gpu_'
+        '${FSLDIR}/bin/fsl_sub -q bigmem_16.q   -N "bb_pre_bedpostx_gpu_'
         + subname
         + '" -j '
         + jobDTIFIT
@@ -133,7 +133,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     jobBEDPOSTX = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 190 -N "bb_bedpostx_gpu_'
-        '${FSLDIR}/bin/fsl_sub -q all.q -N "bb_bedpostx_gpu_'
+        '${FSLDIR}/bin/fsl_sub -q bigmem_16.q -N "bb_bedpostx_gpu_'
         + subname
         + '" -j '
         + jobPREBEDPOSTX
@@ -146,7 +146,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     jobPOSTBEDPOSTX = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 15  -N "bb_post_bedpostx_gpu_'
-        '${FSLDIR}/bin/fsl_sub -q all.q  -N "bb_post_bedpostx_gpu_'
+        '${FSLDIR}/bin/fsl_sub -q bigmem_16.q  -N "bb_post_bedpostx_gpu_'
         + subname
         + '" -j '
         + jobBEDPOSTX
