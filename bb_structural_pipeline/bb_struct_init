@@ -72,6 +72,9 @@ ${FSLDIR}/bin/applywarp --rel --interp=trilinear --in=$templ/MNI152_T1_1mm_brain
 ${FSLDIR}/bin/fslmaths T1 -mul T1_brain_mask T1_brain
 ${FSLDIR}/bin/fslmaths T1_brain_to_MNI -mul $templ/MNI152_T1_1mm_brain_mask T1_brain_to_MNI
 
+#register parcellation to T1
+${FSLDIR}/bin/applywarp --rel --interp=trilinear --in=$templ/RM96/RM96_inMNI --ref=T1 -w T1_to_MNI_warp_coef_inv -o RM96_to_T1 --interp==nn
+
 #Defacing T1
 ${FSLDIR}/bin/convert_xfm -omat grot.mat -concat T1_to_MNI_linear.mat T1_orig_ud_to_T1.mat
 ${FSLDIR}/bin/convert_xfm -omat grot.mat -concat $templ/MNI_to_MNI_BigFoV_facemask.mat grot.mat
