@@ -71,7 +71,7 @@ while read line ; do
     #listJobs=`${FSLDIR}/bin/fsl_sub -N "bb_autoPtx_$1" -T $time   -l $logDir/autoPtx $holdJob  $execPath/bb_trackSubjectStruct $1/dMRI $struct $nseed $MNI_to_FA_warp $FA_to_MNI_warp `",$listJobs"
     time=`echo $line | awk '{print $3}'`
     #listJobs=`${FSLDIR}/bin/fsl_sub  -T $time -N "bb_autoPtx_${struct}_${1}" -l $logDir/autoPtx $holdJob  $execPath/bb_trackSubjectStruct $1/dMRI $struct $nseed $MNI_to_FA_warp $FA_to_MNI_warp `",$listJobs"
-    listJobs=`${FSLDIR}/bin/fsl_sub  -q all.q -N "bb_autoPtx_${struct}_${1}" -l $logDir/autoPtx $holdJob  $execPath/bb_trackSubjectStruct $1/dMRI $struct $nseed $MNI_to_FA_warp $FA_to_MNI_warp `",$listJobs"
+    listJobs=`${FSLDIR}/bin/fsl_sub  -q bigmem_16.q -N "bb_autoPtx_${struct}_${1}" -l $logDir/autoPtx $holdJob  $execPath/bb_trackSubjectStruct $1/dMRI $struct $nseed $MNI_to_FA_warp $FA_to_MNI_warp `",$listJobs"
 
 done < $structures
 
