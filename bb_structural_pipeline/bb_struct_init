@@ -73,7 +73,7 @@ ${FSLDIR}/bin/fslmaths T1 -mul T1_brain_mask T1_brain
 ${FSLDIR}/bin/fslmaths T1_brain_to_MNI -mul $templ/MNI152_T1_1mm_brain_mask T1_brain_to_MNI
 
 #register parcellation to T1
-${FSLDIR}/bin/applywarp --rel --interp=trilinear --in=$templ/RM96/RM96_inMNI --ref=T1 -w T1_to_MNI_warp_coef_inv -o RM96_to_T1 --interp==nn
+${FSLDIR}/bin/applywarp --rel --interp=nn --in=$templ/RM96/RM96_inMNI --ref=T1 -w T1_to_MNI_warp_coef_inv -o RM96_to_T1
 
 #Defacing T1
 ${FSLDIR}/bin/convert_xfm -omat grot.mat -concat T1_to_MNI_linear.mat T1_orig_ud_to_T1.mat
@@ -121,7 +121,7 @@ else
     #Gradient Distortion Unwarp ###NO GDC###
    # $BB_BIN_DIR/bb_pipeline_tools/bb_GDC --workingdir=./T2_FLAIR_GDC/ --in=T2_FLAIR_orig.nii.gz --out=T2_FLAIR_orig_ud.nii.gz --owarp=T2_FLAIR_orig_ud_warp.nii.gz
 
-cp T2_FLAIR_orig.nii.gz T2_FLAIR_orig_ud.nii.gz
+    cp T2_FLAIR_orig.nii.gz T2_FLAIR_orig_ud.nii.gz
 
     #Take T2 to T1 and also the brain mask
     ${FSLDIR}/bin/flirt -in T2_FLAIR_orig_ud -ref ../T1/T1_orig_ud -out T2_FLAIR_tmp -omat T2_FLAIR_tmp.mat -dof 6
