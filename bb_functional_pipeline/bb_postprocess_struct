@@ -22,7 +22,7 @@
 #
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
 
-direc=$PWD/$1/
+direc=$PWD/$1
 
 linkDir=$direc/fMRI/symlink
 
