@@ -80,4 +80,4 @@ export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:../software/MCR_2014a_glnxa64/v83/runti
 
 export XAPPLRESDIR=../software/MCR_2014a_glnxa64/v83/X11/app-defaults
 
-conda activate ../../software/env
+conda activate /liberatrix/mcintosh_lab/ukbb/software/env
