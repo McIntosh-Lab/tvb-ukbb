@@ -295,7 +295,7 @@ def manage_fMRI(listFiles, flag):
         dim.append(epi_img.get_header()["dim"][4])
 
     if numFiles == 0:
-        logger.warn("There was no " + flag + "FMRI data")
+        logger.warn("There was no " + flag + " FMRI data")
 
     elif numFiles == 1:
         # If the only fMRI we have is the SBRef
@@ -650,11 +650,20 @@ def bb_file_manager(subject):
         [["*T1*.nii.gz"], manage_struct, "T1"],
         [["T2*FLAIR*.nii.gz", "*FLAIR*.nii.gz"], manage_struct, "T2"],
         [
-            ["*FMRI*RESTING*.nii.gz", "MB8*RESTING*.nii.gz", "*TASK*REST*.nii.gz",],
+            [
+                "*FMRI*RESTING*.nii.gz",
+                "MB8*RESTING*.nii.gz",
+                "*TASK*REST*.nii.gz",
+                "*task*rest*.nii.gz",
+            ],
             manage_fMRI,
             "rfMRI",
         ],
-        [["*FMRI*TASK*.nii.gz", "MB8*TASK*.nii.gz"], manage_fMRI, "tfMRI"],
+        [
+            ["*fmri*task*.nii.gz", "*FMRI*TASK*.nii.gz", "MB8*TASK*.nii.gz"],
+            manage_fMRI,
+            "tfMRI",
+        ],
         [["SWI*nii.gz"], manage_SWI],
         [["DIFF_*", "MB3_*", "*DWI*.nii.gz"], manage_DWI],
         [["SWI*.*"], move_to, "SWI/unclassified/"],
