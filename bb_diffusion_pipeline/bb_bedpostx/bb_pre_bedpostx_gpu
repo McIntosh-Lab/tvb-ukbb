@@ -21,7 +21,7 @@
 # limitations under the License.
 #
 
-. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
+##. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
 
 subjdir=`fsl_abspath $1`
 subjdir=`echo $subjdir | sed 's/\/$/$/g'`
@@ -31,39 +31,43 @@ echo "------------ BedpostX GPU Version -----------"
 echo "---------------------------------------------"
 echo subjectdir is $subjdir
 
-
+mkdir -p ${subjdir}/bedpostx
 #check that all required files exist
 
-if [ ! -d $subjdir ]; then
+if [ ! -d ${subjdir}/dMRI ]; then
     echo "subject directory $1 not found"
     exit 1
 fi
 
-if [ ! -e ${subjdir}/bvecs ]; then
+if [ ! -e ${subjdir}/dMRI/bvecs ]; then
     echo "${subjdir}/bvecs not found"
     touch $subjdir/pre_bedpostx_error.txt 
     exit 1
 fi
+cp ${subjdir}/dMRI/bvecs ${subjdir}/bedpostx
 
-if [ ! -e ${subjdir}/bvals ]; then
+if [ ! -e ${subjdir}/dMRI/bvals ]; then
     echo "${subjdir}/bvals not found"
     touch $subjdir/pre_bedpostx_error.txt 
     exit 1
 fi
+cp ${subjdir}/dMRI/bvals ${subjdir}/bedpostx
 
-if [ `${FSLDIR}/bin/imtest ${subjdir}/data` -eq 0 ]; then
+if [ `${FSLDIR}/bin/imtest ${subjdir}/dMRI/data` -eq 0 ]; then
     echo "${subjdir}/data not found"
     touch $subjdir/pre_bedpostx_error.txt 
     exit 1
 fi
+cp ${subjdir}/dMRI/data.nii.gz ${subjdir}/bedpostx
 
-if [ `${FSLDIR}/bin/imtest ${subjdir}/nodif_brain_mask` -eq 0 ]; then
+if [ `${FSLDIR}/bin/imtest ${subjdir}/dMRI/nodif_brain_mask` -eq 0 ]; then
     echo "${subjdir}/nodif_brain_mask not found"
     touch $subjdir/pre_bedpostx_error.txt
     exit 1
 fi
+cp ${subjdir}/dMRI/nodif_brain_mask.nii.gz ${subjdir}/bedpostx
 
-if [ -e ${subjdir}.bedpostX/xfms/eye.mat ]; then
+if [ -e ${subjdir}/bedpostx.bedpostX/xfms/eye.mat ]; then
     echo "${subjdir} has already been processed: ${subjdir}.bedpostX." 
     echo "Delete or rename ${subjdir}.bedpostX before repeating the process."
     touch $subjdir/pre_bedpostx_error.txt
@@ -72,24 +76,24 @@ fi
 
 echo Making bedpostx directory structure
 
-mkdir -p ${subjdir}.bedpostX/
-mkdir -p ${subjdir}.bedpostX/diff_parts
-mkdir -p ${subjdir}.bedpostX/logs
-mkdir -p ${subjdir}.bedpostX/logs/logs_gpu
-mkdir -p ${subjdir}.bedpostX/xfms
+#mkdir -p ${subjdir}.bedpostX/
+#mkdir -p ${subjdir}.bedpostX/diff_parts  
+#mkdir -p ${subjdir}.bedpostX/logs
+#mkdir -p ${subjdir}.bedpostX/logs/logs_gpu # not use gpu zwang
+#mkdir -p ${subjdir}.bedpostX/xfms
 
-echo Copying files to bedpost directory
-cp ${subjdir}/bvecs ${subjdir}/bvals ${subjdir}.bedpostX
-${FSLDIR}/bin/imcp ${subjdir}/nodif_brain_mask ${subjdir}.bedpostX
-if [ `${FSLDIR}/bin/imtest ${subjdir}/nodif` = 1 ] ; then
-    ${FSLDIR}/bin/fslmaths ${subjdir}/nodif -mas ${subjdir}/nodif_brain_mask ${subjdir}.bedpostX/nodif_brain
-fi
+#echo Copying files to bedpost directory
+#cp ${subjdir}/bvecs ${subjdir}/bvals ${subjdir}.bedpostX
+##${FSLDIR}/bin/imcp ${subjdir}/nodif_brain_mask ${subjdir}.bedpostX
+#if [ `${FSLDIR}/bin/imtest ${subjdir}/nodif` = 1 ] ; then
+#    ${FSLDIR}/bin/fslmaths ${subjdir}/nodif -mas ${subjdir}/nodif_brain_mask ${subjdir}.bedpostX/nodif_brain
+#fi
 
-#$FSLDIR/bin/split_parts_gpu ${subjdir}/data_ud ${subjdir}/nodif_brain_mask NULL 0 1 ${subjdir}.bedpostX
-${FSLDIR}/bin/split_parts_gpu ${subjdir}/data_ud ${subjdir}/nodif_brain_mask NULL 0 1 ${subjdir}.bedpostX
+##$FSLDIR/bin/split_parts_gpu ${subjdir}/data_ud ${subjdir}/nodif_brain_mask NULL 0 1 ${subjdir}.bedpostX
+##${FSLDIR}/bin/split_parts_gpu ${subjdir}/data ${subjdir}/nodif_brain_mask ${subjdir}/bvals ${subjdir}/bvecs NULL 0 1 ${subjdir}.bedpostX
 
-nvox=`${FSLDIR}/bin/fslstats $subjdir.bedpostX/nodif_brain_mask -V  | cut -d ' ' -f1 `
+#nvox=`${FSLDIR}/bin/fslstats $subjdir/bedpostx/nodif_brain_mask -V  | cut -d ' ' -f1 `
 
-echo $nvox > $subjdir.bedpostX/nvox.txt
+#echo $nvox > $subjdir/bedpostx.bedpostX/nvox.txt
 
-. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
+##. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 

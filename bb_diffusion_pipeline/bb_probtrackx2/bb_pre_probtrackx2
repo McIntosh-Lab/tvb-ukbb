@@ -1,0 +1,87 @@
+#!/bin/sh
+#### T1 to DTI
+#
+# Authors: Z. Wang
+#
+
+##. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header
+
+subjdir=`fsl_abspath $1`
+subjdir=`echo ${subjdir} | sed 's/\/$/$/g'`
+echo subjectdir is $subjdir
+
+#### inputs
+T1_brain=${subjdir}/T1/T1_brain.nii.gz
+DTI_B0=${subjdir}/dMRI/dMRI/data_B0.nii.gz
+
+### save results at this folder for probtrackx
+mkdir -p ${subjdir}/dMRI/probtrackx
+
+
+### outputs in T1 space
+DTI_B0toT1_img=${subjdir}/T1/DTIec_B0_brain_flirt.nii.gz
+DTI_B0toT1_tf=${subjdir}/T1/DTIec_B0_brain_flirt.mat
+
+DTI_B0toT1_brain=${subjdir}/T1/MPRAGEtoDTI_brain.nii.gz
+DTI_B0toT1_brain_tf=${subjdir}/T1/MPRAGEtoDTI_brain.mat
+
+#### inputs from T1 processing
+T1WM=/brunhild/mcintosh_lab/jwang/humanDTIpipeline/T1_DTI_preprocess_PPMI_manualmask/T1_preprocess/_subject_id_3354/seg_fast/MPRAGE_brain_seg_2.nii.gz
+
+##### need replace the right directories for the following files from T1 pipeline ##################################
+T1_interface=/brunhild/mcintosh_lab/jwang/humanDTIpipeline/T1_DTI_preprocess_PPMI_manualmask/T1_preprocess/_subject_id_3354/masks_intersect/Interface.nii.gz
+T1_exclude=/brunhild/mcintosh_lab/jwang/humanDTIpipeline/T1_DTI_preprocess_PPMI_manualmask/T1_preprocess/_subject_id_3354/masks_intersect/Exclude.nii.gz
+T1_RM=/brunhild/mcintosh_lab/jwang/humanDTIpipeline/T1_DTI_preprocess_PPMI_manualmask/T1_preprocess/_subject_id_3354/ants_apply_74toT1_map/mapflow/_ants_apply_74toT1_map0/RM_inANTS70_74_wimt.nii.gz
+T1_rh_mask=/brunhild/mcintosh_lab/jwang/humanDTIpipeline/T1_DTI_preprocess_PPMI_manualmask/T1_preprocess/_subject_id_3354/ants_apply_74toT1_map/mapflow/_ants_apply_74toT1_map2/ANTS70_74_rightmask_wimt.nii.gz
+T1_lh_mask=/brunhild/mcintosh_lab/jwang/humanDTIpipeline/T1_DTI_preprocess_PPMI_manualmask/T1_preprocess/_subject_id_3354/ants_apply_74toT1_map/mapflow/_ants_apply_74toT1_map1/ANTS70_74_leftmask_wimt.nii.gz 
+######################### above files needed to replace the right directories ######################################
+
+### outputs in DTI
+DTI_interface=${subjdir}/dMRI/probtrackx/Interface_T1toDTI.nii.gz
+DTI_interface_roied=${subjdir}/dMRI/probtrackx/Interface_T1toDTI_roied.nii.gz
+DTI_exclude=${subjdir}/dMRI/probtracks/Exclude_T1toDTI.nii.gz
+DTI_exclude_roied=${subdir}/dMRI/probtracks/EXclude_T1toDTI_roied.nii.gz
+DTI_RM=${subjdir}/dMRI/probtrackx/RM_TItoDTI.nii.gz
+DTI_rh_mask=${subjdir}/dMRI/probtrackx/Rightmask_T1toDTI.nii.gz
+DTI_lh_mask=${subjdir}/dMRI/probtrackx/Leftmask_T1toDTI.nii.gz
+
+T1toDTI_brain_tf=${subjdir}/dMRI/probtrackx/T1toDTI_brain.mat
+T1toDTI_interface_tf=${subjdir}/dMRI/probtrackx/Interface_T1toDTI_tf.mat
+T1toDTI_exclude_tf=${subjdir}/dMRI/probtrackx/Exclude_T1toDTI_tf.mat
+T1toDTI_RM_tf=${subjdir}/dMRI/probtrackx/RM_T1toDTI_tf.mat
+T1toDTI_rh_mask_tf=${subjdir}/dMRI/probtrackx/Rightmask_T1toDTI_tf.mat
+T1toDTI_lh_mask_tf=${subjdir}/dMRI/probtrackx/Leftmask_T1toDTI_tf.mat
+
+#### initial transform from DTI(B0) to T1
+${FSLDIR}/bin/flirt -in ${DTI_B0} -ref ${T1_brain} -out  ${DTI_B0toT1_img} -omat DTI_B0toT1_tf -dof 6 -interp nearestneighbour
+
+### transfrom from DTI brain B0 to T1 brain
+${FSLDIR}/bin/flirt -in ${DTI_B0} -ref /${T1_brain} -out ${DTI_B0toT1_brain} -omat ${DTI_B0toT1_brain_tf} -dof 6 -init ${DTI_B0toT1_tf} -schedule ${FSLDIR}/etc/flirtsch/bbr.sch -wmseg ${T1WM}
+
+##### convert transfrom from DTI to T1
+${FSLDIR}/bin/convert_xfm -omat ${T1toDTI_brain_tf} -inverse ${DTI_B0toT1_brain_tf}
+
+### convert interface to DTI using T1toDTI_brain_tf transformation
+${FSLDIR}/bin/flirt -in ${T1_interface} -ref ${DTI_B0} -out ${DTI_interface} -omat ${T1toDTI_interface_tf} -applyxfm -init ${T1toDTI_brain_tf} -interp nearestneighbour
+
+### convert exclude to DTI using T1toDTI_brain_tf transformation
+${FSLDIR}/bin/flirt -in ${T1_exclude} -ref ${DTI_B0} -out ${DTI_exclude} -omat ${T1toDTI_exclude_tf} -applyxfm -init ${T1toDTI_brain_tf} -interp nearestneighbour
+
+### convert RM to DTI using T1toDTI_brain_tf transformation
+${FSLDIR}/bin/flirt -in ${T1_RM} -ref ${DTI_B0} -out ${DTI_RM} -omat ${T1toDTI_RM_tf} -applyxfm -init ${T1toDTI_brain_tf} -interp nearestneighbour
+
+### convert rh mask template to DTI using T1toDTI_brain_tf transformation
+${FSLDIR}/bin/flirt -in ${T1_rh_mask} -ref ${DTI_B0} -out ${DTI_rh_mask} -omat ${TItoDTI_rh_mask_tf} -applyxfm -init ${T1toDTI_brain_tf} -interp nearestneighbour
+
+### convert lh mask template to DTI using T1toDTI_brain_tf transformation
+${FSLDIR}/bin/flirt -in ${T1_lh_mask} -ref ${DTI_B0} -out ${DTI_lh_mask} -omat ${TItoDTI_lh_mask_tf} -applyxfm -init ${T1toDTI_brain_tf} -interp nearestneighbour 
+
+### get labels for interfaceinDTI and excludeinDTI
+${subjdir}/dMRI/probtrackx/GetLabelsForWhiteGreyInterface ${DTI_interface} ${DTI_RM} ${DTI_interface_roied} 1
+${subjdir}/dMRI/probtrackx/GetLabelsForWhiteGreyInterface ${DTI_exclude} ${DTI_RM} ${DTI_exclude_roied} 1
+
+### copy megered files from bedpostx
+cp ${subjdir}/dMRI/bedpostx.bedpostX/merged* ${subjdir}/dMRI/probtrackx
+
+### get masks at ROIs and make a list of seads and stops
+${subjdir}/dMRI/probtrackx/createDTImasks.py -i ${DTI_interface} -e ${DTI_exclude} -ir ${DTI_interface_roied} -er ${DTI_exclude_roied} -od ${subjdir}/dMRI/probtrackx

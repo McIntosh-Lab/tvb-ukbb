@@ -21,11 +21,17 @@
 # limitations under the License.
 #
 
-. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
+##. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
 
 baseDir=$1
-bestInd=`cat $baseDir/fieldmap/total_B0_AP_best_index.txt`
+#bestInd=`cat $baseDir/fieldmap/total_B0_AP_best_index.txt`
 
-$FSLDIR/bin/eddy_cuda --imain=$baseDir/dMRI/dMRI/AP.nii.gz --mask=$baseDir/dMRI/dMRI/nodif_brain_mask.nii.gz --topup=$baseDir/fieldmap/fieldmap_out --acqp=$baseDir/fieldmap/acqparams.txt --index=$baseDir/dMRI/dMRI/eddy_index.txt --bvecs=$baseDir/dMRI/dMRI/bvecs --bvals=$baseDir/dMRI/dMRI/bvals --out=$baseDir/dMRI/dMRI/data --ref_scan_no=$bestInd --flm=quadratic --resamp=jac --slm=linear --fwhm=2 --ff=5  --sep_offs_move --nvoxhp=1000 --very_verbose  --repol --rms
+### fslroi to get B0
+$FSLDIR/bin/fslroi $baseDir/dMRI/dMRI/DTI.nii.gz $baseDir/dMRI/dMRI/DTI_B0.nii.gz 0 1
+### bet to generate a mask for eddy
+$FSLDIR/bin/bet $baseDir/dMRI/dMRI/DTI_B0.nii.gz $baseDir/dMRI/dMRI/DTI_B0 -f 0.20 -g 0 -m -n
 
-. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
+#$FSLDIR/bin/eddy_cuda --imain=$baseDir/dMRI/dMRI/AP.nii.gz --mask=$baseDir/dMRI/dMRI/nodif_brain_mask.nii.gz --topup=$baseDir/fieldmap/fieldmap_out --acqp=$baseDir/fieldmap/acqparams.txt --index=$baseDir/dMRI/dMRI/eddy_index.txt --bvecs=$baseDir/dMRI/dMRI/bvecs --bvals=$baseDir/dMRI/dMRI/bvals --out=$baseDir/dMRI/dMRI/data --ref_scan_no=$bestInd --flm=quadratic --resamp=jac --slm=linear --fwhm=2 --ff=5  --sep_offs_move --nvoxhp=1000 --very_verbose  --repol --rms
+/opt/fsl/bin/eddy_openmp --imain=$baseDir/dMRI/dMRI/DTI.nii.gz --mask=$baseDir/dMRI/dMRI/DTI_B0_mask.nii.gz --acqp=$baseDir/dMRI/dMRI/acqparams.txt --index=$baseDir/dMRI/dMRI/eddy_index.txt --bvecs=$baseDir/dMRI/dMRI/bvecs --bvals=$baseDir/dMRI/dMRI/bvals --out=$baseDir/dMRI/dMRI/data --flm=quadratic --resamp=jac --slm=linear --fwhm=2 --ff=5  --sep_offs_move --nvoxhp=1000 --very_verbose  --repol --rms 
+#--estimate_move_by_susceptibility --data_is_shelled
+##. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 

@@ -1,0 +1,15 @@
+#!/bin/bash
+#### Author Z Wang
+
+##. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header
+
+subjdir=`fsl_abspath $1`
+subjdir=`echo ${subjdir} | sed 's/\/$/$/g'
+echo subjectdir is $subjdir
+
+### define inputs
+seeds=${subjdir}/probtrackx/seeds.txt
+stops=${subjdir}/probtrackx/stops.txt
+DTI_mask=${subjdir}/dMRI/DTI_B0_brain_mask.nii.gz
+
+${FSLDIR}/bin/probtrackx2 --avoid=${stops} --cthr=0.200 --forcedir --loopcheck -m ${DTI_mask} --nsamples=20000 --nsteps=2000 --onewaycondition --pd --opd --os2t --dir=${subjdir}/probtrackx --s2tastext --samples=merged --seed=${seeds} --steplength=0.500 --targetmasks=${seeds} --ompl --network --verbose=1

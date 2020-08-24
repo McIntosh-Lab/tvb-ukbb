@@ -21,23 +21,33 @@
 # limitations under the License.
 #
 
-. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
+##. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
 
 subjdir=`fsl_abspath $1`
-subjdir=`echo $subjdir | sed 's/\/$/$/g'`
+subjdir=`echo ${subjdir} | sed 's/\/$/$/g'`
+echo subjectdir is $subjdir
 
-if [ -d $subjdir/ ] ; then
+if [ -d ${subjdir} ] ; then
 
-    if [ ! -f $subjdir/pre_bedpostx_error.txt ] ; then
-
-        opts="--nf=3 --fudge=1 --bi=3000 --nj=1250 --se=25 --model=2 --cnonlinear"
-        nvox=`cat $subjdir.bedpostX/nvox.txt`
-        ${FSLDIR}/bin/xfibres_gpu --data=${subjdir}.bedpostX/data_0 --mask=$subjdir.bedpostX/nodif_brain_mask -b ${subjdir}.bedpostX/bvals -r ${subjdir}.bedpostX/bvecs --forcedir --logdir=$subjdir.bedpostX/diff_parts/data_part_0000 $opts ${subjdir} 0 1 $nvox
-
+    if [ ! -f ${subjdir}/pre_bedpostx_error.txt ] ; then
+        #echo yes!!
+        #opts="--nf=3 --fudge=1 --bi=3000 --nj=1250 --se=25 --model=2 --cnonlinear"
+        #nvox=`cat ${subjdir}.bedpostX/nvox.txt`
+	#echo yes yes
+        #${FSLDIR}/bin/xfibres --data=${subjdir}.bedpostX/data_0 --mask=${subjdir}.bedpostX/nodif_brain_mask -b ${subjdir}.bedpostX/bvals -r ${subjdir}.bedpostX/bvecs --forcedir --logdir=${subjdir}.bedpostX/diff_parts/data_part_0000 $opts ${subjdir} 0 1 $nvox
+        cd ${subjdir}
+        ${FSLDIR}/bin/bedpostx bedpostx --forcedir -n 1
+	cd ../../
+	file=${subjdir}/bedpostx.bedpostX/merged_ph1samples.nii.gz
+	while [ ! -f "$file" ]
+            do
+	    sleep 1
+        done
+	sleep 1m
     fi
 else
     echo "It was not possible to run BEDPOSTX on the subject."
 fi
 
-. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
+##. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
 
