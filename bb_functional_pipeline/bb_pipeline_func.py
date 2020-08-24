@@ -38,7 +38,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
 
     st = (
         # '${FSLDIR}/bin/fsl_sub -T 5 -N "bb_postprocess_struct_'
-        '${FSLDIR}/bin/fsl_sub -q bigmem_16.q -N "bb_postprocess_struct_'
+        '${FSLDIR}/bin/fsl_sub -q all.q -N "bb_postprocess_struct_'
         + subname
         + '" -l '
         + logDir
@@ -53,7 +53,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
     jobPOSTPROCESS = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 5 -N "bb_postprocess_struct_'
-        '${FSLDIR}/bin/fsl_sub -q bigmem_16.q -N "bb_postprocess_struct_'
+        '${FSLDIR}/bin/fsl_sub -q all.q -N "bb_postprocess_struct_'
         + subname
         + '" -l '
         + logDir
@@ -70,7 +70,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
         jobPREPARE_R = LT.runCommand(
             logger,
             #'${FSLDIR}/bin/fsl_sub -T 15   -N "bb_prepare_rfMRI_'
-            '${FSLDIR}/bin/fsl_sub -q bigmem_16.q   -N "bb_prepare_rfMRI_'
+            '${FSLDIR}/bin/fsl_sub -q all.q   -N "bb_prepare_rfMRI_'
             + subname
             + '"  -l '
             + logDir
@@ -82,7 +82,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
         jobFEAT_R = LT.runCommand(
             logger,
             #'${FSLDIR}/bin/fsl_sub -T 1200 -N "bb_feat_rfMRI_ns_'
-            '${FSLDIR}/bin/fsl_sub -q bigmem_16.q -N "bb_feat_rfMRI_ns_'
+            '${FSLDIR}/bin/fsl_sub -q all.q -N "bb_feat_rfMRI_ns_'
             + subname
             + '"  -l '
             + logDir
@@ -95,7 +95,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
         jobFIX = LT.runCommand(
             logger,
             #'${FSLDIR}/bin/fsl_sub -T 175  -N "bb_fix_'
-            '${FSLDIR}/bin/fsl_sub -q bigmem_16.q  -N "bb_fix_'
+            '${FSLDIR}/bin/fsl_sub -q all.q  -N "bb_fix_'
             + subname
             + '"  -l '
             + logDir
@@ -107,7 +107,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
         jobDR = LT.runCommand(
             logger,
             #'${FSLDIR}/bin/fsl_sub -T 120  -N "bb_ICA_dr_'
-            '${FSLDIR}/bin/fsl_sub -q bigmem_16.q  -N "bb_ICA_dr_'
+            '${FSLDIR}/bin/fsl_sub -q all.q  -N "bb_ICA_dr_'
             + subname
             + '"  -l '
             + logDir
@@ -119,7 +119,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
         jobCLEAN = LT.runCommand(
             logger,
             #'${FSLDIR}/bin/fsl_sub -T 5  -N "bb_rfMRI_clean_'
-            '${FSLDIR}/bin/fsl_sub -q bigmem_16.q  -N "bb_rfMRI_clean_'
+            '${FSLDIR}/bin/fsl_sub -q all.q  -N "bb_rfMRI_clean_'
             + subname
             + '"  -l '
             + logDir
@@ -140,7 +140,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
         jobPREPARE_T = LT.runCommand(
             logger,
             #'${FSLDIR}/bin/fsl_sub -T  15 -N "bb_prepare_tfMRI_'
-            '${FSLDIR}/bin/fsl_sub -q bigmem_16.q -N "bb_prepare_tfMRI_'
+            '${FSLDIR}/bin/fsl_sub -q all.q -N "bb_prepare_tfMRI_'
             + subname
             + '" -l '
             + logDir
