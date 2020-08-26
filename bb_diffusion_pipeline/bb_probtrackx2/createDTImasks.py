@@ -28,19 +28,27 @@ def main():
     
     argsa = parser.parse_args()
     
-    if (argsa.inputFile==None):
+    if (argsa.interface==None):
         parser.print_help()
         exit()
     
-    if (argsa.outputFile==None):
+    if (argsa.exclude==None):
+        parser.print_help()
+        exit()
+    if (argsa.roied_interface==None):
+        parser.print_help()
+        exit()
+    if (argsa.roied_exclude==None):
         parser.print_help()
         exit()
     
-    Interface_inDTI = os.path.dirname(argsa.interface[0])
-    Exclude_inDTI = os.path.dirname(argsa.exclude[0])
-    Interface_roied = os.path.dirname(argsa.roied_interface[0])
-    Exclude_roied = os.path.dirname(argsa.roied_exclude[0])
-    out_dir = os.path.dirname(argsa.out_dir[0])
+    Interface_inDTI = argsa.interface[0]
+    Exclude_inDTI = argsa.exclude[0]
+    Interface_roied = argsa.roied_interface[0]
+    Exclude_roied = argsa.roied_exclude[0]
+    out_dir = argsa.output_dir[0]
+    print(Interface_inDTI)
+    print(out_dir)
     
     
     
@@ -68,8 +76,8 @@ def main():
     all_mask_filename = 'roi_all_mask.nii.gz'
     all_exclude_filename = 'exclude_all_mask.nii.gz'"""
     for i in range(len(roi_int)):
-        mask_filename = out_dir+'roi_'+str(roi_int[i])+'_mask.nii.gz'
-        exclude_filename = out_dir+'exclude_'+str(roi_int[i])+'_mask.nii.gz'
+        mask_filename = out_dir+'/roi_'+str(roi_int[i])+'_mask.nii.gz'
+        exclude_filename = out_dir+'/exclude_'+str(roi_int[i])+'_mask.nii.gz'
         
         tmp_msk_data = np.zeros_like(Interface_inDTI_data)
         tmp_exclude_data = np.zeros_like(Exclude_inDTI_data)
@@ -101,17 +109,17 @@ def main():
         exclude_intra_ls[i] = os.path.abspath(exclude_intra_filename) """
         #exclude_intra_ls[i] = exclude_intra_filename
         
-        file_seed=out_dir+'seeds.txt'
-        f= open(file_seed,"w+")
-        for seed in seed_ls:
+    file_seed=out_dir+'/seeds.txt'
+    f= open(file_seed,"w+")
+    for seed in seed_ls:
         f.write(seed+'\n')
-        f.close()
+    f.close()
          
-        file_stops=out_dir+'stops.txt'
-        f= open(file_stops,"w+")
-        for seed in exclude_ls:
+    file_stops=out_dir+'/stops.txt'
+    f= open(file_stops,"w+")
+    for seed in exclude_ls:
         f.write(seed+'\n')
-        f.close()
+    f.close()
     #return seed_ls, exclude_ls
 if __name__ == "__main__":
     main()
