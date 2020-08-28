@@ -1,0 +1,116 @@
+#!/bin/bash
+
+# =============================================================================
+# Authors: Michael Schirner, Simon Rothmeier, Petra Ritter
+# BrainModes Research Group (head: P. Ritter)
+# Charité University Medicine Berlin & Max Planck Institute Leipzig, Germany
+# Correspondence: petra.ritter@charite.de
+#
+# When using this code please cite as follows:
+# Schirner M, Rothmeier S, Jirsa V, McIntosh AR, Ritter P (in prep)
+# Constructing subject-specific Virtual Brains from multimodal neuroimaging
+#
+# This software is distributed under the terms of the GNU General Public License
+# as published by the Free Software Foundation. Further details on the GPL
+# license can be found at http://www.gnu.org/copyleft/gpl.html.
+#
+# Adapted to run locally by Hannelore Aerts
+# Department of Data-Analysis, Faculty of Psychology and Educational Sciences,
+# Ghent University, Belgium
+# Correspondence: hannelore.aerts@ugent.be
+# =============================================================================
+# IMPORTANT: adapt subID to name of your subject folder
+# =============================================================================
+
+
+subjdir="$PWD/$1"
+
+fmriTR=`${FSLDIR}/bin/fslval ${subjdir}/fMRI/rfMRI.nii.gz pixdim4`
+sigma=`echo "scale=2 ; 100 / $fmriTR" | bc`
+
+mkdir -p ${subjdir}/fMRI/toT1
+## inputs fMRI
+Func_filtered=${subjdir}/fMRI/rfMRI.ica/filtered_func_data.nii.gz
+Func_mean=${subjdir}/fMRI/rfMRI.ica/mean_func.nii.gz
+Func_example=${subjdir}/fMRI/rfMRI.ica/reg/example_func.nii.gz
+TF_T1toExfunc=${subjdir}/fMRI/rfMRI.ica/reg/highres2example_func.mat
+Par_prefiltered=${subjdir}/fMRI/rfMRI.ica/mc/prefiltered_func_data_mcf.par
+
+### inputs in T1
+T1_brain=${subjdir}/fMRI/symlink/T1_brain.nii.gz
+T1_WM=${subjdir}/T1/T1_fast/T1_brain_pve_2.nii.gz
+T1_CSF=${subjdir}/T1/T1_fast/T1_brain_pve_0.nii.gz
+T1_GM=${subjdir}/T1/T1_fast/T1_brain_pve_1.nii.gz
+T1_RM=${subjdir}/T1/RM96_toT1.nii.gz
+
+###output in T1
+T1_GM_roied=${subjdir}/T1/GM_roied.nii.gz
+T1_meanfunc=${subjdir}/fMRI/toT1/mean_func_toT1.nii.gz
+TF_meanfunc2T1=${subjdir}/fMRI/toT1/mean_func_toT1.mat
+T1_WM_erode=${subjdir}/T1/T1_fast/T1_brain_WM_erode.nii.gz
+T1_CSF_erode=${subjdir}/T1/T1_fast/T1_brain_CSF_erode.nii.gz
+T1_WM_mask_ero=${subjdir}/T1/T1_fast/T1_brain_WM_mask_erode.nii.gz
+T1_CSF_mask_ero=${subjdir}/T1/T1_fast/T1_brain_CSF_mask_erode.nii.gz
+
+### outputs in fMRI
+TF_T12meanfunc=${subjdir}/fMRI/T1_tomean_func.mat
+T1_WM_mask_ero_toexfunc=${subjdir}/fMRI/T1_WM_mask_ero_toexfunc.nii.gz
+T1_CSF_mask_ero_toexfunc=${subjdir}/fMRI/T1_CSF_mask_ero_toexfunc.nii.gz
+T1_GM_roied_toexfunc=${subjdir}/fMRI/T1_GM_roied_toexfunc.nii.gz
+TF_T1_WM_mask_ero_toexfunc=${subjdir}/fMRI/T1_WM_mask_ero_toexfunc.mat
+TF_T1_CSF_mask_ero_toexfunc=${subjdir}/fMRI/T1_CSF_mask_ero_toexfunc.mat
+TF_T1_GM_roied_toexfunc=${subjdir}/fMRI/T1_GM_roied_toexfunc.mat
+filteredfunc_mean_WM=${subjdir}/fMRI/fitered_func_meants_WM.txt
+fiteredfunc_mean_CSF=${subjdir}/fMRI/fitered_func_meants_CSF.txt
+nuisance=${subjdir}/fMRI/nuisance.txt
+Func_filtered_regressed=${subjdir}/fMRI/filtered_func_regressed.nii.gz
+Func_filtered_res=${subjdir}/fMRI/filtered_func_res.nii.gz
+Func_filtered_res_filt=${subjdir}/fMRI/filtered_func_res_filtered.nii.gz
+ts_roied=${subjdir}/fMRI/ts_roied.txt
+states_sum=${subjdir}/fMRI/summary.stats
+
+
+### get label for GM in T1
+${BB_BIN_DIR}/bb_diffusion_pipeline/bb_probtrackx2/GetLabelsForWhiteGreyInterface $T1_GM $T1_GM_roied 1
+
+#### convert Func_mean to T1
+${FSLDIR}/bin/flirt -in ${Func_mean} -ref ${T1_brain} -out ${T1_meanfunc} -omat ${TF_meanfunc2T1} -bin 256 -cost corratio -searchrx -90 90 -searchrz -90 90 -dof 6 -interp trilinear
+
+#### convert tf_meanfunc2t1
+${FSLDIR}/bin/convert_xfm -omat ${TF_T12meanfunc} -inverse ${TF_meanfunc2T1}
+
+#### erode WM and CSF by 4mm in T1
+${FSLDIR}/bin/fslmaths ${T1_WM} -kernel sphere 4.0 -ero ${T1_WM_erode}
+${FSLDIR}/bin/fslmaths ${T1_CSF} -kernel sphere 4.0 -ero ${T1_CSF_erode}
+
+### binary WM and CSF erode
+${FSLDIR}/bin/fslmaths ${T1_WM_erode} -bin ${T1_WM_mask_ero}
+${FSLDIR}/bin/fslmaths ${T1_CSF_erode} -bin ${T1_CSF_mask_ero}
+
+
+### convert WM and CSF to examplefunc
+${FSLDIR}/bin/flirt -in ${T1_WM_mask_ero} -ref ${Func_example} -out ${T1_WM_mask_ero_toexfunc} -omat ${TF_T1_WM_mask_ero_toexfunc} -applyxfm -init ${TF_T1toExfunc} -interp nearestneighbour
+
+${FSLDIR}/bin/flirt -in ${T1_CSF_mask_ero} -ref ${Func_example} -out ${T1_CSF_mask_ero_toexfunc} -omat ${TF_T1_CSF_mask_ero_toexfunc} -applyxfm -init ${TF_T1toExfunc} -interp nearestneighbour
+
+${FSLDIR}/bin/flirt -in ${T1_GM_roied} -ref ${Func_example} -out ${T1_GM_roied_toexfunc} -omat ${TF_T1_GM_roied_toexfunc} -applyxfm -init ${TF_T1toExfunc} -interp nearestneighbour 
+
+### get mean of WM and CSF in exfunc
+${FSLDIR}/bin/fslmeants -i ${Func_filtered} -m ${T1_WM_mask_ero_toexfunc} --order=1 -o ${filteredfunc_mean_WM}
+
+${FSLDIR}/bin/fslmeants -i ${Func_filtered} -m ${T1_CSF_mask_ero_toexfunc} --order=1 -o ${filteredfunc_mean_CSF}
+
+### catenate CSF_meants WM_meants and Motion
+paste -d $fiteredfunc_mean_CSF $filteredfunc_mean_WM $Par_prefiltered > $nuisance
+
+## regression
+${FSLDIR}/bin/fsl_glm -i ${Func_filtered} -d ${nuisance} -o ${Func_fitered_regressed} --out_res=${Func_filtered_res}
+
+#### highpass filter
+${FSLDIR}/bin/fslmaths ${Func_filtered_res} -bptf $sigma -1 ${Func_filtered_res_filt} 
+
+### segstate
+${FSLDIR}/bin/mri_segstats --${ts_rois} --i ${Func_filtered_res_filt} --seg $T1_GM_roied_toexfunc --sum ${states_sum}
+
+### FC coumpute
+${BB_BIN_DIR}/bb_functional_pipeline/bb_FC_compute -state ${states_sum} -ts $ts_rois -od ${subjdir}/fMRI
