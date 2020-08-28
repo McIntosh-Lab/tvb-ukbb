@@ -39,8 +39,8 @@ if [ -d $SUBDIR/dMRI/dMRI ] ; then
 
     cd $SUBDIR/dMRI/dMRI
 
-    gunzip -c data_ud.nii.gz  > amtmp.nii
-    gunzip -c nodif_brain_mask_ud.nii.gz > amtmp_mask.nii
+    gunzip -c data.nii.gz  > amtmp.nii
+    gunzip -c nodif_brain_mask.nii.gz > amtmp_mask.nii
 
     # following is one long line
     $BB_BIN_DIR/bb_ext_tools/AMICO/run_NODDI.sh $BB_BIN_DIR/bb_ext_tools/AMICO/MCR81/v81  $ANALROOT/  $ANALSUBROOT $SUB/dMRI/dMRI dwi amtmp.nii scheme NODDI_DWI.scheme bvals bvals bvecs bvecs mask amtmp_mask.nii bvals_round 100

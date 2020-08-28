@@ -21,7 +21,7 @@
 # limitations under the License.
 #
 
-##. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
 
 direc=$PWD/$1
 mkdir -p $direc/dMRI/dMRI
@@ -36,20 +36,20 @@ mkdir -p $direc/dMRI/dMRI
 #cp $direc/dMRI/raw/AP.bval $direc/dMRI/dMRI/bvals  #### our data don't have AP and PA direction
 #cp $direc/dMRI/raw/AP.bvec $direc/dMRI/dMRI/bvecs  #### our data don't have AP and PA direction
 
-ln -s $direc/dMRI/raw/dwi.nii.gz $direc/dMRI/dMRI/DTI.nii.gz
+ln -s $direc/dMRI/raw/dwi.nii.gz $direc/dMRI/dMRI/DWI.nii.gz
 cp $direc/dMRI/raw/dwi.bval $direc/dMRI/dMRI/bvals
 cp $direc/dMRI/raw/dwi.bvec $direc/dMRI/dMRI/bvecs
 
 # create DTI brain mask
 ### fslroi to get B0
-$FSLDIR/bin/fslroi $direc/dMRI/dMRI/DTI.nii.gz $direc/dMRI/dMRI/DTI_B0.nii.gz 0 1
+$FSLDIR/bin/fslroi $direc/dMRI/dMRI/DWI.nii.gz $direc/dMRI/dMRI/DWI_B0.nii.gz 0 1
 ### bet to generate a mask for eddy
-$FSLDIR/bin/bet $direc/dMRI/dMRI/DTI_B0.nii.gz $direc/dMRI/dMRI/DTI_B0 -f 0.20 -g 0 -m -n
+$FSLDIR/bin/bet $direc/dMRI/dMRI/DWI_B0.nii.gz $direc/dMRI/dMRI/DWI_B0_brain -f 0.3 -m -R
 
 
 indx=""
 
-n=`${FSLDIR}/bin/fslval $direc/dMRI/dMRI/DTI.nii.gz dim4` #### our data don't have AP and PA direction
+n=`${FSLDIR}/bin/fslval $direc/dMRI/dMRI/DWI.nii.gz dim4` #### our data don't have AP and PA direction
 
 for (( i=1; i <= ${n}; i++)); do
     indx="$indx 1"
@@ -60,5 +60,4 @@ echo $indx > $direc/dMRI/dMRI/eddy_index.txt
 ## set acqparams.txt by zwang
 printf "0 1 0 0.095" > $direc/dMRI/dMRI/acqparams.txt
 
-##. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
-
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer
