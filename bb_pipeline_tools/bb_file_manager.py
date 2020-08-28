@@ -387,11 +387,9 @@ def manage_fMRI(listFiles, flag):
 
 def manage_DWI(listFiles):
 
-    print(f"pre-coil listFiles: {listFiles}")
     # listFiles = robustSort(listFiles)
     numFiles = len(listFiles)
     listFiles = [rename_no_coil_echo_info(x) for x in listFiles]
-    print(f"post-coil listFiles: {listFiles}")
 
     subListFilesD = {}
     imageFilesD = {}
@@ -426,8 +424,6 @@ def manage_DWI(listFiles):
             subListFilesD["dwi"] = [x for x in listFiles if x.find("dwi") != -1]
             imageFilesD["dwi"] = [x for x in subListFilesD["dwi"] if bb_path.isImage(x)]
 
-            print(f"imageFilesD: {imageFilesD}")
-
         else:
             for direction in encodingDirections:
                 subListFilesD[direction] = [
@@ -440,22 +436,17 @@ def manage_DWI(listFiles):
 
             for direction in encodingDirections:
 
-                print(f"encodingDirections: {encodingDirections}")
-                print(f"subListFilesD in try: {subListFilesD}")
-
                 dim = []
 
                 subListFiles = subListFilesD[direction]
                 imageFiles = imageFilesD[direction]
-
-                print(f"imageFiles in try: {imageFiles}")
 
                 for fileName in imageFiles:
                     epi_img = nib.load(fileName)
                     dim.append(epi_img.get_header()["dim"][4])
 
                 numImageFiles = len(imageFiles)
-                print("HEEERE")
+                #print("HEEERE")
 
                 if numImageFiles == 0:
                     raise Exception(
@@ -497,23 +488,15 @@ def manage_DWI(listFiles):
 
                 # Take the biggest image in the selected direction and set it as the DWI image for that direction
                 move_file_add_to_config(imageFiles[indBiggestImage], direction, False)
-                print(f"index: {indBiggestImage}")
 
                 # BVAL and BVEC files should have the same name as the image, changing the extension
                 bvalFileName = (
                     bb_path.removeImageExt(imageFiles[indBiggestImage]) + ".bval"
                 )
-                print("made it past bval")
                 bvecFileName = (
                     bb_path.removeImageExt(imageFiles[indBiggestImage]) + ".bvec"
                 )
-                print("made it here!")
-
-                print(f"bvalFileName: {bvalFileName}")
-                print(f"bvecFileName: {bvecFileName}")
-
-                print(f"subListFiles: {subListFiles}")
-
+               
                 if (not bvalFileName in subListFiles) or (
                     not bvecFileName in subListFiles
                 ):

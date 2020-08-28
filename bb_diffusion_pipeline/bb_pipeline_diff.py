@@ -55,7 +55,8 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
         + subname
         + '" -j '
         + jobPREPARE
-        + "  -q $FSLGECUDAQ -l "
+        #+ "  -q $FSLGECUDAQ -l "
+        + "  -l "
         + logDir
         + " $BB_BIN_DIR/bb_diffusion_pipeline/bb_eddy/bb_eddy_wrap "
         + baseDir,
@@ -85,7 +86,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
         + baseDir
         + "/dMRI/dMRI/data_1_shell -m "
         + baseDir
-        + "/dMRI/dMRI/nodif_brain_mask_ud -r "
+        + "/dMRI/dMRI/nodif_brain_mask -r "
         + baseDir
         + "/dMRI/dMRI/data_1_shell.bvec -b "
         + baseDir
@@ -93,18 +94,18 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
         + baseDir
         + "/dMRI/dMRI/dti",
     )
-    jobTBSS = LT.runCommand(
-        logger,
-        #'${FSLDIR}/bin/fsl_sub -T 240 -N "bb_tbss_'
-        '${FSLDIR}/bin/fsl_sub -q bigmem_16.q -N "bb_tbss_'
-        + subname
-        + '" -j '
-        + jobDTIFIT
-        + "  -l "
-        + logDir
-        + " $BB_BIN_DIR/bb_diffusion_pipeline/bb_tbss/bb_tbss_general "
-        + subject,
-    )
+    #jobTBSS = LT.runCommand(
+        #logger,
+        ##'${FSLDIR}/bin/fsl_sub -T 240 -N "bb_tbss_'
+        #'${FSLDIR}/bin/fsl_sub -q bigmem_16.q -N "bb_tbss_'
+        #+ subname
+        #+ '" -j '
+        #+ jobDTIFIT
+        #+ "  -l "
+        #+ logDir
+        #+ " $BB_BIN_DIR/bb_diffusion_pipeline/bb_tbss/bb_tbss_general "
+        #+ subject,
+    #)
     #jobNODDI = LT.runCommand(
         #logger,
         ##'${FSLDIR}/bin/fsl_sub -T 100 -N "bb_NODDI_'
@@ -120,7 +121,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     jobPREBEDPOSTX = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 5   -N "bb_pre_bedpostx_gpu_'
-        '${FSLDIR}/bin/fsl_sub -q bigmem_16.q   -N "bb_pre_bedpostx_gpu_'
+        '${FSLDIR}/bin/fsl_sub -q all.q   -N "bb_pre_bedpostx_gpu_'
         + subname
         + '" -j '
         + jobDTIFIT
@@ -133,7 +134,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     jobBEDPOSTX = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 190 -N "bb_bedpostx_gpu_'
-        '${FSLDIR}/bin/fsl_sub -q bigmem_16.q -N "bb_bedpostx_gpu_'
+        '${FSLDIR}/bin/fsl_sub -q all.q -N "bb_bedpostx_gpu_'
         + subname
         + '" -j '
         + jobPREBEDPOSTX
@@ -167,7 +168,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     #)
     jobPREPROBTRACKX = LT.runCommand(
         logger,
-        '${FSLDIR}/bin/fsl_sub -q bigmem_16.q -N "bb_pre_probtrackx_'
+        '${FSLDIR}/bin/fsl_sub -q all.q -N "bb_pre_probtrackx_'
         + subname
         + '" -j '
         + jobBEDPOSTX
@@ -179,7 +180,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
 
     jobPROBTRACKX = LT.runCommand(
         logger,
-        '${FSLDIR}/bin/fsl_sub -q bigmem_16.q -N "bb_probtrackx_'
+        '${FSLDIR}/bin/fsl_sub -q all.q -N "bb_probtrackx_'
         + subname
         + '" -j '
         + jobPREPROBTRACKX
