@@ -1,0 +1,72 @@
+#!/bin/env python
+
+import numpy as np
+import os
+
+
+import sys,argparse,os.path
+from subprocess import check_output
+
+class MyParser(argparse.ArgumentParser):
+    def error(self, message):
+        sys.stderr.write('error: %s\n' % message)
+        self.print_help()
+        sys.exit(2)
+
+class Usage(Exception):
+    def __init__(self, msg):
+        self.msg = msg
+
+def main():    
+    parser = MyParser(description='UK Biobank tool to FC compute')
+    parser.add_argument('-stat', dest="state_sum", type=str, nargs=1, help='states summary')
+    parser.add_argument('-ts', dest="ts_rois", type=str, nargs=1, help='ts roied')
+    
+    parser.add_argument('-od', dest='output_dir',type=str, nargs=1,help='output directory')
+   
+    
+    argsa = parser.parse_args()
+    
+    if (argsa.state_sum==None):
+        parser.print_help()
+        exit()
+    
+    if (argsa.ts_rois==None):
+        parser.print_help()
+        exit()
+    if (argsa.output_dir==None):
+        parser.print_help()
+        exit()
+    
+    
+    summary_fn= argsa.state_sum[0]
+    ts_rois = argsa.ts_roied[0]
+    
+    out_dir = argsa.output_dir[0]
+
+    TS_old = np.loadtxt(ts_rois)
+    
+    with open(summary_fn, 'r') as f:
+        roi_ls = []
+        for line in f:
+            line_ls=line.split()
+            if line_ls[0].isdigit() and line_ls[0] != '1':
+                roi_ls.append(map(int,line_ls[0:2]))
+        rois=np.array(roi_ls) 
+        
+    roi_order= list(range(2,43)) +  list(range(51,54)) + list(range(61,65)) +list(range(102,143)) + list(range(151,154)) +list(range(161,165))      
+    roi_num = len(roi_order)
+    TS=np.zeros((TS_old.shape[0], roi_num))
+    FC =np.zeros((roi_num,roi_num))
+    for i, roi in enumerate(roi_order):
+        if roi in list(rois[:,1]):
+            TS[:,i]=np.reshape(TS_old[:,rois[rois[:,1]==roi,0]-1],(TS_old.shape[0],))
+        else:
+            TS[:,i]=np.reshape(TS_old[:,0],(TS_old.shape[0],))
+    FC=np.corrcoef(TS.T)
+    np.savetxt(out_dir+'/ts.txt',TS)
+    np.savetxt(out_dir+ '/fc.txt',FC)
+    
+if __name__ == "__main__":
+    main()
+    
