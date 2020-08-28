@@ -94,6 +94,10 @@ def main():
     jobSTEP3 = "-1"
 
     jobSTEP1 = bb_pipeline_struct(subject, runTopup, fileConfig)
+    if jobSTEP1[-3:] == ",-1":
+        jobSTEP1 = jobSTEP1[:-3]
+
+    print(f"jobSTEP1: {jobSTEP1}")
     # jobSTEP1 = int(jobSTEP1)
 
     # if runTopup:
