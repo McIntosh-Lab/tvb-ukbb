@@ -21,32 +21,43 @@
 # limitations under the License.
 #
 
-##. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
 
 direc=$PWD/$1
-mkdir -p $direc/dMRI/dMRI/
+mkdir -p $direc/dMRI/dMRI
 
 # Prepare data for eddy, dtifit and bedpostx.
-#ln -s ../raw/DTI.nii.gz $direc/dMRI/dMRI/DTI.nii.gz  ###### our data no AP and PA
+#ln -s ../raw/AP.nii.gz $direc/dMRI/dMRI/AP.nii.gz  ###### our data no AP and PA
 #ln -s ../../fieldmap/fieldmap_iout_mean.nii.gz $direc/dMRI/dMRI/nodif.nii.gz  #### we don't have fieldmap either
 #ln -s ../../fieldmap/fieldmap_mask.nii.gz $direc/dMRI/dMRI/nodif_brain_mask.nii.gz
 #ln -s ../../fieldmap/fieldmap_mask_ud.nii.gz $direc/dMRI/dMRI/nodif_brain_mask_ud.nii.gz
 
 #fslmaths $direc/dMRI/dMRI/nodif.nii.gz -mul $direc/dMRI/dMRI/nodif_brain_mask.nii.gz $direc/dMRI/dMRI/nodif_brain.nii.gz
-#cp $direc/dMRI/raw/DTI.bval $direc/dMRI/dMRI/bvals  #### our data don't have AP and PA direction
-#cp $direc/dMRI/raw/DTI.bvec $direc/dMRI/dMRI/bvecs  #### our data don't have AP and PA direction
+#cp $direc/dMRI/raw/AP.bval $direc/dMRI/dMRI/bvals  #### our data don't have AP and PA direction
+#cp $direc/dMRI/raw/AP.bvec $direc/dMRI/dMRI/bvecs  #### our data don't have AP and PA direction
+
+ln -s $direc/dMRI/raw/dwi.nii.gz $direc/dMRI/dMRI/DWI.nii.gz
+cp $direc/dMRI/raw/dwi.bval $direc/dMRI/dMRI/bvals
+cp $direc/dMRI/raw/dwi.bvec $direc/dMRI/dMRI/bvecs
+
+# create DTI brain mask
+### fslroi to get B0
+$FSLDIR/bin/fslroi $direc/dMRI/dMRI/DWI.nii.gz $direc/dMRI/dMRI/DWI_B0.nii.gz 0 1
+### bet to generate a mask for eddy
+$FSLDIR/bin/bet $direc/dMRI/dMRI/DWI_B0.nii.gz $direc/dMRI/dMRI/DWI_B0_brain -f 0.3 -m -R
+
 
 indx=""
 
-n=`${FSLDIR}/bin/fslval $direc/dMRI/dMRI/DTI.nii.gz dim4` #### our data don't have AP and PA direction
+n=`${FSLDIR}/bin/fslval $direc/dMRI/dMRI/DWI.nii.gz dim4` #### our data don't have AP and PA direction
 
 for (( i=1; i <= ${n}; i++)); do
     indx="$indx 1"
 done
 
 echo $indx > $direc/dMRI/dMRI/eddy_index.txt
+
 ## set acqparams.txt by zwang
 printf "0 1 0 0.095" > $direc/dMRI/dMRI/acqparams.txt
 
-##. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
-
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer

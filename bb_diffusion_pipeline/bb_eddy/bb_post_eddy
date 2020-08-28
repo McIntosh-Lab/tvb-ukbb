@@ -21,16 +21,17 @@
 # limitations under the License.
 #
 
-##. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
 
 baseDir=$1
 # no gdc for our data
 ###$BB_BIN_DIR/bb_pipeline_tools/bb_GDC --workingdir=$baseDir/dMRI/dMRI/data_GDC --in=$baseDir/dMRI/dMRI/data.nii.gz --out=$baseDir/dMRI/dMRI/data_ud.nii.gz --owarp=$baseDir/dMRI/dMRI/data_ud_warp.nii.gz
 $FSLDIR/bin/fslroi $baseDir/dMRI/dMRI/data.nii.gz $baseDir/dMRI/dMRI/data_B0.nii.gz 0 1
 
-### final dti brain mask by zwang
-$FSLDIR/bin/bet $baseDir/dMRI/dMRI/data_B0.nii.gz $baseDir/dMRI/dMRI/nodif_brain -f 0.20 -g 0 -m -n
-#Correct input for dtifit
+### final dti brain mask from eddy corrected data by zwang
+$FSLDIR/bin/bet $baseDir/dMRI/dMRI/data_B0.nii.gz $baseDir/dMRI/dMRI/nodif_brain -f 0.3 -m -R
+
+#generate list of non-outlier volumes called data_1_shell and associated b-files
 $BB_BIN_DIR/bb_diffusion_pipeline/bb_select_dwi_vols $baseDir/dMRI/dMRI/data.nii.gz $baseDir/dMRI/dMRI/bvals $baseDir/dMRI/dMRI/data_1_shell 1000 1 $baseDir/dMRI/dMRI/bvecs
 
-##. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
