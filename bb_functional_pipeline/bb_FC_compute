@@ -40,7 +40,7 @@ def main():
     
     
     summary_fn= argsa.state_sum[0]
-    ts_rois = argsa.ts_roied[0]
+    ts_rois = argsa.ts_rois[0]
     
     out_dir = argsa.output_dir[0]
 
@@ -51,7 +51,7 @@ def main():
         for line in f:
             line_ls=line.split()
             if line_ls[0].isdigit() and line_ls[0] != '1':
-                roi_ls.append(map(int,line_ls[0:2]))
+                roi_ls.append([int(nu) for nu in line_ls[:2]])
         rois=np.array(roi_ls) 
         
     roi_order= list(range(2,43)) +  list(range(51,54)) + list(range(61,65)) +list(range(102,143)) + list(range(151,154)) +list(range(161,165))      
