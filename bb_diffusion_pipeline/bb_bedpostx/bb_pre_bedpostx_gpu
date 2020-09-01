@@ -21,60 +21,61 @@
 # limitations under the License.
 #
 
-##. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
 
 subjdir=`fsl_abspath $1`
 subjdir=`echo $subjdir | sed 's/\/$/$/g'`
 
 echo "---------------------------------------------"
-echo "------------ BedpostX GPU Version -----------"
+#echo "------------ BedpostX GPU Version -----------"
+echo "------------------ BedpostX -----------------"
 echo "---------------------------------------------"
 echo subjectdir is $subjdir
 
+echo Making bedpostx directory structure
 mkdir -p ${subjdir}/bedpostx
-#check that all required files exist
+#check that all required files exist and copy to bedpostx directory
 
-if [ ! -d ${subjdir}/dMRI ]; then
+if [ ! -d ${subjdir} ]; then
     echo "subject directory $1 not found"
     exit 1
 fi
 
 if [ ! -e ${subjdir}/dMRI/bvecs ]; then
-    echo "${subjdir}/bvecs not found"
+    echo "${subjdir}/dMRI/bvecs not found"
     touch $subjdir/pre_bedpostx_error.txt 
     exit 1
 fi
 cp ${subjdir}/dMRI/bvecs ${subjdir}/bedpostx
 
 if [ ! -e ${subjdir}/dMRI/bvals ]; then
-    echo "${subjdir}/bvals not found"
+    echo "${subjdir}/dMRI/bvals not found"
     touch $subjdir/pre_bedpostx_error.txt 
     exit 1
 fi
 cp ${subjdir}/dMRI/bvals ${subjdir}/bedpostx
 
 if [ `${FSLDIR}/bin/imtest ${subjdir}/dMRI/data` -eq 0 ]; then
-    echo "${subjdir}/data not found"
+    echo "${subjdir}/dMRI/data.nii.gz not found"
     touch $subjdir/pre_bedpostx_error.txt 
     exit 1
 fi
 cp ${subjdir}/dMRI/data.nii.gz ${subjdir}/bedpostx
 
 if [ `${FSLDIR}/bin/imtest ${subjdir}/dMRI/nodif_brain_mask` -eq 0 ]; then
-    echo "${subjdir}/nodif_brain_mask not found"
+    echo "${subjdir}/dMRI/nodif_brain_mask not found"
     touch $subjdir/pre_bedpostx_error.txt
     exit 1
 fi
 cp ${subjdir}/dMRI/nodif_brain_mask.nii.gz ${subjdir}/bedpostx
 
 if [ -e ${subjdir}/bedpostx.bedpostX/xfms/eye.mat ]; then
-    echo "${subjdir} has already been processed: ${subjdir}.bedpostX." 
-    echo "Delete or rename ${subjdir}.bedpostX before repeating the process."
+    echo "${subjdir} has already been processed: ${subjdir}/dMRI.bedpostX." 
+    echo "Delete or rename ${subjdir}/dMRI.bedpostX before repeating the process."
     touch $subjdir/pre_bedpostx_error.txt
     exit 1
 fi
 
-echo Making bedpostx directory structure
 
 #mkdir -p ${subjdir}.bedpostX/
 #mkdir -p ${subjdir}.bedpostX/diff_parts  
@@ -96,4 +97,4 @@ echo Making bedpostx directory structure
 
 #echo $nvox > $subjdir/bedpostx.bedpostX/nvox.txt
 
-##. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
