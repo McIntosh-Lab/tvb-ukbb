@@ -60,21 +60,21 @@ T1_GM_roied_toexfunc=${subjdir}/fMRI/T1_GM_roied_toexfunc.nii.gz
 TF_T1_WM_mask_ero_toexfunc=${subjdir}/fMRI/T1_WM_mask_ero_toexfunc.mat
 TF_T1_CSF_mask_ero_toexfunc=${subjdir}/fMRI/T1_CSF_mask_ero_toexfunc.mat
 TF_T1_GM_roied_toexfunc=${subjdir}/fMRI/T1_GM_roied_toexfunc.mat
-filteredfunc_mean_WM=${subjdir}/fMRI/fitered_func_meants_WM.txt
-fiteredfunc_mean_CSF=${subjdir}/fMRI/fitered_func_meants_CSF.txt
+filteredfunc_mean_WM=${subjdir}/fMRI/filtered_func_meants_WM.txt
+filteredfunc_mean_CSF=${subjdir}/fMRI/filtered_func_meants_CSF.txt
 nuisance=${subjdir}/fMRI/nuisance.txt
 Func_filtered_regressed=${subjdir}/fMRI/filtered_func_regressed.nii.gz
 Func_filtered_res=${subjdir}/fMRI/filtered_func_res.nii.gz
 Func_filtered_res_filt=${subjdir}/fMRI/filtered_func_res_filtered.nii.gz
-ts_roied=${subjdir}/fMRI/ts_roied.txt
+ts_rois=${subjdir}/fMRI/ts_roied.txt
 states_sum=${subjdir}/fMRI/summary.stats
 
 
 ### get label for GM in T1
-${BB_BIN_DIR}/bb_diffusion_pipeline/bb_probtrackx2/GetLabelsForWhiteGreyInterface $T1_GM $T1_GM_roied 1
+${BB_BIN_DIR}/bb_diffusion_pipeline/bb_probtrackx2/GetLabelsForWhiteGreyInterface $T1_GM $T1_RM $T1_GM_roied 1
 
 #### convert Func_mean to T1
-${FSLDIR}/bin/flirt -in ${Func_mean} -ref ${T1_brain} -out ${T1_meanfunc} -omat ${TF_meanfunc2T1} -bin 256 -cost corratio -searchrx -90 90 -searchrz -90 90 -dof 6 -interp trilinear
+${FSLDIR}/bin/flirt -in ${Func_mean} -ref ${T1_brain} -out ${T1_meanfunc} -omat ${TF_meanfunc2T1} -bins 256 -cost corratio -searchrx -90 90 -searchrz -90 90 -dof 6 -interp trilinear
 
 #### convert tf_meanfunc2t1
 ${FSLDIR}/bin/convert_xfm -omat ${TF_T12meanfunc} -inverse ${TF_meanfunc2T1}
@@ -101,16 +101,16 @@ ${FSLDIR}/bin/fslmeants -i ${Func_filtered} -m ${T1_WM_mask_ero_toexfunc} --orde
 ${FSLDIR}/bin/fslmeants -i ${Func_filtered} -m ${T1_CSF_mask_ero_toexfunc} --order=1 -o ${filteredfunc_mean_CSF}
 
 ### catenate CSF_meants WM_meants and Motion
-paste -d $fiteredfunc_mean_CSF $filteredfunc_mean_WM $Par_prefiltered > $nuisance
+paste  $fiteredfunc_mean_CSF $filteredfunc_mean_WM $Par_prefiltered > $nuisance
 
 ## regression
-${FSLDIR}/bin/fsl_glm -i ${Func_filtered} -d ${nuisance} -o ${Func_fitered_regressed} --out_res=${Func_filtered_res}
+${FSLDIR}/bin/fsl_glm -i ${Func_filtered} -d ${nuisance} -o ${Func_filtered_regressed} --out_res=${Func_filtered_res}
 
 #### highpass filter
 ${FSLDIR}/bin/fslmaths ${Func_filtered_res} -bptf $sigma -1 ${Func_filtered_res_filt} 
 
 ### segstate
-${FSLDIR}/bin/mri_segstats --${ts_rois} --i ${Func_filtered_res_filt} --seg $T1_GM_roied_toexfunc --sum ${states_sum}
+mri_segstats --avgwf ${ts_rois} --i ${Func_filtered_res_filt} --seg $T1_GM_roied_toexfunc --sum ${states_sum}
 
 ### FC coumpute
-${BB_BIN_DIR}/bb_functional_pipeline/bb_FC_compute -state ${states_sum} -ts $ts_rois -od ${subjdir}/fMRI
+${BB_BIN_DIR}/bb_functional_pipeline/bb_FC_compute -stat ${states_sum} -ts $ts_rois -od ${subjdir}/fMRI
