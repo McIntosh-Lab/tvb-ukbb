@@ -21,7 +21,7 @@
 # limitations under the License.
 #
 
-##. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
 
 subjdir=`fsl_abspath $1`
 subjdir=`echo ${subjdir} | sed 's/\/$/$/g'`
@@ -35,9 +35,9 @@ if [ -d ${subjdir} ] ; then
         #nvox=`cat ${subjdir}.bedpostX/nvox.txt`
 	#echo yes yes
         #${FSLDIR}/bin/xfibres --data=${subjdir}.bedpostX/data_0 --mask=${subjdir}.bedpostX/nodif_brain_mask -b ${subjdir}.bedpostX/bvals -r ${subjdir}.bedpostX/bvecs --forcedir --logdir=${subjdir}.bedpostX/diff_parts/data_part_0000 $opts ${subjdir} 0 1 $nvox
-        cd ${subjdir}
-        ${FSLDIR}/bin/bedpostx bedpostx --forcedir -n 1
-	cd ../../
+        #cd ${subjdir}/bedpostx
+        ${FSLDIR}/bin/bedpostx $subjdir/bedpostx --forcedir -V
+	#cd ../../
 	file=${subjdir}/bedpostx.bedpostX/merged_ph1samples.nii.gz
 	while [ ! -f "$file" ]
             do
@@ -46,8 +46,8 @@ if [ -d ${subjdir} ] ; then
 	sleep 1m
     fi
 else
-    echo "It was not possible to run BEDPOSTX on the subject."
+    echo "It was not possible to run BEDPOSTX on the subject. Check bedpostx directory"
 fi
 
-##. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
 

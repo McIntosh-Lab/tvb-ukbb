@@ -138,12 +138,14 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
         + subname
         + '" -j '
         + jobPREBEDPOSTX
-        + "  -q $FSLGECUDAQ -l "
+        #+ "  -q $FSLGECUDAQ -l "
+        + "  -l "
         + logDir
         + " $BB_BIN_DIR/bb_diffusion_pipeline/bb_bedpostx/bb_bedpostx_gpu "
         + baseDir
         + "/dMRI",
     )
+    ##### bb_post_bedpostx_gpu not necessary if using bedpostx package rather than xfibres (gpu) #####
     #jobPOSTBEDPOSTX = LT.runCommand(
         #logger,
         ##'${FSLDIR}/bin/fsl_sub -T 15  -N "bb_post_bedpostx_gpu_'
@@ -157,6 +159,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
         #+ baseDir
         #+ "/dMRI/dMRI",
     #)
+    #### running our own tractography algorithms so turning AutoPtx option off
     #jobAUTOPTX = LT.runCommand(
         #logger,
         #"$BB_BIN_DIR/bb_diffusion_pipeline/bb_autoPtx/bb_autoPtx "
@@ -166,6 +169,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
         #+ ","
         #+ jobTBSS,
     #)
+    
     jobPREPROBTRACKX = LT.runCommand(
         logger,
         '${FSLDIR}/bin/fsl_sub -q all.q -N "bb_pre_probtrackx_'

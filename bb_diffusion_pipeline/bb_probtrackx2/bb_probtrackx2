@@ -1,16 +1,21 @@
 #!/bin/bash
+
 #### Author Z Wang
 
-##. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header
+
 
 subjdir=`fsl_abspath $1`
-subjdir=`echo ${subjdir} | sed 's/\/$/$/g'
+subjdir=`echo ${subjdir} | sed 's/\/$/$/g'`
 echo subjectdir is $subjdir
 
 ### define inputs
 seeds=${subjdir}/probtrackx/seeds.txt
-stops=${subjdir}/probtrackx/stops.txt
-DTI_mask=${subjdir}/dMRI/DTI_B0_brain_mask.nii.gz
-outout_dir=${subjdir}/probtrackx
+DTI_mask=${subjdir}/bedpostx.bedpostX/nodif_brain_mask.nii.gz
+output_dir=${subjdir}/probtrackx
 
-${FSLDIR}/bin/probtrackx2 --avoid=${stops} --cthr=0.200 --forcedir --loopcheck -m ${DTI_mask} --nsamples=20000 --nsteps=2000 --onewaycondition --pd --opd --os2t --dir=${output_dir} --s2tastext --samples=merged --seed=${seeds} --steplength=0.500 --targetmasks=${seeds} --ompl --network --verbose=1
+
+${FSLDIR}/bin/probtrackx2 --network --ompl --seed=${seeds} --verbose=1 --loopcheck --onewaycondition --omatrix1 --cthr=0.2 --nsteps=2000 --steplength=0.5 --nsamples=5000 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --avoid=${subjdir}/probtrackx/exclude.nii.gz --forcedir --opd --samples=${subjdir}/bedpostx.bedpostX/merged --mask=${DTI_mask} --dir=${output_dir}
+
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer
