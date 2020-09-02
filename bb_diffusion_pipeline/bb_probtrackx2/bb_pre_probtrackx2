@@ -1,0 +1,37 @@
+#!/bin/sh
+#### T1 to DTI
+#
+# Authors: Z. Wang
+#
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header
+
+subjdir=`fsl_abspath $1`
+subjdir=`echo ${subjdir} | sed 's/\/$/$/g'`
+echo subjectdir is $subjdir
+
+
+### save results at this folder for probtrackx
+mkdir -p ${subjdir}/dMRI/probtrackx
+
+### link merged files from bedpostx
+ln -s ${subjdir}/dMRI/bedpostx.bedpostX/merged* ${subjdir}/dMRI/probtrackx
+
+
+# register T1 to DTI and get interface
+mkdir -p ${subjdir}/dMRI/dMRI/transforms
+$BB_BIN_DIR/bb_structural_pipeline/bb_epi_reg --epi=$subjdir/dMRI/dMRI/data_B0.nii.gz --t1=$subjdir/T1/T1.nii.gz --t1brain=$subjdir/T1/T1_brain.nii.gz --out=$subjdir/dMRI/dMRI/transforms/DTI_to_T1 --wmseg=$subjdir/T1/T1_fast/T1_brain_WM_mask.nii.gz
+
+# create inverse warp
+${FSLDIR}/bin/convert_xfm -omat $subjdir/dMRI/dMRI/transforms/T1_to_DTI.mat -inverse $subjdir/dMRI/dMRI/transforms/DTI_to_T1.mat
+
+# apply inverse warp to get parcellation, interface and exclude masks in DTI space
+${FSLDIR}/bin/applywarp -i $subjdir/T1/transforms/RM96_to_T1 -r $subjdir/dMRI/dMRI/data_B0 -o $subjdir/dMRI/dMRI/parcellation --premat=$subjdir/dMRI/dMRI/transforms/T1_to_DTI.mat --interp=nn
+${FSLDIR}/bin/applywarp -i $subjdir/dMRI/dMRI/transforms/DTI_to_T1_fast_wmedge -r $subjdir/dMRI/dMRI/data_B0 -o $subjdir/dMRI/dMRI/interface --premat=$subjdir/dMRI/dMRI/transforms/T1_to_DTI.mat --interp=nn
+${FSLDIR}/bin/applywarp -i $subjdir/T1/T1_fast/T1_brain_GM_mask -r $subjdir/dMRI/dMRI/data_B0 -o $subjdir/dMRI/probtrackx/exclude --premat=$subjdir/dMRI/dMRI/transforms/T1_to_DTI.mat --interp=nn
+
+# label the interface (search space = 1)
+${BB_BIN_DIR}/bb_diffusion_pipeline/bb_probtrackx2/GetLabelsForWhiteGreyInterface ${subjdir}/dMRI/dMRI/interface.nii.gz  ${subjdir}/dMRI/dMRI/parcellation.nii.gz ${subjdir}/dMRI/probtrackx/interface_roied.nii.gz 1
+
+# get masks of ROIs and make a list of seeds
+${BB_BIN_DIR}/bb_diffusion_pipeline/bb_probtrackx2/createDTImasks.py -i ${subjdir}/dMRI/dMRI/interface.nii.gz -ri ${subjdir}/dMRI/probtrackx/interface_roied.nii.gz -od ${subjdir}/dMRI/probtrackx

@@ -37,7 +37,7 @@ def bb_IDP(subject, jobHold, fileConfiguration):
     jobIDP = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 30 -N "bb_IDP_'
-        '${FSLDIR}/bin/fsl_sub -q bigmem_16.q -N "bb_IDP_'
+        '${FSLDIR}/bin/fsl_sub -q all.q -N "bb_IDP_'
         + subname
         + '" -j '
         + jobHold

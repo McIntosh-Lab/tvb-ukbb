@@ -98,11 +98,13 @@ rm grot*
 
 
 #Clean and reorganize
+# add "|| true" to end of mv functions so rest of pipeline
+# can run if files don't exist
 rm *tmp*
 mkdir transforms
-mv *MNI* transforms
-mv *warp*.* transforms
-mv *_to_* transforms
+mv *MNI* transforms || true
+mv *warp*.* transforms || true
+mv *_to_* transforms || true
 mv transforms/T1_brain_to_MNI.nii.gz .
 
 cd ..
