@@ -78,7 +78,7 @@ fi
 
 
 #mkdir -p ${subjdir}.bedpostX/
-mkdir -p ${subjdir}/bedpostX.bedpostX/diff_parts  
+#mkdir -p ${subjdir}/bedpostX.bedpostX/diff_parts  
 #mkdir -p ${subjdir}.bedpostX/logs
 #mkdir -p ${subjdir}.bedpostX/logs/logs_gpu # not use gpu zwang
 #mkdir -p ${subjdir}.bedpostX/xfms
