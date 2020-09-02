@@ -295,7 +295,7 @@ def manage_fMRI(listFiles, flag):
         dim.append(epi_img.get_header()["dim"][4])
 
     if numFiles == 0:
-        logger.warn("There was no " + flag + "FMRI data")
+        logger.warn("There was no " + flag + " FMRI data")
 
     elif numFiles == 1:
         # If the only fMRI we have is the SBRef
@@ -401,6 +401,15 @@ def manage_DWI(listFiles):
         errorFound = False
         encodingDirections = ["PA", "AP"]
 
+        numNifti = 0
+
+        for fl in listFiles:
+            if ".nii.gz" in fl:
+                numNifti += 1
+
+        if numNifti == 1:
+            encodingDirections = ["dwi"]
+
         # Code needed for the inconsistency in the file names in Diffusion over the different phases
         if listFiles[0].startswith("MB3"):
 
@@ -409,6 +418,11 @@ def manage_DWI(listFiles):
 
             subListFilesD["AP"] = [x for x in listFiles if x not in subListFilesD["PA"]]
             imageFilesD["AP"] = [x for x in subListFilesD["AP"] if bb_path.isImage(x)]
+
+        elif "dwi" in listFiles[0]:
+
+            subListFilesD["dwi"] = [x for x in listFiles if x.find("dwi") != -1]
+            imageFilesD["dwi"] = [x for x in subListFilesD["dwi"] if bb_path.isImage(x)]
 
         else:
             for direction in encodingDirections:
@@ -432,7 +446,7 @@ def manage_DWI(listFiles):
                     dim.append(epi_img.get_header()["dim"][4])
 
                 numImageFiles = len(imageFiles)
-                print("HEEERE")
+                #print("HEEERE")
 
                 if numImageFiles == 0:
                     raise Exception(
@@ -482,7 +496,7 @@ def manage_DWI(listFiles):
                 bvecFileName = (
                     bb_path.removeImageExt(imageFiles[indBiggestImage]) + ".bvec"
                 )
-
+               
                 if (not bvalFileName in subListFiles) or (
                     not bvecFileName in subListFiles
                 ):
@@ -650,13 +664,23 @@ def bb_file_manager(subject):
         [["*T1*.nii.gz"], manage_struct, "T1"],
         [["T2*FLAIR*.nii.gz", "*FLAIR*.nii.gz"], manage_struct, "T2"],
         [
-            ["*FMRI*RESTING*.nii.gz", "MB8*RESTING*.nii.gz", "*TASK*REST*.nii.gz",],
+            [
+                "*FMRI*RESTING*.nii.gz",
+                "MB8*RESTING*.nii.gz",
+                "*TASK*REST*.nii.gz",
+                "*task*rest*.nii.gz",
+            ],
             manage_fMRI,
             "rfMRI",
         ],
-        [["*FMRI*TASK*.nii.gz", "MB8*TASK*.nii.gz"], manage_fMRI, "tfMRI"],
+        [
+            ["*fmri*task*.nii.gz", "*FMRI*TASK*.nii.gz", "MB8*TASK*.nii.gz"],
+            manage_fMRI,
+            "tfMRI",
+        ],
         [["SWI*nii.gz"], manage_SWI],
-        [["DIFF_*", "MB3_*", "*DWI*.nii.gz"], manage_DWI],
+        # [["DIFF_*", "MB3_*", "*dwi*.nii.gz", "*DWI*.nii.gz"], manage_DWI],
+        [["DIFF_*", "MB3_*", "*dwi*.*", "*DWI*.*"], manage_DWI],
         [["SWI*.*"], move_to, "SWI/unclassified/"],
         [["*.[^log]"], move_to, "unclassified/"],
     ]

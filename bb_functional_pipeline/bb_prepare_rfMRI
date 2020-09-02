@@ -21,7 +21,7 @@
 # limitations under the License.
 #
 
-. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
+#. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
 
 nameDir="$PWD/$1"
 
@@ -29,6 +29,7 @@ cp $BB_BIN_DIR/bb_data/design_ICA_nonSmoothed.fsf $1/fMRI/rfMRI.fsf
 
 for elem in `cat $1/fMRI/rfMRI.fsf | grep -oP '_--_\K.*?(?=_-_)' | sort | uniq` ; do
     val=`echo ${!elem} | sed 's|/|\\\/|g'`
+    echo $val
     sed -i "s/_--_${elem}_-_/${val}/g" $1/fMRI/rfMRI.fsf
 done 
 
@@ -37,7 +38,7 @@ fmriTR=`${FSLDIR}/bin/fslval $1/fMRI/rfMRI.nii.gz pixdim4`
 descrip=`${FSLDIR}/bin/fslval $1/fMRI/rfMRI.nii.gz descrip`
 descrip=(`echo $descrip | tr ';' ' '`)
 fmriTE=${descrip[0]:3}
-fmriDwell=`bb_get_dwell_time $1/fMRI/rfMRI.nii.gz`
+fmriDwell=`${BB_BIN_DIR}/bb_pipeline_tools/bb_get_dwell_time $1/fMRI/rfMRI.nii.gz`
 
 #turn off field map and gdc options
 B0_unwarp=`0`
@@ -59,9 +60,11 @@ echo "set unwarp_files_mag(1) $B0_magfile" >> $1/fMRI/rfMRI.fsf
 echo "set highres_files(1)    \""$nameDir"/fMRI/symlink/T1_brain.nii.gz\"" >> $1/fMRI/rfMRI.fsf
 #echo "set fmri(gdc)           \""$nameDir"/fMRI/rfMRI_SBREF_ud_warp.nii.gz\"" >> $1/fMRI/rfMRI.fsf
 echo "set fmri(unwarp_dir) $fmap_dir" >> $1/fMRI/rfMRI.fsf
+
 echo "set fmri(tr) $fmriTR" >> $1/fMRI/rfMRI.fsf
 echo "set fmri(npts) $fmriNumVol"  >> $1/fMRI/rfMRI.fsf
 echo "set fmri(dwell) $fmriDwell" >> $1/fMRI/rfMRI.fsf
 echo "set fmri(te) $fmriTE" >> $1/fMRI/rfMRI.fsf
 
-. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
+
+#. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
