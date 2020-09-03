@@ -66,7 +66,7 @@ export MNI_brain="$FSLDIR/data/standard/MNI152_T1_1mm_brain.nii.gz"
 export MNI_dir="$FSLDIR/data/standard"
 export templ="$BB_BIN_DIR/templates"
 export PYTHONPATH=../software/env/bin/python
-export FSL_FIXDIR="$$BB_BIN_DIR/bb_functional_pipeline/bb_fix_dir"                       #TO BE MODIFIED BY USER
+export FSL_FIXDIR="$BB_BIN_DIR/bb_functional_pipeline/bb_fix_dir"                       #TO BE MODIFIED BY USER
 
 
 #INCLUDE 3 MAIN BIOBANK DIRECTORIES IN PATH
