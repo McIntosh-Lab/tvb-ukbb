@@ -21,7 +21,7 @@
 # limitations under the License.
 #
 
-#. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
 
 nameDir="$PWD/$1"
 
@@ -40,31 +40,25 @@ descrip=(`echo $descrip | tr ';' ' '`)
 fmriTE=${descrip[0]:3}
 fmriDwell=`${BB_BIN_DIR}/bb_pipeline_tools/bb_get_dwell_time $1/fMRI/rfMRI.nii.gz`
 
-#turn off field map and gdc options
-B0_unwarp=`0`
-B0_file=`0`
-B0_magfile=`0`
-fmap_dir=`0`
-
 ### no GDC for our data
 #$BB_BIN_DIR/bb_pipeline_tools/bb_GDC_half_voxel --workingdir=$1/fMRI/rfMRI_SBREF_GDC --in=$1/fMRI/rfMRI_SBREF.nii.gz --out=$1/fMRI/rfMRI_SBREF_ud.nii.gz --owarp=$1/fMRI/rfMRI_SBREF_ud_warp.nii.gz
 
-echo "set fmri(regunwarp_yn) $B0_unwarp" >> $1/fMRI/rfMRI.fsf
+# append the following to the rfMRI.fsf design file
 echo "set fmri(outputdir)     \""$nameDir"/fMRI/rfMRI.ica\"" >> $1/fMRI/rfMRI.fsf
+echo "set fmri(regunwarp_yn) 0" >> $1/fMRI/rfMRI.fsf
 echo "set feat_files(1)       \""$nameDir"/fMRI/rfMRI.nii.gz\"" >> $1/fMRI/rfMRI.fsf
 echo "set alt_ex_func(1)      \""$nameDir"/fMRI/rfMRI_SBREF.nii.gz\"" >> $1/fMRI/rfMRI.fsf
 #echo "set unwarp_files(1)     \""$nameDir"/fieldmap/fieldmap_fout_to_T1_brain_rad.nii.gz\"" >> $1/fMRI/rfMRI.fsf
 #echo "set unwarp_files_mag(1) \""$nameDir"/fMRI/symlink/T1_brain.nii.gz\"" >> $1/fMRI/rfMRI.fsf
-echo "set unwarp_files(1) $B0_file" >> $1/fMRI/rfMRI.fsf
-echo "set unwarp_files_mag(1) $B0_magfile" >> $1/fMRI/rfMRI.fsf
+echo "set unwarp_files(1) 0" >> $1/fMRI/rfMRI.fsf
+echo "set unwarp_files_mag(1) 0" >> $1/fMRI/rfMRI.fsf
 echo "set highres_files(1)    \""$nameDir"/fMRI/symlink/T1_brain.nii.gz\"" >> $1/fMRI/rfMRI.fsf
 #echo "set fmri(gdc)           \""$nameDir"/fMRI/rfMRI_SBREF_ud_warp.nii.gz\"" >> $1/fMRI/rfMRI.fsf
-echo "set fmri(unwarp_dir) $fmap_dir" >> $1/fMRI/rfMRI.fsf
+echo "set fmri(unwarp_dir) 0" >> $1/fMRI/rfMRI.fsf
 
 echo "set fmri(tr) $fmriTR" >> $1/fMRI/rfMRI.fsf
 echo "set fmri(npts) $fmriNumVol"  >> $1/fMRI/rfMRI.fsf
 echo "set fmri(dwell) $fmriDwell" >> $1/fMRI/rfMRI.fsf
 echo "set fmri(te) $fmriTE" >> $1/fMRI/rfMRI.fsf
 
-
-#. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
