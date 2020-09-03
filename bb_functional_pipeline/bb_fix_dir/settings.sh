@@ -18,7 +18,7 @@ fi
 # =======================
 # Point this variable at your MATLAB install folder
 if [ -z "${FSL_FIX_MATLAB_ROOT}" ]; then
-       FSL_FIX_MATLAB_ROOT=/opt/fmrib/matlab
+       FSL_FIX_MATLAB_ROOT=/opt/Matlab2015b
        # On OS X this will most likely be something like /Applications/MATLAB_R20XX.app
 fi
 # On OS X this will most likely be something like /Applications/MATLAB_R20XX.app
@@ -34,7 +34,7 @@ FSL_FIX_MCC=${FSL_FIX_MATLAB_ROOT}/bin/mcc
 # Point this variable at an installed MATLAB compiler runtime. This
 # MUST be the same as the version given in the file MCR.version
 # (which is populated when the software is compiled).
-FSL_FIX_MCRROOT=/opt/fmrib/MATLAB/MATLAB_Compiler_Runtime
+FSL_FIX_MCRROOT=/opt/MatlabR2017b/MATLAB_Runtime
 
 if [ -f ${FSL_FIXDIR}/MCR.version ]; then
 	FSL_FIX_MCRV=`cat ${FSL_FIXDIR}/MCR.version`
@@ -64,7 +64,7 @@ FSL_FIX_MLFILE="\<"
 # Point this variable at your Octave command (or leave it blank to
 # disable Octave mode
 # Linux:
-FSL_FIX_OCTAVE=/usr/bin/octave
+#FSL_FIX_OCTAVE=/usr/bin/octave
 # Mac OS X installed via MacPorts
 #FSL_FIX_OCTAVE=/opt/local/bin/octave
 # Disable Octave mode
@@ -72,12 +72,12 @@ FSL_FIX_OCTAVE=/usr/bin/octave
 
 # Set this to the Octave start-up options. Typically you will need to
 # enable 'MATLAB' mode (--traditional) and disable display output
-FSL_FIX_OCOPTS="--traditional -q --no-window-system"
+#FSL_FIX_OCOPTS="--traditional -q --no-window-system"
 
 # Set this to the Octave 'evaluate string' option
-FSL_FIX_OCEVAL="--eval"
+#FSL_FIX_OCEVAL="--eval"
 # Set this to the pass in file option
-FSL_FIX_OCFILE=""
+#FSL_FIX_OCFILE=""
 
 # Part III General settings
 # =========================
