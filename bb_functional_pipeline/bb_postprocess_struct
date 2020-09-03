@@ -19,8 +19,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-#. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
+
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
 
 direc=$PWD/$1
 
@@ -35,4 +36,4 @@ ln -s ${direc}/T1/transforms/T1_to_MNI_linear.mat $linkDir/T1_brain2MNI152_T1_2m
 
 $FSLDIR/bin/fslmaths $direc/T1/T1_fast/T1_brain_pve_2.nii.gz -thr 0.5 -bin $linkDir/T1_brain_wmseg.nii.gz
 
-#. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 

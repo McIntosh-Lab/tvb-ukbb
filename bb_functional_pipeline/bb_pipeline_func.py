@@ -88,7 +88,9 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
             + logDir
             + " -j "
             + jobPREPARE_R
-            + " $BB_BIN_DIR/bb_functional_pipeline/bb_feat  "
+            + " feat "
+            + baseDir 
+            + "/fMRI/rfMRI.fsf",
             + subject,
         )
         jobFIX = LT.runCommand(
