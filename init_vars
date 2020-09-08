@@ -27,6 +27,9 @@
 #                                         #
 ###########################################
 
+# UKBB ROOT DIR LOCATION
+export BBDIR=/liberatrix/mcintosh_lab/ukbb                        #TO BE MODIFIED BY USER
+
 #PYTHON VERSION                                #RECOMMENDED
 pyVersion="3.5.1"
 
@@ -48,7 +51,7 @@ PATH=`echo $PATH | sed "s|$FSLDIR/bin||g"`
 export PATH="$FSLDIR/bin:$PATH"
 
 #SETUP EXTERNAL LIBRARIES
-export R_LIBS=/liberatrix/mcintosh_lab/ukbb/software/env/lib/R/library                           #TO BE MODIFIED BY USER
+export R_LIBS="$BBDIR/software/env/lib/R/library"                           #TO BE MODIFIED BY USER
 
 #SET LOCALE FOR FLOATING POINT FORMATTING
 export LC_ALL=C
@@ -57,7 +60,6 @@ export LC_ALL=C
 # export LD_LIBRARY_PATH=@@@                   #TO BE MODIFIED BY USER
 
 #ENV VARIABLES FOR BIOBANK
-export BBDIR=/liberatrix/mcintosh_lab/ukbb                        #TO BE MODIFIED BY USER
 export BB_BIN_DIR="$BBDIR/UK_biobank_pipeline_v_1"
 export FSLGPUDIR="$BB_BIN_DIR/bb_diffusion_pipeline/bb_bedpostx"
 export MNI="$FSLDIR/data/standard/MNI152_T1_1mm.nii.gz"
@@ -65,7 +67,7 @@ export MNI_mask="$FSLDIR/data/standard/MNI152_T1_1mm_brain_mask.nii.gz"
 export MNI_brain="$FSLDIR/data/standard/MNI152_T1_1mm_brain.nii.gz"
 export MNI_dir="$FSLDIR/data/standard"
 export templ="$BB_BIN_DIR/templates"
-export PYTHONPATH=../software/env/bin/python
+export PYTHONPATH="$BBDIR/software/env/bin/python"
 export FSL_FIXDIR="$BB_BIN_DIR/bb_functional_pipeline/bb_fix_dir"                       #TO BE MODIFIED BY USER
 
 
@@ -77,8 +79,8 @@ export PATH="$BB_BIN_DIR/bb_pipeline_tools/:$BB_BIN_DIR/bb_general_tools/:$PATH"
 # . $BB_BIN_DIR/bb_python/bb_python-${pyVersion}/bin/activate
 
 #SET PATH FOR MCR
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:../software/MCR_2014a_glnxa64/v83/runtime/glnxa64:../software/MCR_2014a_glnxa64/v83/bin/glnxa64:../software/MCR_2014a_glnxa64/v83/sys/os/glnxa64:"
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$BBDIR/software/MCR_2014a_glnxa64/v83/runtime/glnxa64:$BBDIR/software/MCR_2014a_glnxa64/v83/bin/glnxa64:$BBDIR/software/MCR_2014a_glnxa64/v83/sys/os/glnxa64:"
 
-export XAPPLRESDIR=../software/MCR_2014a_glnxa64/v83/X11/app-defaults
+export XAPPLRESDIR="$BBDIR/software/MCR_2014a_glnxa64/v83/X11/app-defaults"
 
-conda activate /liberatrix/mcintosh_lab/ukbb/software/env
+conda activate $BBDIR/software/env
