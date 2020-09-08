@@ -81,6 +81,8 @@ export PATH="$BB_BIN_DIR/bb_pipeline_tools/:$BB_BIN_DIR/bb_general_tools/:$PATH"
 #SET PATH FOR MCR
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$BBDIR/software/MCR_2014a_glnxa64/v83/runtime/glnxa64:$BBDIR/software/MCR_2014a_glnxa64/v83/bin/glnxa64:$BBDIR/software/MCR_2014a_glnxa64/v83/sys/os/glnxa64:"
 
+export MATLAB_COMPILER_RUNTIME="$BBDIR/software/MCR_2014a_glnxa64/v83"
+
 export XAPPLRESDIR="$BBDIR/software/MCR_2014a_glnxa64/v83/X11/app-defaults"
 
 conda activate $BBDIR/software/env
