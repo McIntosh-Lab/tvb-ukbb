@@ -23,7 +23,7 @@
 
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
 
-subjdir=`fsl_abspath $1`
+subjdir=`${FSLDIR}/bin/fsl_abspath $1`
 subjdir=`echo ${subjdir} | sed 's/\/$/$/g'`
 echo subjectdir is $subjdir
 
