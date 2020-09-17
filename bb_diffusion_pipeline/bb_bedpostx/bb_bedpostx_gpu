@@ -27,6 +27,10 @@ subjdir=`fsl_abspath $1`
 subjdir=`echo ${subjdir} | sed 's/\/$/$/g'`
 echo subjectdir is $subjdir
 
+FSLSUBALREADYRUN=false
+echo $FSLSUBALREADYRUN
+
+
 if [ -d ${subjdir} ] ; then
 
     if [ ! -f ${subjdir}/pre_bedpostx_error.txt ] ; then
