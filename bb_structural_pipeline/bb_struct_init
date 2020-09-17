@@ -180,6 +180,9 @@ if [ -f T1_fast/T1_brain_pveseg.nii.gz ] ; then
     $FSLDIR/bin/fslmaths T1_fast/T1_brain_pve_2.nii.gz -thr 0.5 -bin T1_fast/T1_brain_WM_mask.nii.gz
 fi
 
+#label GM with ROIs
+/opt/afni/3dROIMaker -inset T1_fast/T1_brain_pve_1.nii.gz -thresh 0.5 -prefix labelled -refset transforms/RM96_to_T1.nii.gz -nifti -neigh_upto_vert
+
 #Apply bias field correction to T1
 if [ -f T1_fast/T1_brain_bias.nii.gz ] ; then
     ${FSLDIR}/bin/fslmaths T1.nii.gz -div T1_fast/T1_brain_bias.nii.gz T1_unbiased.nii.gz

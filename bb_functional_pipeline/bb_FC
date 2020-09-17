@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# =============================================================================
+# Authors: Michael Schirner, Simon Rothmeier, Petra Ritter
+# BrainModes Research Group (head: P. Ritter)
+# Charité University Medicine Berlin & Max Planck Institute Leipzig, Germany
+# Correspondence: petra.ritter@charite.de
+#
+# When using this code please cite as follows:
+# Schirner M, Rothmeier S, Jirsa V, McIntosh AR, Ritter P (in prep)
+# Constructing subject-specific Virtual Brains from multimodal neuroimaging
+#
+# This software is distributed under the terms of the GNU General Public License
+# as published by the Free Software Foundation. Further details on the GPL
+# license can be found at http://www.gnu.org/copyleft/gpl.html.
+#
+# Adapted to run locally by Hannelore Aerts
+# Department of Data-Analysis, Faculty of Psychology and Educational Sciences,
+# Ghent University, Belgium
+# Correspondence: hannelore.aerts@ugent.be
+# =============================================================================
+# IMPORTANT: adapt subID to name of your subject folder
+# =============================================================================
+
+
+subjdir="$PWD/$1"
+
+ts_rois=${subjdir}/fMRI/rfMRI.ica/ts_roied.txt
+stats_sum=${subjdir}/fMRI/rfMRI.ica/stats.sum
+touch $stats_sum
+
+### register parcellation (labelled GM) to fMRI
+# create inverse warp
+${FSLDIR}/bin/convert_xfm -omat ${subjdir}/fMRI/rfMRI.ica/reg/highres2example_func.mat -inverse ${subjdir}/fMRI/rfMRI.ica/reg/example_func2highres.mat
+# apply it to labelled GM
+${FSLDIR}/bin/applywarp -i ${subjdir}/T1/labelled_GM -r ${subjdir}/fMRI/rfMRI.ica/example_func -o ${subjdir}/fMRI/rfMRI.ica/parcellation --premat=${subjdir}/fMRI/rfMRI.ica/reg/highres2example_func.mat --interp=nn
+
+### segstate
+mri_segstats --avgwf ${ts_rois} --i ${subjdir}/fMRI/rfMRI.ica/filtered_func_data_clean.nii.gz --seg ${subjdir}/fMRI/rfMRI.ica/parcellation.nii.gz  --sum ${stats_sum}
+
+### FC coumpute
+${BB_BIN_DIR}/bb_functional_pipeline/bb_FC_compute -stat ${stats_sum} -ts $ts_rois -od ${subjdir}/fMRI/rfMRI.ica
