@@ -8,7 +8,8 @@ MCCOPTS=-mv -R -nojvm -R -nodisplay
 REQ_FSL=fix_1a_extract_features fix_2c_loo_results functionmotionconfounds
 REQ_CIFnFSL=fix_3_clean
 
-all: directories MCR $(REQ_FSL) $(REQ_CIFnFSL) 
+# all: directories MCR $(REQ_FSL) $(REQ_CIFnFSL) 
+all: directories $(REQ_FSL) $(REQ_CIFnFSL) 
 	
 MCR:
 	$(eval MCRV := $(shell echo "${FSL_FIX_MATLAB} $(FSL_FIX_MOPTS) -r \"[maj,min,upd,pt] = mcrversion; if upd ~= 0, disp(sprintf('MCR=%d%d', maj, min, upd)); else; disp(sprintf('MCR=v%d%d', maj, min)); end\"" | sh | grep "MCR=" | awk -F"=" '{ print $$2 }'))
@@ -38,6 +39,7 @@ directories: ${FSL_FIX_MLCDIR}
 
 ${FSL_FIX_MLCDIR}:
 	${MKDIR_P} ${FSL_FIX_MLCDIR}
+	echo "HERE"
         
 functionmotionconfounds: functionmotionconfounds.m
 	${FSL_FIX_MCC} $(MCCOPTS) -I ${FSL_FIX_FSLMATLAB} -d ${FSL_FIX_MLCDIR} $<

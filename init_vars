@@ -28,22 +28,25 @@
 ###########################################
 
 # UKBB ROOT DIR LOCATION
-export BBDIR=/liberatrix/mcintosh_lab/kshen/ukbb                        #TO BE MODIFIED BY USER
-
-#PYTHON VERSION                                #RECOMMENDED
-pyVersion="3.5.1"
+export BBDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && cd ..; pwd )"
 
 #SETUP FSL  
-export FSLDIR=/opt/HCPpipelines-4.1.3/fsl #TO BE MODIFIED BY USER
+export FSLDIR=/opt/HCPpipelines-4.1.3/fsl                         #TO BE MODIFIED BY USER
 . $FSLDIR/etc/fslconf/fsl.sh
 export FSLCONFDIR="${FSLDIR}/config"
 export FSLOUTPUTTYPE="NIFTI_GZ"
-export FSLGECUDAQ=cuda.q                       #TO BE MODIFIED BY USER
+export FSLGECUDAQ=cuda.q                                          #TO BE MODIFIED BY USER
 
+# R environment
+# R_PATH="$BBDIR/software/Renv/lib/R"
 
 #SETUP FREESURFER 
-export FREESURFER_HOME=/opt/freesurfer                  #TO BE MODIFIED BY USER
+export FREESURFER_HOME=/opt/freesurfer                            #TO BE MODIFIED BY USER
 source $FREESURFER_HOME/SetUpFreeSurfer.sh  > /dev/null
+
+# SET UP MATLAB
+export MATLAB_DIR=/opt/Matlab2015b                                #TO BE MODIFIED BY USER
+export MCROOT="$BBDIR/software/MCR_2014a_glnxa64"                 #TO BE MODIFIED BY USER
 
 #Move $FSLDIR/bin before $FREESURFER_HOME in the path
 FSLDIRseddable=`echo $FSLDIR | sed 's|/|\\\/|g'`
@@ -51,13 +54,13 @@ PATH=`echo $PATH | sed "s|$FSLDIR/bin||g"`
 export PATH="$FSLDIR/bin:$PATH"
 
 #SETUP EXTERNAL LIBRARIES
-export R_LIBS="$BBDIR/software/env/lib/R/library"                           #TO BE MODIFIED BY USER
+export R_LIBS="$BBDIR/software/tenv/lib/R/library"
 
 #SET LOCALE FOR FLOATING POINT FORMATTING
 export LC_ALL=C
 
 #SET DYNAMIC LIBRARIES FOR BEDPOSTX           
-#export LD_LIBRARY_PATH=@@@                   #TO BE MODIFIED BY USER
+# export LD_LIBRARY_PATH=@@@
 
 #ENV VARIABLES FOR BIOBANK
 export BB_BIN_DIR="$BBDIR/UK_biobank_pipeline_v_1"
@@ -67,22 +70,21 @@ export MNI_mask="$FSLDIR/data/standard/MNI152_T1_1mm_brain_mask.nii.gz"
 export MNI_brain="$FSLDIR/data/standard/MNI152_T1_1mm_brain.nii.gz"
 export MNI_dir="$FSLDIR/data/standard"
 export templ="$BB_BIN_DIR/templates"
-export PYTHONPATH="$BBDIR/software/env/bin/python"
-export FSL_FIXDIR="$BB_BIN_DIR/bb_functional_pipeline/bb_fix_dir"                       #TO BE MODIFIED BY USER
-#export FSL_FIXDIR=/opt/HCPpipelines-4.1.3/fix
+export PYTHONPATH="$BBDIR/software/tenv/bin/python"
+export FSL_FIXDIR="$BB_BIN_DIR/bb_functional_pipeline/bb_fix_dir"
+
 
 #INCLUDE 3 MAIN BIOBANK DIRECTORIES IN PATH
 export PATH="$BB_BIN_DIR/bb_pipeline_tools/:$BB_BIN_DIR/bb_general_tools/:$PATH"
 
-#ACTIVATE BIOBANK'S PYTHON VERSION
-# . $BB_BIN_DIR/bb_python/bb_python-${pyVersion}/bin/activate
 
 #SET PATH FOR MCR
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$BBDIR/software/MCR_2014a_glnxa64/v83/runtime/glnxa64:$BBDIR/software/MCR_2014a_glnxa64/v83/bin/glnxa64:$BBDIR/software/MCR_2014a_glnxa64/v83/sys/os/glnxa64:"
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$BBDIR/software/MCR_2014a_glnxa64/v83/runtime/glnxa64:$BBDIR/software/MCR_2014a_glnxa64/v83/bin/glnxa64:$BBDIR/software/MCR_2014a_glnxa64/v83/sys/os/glnxa64:$BBDIR/software/MCR_2014a_glnxa64/v83/sys/opengl/lib/glnxa64"
 
 export MATLAB_COMPILER_RUNTIME="$BBDIR/software/MCR_2014a_glnxa64/v83"
 
 export XAPPLRESDIR="$BBDIR/software/MCR_2014a_glnxa64/v83/X11/app-defaults"
 
-conda activate $BBDIR/software/env
-#conda activate /home/jwang/anaconda3/envs/myR
+conda activate $BBDIR/software/tenv
+
+# export PATH="$R_PATH:$PATH"

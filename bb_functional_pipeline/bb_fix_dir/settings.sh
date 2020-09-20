@@ -18,7 +18,8 @@ fi
 # =======================
 # Point this variable at your MATLAB install folder
 if [ -z "${FSL_FIX_MATLAB_ROOT}" ]; then
-       FSL_FIX_MATLAB_ROOT=/opt/Matlab2015b
+       # FSL_FIX_MATLAB_ROOT="$BBDIR/software/MCR_2014a_glnxa64"
+       FSL_FIX_MATLAB_ROOT=$MATLAB_DIR
        # On OS X this will most likely be something like /Applications/MATLAB_R20XX.app
 fi
 # On OS X this will most likely be something like /Applications/MATLAB_R20XX.app
@@ -34,7 +35,8 @@ FSL_FIX_MCC=${FSL_FIX_MATLAB_ROOT}/bin/mcc
 # Point this variable at an installed MATLAB compiler runtime. This
 # MUST be the same as the version given in the file MCR.version
 # (which is populated when the software is compiled).
-FSL_FIX_MCRROOT=/opt/MatlabR2017b/MATLAB_Runtime
+# FSL_FIX_MCRROOT="$BBDIR/software/MCR_2014a_glnxa64"
+FSL_FIX_MCRROOT=$MCROOT
 
 if [ -f ${FSL_FIXDIR}/MCR.version ]; then
 	FSL_FIX_MCRV=`cat ${FSL_FIXDIR}/MCR.version`
@@ -42,6 +44,7 @@ fi
 
 if [ ! -z "${FSL_FIX_MCRV}" ]; then
 	FSL_FIX_MCR=${FSL_FIX_MCRROOT}/${FSL_FIX_MCRV}
+        echo "FSL_FIX_MCR: $FSL_FIX_MCR"
 fi
 
 # This is name of the folder containing the compiled MATLAB functions
@@ -86,7 +89,7 @@ FSL_FIX_MLFILE="\<"
 #   0 - Try running the compiled version of the function
 #   1 - Use the MATLAB script version
 #   2 - Use Octave script version
-FSL_FIX_MATLAB_MODE=1
+FSL_FIX_MATLAB_MODE=0
 
 # Set this to CIFTI Matlab Reader/Writer for use within HCP pipelines
 FSL_FIX_CIFTIRW="$BB_BIN_DIR/bb_ext_tools/workbench/CIFTIMatlabReaderWriter";
