@@ -39,4 +39,4 @@ ${FSLDIR}/bin/applywarp -i ${subjdir}/T1/labelled_GM -r ${subjdir}/fMRI/rfMRI.ic
 mri_segstats --avgwf ${ts_rois} --i ${subjdir}/fMRI/rfMRI.ica/filtered_func_data_clean.nii.gz --seg ${subjdir}/fMRI/rfMRI.ica/parcellation.nii.gz  --sum ${stats_sum}
 
 ### FC coumpute
-${BB_BIN_DIR}/bb_functional_pipeline/bb_FC_compute -stat ${stats_sum} -ts $ts_rois -od ${subjdir}/fMRI/rfMRI.ica
+${BB_BIN_DIR}/bb_functional_pipeline/bb_FC_compute -stat ${stats_sum} -ts $ts_rois -od ${subjdir}/fMRI/rfMRI.ica -LUT ${PARC_LUT}
