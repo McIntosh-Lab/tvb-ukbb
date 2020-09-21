@@ -26,7 +26,7 @@ $BB_BIN_DIR/bb_structural_pipeline/bb_epi_reg --epi=$subjdir/dMRI/dMRI/data_B0.n
 ${FSLDIR}/bin/convert_xfm -omat $subjdir/dMRI/dMRI/transforms/T1_to_DTI.mat -inverse $subjdir/dMRI/dMRI/transforms/DTI_to_T1.mat
 
 # apply inverse warp to get parcellation, interface and exclude masks in DTI space
-${FSLDIR}/bin/applywarp -i $subjdir/T1/transforms/RM96_to_T1 -r $subjdir/dMRI/dMRI/data_B0 -o $subjdir/dMRI/dMRI/parcellation --premat=$subjdir/dMRI/dMRI/transforms/T1_to_DTI.mat --interp=nn
+${FSLDIR}/bin/applywarp -i $subjdir/T1/transforms/parcel_to_T1 -r $subjdir/dMRI/dMRI/data_B0 -o $subjdir/dMRI/dMRI/parcellation --premat=$subjdir/dMRI/dMRI/transforms/T1_to_DTI.mat --interp=nn
 ${FSLDIR}/bin/applywarp -i $subjdir/dMRI/dMRI/transforms/DTI_to_T1_fast_wmedge -r $subjdir/dMRI/dMRI/data_B0 -o $subjdir/dMRI/dMRI/interface --premat=$subjdir/dMRI/dMRI/transforms/T1_to_DTI.mat --interp=nn
 ${FSLDIR}/bin/applywarp -i $subjdir/T1/T1_fast/T1_brain_GM_mask -r $subjdir/dMRI/dMRI/data_B0 -o $subjdir/dMRI/probtrackx/exclude --premat=$subjdir/dMRI/dMRI/transforms/T1_to_DTI.mat --interp=nn
 
