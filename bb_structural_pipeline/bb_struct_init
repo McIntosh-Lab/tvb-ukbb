@@ -73,7 +73,7 @@ ${FSLDIR}/bin/fslmaths T1 -mul T1_brain_mask T1_brain
 ${FSLDIR}/bin/fslmaths T1_brain_to_MNI -mul $templ/MNI152_T1_1mm_brain_mask T1_brain_to_MNI
 
 #register parcellation to T1
-${FSLDIR}/bin/applywarp --rel --interp=nn --in=$templ/RM96/RM96_inMNI --ref=T1 -w T1_to_MNI_warp_coef_inv -o RM96_to_T1
+${FSLDIR}/bin/applywarp --rel --interp=nn --in=$PARC_IMG --ref=T1 -w T1_to_MNI_warp_coef_inv -o parcel_to_T1
 
 #Defacing T1
 ${FSLDIR}/bin/convert_xfm -omat grot.mat -concat T1_to_MNI_linear.mat T1_orig_ud_to_T1.mat
@@ -181,7 +181,7 @@ if [ -f T1_fast/T1_brain_pveseg.nii.gz ] ; then
 fi
 
 #label GM with ROIs
-/opt/afni/3dROIMaker -inset T1_fast/T1_brain_pve_1.nii.gz -thresh 0.5 -prefix labelled -refset transforms/RM96_to_T1.nii.gz -nifti -neigh_upto_vert
+/opt/afni/3dROIMaker -inset T1_fast/T1_brain_pve_1.nii.gz -thresh 0.5 -prefix labelled -refset transforms/parcel_to_T1.nii.gz -nifti -neigh_upto_vert
 
 #Apply bias field correction to T1
 if [ -f T1_fast/T1_brain_bias.nii.gz ] ; then

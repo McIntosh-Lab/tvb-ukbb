@@ -113,7 +113,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
             + '"  -l '
             + logDir
             + " -j "
-            + jobFix
+            + jobFIX
             + " $BB_BIN_DIR/bb_functional_pipeline/bb_FC "
             + subject,
         )
