@@ -54,7 +54,7 @@ PATH=`echo $PATH | sed "s|$FSLDIR/bin||g"`
 export PATH="$FSLDIR/bin:$PATH"
 
 #SETUP EXTERNAL LIBRARIES
-export R_LIBS="$BBDIR/software/tenv/lib/R/library"
+export R_LIBS="$BBDIR/software/env/lib/R/library"
 
 #SET LOCALE FOR FLOATING POINT FORMATTING
 export LC_ALL=C
@@ -70,7 +70,7 @@ export MNI_mask="$FSLDIR/data/standard/MNI152_T1_1mm_brain_mask.nii.gz"
 export MNI_brain="$FSLDIR/data/standard/MNI152_T1_1mm_brain.nii.gz"
 export MNI_dir="$FSLDIR/data/standard"
 export templ="$BB_BIN_DIR/templates"
-export PYTHONPATH="$BBDIR/software/tenv/bin/python"
+export PYTHONPATH="$BBDIR/software/env/bin/python"
 export FSL_FIXDIR="$BB_BIN_DIR/bb_functional_pipeline/bb_fix_dir"
 
 
@@ -85,6 +85,6 @@ export MATLAB_COMPILER_RUNTIME="$BBDIR/software/MCR_2014a_glnxa64/v83"
 
 export XAPPLRESDIR="$BBDIR/software/MCR_2014a_glnxa64/v83/X11/app-defaults"
 
-conda activate $BBDIR/software/tenv
+conda activate $BBDIR/software/env
 
 # export PATH="$R_PATH:$PATH"
