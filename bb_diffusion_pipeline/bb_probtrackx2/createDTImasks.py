@@ -23,6 +23,7 @@ def main():
     #parser.add_argument('-e', dest="exclude", type=str, nargs=1, help='Input_exclude')
     parser.add_argument('-ri', dest='roied_interface',type=str, nargs=1,help='roied Interface')
     #parser.add_argument('-re', dest='roied_exclude',type=str, nargs=1,help='roied exclude')
+    parser.add_argument('-LUT', dest='LUT', type=str, nargs=1, help='LUT file')
     parser.add_argument('-od', dest='output_dir',type=str, nargs=1,help='output directory')
    
     
@@ -46,6 +47,7 @@ def main():
     #Exclude_inDTI = argsa.exclude[0]
     Interface_roied = argsa.roied_interface[0]
     #Exclude_roied = argsa.roied_exclude[0]
+    LUT_file = argsa.LUT[0]
     out_dir = argsa.output_dir[0]
     print(Interface_inDTI)
     print(out_dir)
@@ -66,8 +68,12 @@ def main():
     
     
     #seed_ls=[None]*len(roi_int)
-    
-    roi_int= list(range(2,43)) + list(range(51,54)) + list(range(61,65))+list(range(102,143)) + list(range(151,154)) + list(range(161,165))
+    f=open(LUT_file, 'r')
+    roi_int=[]
+    for line in f:
+        roi_int.append(int(line.split(' ')[0]))
+    f.close()
+    #roi_int= list(range(2,43)) + list(range(51,54)) + list(range(61,65))+list(range(102,143)) + list(range(151,154)) + list(range(161,165))
     #exclude_intra_ls =[None]*len(roi_int)
     #exclude_ls =[None]*len(roi_int)
     seed_ls=[None]*len(roi_int)
