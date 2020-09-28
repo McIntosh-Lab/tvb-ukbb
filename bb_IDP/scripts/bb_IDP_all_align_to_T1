@@ -52,7 +52,9 @@ baseSWI="SWI"
 #    baseSWI="$baseSWI/unusable"
 #fi
 
-basefMRI="fMRI/"
+basedMRI="dMRI"
+
+basefMRI="fMRI"
 #if [ -d $basefMRI/unusable ] ; then
 #    basefMRI="$basefMRI/unusable"
 #fi
@@ -61,7 +63,7 @@ baserfMRI="$basefMRI/rfMRI.ica/"
 basetfMRI="$basefMRI/tfMRI.feat/"
 
 
-for i in $baseT2_FLAIR/T2_FLAIR_brain $baseFieldmap/fieldmap_iout_to_T1 $baseSWI/SWI_TOTAL_MAG_to_T1 $baserfMRI/reg/example_func2highres $basetfMRI/reg/example_func2highres ; do
+for i in $baseT2_FLAIR/T2_FLAIR_brain $baseFieldmap/fieldmap_iout_to_T1 $baseSWI/SWI_TOTAL_MAG_to_T1 $basedMRI/dMRI/data_B0 $baserfMRI/reg/example_func2highres $basetfMRI/reg/example_func2highres ; do
   if [ -f ${i}.nii.gz ] ; then
     result="$result `flirt -ref $baseT1/T1_brain -in $i $MC -refweight $baseT1/T1_brain_mask | head -1 | cut -f1 -d' ' `"
   else
