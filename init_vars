@@ -40,6 +40,9 @@ export FSLCONFDIR="${FSLDIR}/config"
 export FSLOUTPUTTYPE="NIFTI_GZ"
 export FSLGECUDAQ=cuda.q                       #TO BE MODIFIED BY USER
 
+#SETUP AFNI
+export AFNIDIR=/opt/afni
+
 
 #SETUP FREESURFER 
 export FREESURFER_HOME=/opt/freesurfer                  #TO BE MODIFIED BY USER
