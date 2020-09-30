@@ -34,4 +34,4 @@ ${FSLDIR}/bin/applywarp -i $subjdir/T1/T1_fast/T1_brain_GM_mask -r $subjdir/dMRI
 /opt/afni/3dROIMaker -inset ${subjdir}/dMRI/dMRI/interface.nii.gz -thresh 0.1 -prefix ${subjdir}/dMRI/probtrackx/labelledWM -refset ${subjdir}/dMRI/dMRI/parcellation.nii.gz -nifti -neigh_upto_vert
 
 # get masks of ROIs and make a list of seeds
-${BB_BIN_DIR}/bb_diffusion_pipeline/bb_probtrackx2/createDTImasks.py -i ${subjdir}/dMRI/dMRI/interface.nii.gz -LUT ${PARC_LUT} -ri ${subjdir}/dMRI/probtrackx/interface_roied.nii.gz -od ${subjdir}/dMRI/probtrackx
+${BB_BIN_DIR}/bb_diffusion_pipeline/bb_probtrackx2/createDTImasks.py -i ${subjdir}/dMRI/dMRI/interface.nii.gz -LUT ${PARC_LUT} -ri ${subjdir}/dMRI/probtrackx/labelledWM_GM.nii.gz -od ${subjdir}/dMRI/probtrackx
