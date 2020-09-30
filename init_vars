@@ -43,7 +43,6 @@ export FSLGECUDAQ=cuda.q                       #TO BE MODIFIED BY USER
 #SETUP AFNI
 export AFNIDIR=/opt/afni
 
-
 #SETUP FREESURFER 
 export FREESURFER_HOME=/opt/freesurfer                  #TO BE MODIFIED BY USER
 source $FREESURFER_HOME/SetUpFreeSurfer.sh  > /dev/null
@@ -55,6 +54,7 @@ export PATH="$FSLDIR/bin:$PATH"
 
 #SETUP EXTERNAL LIBRARIES
 export R_LIBS="$BBDIR/software/env/lib/R/library"                           #TO BE MODIFIED BY USER
+
 
 #SET LOCALE FOR FLOATING POINT FORMATTING
 export LC_ALL=C
@@ -72,8 +72,8 @@ export MNI_dir="$FSLDIR/data/standard"
 export templ="$BB_BIN_DIR/templates"
 export PYTHONPATH="$BBDIR/software/env/bin/python"
 export FSL_FIXDIR="$BB_BIN_DIR/bb_functional_pipeline/bb_fix_dir"                       #TO BE MODIFIED BY USER
-export PARC_IMG="$templ/TVB414/TVB414.nii.gz"     #TO BE MODIFIED BY USER
-export PARC_LUT="$templ/TVB414/TVB414_LUT.txt"     #TO BE MODIFIED BY USER
+export PARC_IMG="$templ/parcellations/TVB414/TVB414.nii.gz"     #TO BE MODIFIED BY USER
+export PARC_LUT="$templ/parcellations/TVB414/TVB414_LUT.txt"     #TO BE MODIFIED BY USER
 export numROI="414"     #TO BE MODIFIED BY USER
 
 #INCLUDE 3 MAIN BIOBANK DIRECTORIES IN PATH
