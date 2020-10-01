@@ -26,12 +26,12 @@ $BB_BIN_DIR/bb_structural_pipeline/bb_epi_reg --epi=$subjdir/dMRI/dMRI/data_B0.n
 ${FSLDIR}/bin/convert_xfm -omat $subjdir/dMRI/dMRI/transforms/T1_to_DTI.mat -inverse $subjdir/dMRI/dMRI/transforms/DTI_to_T1.mat
 
 # apply inverse warp to get parcellation, interface and exclude masks in DTI space
-${FSLDIR}/bin/applywarp -i $subjdir/T1/transforms/RM96_to_T1 -r $subjdir/dMRI/dMRI/data_B0 -o $subjdir/dMRI/dMRI/parcellation --premat=$subjdir/dMRI/dMRI/transforms/T1_to_DTI.mat --interp=nn
+${FSLDIR}/bin/applywarp -i $subjdir/T1/transforms/parcel_to_T1 -r $subjdir/dMRI/dMRI/data_B0 -o $subjdir/dMRI/dMRI/parcellation --premat=$subjdir/dMRI/dMRI/transforms/T1_to_DTI.mat --interp=nn
 ${FSLDIR}/bin/applywarp -i $subjdir/dMRI/dMRI/transforms/DTI_to_T1_fast_wmedge -r $subjdir/dMRI/dMRI/data_B0 -o $subjdir/dMRI/dMRI/interface --premat=$subjdir/dMRI/dMRI/transforms/T1_to_DTI.mat --interp=nn
 ${FSLDIR}/bin/applywarp -i $subjdir/T1/T1_fast/T1_brain_GM_mask -r $subjdir/dMRI/dMRI/data_B0 -o $subjdir/dMRI/probtrackx/exclude --premat=$subjdir/dMRI/dMRI/transforms/T1_to_DTI.mat --interp=nn
 
 # label the interface (search space = 1)
-/opt/afni/3dROIMaker -inset ${subjdir}/dMRI/dMRI/interface.nii.gz -thresh 0.1 -prefix ${subjdir}/dMRI/probtrackx/labelledWM -refset ${subjdir}/dMRI/dMRI/parcellation.nii.gz -nifti -neigh_upto_vert
+${AFNIDIR}/3dROIMaker -inset ${subjdir}/dMRI/dMRI/interface.nii.gz -thresh 0.1 -prefix ${subjdir}/dMRI/probtrackx/labelledWM -refset ${subjdir}/dMRI/dMRI/parcellation.nii.gz -nifti -neigh_upto_vert
 
 # get masks of ROIs and make a list of seeds
-${BB_BIN_DIR}/bb_diffusion_pipeline/bb_probtrackx2/createDTImasks.py -i ${subjdir}/dMRI/dMRI/interface.nii.gz -ri ${subjdir}/dMRI/probtrackx/interface_roied.nii.gz -od ${subjdir}/dMRI/probtrackx
+${BB_BIN_DIR}/bb_diffusion_pipeline/bb_probtrackx2/createDTImasks.py -i ${subjdir}/dMRI/dMRI/interface.nii.gz -LUT ${PARC_LUT} -ri ${subjdir}/dMRI/probtrackx/labelledWM_GM.nii.gz -od ${subjdir}/dMRI/probtrackx

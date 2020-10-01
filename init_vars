@@ -35,7 +35,10 @@ export FSLDIR=/opt/HCPpipelines-4.1.3/fsl                         #TO BE MODIFIE
 . $FSLDIR/etc/fslconf/fsl.sh
 export FSLCONFDIR="${FSLDIR}/config"
 export FSLOUTPUTTYPE="NIFTI_GZ"
-export FSLGECUDAQ=cuda.q                                          #TO BE MODIFIED BY USER
+export FSLGECUDAQ=cuda.q                       #TO BE MODIFIED BY USER
+
+#SETUP AFNI
+export AFNIDIR=/opt/afni
 
 #SETUP FREESURFER 
 export FREESURFER_HOME=/opt/freesurfer                            #TO BE MODIFIED BY USER
@@ -57,6 +60,7 @@ export PATH="$FSLDIR/bin:$PATH"
 export R_LIBS="$BBDIR/software/env/lib/R/library"
 export R_DIR="$BBDIR/software/env/lib/R"
 
+
 #SET LOCALE FOR FLOATING POINT FORMATTING
 export LC_ALL=C
 
@@ -72,9 +76,11 @@ export MNI_brain="$FSLDIR/data/standard/MNI152_T1_1mm_brain.nii.gz"
 export MNI_dir="$FSLDIR/data/standard"
 export templ="$BB_BIN_DIR/templates"
 export PYTHONPATH="$BBDIR/software/env/bin/python"
-export FSL_FIXDIR="$BB_BIN_DIR/bb_functional_pipeline/bb_fix_dir"
-# export FSL_FIXDIR="/opt/HCPpipelines-4.1.3/fix"
 
+export FSL_FIXDIR="$BB_BIN_DIR/bb_functional_pipeline/bb_fix_dir"                       #TO BE MODIFIED BY USER
+export PARC_IMG="$templ/parcellations/TVB414/TVB414.nii.gz"     #TO BE MODIFIED BY USER
+export PARC_LUT="$templ/parcellations/TVB414/TVB414_LUT.txt"     #TO BE MODIFIED BY USER
+export numROI="414"     #TO BE MODIFIED BY USER
 
 #INCLUDE 3 MAIN BIOBANK DIRECTORIES IN PATH
 export PATH="$BB_BIN_DIR/bb_pipeline_tools/:$BB_BIN_DIR/bb_general_tools/:$PATH"
@@ -89,5 +95,3 @@ export MATLAB_COMPILER_RUNTIME="$MCROOT/$MCRV"
 export XAPPLRESDIR="$MCROOT/$MCRV/X11/app-defaults"
 
 conda activate $BBDIR/software/env
-
-# export PATH="$R_PATH:$PATH"
