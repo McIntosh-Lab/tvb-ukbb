@@ -7,9 +7,21 @@ The `UK_biobank_pipeline` project is a processing pipeline written mainly in Pyt
 Dependencies
 ------------
 
-Most of the dependencies of `UK_biobank_pipeline` are listed in the [requirements.txt](requirements.txt) file.
+The only external dependencies required for this pipeline are:
+* FSL
+* AFNI
+* Anaconda/Miniconda
+* git (>=2)
 
-One additional dependency - [gradunwarp](bb_python/python_installation/gradunwarp_FMRIB.tar.gz) - can be installed with a provided [installation script](bb_python/python_installation/install_bb_python.sh) 
+
+Installation
+------------
+
+1) Download the release .zip from the repository.
+2) Unzip the .zip file to where you'd like the pipeline to be installed; e.g. unzipping it in `/opt` will yield `/opt/ukbb`
+3) `cd` into ukbb and run `chmod +x install_ukbb.sh`
+4) Run `./install_ukbb.sh`
+5) Once the installer finishes, `cd` into `ukbb-mclab` and edit file `init_vars`. Lines specified with `#TO BE MODIFIED BY USER` are the only lines you should need to change.
 
 
 Documentation
