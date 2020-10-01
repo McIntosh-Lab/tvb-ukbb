@@ -37,16 +37,16 @@ export FSLCONFDIR="${FSLDIR}/config"
 export FSLOUTPUTTYPE="NIFTI_GZ"
 export FSLGECUDAQ=cuda.q                                          #TO BE MODIFIED BY USER
 
-# R environment
-# R_PATH="$BBDIR/software/Renv/lib/R"
-
 #SETUP FREESURFER 
 export FREESURFER_HOME=/opt/freesurfer                            #TO BE MODIFIED BY USER
 source $FREESURFER_HOME/SetUpFreeSurfer.sh  > /dev/null
 
 # SET UP MATLAB
-export MATLAB_DIR=/opt/Matlab2015b                                #TO BE MODIFIED BY USER
-export MCROOT="$BBDIR/software/MCR_2014a_glnxa64"                 #TO BE MODIFIED BY USER
+# export MATLAB_DIR=/opt/Matlab2015b                                #TO BE MODIFIED BY USER
+# export MCROOT="$BBDIR/software/MCR_2014a_glnxa64"                 #TO BE MODIFIED BY USER
+export MCROOT="$BBDIR/software/MCR_2017b_glnxa64"                 #TO BE MODIFIED BY USER
+# export MCROOT="/opt/MatlabR2017b/MATLAB_Runtime"                  #TO BE MODIFIED BY USER
+export MCRV="v93"
 
 #Move $FSLDIR/bin before $FREESURFER_HOME in the path
 FSLDIRseddable=`echo $FSLDIR | sed 's|/|\\\/|g'`
@@ -55,6 +55,7 @@ export PATH="$FSLDIR/bin:$PATH"
 
 #SETUP EXTERNAL LIBRARIES
 export R_LIBS="$BBDIR/software/env/lib/R/library"
+export R_DIR="$BBDIR/software/env/lib/R"
 
 #SET LOCALE FOR FLOATING POINT FORMATTING
 export LC_ALL=C
@@ -72,6 +73,7 @@ export MNI_dir="$FSLDIR/data/standard"
 export templ="$BB_BIN_DIR/templates"
 export PYTHONPATH="$BBDIR/software/env/bin/python"
 export FSL_FIXDIR="$BB_BIN_DIR/bb_functional_pipeline/bb_fix_dir"
+# export FSL_FIXDIR="/opt/HCPpipelines-4.1.3/fix"
 
 
 #INCLUDE 3 MAIN BIOBANK DIRECTORIES IN PATH
@@ -79,11 +81,12 @@ export PATH="$BB_BIN_DIR/bb_pipeline_tools/:$BB_BIN_DIR/bb_general_tools/:$PATH"
 
 
 #SET PATH FOR MCR
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$BBDIR/software/MCR_2014a_glnxa64/v83/runtime/glnxa64:$BBDIR/software/MCR_2014a_glnxa64/v83/bin/glnxa64:$BBDIR/software/MCR_2014a_glnxa64/v83/sys/os/glnxa64:$BBDIR/software/MCR_2014a_glnxa64/v83/sys/opengl/lib/glnxa64"
+export LD_LIBRARY_PATH="$MCROOT/$MCRV/runtime/glnxa64:$MCROOT/$MCRV/bin/glnxa64:$MCROOT/$MCRV/sys/os/glnxa64:$MCROOT/$MCRV/sys/opengl/lib/glnxa64:$LD_LIBRARY_PATH"
 
-export MATLAB_COMPILER_RUNTIME="$BBDIR/software/MCR_2014a_glnxa64/v83"
+export MATLAB_COMPILER_RUNTIME="$MCROOT/$MCRV"
+# export MATLAB_COMPILER_RUNTIME="/opt/MatlabR2017b/MATLAB_Runtime/v93"                  #TO BE MODIFIED BY USER
 
-export XAPPLRESDIR="$BBDIR/software/MCR_2014a_glnxa64/v83/X11/app-defaults"
+export XAPPLRESDIR="$MCROOT/$MCRV/X11/app-defaults"
 
 conda activate $BBDIR/software/env
 

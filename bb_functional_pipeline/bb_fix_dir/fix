@@ -20,7 +20,7 @@ FIX (FMRIB's ICA-based Xnoiseifier) v$FIXVERSION
 
 Simple usage, assuming training data already exists:
 
-  fix <mel.ica> <train>.RData <thresh>  [fix -a options] 
+  fix <mel.ica> <train>.RData <thresh>  [fix -a options]
     Extract features, classify and run cleanup - equivalent to:
       fix -f <mel.ica> ; fix -c <mel.ica> <train>.RData <thresh> ; fix -a <mel.ica>/fix4melview_<train>_<thresh>.txt [-a options]
     For the [fix -a options], see "fix -a" usage below.
@@ -30,15 +30,15 @@ Simple usage, assuming training data already exists:
 
 Usage for each stage separately, including creation of training data:
 
-  fix -f <mel.ica>             
+  fix -f <mel.ica>
     Feature extraction (for later training and/or classifying).
 
-  fix -t <training-output-basename> [-l] <mel1.ica> <mel2.ica> ... 
+  fix -t <training-output-basename> [-l] <mel1.ica> <mel2.ica> ...
     Train classifier (Training output basename followed by list of Melodic directories).
     Every Melodic directory must contain hand_labels_noise.txt listing the artefact components, e.g.:  [1, 4, 99, ... 140].
     -l : optional LOO accuracy testing (takes a long time unless you have a cluster setup).
 
-  fix -c <mel.ica> <training.RData> <thresh>       
+  fix -c <mel.ica> <training.RData> <thresh>
     Classify ICA components (<thresh> is in the range 0-100, typically 5-20).
 
   fix -C <training.RData> <output> <mel1.ica> <mel2.ica> ...
@@ -46,15 +46,14 @@ Usage for each stage separately, including creation of training data:
       testing using existing hand classifictions.
     Every Melodic directory must contain hand_labels_noise.txt listing the artefact components, e.g.:  [1, 4, 99, ... 140].
 
-  fix -a <mel.ica/fix4melview_TRAIN_thr.txt>  [-m [-h <highpass>]]  [-A]
+  fix -a <mel.ica/fix4melview_TRAIN_thr.txt>  [-m] [-h <highpass>]  [-A]
     Apply cleanup, using artefacts listed in the .txt file, to the data inside the enclosing Feat/Melodic directory.
-    -m : optionally also cleanup motion confounds, with highpass filtering of motion confounds controlled by:
+    -h -1          apply no highpass filtering.
+    -h 0           apply linear detrending only.
+    -h <highpass>  with a positive <highpass> value, apply highpass with <highpass> being full-width (2*sigma) in seconds.
+    -m : optionally also cleanup motion confounds, with highpass filtering of motion confounds controlled by -h:
        - if -h is omitted, fix will look to see if a design.fsf file is present, to find the highpass cutoff.
        - if -h is omitted, and no design.fsf is present, no filtering of the motion confounds will take place.
-       - if -h <highpass> is set, then:
-            -h -1          apply no filtering to motion confounds.
-            -h 0           apply linear detrending only.
-            -h <highpass>  with a positive <highpass> value, apply highpass with <highpass> being full-width (2*sigma) in seconds.
     -A : apply aggressive (full variance) cleanup, instead of the default less-aggressive (unique variance) cleanup.
 
   If [-t] or [-c] are fed Melodic output directories without features already extracted, [-f] will automatically be run.
@@ -75,7 +74,7 @@ CheckFeatures() {
     echo FIX features not already generated, so creating them now.
     ${FSL_FIXDIR}/fix -f $1
   else
-    if [ ! -f $1/fix/.version ] || [ x`cat $1/fix/.version` != x$FIXVERSION ] ; then
+    if [ ! -f $1/fix/.version ] || [ x`cat $1/fix/.version` != x$FIXFEATUREVERSION ] ; then
       echo Warning: this version of FIX does not match the already-computed FIX features in ${MELOUT}/fix.
       echo You probably need to delete ${MELOUT}/fix and regenerate the FIX features.
       echo You can ignore this warning if you are trying to use v1.05 features with FIX v1.06
@@ -114,7 +113,7 @@ while [ _$1 != _ ] ; do
         fix_mode=3
         [ "$4" = "" ] && Usage
         MELOUT=$2
-        TRAIN=`dirname $3`/`basename $3 .RData`.RData  
+        TRAIN=`dirname $3`/`basename $3 .RData`.RData
         THRESH=$4
         [ ! -d $MELOUT ] && echo No valid Melodic output directory specified && exit 1
         [ ! -f $TRAIN ] && echo No valid training file specified && exit 1
@@ -140,10 +139,9 @@ while [ _$1 != _ ] ; do
     elif [ _$1 = _-m ] ; then
 	domot=1
 	shift
-        if [ _$1 = _-h ] ; then
+    elif [ _$1 = _-h ] ; then
 	  HP=$2
 	  shift 2
-        fi
     elif [ _$1 = _-A ] ; then
 	aggressive=1
 	shift
@@ -166,7 +164,7 @@ case $fix_mode in
   1)
     echo "FIX Feature extraction for Melodic output directory: $MELOUT"
     mkdir -p ${MELOUT}/fix
-    echo $FIXVERSION > ${MELOUT}/fix/.version
+    echo $FIXFEATUREVERSION > ${MELOUT}/fix/.version
     echo " create edge masks"
     ${FSL_FIXDIR}/fix_0a_create_edge_masks $MELOUT
     echo " run FAST"
@@ -193,12 +191,12 @@ case $fix_mode in
     i=1
     while [ $i -lt 11 ] ; do
       echo " running classifier training"
-      R CMD BATCH "--no-restore --no-save --args ${FSL_FIXDIR} ${TRAIN} ${TRAIN}.RData" ${FSL_FIXDIR}/fix_2a_train.R ${TRAIN}/.Rlog$i
+      ${FSL_FIX_R_CMD} CMD BATCH "--no-restore --no-save --args ${FSL_FIXDIR} ${TRAIN} ${TRAIN}.RData" ${FSL_FIXDIR}/fix_2a_train.R ${TRAIN}/.Rlog$i
       [ -f ${TRAIN}.RData ] && i=10000
       i=`echo "$i 1 + p" | dc -`
     done
     if [ $loo = 1 ] ; then
-      echo $MELOUT > $TRAIN/.fixlist   
+      echo $MELOUT > $TRAIN/.fixlist
       echo " running LOO accuracy testing"
       LOO=${TRAIN}_LOO
       bLOO=`basename $LOO`
@@ -245,11 +243,11 @@ case $fix_mode in
       done
       jidf=`fsl_sub $jids -q short.q -l $LOO ${FSL_FIXDIR}/call_matlab.sh -f fix_2c_loo_results $LOO`
     ;;
-    
+
   3)
     echo "FIX Classifying components in Melodic directory: $MELOUT using training file: $TRAIN and threshold $THRESH"
     CheckFeatures $MELOUT
-    R CMD BATCH "--no-restore --no-save --args ${FSL_FIXDIR} ${MELOUT} ${TRAIN} ${THRESH}" ${FSL_FIXDIR}/fix_2b_predict.R ${MELOUT}/.fix_2b_predict.log
+    ${FSL_FIX_R_CMD} CMD BATCH "--no-restore --no-save --args ${FSL_FIXDIR} ${MELOUT} ${TRAIN} ${THRESH}" ${FSL_FIXDIR}/fix_2b_predict.R ${MELOUT}/.fix_2b_predict.log
     ;;
 
   4)

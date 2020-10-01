@@ -147,15 +147,18 @@ end.string <- "["
 anynoise <- 0
 for(i in c(1:length(fusion.tree.prd.testp))){
 	if(fusion.tree.prd.testp[i]< bin.thresh){
-		cat(paste(i, ", ", "Unclassified Noise", ", ", "True", sep = ""))
+		#cat(paste(i, ", ", "Unclassified Noise", ", ", "True", sep = ""))
+		cat(paste(i, ", ", "Unclassified Noise", ", ", "True",",",fusion.tree.prd.testp[i], sep = ""))
 		cat("\n")
 		end.string <- paste(end.string, i, ", ", sep = "")
 		anynoise <- 1
 	}else if(fusion.tree.prd.testp[i]>.5){
-		cat(paste(i, ", ", "Signal", ", ", "False", sep = ""))
+		#cat(paste(i, ", ", "Signal", ", ", "False", sep = ""))
+		cat(paste(i, ", ", "Signal", ", ", "False",",",fusion.tree.prd.testp[i], sep = ""))
 		cat("\n")
 	}else{
-		cat(paste(i, ", ", "Unknown", ", ", "False", sep = ""))
+		#cat(paste(i, ", ", "Unknown", ", ", "False", sep = ""))
+		cat(paste(i, ", ", "Unknown", ", ", "False",",",fusion.tree.prd.testp[i], sep = ""))
 		cat("\n")
 	}
 }

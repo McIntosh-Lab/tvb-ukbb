@@ -5,13 +5,13 @@
 
 function usage {
 	echo \
-"$0 [-z <mode>] [-o <options>] [-p <path>] [-h <fix path>] 
-	[-c <mcr path>] [-b <binaries path>] [-l <logfile>] 
+"$0 [-z <mode>] [-o <options>] [-p <path>] [-h <fix path>]
+	[-c <mcr path>] [-b <binaries path>] [-l <logfile>]
 	{-r <\"MATLAB code\">|-m <script>|-f <function> [arguments...]}
 
-	-z <mode>:	This overrides the environment variable 
+	-z <mode>:	This overrides the environment variable
 		FSL_FIX_MATLAB_MODE which would	otherwise control this.
-			0 = Use compiled MATLAB function specified by 
+			0 = Use compiled MATLAB function specified by
 				-m <function name>
 			1 = Use MATLAB - requires -r or -m option
 			2 = Use Octave - requires -r or -m option
@@ -21,7 +21,7 @@ function usage {
 		Ensure that any double quotes in this string are escaped
 		with '\\'.
 	-m <script>:
-		-z = 0 or not provided, run as -z = 1 
+		-z = 0 or not provided, run as -z = 1
 		-z = 1|2 - Run <script> in MATLAB/Octave
 			Equivalent to 'matlab \< <script>.m' or 'octave <script>.m'
 	-f <function> [arguments]:
@@ -31,7 +31,7 @@ function usage {
 		-z = 1|2 - Run <function> script in MATLAB/Octave
 			Equivalent to 'matlab -r \"<function>([arguments])\"' or
 			'octave --eval \"<function>([arguments])\"'
-			Arguments to be passed are given in the remainder of the 
+			Arguments to be passed are given in the remainder of the
 			command line.
 	-o <options>: Double quoted list of MATLAB/Octave command line
 		options. Defaults to \${FSL_FIX_MLOPTS} or \${FSL_FIX_OCOPTS}
@@ -43,7 +43,7 @@ function usage {
 	-w <path>: Path to FSL MATLAB helper functions, defaults to
 			${FSLDIR}/etc/matlab
 	-c <mcr path>: Path to MATLAB Compiler Runtime for the version
-		of MATLAB Fix was compiled under. Defaults to \${FSL_FIX_MCRROOT}
+		of MATLAB Fix was compiled under. Defaults to \${FSL_FIX_MCR}
 	-b <compiled path>: Path to the folder containing the compiled MATLAB
 		functions. Defaults to \${FSL_FIX_MLCDIR}
 	-l <logfile>: Append console and error output to <logfile>\n" >&2
@@ -188,7 +188,7 @@ if [ -z "${fmm}" ]; then
 	else
 		fmm=${FSL_FIX_MATLAB_MODE}
 	fi
-fi	
+fi
 
 shift $(($OPTIND - 1))
 
@@ -211,7 +211,7 @@ if [ ! -z "${FUNC}" ]; then
 			F_ARGS="${F_ARGS} '${arg//\"/\\\"}'"
 	fi
 	done;
-fi 
+fi
 
 # Set some defaults
 if [ -z "${MATLAB_BIN}" ]; then
@@ -244,12 +244,12 @@ if [ ${fmm} -eq 0 ]; then
 		usage
 	fi
 	# Test for MCR setup
-	if [ ! -d "${FSL_FIX_MCR}" ]; then
+	if [ ! -d "${MCR}" ]; then
 		echo "Unable to find MATLAB Compiler Runtime" >&2
 		usage
 	fi
 	if [ -z "${FSL_FIX_MCRV}" ]; then
-		echo "Cannot locate MATLAB Compiler Runtime version file (MCR.version)" >&2
+		echo "Cannot locate MATLAB Compiler Runtime version file (MCR.version) - has this been compiled?" >&2
 		usage
 	fi
 
@@ -265,15 +265,13 @@ if [ ${fmm} -eq 0 ]; then
 		else
 			echo "Unable to find compiled functions or MATLAB/OCTAVE" >&2
 			exit 2
-		fi	
+		fi
 	else
 		cmd="${EXE} ${MCR} ${F_ARGS} ${LOGGING}"
 		echo "$cmd" | sh
 		exit $?
 	fi
-fi
-
-if [ -z "${DOPTS}" ]; then
+elif [ -z "${DOPTS}" ]; then
 	if [ "${fmm}" -eq 1 ]; then
 		DOPTS=${FSL_FIX_MLOPTS}
 	else
@@ -281,8 +279,7 @@ if [ -z "${DOPTS}" ]; then
 	fi
 fi
 
-if [ "${fmm}" -eq 1 ]
-then
+if [ "${fmm}" -eq 1 ]; then
 	RUNTIME="${MATLAB_BIN}"
 	EVAL_CMD=${FSL_FIX_MLEVAL}
 	FILE_CMD=${FSL_FIX_MLFILE}
@@ -316,11 +313,11 @@ if [ ${fmm} -gt 0 -a ${fmm} -lt 3 ]; then
 		exit $?
 	elif [ ! -z "${FUNC}" ]; then
 		for arg in ${F_ARGS}; do
-			arg=`echo $arg | sed -e 's/^\(.* \)$/\"\1\"/'`
+			arg=$(echo $arg | sed -e 's/^\(.* \)$/\"\1\"/')
 			FUNC_ARGS="${FUNC_ARGS},${arg}"
 		done
-		FUNC_ARGS=`echo ${FUNC_ARGS} | sed -e 's/^.\(.*\)$/\1/'`
-		cmd="${RUNTIME} ${DOPTS} ${EVAL_CMD} \"${ML_PATHS} ${FUNC}(${FUNC_ARGS})\" ${LOGGING}"
+		FUNC_ARGS=$(echo ${FUNC_ARGS} | sed -e 's/^.\(.*\)$/\1/')
+		cmd="${RUNTIME} ${DOPTS} ${EVAL_CMD} \"${ML_PATHS} ${FUNC}(${FUNC_ARGS});\" ${LOGGING}"
 		echo "$cmd" | sh
 		exit $?
 	elif [ ! -z "${MFILE}" ]; then
