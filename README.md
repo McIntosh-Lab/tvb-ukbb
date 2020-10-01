@@ -1,7 +1,9 @@
 UK_biobank_pipeline
 ===================
 
-The `UK_biobank_pipeline` project is a processing pipeline written mainly in Python and bash. It uses [FSL](http://fsl.fmrib.ox.ac.uk/fsl/fslwiki/) as the basic building blocks.
+The `UK_biobank_pipeline` project is a processing pipeline written in Python, bash, MATLAB, and R. It uses [FSL](http://fsl.fmrib.ox.ac.uk/fsl/fslwiki/) as the basic building blocks.
+
+Note: at present, this pipeline cannibalizes subject directories. It's strongly advised to make a copy of subject directories and to run the pipeline on those copies until we correct that behaviour.
 
 
 Dependencies
@@ -10,6 +12,7 @@ Dependencies
 The only external dependencies required for this pipeline are:
 * FSL
 * AFNI
+* Freesurfer
 * Anaconda/Miniconda
 * git (>=2)
 
@@ -22,6 +25,8 @@ Installation
 3) `cd` into ukbb and run `chmod +x install_ukbb.sh`
 4) Run `./install_ukbb.sh`
 5) Once the installer finishes, `cd` into `ukbb-mclab` and edit file `init_vars`. Lines specified with `#TO BE MODIFIED BY USER` are the only lines you should need to change.
+
+Note: at present, changes may need to be made to the code handling SGE queuing depending on your system. Currently we use queues `all.q` and `bigmem_16.q`; adding queues with those names will drastically reduce queue configuration.
 
 
 Documentation
