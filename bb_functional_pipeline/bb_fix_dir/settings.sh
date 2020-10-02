@@ -164,7 +164,7 @@ fi
 # ===================
 if [ -z "${FSL_FIX_R_CMD}" ]; then
 	# FSL_FIX_R_CMD="${FSLDIR}/fslpython/envs/fslpython/bin/R"
-	FSL_FIX_R_CMD=$R_DIR
+	FSL_FIX_R_CMD="$R_DIR/bin/R"
 	if [ ! -x "${FSL_FIX_R_CMD}" ]; then
 		# Set this to the location of the R binary, e.g.
 		# Linux: /usr/bin/R
