@@ -89,7 +89,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
             + " -j "
             + jobPREPARE_R
             + " feat "
-            + baseDir 
+            + baseDir
             + "/fMRI/rfMRI.fsf "
             + subject,
         )
@@ -118,18 +118,18 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
             + subject,
         )
         ### don't generate group-ICA RSNs
-        #jobDR = LT.runCommand(
-            #logger,
-            ##'${FSLDIR}/bin/fsl_sub -T 120  -N "bb_ICA_dr_'
-            #'${FSLDIR}/bin/fsl_sub -q bigmem_16.q  -N "bb_ICA_dr_'
-            #+ subname
-            #+ '"  -l '
-            #+ logDir
-            #+ " -j "
-            #+ jobFIX
-            #+ " $BB_BIN_DIR/bb_functional_pipeline/bb_ICA_dual_regression "
-            #+ subject,
-        #)
+        # jobDR = LT.runCommand(
+        # logger,
+        ##'${FSLDIR}/bin/fsl_sub -T 120  -N "bb_ICA_dr_'
+        #'${FSLDIR}/bin/fsl_sub -q bigmem_16.q  -N "bb_ICA_dr_'
+        # + subname
+        # + '"  -l '
+        # + logDir
+        # + " -j "
+        # + jobFIX
+        # + " $BB_BIN_DIR/bb_functional_pipeline/bb_ICA_dual_regression "
+        # + subject,
+        # )
         jobCLEAN = LT.runCommand(
             logger,
             #'${FSLDIR}/bin/fsl_sub -T 5  -N "bb_rfMRI_clean_'
@@ -138,7 +138,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
             + '"  -l '
             + logDir
             + " -j "
-            #+ jobDR
+            # + jobDR
             + jobFC
             + " $BB_BIN_DIR/bb_functional_pipeline/bb_clean_fix_logs "
             + subject,

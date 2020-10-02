@@ -1,7 +1,0 @@
-<<<<<<< Updated upstream
-File UKBiobank.RData is neded for FIX. It can be found in:
-=======
-File UKBiobank.RData is neded for FIX. It can be found at:
->>>>>>> Stashed changes
-
-/liberatrix/mcintosh_lab/kshen/ukbb/UK_biobank_pipeline_v_1/bb_functional_pipeline/bb_fix_dir/training_files/UKBiobank.RData

@@ -2,7 +2,7 @@
 
 # Script to install all pre-requisite Octave libraries
 
-platform=`uname -s`
+platform=$(uname -s)
 yes=$1
 global=$2
 opt_str=":y:g"
@@ -82,7 +82,7 @@ if [ "${platform}" = "Darwin" ]; then
 		echo "MacPorts not found. Please install from http://www.macports.org"
 		exit 1
 	fi
-	`which port` >/dev/null 2>&1
+	which port >/dev/null 2>&1
 	if [ $? -eq 1 ]; then
 		echo "Unable to find MacPorts 'port' command, is /opt/local/bin in your PATH?"
 		exit 1
@@ -109,7 +109,7 @@ OC_INSTALL_CMD="pkg install ${GLOBAL} -auto -forge io; pkg install ${GLOBAL} -au
 pkg install ${GLOBAL} -auto -forge specfun; pkg install ${GLOBAL} -auto -forge general; \
 pkg install ${GLOBAL} -auto -forge control; pkg install ${GLOBAL} -auto -forge signal;"
 # Now install some packages
-OCVER=`octave -v | head -1 | awk '{ print $4 }' | cut -d '.' -f 1,2`
+OCVER=$(octave -v | head -1 | awk '{ print $4 }' | cut -d '.' -f 1,2)
 if [ "${OCVER}" = "3.2" ]; then
 	echo "Unsupported version of Octave - if you are using MacPorts, please uninstall octave \(sudo port uninstall octave\) and re-run this script"
 	exit 2

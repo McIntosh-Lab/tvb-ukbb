@@ -23,10 +23,16 @@ else
     convert_xfm -omat $folders/fix/std2exfunc.mat -concat $folders/reg/highres2example_func.mat $folders/fix/std2highres.mat
   fi
 
+  if [ "$SPECIES" = "" ] || [ "$SPECIES" = "Human" ] ; then   # Added by Takuya Hayashi on Oct 2017
+	species=""
+  else
+	species="_$SPECIES"
+  fi
+
   for m in 0 1 2 3 ; do
-    flirt -in $fixdir/mask_files/sag_mask${m}     -ref $exfunc -applyxfm -init ${folders}/fix/std2exfunc.mat -out ${folders}/fix/std1mm2exfunc${m}     -datatype float
-    flirt -in $fixdir/mask_files/sag_mask${m}dil  -ref $exfunc -applyxfm -init ${folders}/fix/std2exfunc.mat -out ${folders}/fix/std1mm2exfunc${m}dil  -datatype float
-    flirt -in $fixdir/mask_files/sag_mask${m}dil2 -ref $exfunc -applyxfm -init ${folders}/fix/std2exfunc.mat -out ${folders}/fix/std1mm2exfunc${m}dil2 -datatype float
+    flirt -in $fixdir/mask_files${species}/sag_mask${m}     -ref $exfunc -applyxfm -init ${folders}/fix/std2exfunc.mat -out ${folders}/fix/std1mm2exfunc${m}     -datatype float
+    flirt -in $fixdir/mask_files${species}/sag_mask${m}dil  -ref $exfunc -applyxfm -init ${folders}/fix/std2exfunc.mat -out ${folders}/fix/std1mm2exfunc${m}dil  -datatype float
+    flirt -in $fixdir/mask_files${species}/sag_mask${m}dil2 -ref $exfunc -applyxfm -init ${folders}/fix/std2exfunc.mat -out ${folders}/fix/std1mm2exfunc${m}dil2 -datatype float
   done
 
 fi

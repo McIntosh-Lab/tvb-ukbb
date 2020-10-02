@@ -1,0 +1,4 @@
+17/03/20	1.06.15
+*		Lowered RAM footprint for fix_3_clean
+14/02/20	1.06.14
+*		Generate denoised motion regressors

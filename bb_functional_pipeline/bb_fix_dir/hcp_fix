@@ -47,7 +47,8 @@ echo "processing FMRI file $fmri with highpass $hp"
 if [ $hp -gt 0 ] ; then
   echo "running highpass"
   hptr=`echo "10 k $hp 2 / $tr / p" | dc -`
-  ${FSLDIR}/bin/fslmaths $fmri -bptf $hptr -1 ${fmri}_hp$hp
+  ${FSLDIR}/bin/fslmaths $fmri -Tmean ${fmri}_hp$hp
+  ${FSLDIR}/bin/fslmaths $fmri -sub ${fmri}_hp$hp -bptf $hptr -1 -add ${fmri}_hp$hp ${fmri}_hp$hp
   fmri=${fmri}_hp$hp
 fi
 

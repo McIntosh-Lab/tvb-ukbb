@@ -1,0 +1,16 @@
+#flirt -in ~/hcp/Phase2/means/T1T2r/T1T2r_median.nii.gz -ref sag_mask_orig -applyxfm -out T1T2r_median
+imcp /data/Macaque/HCP-RIKEN/average/MNINonLinear/average_AverageT1wDividedByT2w.nii.gz T1T2r_median
+# edit T1T2r_median to create sag_mask_orig, labeling SSS 1, Transverse&Sigmoid 2, Galen 3 
+fslmaths T1T2r_mean.nii.gz -mas brainmask.nii.gz -thr 3.5 -bin sag_mask_tmp
+# edit sag_mask_tmp to exclude non-vein voxels
+fslmaths sag_mask_tmp.nii.gz -s 0.4  sag_mask_tmp1
+fslmaths sag_mask_tmp1.nii.gz -thr 0.1 -bin sag_mask_tmp2
+fslmaths sag_mask_tmp2.nii.gz  -roi 0 194 0 252 0 88 0 1 sag_mask_tmp2_trans
+fslmaths sag_mask_tmp2.nii.gz -roi 93 6 50 23 89 20 0 1 -mul 2 sag_mask_tmp2_galen
+fslmaths sag_mask_tmp2.nii.gz -add sag_mask_tmp2_trans.nii.gz -add sag_mask_tmp2_galen.nii.gz sag_mask_tmp3
+fslmaths sag_mask_tmp3 sag_mask_orig
+
+#fslmaths sag_mask_orig -dilD -dilD -dilD -dilD -dilD -dilD -dilD -dilD sag_mask
+#fslmaths T1T2r_median -thr 8 -bin -mul sag_mask sag_mask -odt char
+fslmaths sag_mask_orig -dilD  sag_mask
+fslmaths T1T2r_median -thr 3.5 -bin -mul sag_mask sag_mask -odt char

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 . $( cd $(dirname $0) ; pwd)/settings.sh
-fixsettings=`set | grep FSL_FIX | awk -F= '{print $1}'`
+fixsettings=$(set | grep FSL_FIX | awk -F= '{print $1}')
 for setting in $fixsettings; do
   export $setting
 done
@@ -11,7 +11,7 @@ FSL_FIX_MLCDIR=${FSL_FIXDIR}/testfolder
 export FSL_FIX_MLCDIR
 MCCOPTS='-mv -R -nojvm -R -nodisplay'
 ECHO=echo
-if [ `uname -s` = "Linux" ]; then
+if [ $(uname -s) = "Linux" ]; then
 	ECHO="echo -e"
 fi
 $ECHO "disp('hello')" > test_1.m

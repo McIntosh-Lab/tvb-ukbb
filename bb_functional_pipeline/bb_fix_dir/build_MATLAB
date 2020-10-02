@@ -1,7 +1,9 @@
 #!/bin/sh
+export FSL_FIX_MATLAB_MODE=1
 . $( cd $(dirname $0) ; pwd)/settings.sh
+
 export FSL_FIX_OS FSL_FIX_ARCH
-export FSL_FIX_MATLAB FSL_FIX_MOPTS
+export FSL_FIX_MATLAB FSL_FIX_MLOPTS
 export FSL_FIX_MATLAB_ROOT FSL_FIX_MLCDIR
 export FSL_FIX_MCC FSL_FIX_FSLMATLAB
 export FSL_FIX_CIFTIRW
