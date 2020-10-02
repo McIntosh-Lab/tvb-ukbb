@@ -199,9 +199,10 @@ ${FSLDIR}/bin/run_first_all -i T1_first/T1_unbiased_brain -b -o T1_first/T1_firs
 ${FSLDIR}/bin/fslmaths T1_first/T1_first_all_fast_firstseg -uthr 15 T1_first/subcort_upperthresh_seg
 ${FSLDIR}/bin/fslmaths T1_first/T1_first_all_fast_firstseg -thr 17 T1_first/subcort_lowerthresh_seg
 ${FSLDIR}/bin/fslmaths T1_first/subcort_upperthresh_seg -add T1_first/subcort_lowerthresh_seg -bin T1_first/subcort_GM
+${FSLDIR}/bin/fslmaths T1_brain_GM_mask -add T1_first/subcort_GM -bin cort_subcort_GM
 
 #label GM with ROIs
-${AFNIDIR}/3dROIMaker -inset T1_first/subcort_GM.nii.gz -thresh 0.1 -prefix labelled -refset transforms/parcel_to_T1.nii.gz -nifti -neigh_upto_vert
+${AFNIDIR}/3dROIMaker -inset cort_subcort_GM.nii.gz -thresh 0.1 -prefix labelled -refset transforms/parcel_to_T1.nii.gz -nifti -neigh_upto_vert
 
 #Run Siena
 $BB_BIN_DIR/bb_structural_pipeline/bb_sienax `pwd`/..
