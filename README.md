@@ -45,4 +45,4 @@ At present, this pipeline cannibalizes subject directories. It is strongly advis
 
 Parameter settings for processing toolboxes need to be customized to the acquisitions. It is advised that you review parameter choices for FSL tools including, but not limited to, EDDY, BEDPOSTX, PROBTRACKX2, FEAT, and FIX.
 
-Currently, gradient distortion correction, TOPUP distortion correction, NODDI,  AUTOPTX and susceptibility-weighted imaging processing from the original UKBiobank pipeline are either not implemented or remain untested.
+Currently, gradient distortion correction, TOPUP distortion correction, NODDI,  AUTOPTX, task fMRI and susceptibility-weighted imaging processing from the original UKBiobank pipeline are either not implemented or remain untested.
