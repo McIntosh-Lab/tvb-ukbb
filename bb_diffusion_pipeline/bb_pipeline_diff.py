@@ -134,7 +134,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     jobBEDPOSTX = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 190 -N "bb_bedpostx_gpu_'
-        '/opt/fsl/bin/fsl_sub -q bigmem_16.q -N "bb_bedpostx_gpu_'
+        '${FSLDIR}/bin/fsl_sub -q bigmem_16.q -N "bb_bedpostx_gpu_'
         + subname
         + '" -j '
         + jobPREBEDPOSTX

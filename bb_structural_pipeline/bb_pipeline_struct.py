@@ -184,7 +184,7 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
 
         else:
             logger.error(
-                "There is not enough/correct DWI data. Topup cannot be run. fMRI and DWI cannot be run"
+                "There is not enough/correct DWI data. TOPUP cannot be run. Continuing to run DWI and fMRI processing without TOPUP."
             )
 
         # HCP Structural pipeline
