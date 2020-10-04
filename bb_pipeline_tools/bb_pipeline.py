@@ -97,7 +97,7 @@ def main():
     if jobSTEP1[-3:] == ",-1":
         jobSTEP1 = jobSTEP1[:-3]
 
-    print(f"jobSTEP1: {jobSTEP1}")
+    #print(f"jobSTEP1: {jobSTEP1}")
     # jobSTEP1 = int(jobSTEP1)
 
     # if runTopup:
