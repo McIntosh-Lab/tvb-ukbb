@@ -1,27 +1,13 @@
 #!/bin/bash
 
-# =============================================================================
-# Authors: Michael Schirner, Simon Rothmeier, Petra Ritter
-# BrainModes Research Group (head: P. Ritter)
-# Charité University Medicine Berlin & Max Planck Institute Leipzig, Germany
-# Correspondence: petra.ritter@charite.de
+##########
 #
-# When using this code please cite as follows:
-# Schirner M, Rothmeier S, Jirsa V, McIntosh AR, Ritter P (in prep)
-# Constructing subject-specific Virtual Brains from multimodal neuroimaging
+# Author Z. Wwang
 #
-# This software is distributed under the terms of the GNU General Public License
-# as published by the Free Software Foundation. Further details on the GPL
-# license can be found at http://www.gnu.org/copyleft/gpl.html.
+# script to register ROI parcellation to rfMRI
+# and then compute timeseries and FC (pearson correlations)
 #
-# Adapted to run locally by Hannelore Aerts
-# Department of Data-Analysis, Faculty of Psychology and Educational Sciences,
-# Ghent University, Belgium
-# Correspondence: hannelore.aerts@ugent.be
-# =============================================================================
-# IMPORTANT: adapt subID to name of your subject folder
-# =============================================================================
-
+##########
 
 subjdir="$PWD/$1"
 
