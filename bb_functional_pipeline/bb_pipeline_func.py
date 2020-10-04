@@ -48,7 +48,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
         + subject
     )
 
-    print(st)
+    #print(st)
 
     jobPOSTPROCESS = LT.runCommand(
         logger,
