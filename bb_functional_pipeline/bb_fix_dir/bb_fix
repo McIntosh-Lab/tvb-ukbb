@@ -23,7 +23,9 @@ imcp ../../T1/T1_fast/T1_brain_pveseg reg/highres_pveseg
 
 invwarp --ref=reg/example_func -w reg/example_func2standard_warp -o reg/standard2example_func_warp
 
-${FSL_FIXDIR}/fix . ${FSL_FIXDIR}/training_files/UKBiobank.RData 20 -m -h 100
+echo "Running fix..."
+${FSL_FIXDIR}/fix . ${FSL_FIXDIR}/training_files/${TRAINING_FILE} 20 -m -h 100
+echo "Done."
 
 mkdir -p reg_standard
 applywarp --ref=reg/standard --in=filtered_func_data_clean --out=reg_standard/filtered_func_data_clean --warp=reg/example_func2standard_warp --interp=spline
