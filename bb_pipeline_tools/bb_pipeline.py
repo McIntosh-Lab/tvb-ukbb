@@ -94,10 +94,17 @@ def main():
     jobSTEP3 = "-1"
 
     jobSTEP1 = bb_pipeline_struct(subject, runTopup, fileConfig)
+    print(f"jobSTEP1: {jobSTEP1}")
+    if isinstance(jobSTEP1, int):
+        if jobSTEP1 == -1:
+            print(
+                "This subject could not be run. Please check the logs for more information."
+            )
+            exit(1)
     if jobSTEP1[-3:] == ",-1":
         jobSTEP1 = jobSTEP1[:-3]
 
-    #print(f"jobSTEP1: {jobSTEP1}")
+    # print(f"jobSTEP1: {jobSTEP1}")
     # jobSTEP1 = int(jobSTEP1)
 
     # if runTopup:

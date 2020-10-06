@@ -30,6 +30,7 @@ import nibabel as nib
 import bb_logging_tool as LT
 
 import sys
+from shutil import copyfile
 
 sys.path.insert(1, os.path.dirname(__file__) + "/..")
 
@@ -121,6 +122,17 @@ def get_image_json_field(fileName, field):
     return result
 
 
+def check_if_json_field_exists(fileName, field):
+
+    result = []
+    jsonDict = read_json(fileName)
+    # return true if field is a key in jsonDict
+    if field in jsonDict.keys():
+        return True
+
+    return False
+
+
 def save_acquisition_date_time(fileName):
 
     dateTime = get_image_json_field(fileName, "AcquisitionDateTime")
@@ -147,7 +159,11 @@ def image_type_contains(fileName, desiredType):
 
 
 def is_normalised(fileName):
-    return image_type_contains(fileName, "NORM")
+    normed_siemens = image_type_contains(fileName, "NORM")
+    normed_philips = check_if_json_field_exists(fileName, "PhilipsRescaleSlope")
+    # if either is True, file is normalised
+    return normed_siemens or normed_philips
+    # return image_type_contains(fileName, "NORM")
 
 
 def is_phase(fileName):
@@ -186,7 +202,8 @@ def move_file(oldPath, newPath):
     # The file may be a json file and may have been moved previously
     if os.path.isfile(oldPath):
         logger.info("File moved/renamed: " + oldPath + " to " + newPath)
-        os.rename(oldPath, newPath)
+        # os.rename(oldPath, newPath)
+        copyfile(oldPath, newPath)
 
         # If there is an associated json, move it as well
         if bb_path.isImage(oldPath):
@@ -194,7 +211,8 @@ def move_file(oldPath, newPath):
             plainNewName = bb_path.removeImageExt(newPath)
 
             if os.path.isfile(plainOrigName + ".json"):
-                os.rename(plainOrigName + ".json", plainNewName + ".json")
+                # os.rename(plainOrigName + ".json", plainNewName + ".json")
+                copyfile(plainOrigName + ".json", plainNewName + ".json")
 
 
 def move_file_add_to_config(oldPath, key, boolAppend):
@@ -248,7 +266,9 @@ def manage_struct(listFiles, flag):
 
     listFiles = [rename_no_coil_echo_info(x) for x in listFiles]
 
-    boolNorm = [is_normalised(x) for x in listFiles]
+    # boolNorm = [is_normalised(x) for x in listFiles]
+    # ignore normalization for now
+    boolNorm = [True for x in listFiles]
 
     print(f"{flag} norm: {boolNorm}")
 
@@ -446,7 +466,7 @@ def manage_DWI(listFiles):
                     dim.append(epi_img.get_header()["dim"][4])
 
                 numImageFiles = len(imageFiles)
-                #print("HEEERE")
+                # print("HEEERE")
 
                 if numImageFiles == 0:
                     raise Exception(
@@ -496,7 +516,7 @@ def manage_DWI(listFiles):
                 bvecFileName = (
                     bb_path.removeImageExt(imageFiles[indBiggestImage]) + ".bvec"
                 )
-               
+
                 if (not bvalFileName in subListFiles) or (
                     not bvecFileName in subListFiles
                 ):
