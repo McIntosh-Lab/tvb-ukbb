@@ -51,7 +51,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     jobEDDY = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 75  -N "bb_eddy_'
-        '${FSLDIR}/bin/fsl_sub -q all.q  -N "bb_eddy_'
+        '${FSLDIR}/bin/fsl_sub -q bigmem_16.q  -R 8000 -N "bb_eddy_'
         + subname
         + '" -j '
         + jobPREPARE
@@ -182,7 +182,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     )
     jobPROBTRACKX = LT.runCommand(
         logger,
-        '${FSLDIR}/bin/fsl_sub -q all.q -N "bb_probtrackx_'
+        '${FSLDIR}/bin/fsl_sub -q bigmem_16.q -R 8000 -N "bb_probtrackx_'
         + subname
         + '" -j '
         + jobPREPROBTRACKX
