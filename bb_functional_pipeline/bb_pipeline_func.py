@@ -96,7 +96,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
         jobFIX = LT.runCommand(
             logger,
             #'${FSLDIR}/bin/fsl_sub -T 175  -N "bb_fix_'
-            '${FSLDIR}/bin/fsl_sub -q bigmem_16.q  -R 8000 -N "bb_fix_'
+            '${FSLDIR}/bin/fsl_sub -q bigmem_64.q  -N "bb_fix_'
             + subname
             + '"  -l '
             + logDir
