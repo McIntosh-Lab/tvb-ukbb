@@ -27,7 +27,7 @@ Installation
 4) Run `./install_ukbb.sh`
 5) Once the installer finishes, `cd` into `ukbb-mclab` and edit file `init_vars`. Lines specified with `#TO BE MODIFIED BY USER` are the only lines you should need to change.
 
-Note: at present, changes may need to be made to the code handling SGE queuing depending on your system. Currently we use queues `all.q` and `bigmem_16.q`; adding queues with those names will drastically reduce queue configuration.
+Note: at present, changes may need to be made to the code handling SGE queuing depending on your system. Currently we use queues `all.q`, `bigmem_16.q`, and `bigmem_64.q`; they are set to their respective environment variables by default and can be modified as necessary.
 
 
 Documentation
@@ -41,8 +41,8 @@ Tractography for connectome construction is based on methods validated using tra
 ***Notes***
 -----------
 
-At present, this pipeline cannibalizes subject directories. It is strongly advised to make a copy of subject directories and to run the pipeline on those copies until we correct that behaviour.
-
 Parameter settings for processing toolboxes need to be customized to the acquisitions. It is advised that you review parameter choices for FSL tools including, but not limited to, EDDY, BEDPOSTX, PROBTRACKX2, FEAT, and FIX.
 
 Currently, gradient distortion correction, TOPUP distortion correction, NODDI,  AUTOPTX, task fMRI and susceptibility-weighted imaging processing from the original UKBiobank pipeline are either not implemented or remain untested.
+
+.RData training files for FIX should be compatible with R 3.4.1. .RData files created in newer versions of R may work but there is no guarantee. It is recommended to create training files using the conda env and included R version.

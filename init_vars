@@ -38,9 +38,9 @@ export FSLOUTPUTTYPE="NIFTI_GZ"
 export FSLGECUDAQ=cuda.q                                                        #TO BE MODIFIED BY USER
 
 #TODO implement this in the files
-export QUEUE_STANDARD="all.q"                                             #TO BE MODIFIED BY USER
+export QUEUE_STANDARD="all.q"                                                   #TO BE MODIFIED BY USER
 export QUEUE_MORE_MEM="bigmem_16.q"                                             #TO BE MODIFIED BY USER
-export QUEUE_MAX_MEM="bigmem_64.q"                                             #TO BE MODIFIED BY USER
+export QUEUE_MAX_MEM="bigmem_64.q"                                              #TO BE MODIFIED BY USER
 
 #SETUP AFNI
 export AFNIDIR=/opt/afni                                                        #TO BE MODIFIED BY USER
@@ -80,7 +80,7 @@ export FSL_FIXDIR="$BB_BIN_DIR/bb_functional_pipeline/bb_fix_dir"
 export PARC_IMG="$templ/parcellations/TVB414/TVB414.nii.gz"                      #TO BE MODIFIED BY USER
 export PARC_LUT="$templ/parcellations/TVB414/TVB414_LUT.txt"                     #TO BE MODIFIED BY USER
 export numROI="414"                                                              #TO BE MODIFIED BY USER
-export TRAINING_FILE="Standard.RData"                                            #TO BE MODIFIED BY USER
+export TRAINING_FILE="UKBiobank.RData"                                            #TO BE MODIFIED BY USER
 
 #INCLUDE 3 MAIN BIOBANK DIRECTORIES IN PATH
 export PATH="$BB_BIN_DIR/bb_pipeline_tools/:$BB_BIN_DIR/bb_general_tools/:$PATH"
