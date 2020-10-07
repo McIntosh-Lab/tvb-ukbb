@@ -38,8 +38,9 @@ export FSLOUTPUTTYPE="NIFTI_GZ"
 export FSLGECUDAQ=cuda.q                                                        #TO BE MODIFIED BY USER
 
 #TODO implement this in the files
-export QUEUE_STANDARD="bigmem_16.q"                                             #TO BE MODIFIED BY USER
-export QUEUE_MORE_MEM="bigmem_64.q"                                             #TO BE MODIFIED BY USER
+export QUEUE_STANDARD="all.q"                                             #TO BE MODIFIED BY USER
+export QUEUE_MORE_MEM="bigmem_16.q"                                             #TO BE MODIFIED BY USER
+export QUEUE_MAX_MEM="bigmem_64.q"                                             #TO BE MODIFIED BY USER
 
 #SETUP AFNI
 export AFNIDIR=/opt/afni                                                        #TO BE MODIFIED BY USER
