@@ -29,6 +29,15 @@ Installation
 
 Note: at present, changes may need to be made to the code handling SGE queuing depending on your system. Currently we use queues `all.q`, `bigmem_16.q`, and `bigmem_64.q`; they are set to their respective environment variables by default and can be modified as necessary.
 
+Usage
+-----
+
+Following the installation example above,
+
+1) source the file `init_vars` to activate the conda environment and define environment variables
+2) `cd` to the directory containing your subject directory, e.g., `subjDir`
+3) run a subject with `python /home/username/ukbb/ukbb-mclab/bb_pipeline_tools/bb_pipeline.py subjDir`
+
 
 Documentation
 -------------
@@ -38,10 +47,10 @@ The original `UK_biobank_pipeline` is explained in detail in the paper [Image Pr
 Tractography for connectome construction is based on methods validated using tracer data in macaques (see Shen et al. 2019 https://doi.org/10.1016/j.neuroimage.2019.02.018).
 
 
-***Notes***
------------
+Notes
+-----
 
-Parameter settings for processing toolboxes need to be customized to the acquisitions. It is advised that you review parameter choices for FSL tools including, but not limited to, EDDY, BEDPOSTX, PROBTRACKX2, FEAT, and FIX.
+Parameter settings for processing toolboxes need to be customized to the acquisitions. It is advised that you review parameter choices for FSL tools including, but not limited to, EDDY, BEDPOSTX, PROBTRACKX2, FEAT, and FIX. Also note that FIX will require a training .RData file specific to your dataset.
 
 Currently, gradient distortion correction, TOPUP distortion correction, NODDI,  AUTOPTX, task fMRI and susceptibility-weighted imaging processing from the original UKBiobank pipeline are either not implemented or remain untested.
 
