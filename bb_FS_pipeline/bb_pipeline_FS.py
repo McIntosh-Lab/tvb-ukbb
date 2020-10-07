@@ -43,7 +43,7 @@ def bb_pipeline_FS(subject, jobHold, fileConfiguration):
     else:
         jobFS01 = LT.runCommand(
             logger,
-            'fsl_sub -q all.qc  -N "bb_FS_run_'
+            'fsl_sub -q ${QUEUE_STANDARD}  -N "bb_FS_run_'
             + subname
             + '" -l '
             + logDir
@@ -54,7 +54,7 @@ def bb_pipeline_FS(subject, jobHold, fileConfiguration):
         )
         jobFS02 = LT.runCommand(
             logger,
-            'fsl_sub -q all.qc -N "bb_FS_segm_'
+            'fsl_sub -q ${QUEUE_STANDARD} -N "bb_FS_segm_'
             + subname
             + '" -l '
             + logDir
@@ -65,7 +65,7 @@ def bb_pipeline_FS(subject, jobHold, fileConfiguration):
         )
         jobFS03 = LT.runCommand(
             logger,
-            'fsl_sub -q all.qc -N "bb_FS_IDPs_'
+            'fsl_sub -q ${QUEUE_STANDARD} -N "bb_FS_IDPs_'
             + subname
             + '" -l '
             + logDir
@@ -96,6 +96,7 @@ def main():
 
     jobSTEP1 = bb_pipeline_FS(subject, "-1", fileConfig)
 
+    print("SUBMITTED FS")
     print(jobSTEP1)
 
 

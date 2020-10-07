@@ -37,7 +37,7 @@ def bb_IDP(subject, jobHold, fileConfiguration):
     jobIDP = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 30 -N "bb_IDP_'
-        '${FSLDIR}/bin/fsl_sub -q all.q -N "bb_IDP_'
+        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_IDP_'
         + subname
         + '" -j '
         + jobHold
@@ -46,5 +46,5 @@ def bb_IDP(subject, jobHold, fileConfiguration):
         + " $BB_BIN_DIR/bb_IDP/bb_IDP "
         + subject,
     )
-    print("FINISH IDP")
+    print("SUBMITTED IDP")
     return jobIDP

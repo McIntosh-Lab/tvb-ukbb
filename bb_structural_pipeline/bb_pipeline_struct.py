@@ -62,7 +62,7 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
                 jobGETB01 = LT.runCommand(
                     logger,
                     #'${FSLDIR}/bin/fsl_sub -T 5  -N "bb_get_b0s_1_'
-                    '${FSLDIR}/bin/fsl_sub -q all.q  -N "bb_get_b0s_1_'
+                    '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD}  -N "bb_get_b0s_1_'
                     + subname
                     + '" -l '
                     + logDir
@@ -83,7 +83,7 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
                     LT.runCommand(
                         logger,
                         #'${FSLDIR}/bin/fsl_sub -T 20 -N "bb_choose_bestB0_1_'
-                        '${FSLDIR}/bin/fsl_sub -q all.q -N "bb_choose_bestB0_1_'
+                        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_choose_bestB0_1_'
                         + subname
                         + '" -l '
                         + logDir
@@ -104,7 +104,7 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
             jobMERGE = LT.runCommand(
                 logger,
                 #'${FSLDIR}/bin/fsl_sub -T 5 -N "bb_fslmerge_'
-                '${FSLDIR}/bin/fsl_sub -q all.q -N "bb_fslmerge_'
+                '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_fslmerge_'
                 + subname
                 + '" -j '
                 + ",".join(jobsB0)
@@ -123,7 +123,7 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
         jobSTRUCTINIT = LT.runCommand(
             logger,
             #'${FSLDIR}/bin/fsl_sub -T 850 -N "bb_structinit_'
-            '${FSLDIR}/bin/fsl_sub -q all.q -N "bb_structinit_'
+            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_structinit_'
             + subname
             + '" -l '
             + logDir
@@ -136,7 +136,7 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
             jobSWI = LT.runCommand(
                 logger,
                 #'${FSLDIR}/bin/fsl_sub -T 90 -N "bb_swi_reg_'
-                '${FSLDIR}/bin/fsl_sub -q all.q -N "bb_swi_reg_'
+                '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_swi_reg_'
                 + subname
                 + '" -l '
                 + logDir
@@ -151,7 +151,7 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
             jobPREPAREFIELDMAP = LT.runCommand(
                 logger,
                 #'${FSLDIR}/bin/fsl_sub -T 5 -N "bb_prepare_struct_fieldmap_'
-                '${FSLDIR}/bin/fsl_sub -q all.q -N "bb_prepare_struct_fieldmap_'
+                '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_prepare_struct_fieldmap_'
                 + subname
                 + '" -l '
                 + logDir
@@ -163,7 +163,7 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
             jobTOPUP = LT.runCommand(
                 logger,
                 #'${FSLDIR}/bin/fsl_sub -T 90 -N "bb_topup_'
-                '${FSLDIR}/bin/fsl_sub -q all.q -N "bb_topup_'
+                '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_topup_'
                 + subname
                 + '" -l '
                 + logDir
@@ -190,14 +190,14 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
         # HCP Structural pipeline
         # jobHCPSTRUCT = LT.runCommand(logger, 'bb_HCP_structural ' + subject + ' ' + jobSTRUCTINIT + ' ' + str(boolT2))
 
-        print("FINISH STRUCTURAL")
+        print("SUBMITTED STRUCTURAL")
         if not runTopup:
             return ",".join([jobSTRUCTINIT, jobSWI])
         else:
             jobPOSTTOPUP = LT.runCommand(
                 logger,
                 #'${FSLDIR}/bin/fsl_sub -T 60 -N "bb_post_topup_'
-                '${FSLDIR}/bin/fsl_sub -q all.q -N "bb_post_topup_'
+                '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_post_topup_'
                 + subname
                 + '" -l '
                 + logDir
