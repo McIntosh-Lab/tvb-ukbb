@@ -45,7 +45,7 @@ and your environment will be loaded.
 
 3) Run a subject with
 
-`python /home/username/tvb-pipeline/tvb-ukbb/bb_pipeline_tools/bb_pipeline.py subjDir`.
+`python /home/username/tvb-pipeline/tvb-ukbb/bb_pipeline_tools/bb_pipeline.py subjDir`
 
 4) Monitor the progress of your subject by `cd`ing to `subjDir/logs`.
 
