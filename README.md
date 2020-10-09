@@ -42,7 +42,11 @@ Following the installation example above,
 and your environment will be loaded.
 
 2) `cd` to the directory containing your subject directory, e.g., `subjDir`.
-3) Run a subject with `python /home/username/tvb-pipeline/tvb-ukbb/bb_pipeline_tools/bb_pipeline.py subjDir`.
+
+3) Run a subject with
+
+`python /home/username/tvb-pipeline/tvb-ukbb/bb_pipeline_tools/bb_pipeline.py subjDir`.
+
 4) Monitor the progress of your subject by `cd`ing to `subjDir/logs`.
 
 
