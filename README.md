@@ -52,7 +52,7 @@ channels:
 pkgs_dirs:
  - /home/<username>/conda_cache
 ```
-  where `<username>` on the last line is your gateway username. Continue with the rest of the instructions below.
+  where `<username>` on the last line is your `gateway` username. Continue with the rest of the instructions below.
 
 **GENERAL INSTALL INSTRUCTIONS**
 
