@@ -26,7 +26,10 @@ Installation
 ------------
 
 **RRI USERS - PLEASE COMPLETE THIS STEP FIRST**
+<<<<<<< HEAD
 
+=======
+>>>>>>> b07c686... update README with RRI-specific install guide
 Note: these instructions are specifically for `gateway`. This has not been tested on any other system so it is advised to install onto `gateway`.
 * Copy the following and paste it at the bottom of your .bashrc file in your home directory on `gateway`:
 ```
