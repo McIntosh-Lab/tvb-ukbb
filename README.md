@@ -23,6 +23,7 @@ Installation
 ------------
 
 **RRI USERS - PLEASE COMPLETE THIS STEP FIRST**
+
 Note: these instructions are specifically for `gateway`. This has not been tested on any other system so it is advised to install onto `gateway`.
 * Copy the following and paste it at the bottom of your .bashrc file in your home directory on `gateway`:
 ```
@@ -52,6 +53,8 @@ pkgs_dirs:
  - /home/<username>/conda_cache
 ```
   where `<username>` on the last line is your gateway username. Continue with the rest of the instructions below.
+
+**GENERAL INSTALL INSTRUCTIONS**
 
 1) Download the release .zip from the repository.
 2) Unzip the .zip file to where you'd like the pipeline to be installed; e.g. unzipping it in `/home/<username>` will yield `/home/<username>/tvb-pipeline`
