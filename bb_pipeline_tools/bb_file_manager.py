@@ -310,7 +310,6 @@ def manage_fMRI(listFiles, flag):
 
     # Get the dimensions for all the fMRI images
     for fileName in listFiles:
-        print("MAYBE HERE")
         epi_img = nib.load(fileName)
         dim.append(epi_img.get_header()["dim"][4])
 
@@ -369,16 +368,24 @@ def manage_fMRI(listFiles, flag):
         move_file_add_to_config(listFiles[indBiggestImage], flag, False)
 
         fileName = listFiles[indBiggestImage]
+        print(f"files: {listFiles}")
         plainFileName = bb_path.removeImageExt(fileName)
-        number = int(plainFileName.split("_")[-1])
+        print(f"fname: {plainFileName}")
 
         ind = -1
+        try:
+            number = int(plainFileName.split("_")[-1])
 
-        for fileToCheck in listFiles:
-            # Check if the file with the previous numeration is in the list
-            numberToCheck = int(bb_path.removeImageExt(fileName).split("_")[-1])
-            if numberToCheck == (number - 1):
-                ind = listFiles.index(fileToCheck)
+            for fileToCheck in listFiles:
+                # Check if the file with the previous numeration is in the list
+                numberToCheck = int(bb_path.removeImageExt(fileName).split("_")[-1])
+                if numberToCheck == (number - 1):
+                    ind = listFiles.index(fileToCheck)
+
+        except ValueError:
+            logger.error(
+                "Unable to determine SBRef via numeric indexing. Generating SBRef."
+            )
 
         # If there is a file with the file number that should correspond to this case
         if ind > 0:
@@ -682,19 +689,26 @@ def bb_file_manager(subject):
         [["*.[^log]"], capitalize_and_clean],
         [["dicom", "DICOM"], move_to, "delete/"],
         [["*T1*.nii.gz"], manage_struct, "T1"],
-        [["T2*FLAIR*.nii.gz", "*FLAIR*.nii.gz"], manage_struct, "T2"],
+        [["T2*FLAIR*.nii.gz", "*FLAIR*.nii.gz", "*T2*.nii.gz"], manage_struct, "T2"],
         [
             [
                 "*FMRI*RESTING*.nii.gz",
                 "MB8*RESTING*.nii.gz",
                 "*TASK*REST*.nii.gz",
                 "*task*rest*.nii.gz",
+                "*epi_rest*.nii.gz",
             ],
             manage_fMRI,
             "rfMRI",
         ],
         [
-            ["*fmri*task*.nii.gz", "*FMRI*TASK*.nii.gz", "MB8*TASK*.nii.gz"],
+            [
+                "*fmri*task*.nii.gz",
+                "*FMRI*TASK*.nii.gz",
+                "MB8*TASK*.nii.gz",
+                "*epi_movie*.nii.gz",
+                "*epi_smt*.nii.gz",
+            ],
             manage_fMRI,
             "tfMRI",
         ],
