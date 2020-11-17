@@ -108,6 +108,7 @@ def main():
     # jobSTEP1 = int(jobSTEP1)
 
     # if runTopup:
+    # TODO: modify jobSTEP2 references to take a list of job IDs
     jobSTEP2 = bb_pipeline_func(subject, jobSTEP1, fileConfig)
     jobSTEP3 = bb_pipeline_diff(subject, jobSTEP1, fileConfig)
 
