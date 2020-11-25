@@ -75,28 +75,6 @@ ${FSLDIR}/bin/fslmaths T1_brain_to_MNI -mul $templ/MNI152_T1_1mm_brain_mask T1_b
 #register parcellation to T1
 ${FSLDIR}/bin/applywarp --rel --interp=nn --in=$PARC_IMG --ref=T1 -w T1_to_MNI_warp_coef_inv -o parcel_to_T1
 
-#Defacing T1
-${FSLDIR}/bin/convert_xfm -omat grot.mat -concat T1_to_MNI_linear.mat T1_orig_ud_to_T1.mat
-${FSLDIR}/bin/convert_xfm -omat grot.mat -concat $templ/MNI_to_MNI_BigFoV_facemask.mat grot.mat
-${FSLDIR}/bin/convert_xfm -omat grot.mat -inverse grot.mat
-${FSLDIR}/bin/flirt -in $templ/MNI152_T1_1mm_BigFoV_facemask -ref T1_orig -out grot -applyxfm -init grot.mat
-#${FSLDIR}/bin/fslmaths grot -mul -1 -add 1 -mul T1_orig T1_orig_defaced
-${FSLDIR}/bin/fslmaths grot -binv -mul T1_orig T1_orig_defaced
-
-cp T1.nii.gz T1_not_defaced_tmp.nii.gz  
-${FSLDIR}/bin/convert_xfm -omat grot.mat -concat $templ/MNI_to_MNI_BigFoV_facemask.mat T1_to_MNI_linear.mat
-${FSLDIR}/bin/convert_xfm -omat grot.mat -inverse grot.mat
-${FSLDIR}/bin/flirt -in $templ/MNI152_T1_1mm_BigFoV_facemask -ref T1 -out grot -applyxfm -init grot.mat
-${FSLDIR}/bin/fslmaths grot -binv -mul T1 T1
-
-#Generation of QC value: Number of voxels in which the defacing mask goes into the brain mask
-${FSLDIR}/bin/fslmaths T1_brain_mask -thr 0.5 -bin grot_brain_mask 
-${FSLDIR}/bin/fslmaths grot -thr 0.5 -bin -add grot_brain_mask -thr 2 grot_QC
-${FSLDIR}/bin/fslstats grot_QC.nii.gz -V | awk '{print $ 1}' > T1_QC_face_mask_inside_brain_mask.txt
-
-rm grot*
-
-
 #Clean and reorganize
 # add "|| true" to end of mv functions so rest of pipeline
 # can run if files don't exist
