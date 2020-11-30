@@ -202,6 +202,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
         + " -l "
         + logDIr
         + " $BB_BIN_DIR/tvb_QC/tvb_eddyQUAD "
-        + baseDir
+        + baseDir,
+    )
     print("SUBMITTED DIFFUSION")
     return jobPROBTRACKX
