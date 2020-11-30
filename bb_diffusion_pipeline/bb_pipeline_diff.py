@@ -95,18 +95,18 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
         + baseDir
         + "/dMRI/dMRI/dti",
     )
-    jobTBSS = LT.runCommand(
-        logger,
-        #'${FSLDIR}/bin/fsl_sub -T 240 -N "bb_tbss_'
-        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_tbss_'
-        + subname
-        + '" -j '
-        + jobDTIFIT
-        + "  -l "
-        + logDir
-        + " $BB_BIN_DIR/bb_diffusion_pipeline/bb_tbss/bb_tbss_general "
-        + subject,
-    )
+    #jobTBSS = LT.runCommand(
+    #    logger,
+    #    #'${FSLDIR}/bin/fsl_sub -T 240 -N "bb_tbss_'
+    #    '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_tbss_'
+    #    + subname
+    #    + '" -j '
+    #    + jobDTIFIT
+    #    + "  -l "
+    #    + logDir
+    #    + " $BB_BIN_DIR/bb_diffusion_pipeline/bb_tbss/bb_tbss_general "
+    #    + subject,
+    #)
     # jobNODDI = LT.runCommand(
     # logger,
     ##'${FSLDIR}/bin/fsl_sub -T 100 -N "bb_NODDI_'
@@ -193,5 +193,15 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
         + baseDir
         + "/dMRI",
     )
+    jobEDDYQUAD = LT.runCommand(
+        logger,
+        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "tvb_eddyQUAD_'
+        + subname
+        + '" -j '
+        + jobPROBTRACKX
+        + " -l "
+        + logDIr
+        + " $BB_BIN_DIR/tvb_QC/tvb_eddyQUAD "
+        + baseDir
     print("SUBMITTED DIFFUSION")
     return jobPROBTRACKX
