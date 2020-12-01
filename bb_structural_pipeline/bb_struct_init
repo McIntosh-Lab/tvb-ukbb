@@ -37,7 +37,8 @@ fi
 #Calculate and apply the Gradient Distortion Unwarp ###NO GDC###
 # $BB_BIN_DIR/bb_pipeline_tools/bb_GDC --workingdir=./T1_GDC/ --in=T1_orig.nii.gz --out=T1_orig_ud.nii.gz --owarp=T1_orig_ud_warp.nii.gz
 
-cp T1_orig.nii.gz T1_orig_ud.nii.gz
+#reorient T1 images to std
+fslreorient2std T1_orig.nii.gz T1_orig_ud.nii.gz
 
 #Calculate where does the brain start in the z dimension and then extract the roi
 head_top=`${FSLDIR}/bin/robustfov -i T1_orig_ud | grep -v Final | head -n 1 | awk '{print $5}'`
