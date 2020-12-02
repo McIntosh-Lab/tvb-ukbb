@@ -24,7 +24,7 @@
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
 
 subjectLogsDir="$PWD/$1/logs/"
-restingDir="$PWD/$1/fMRI/rfMRI.ica"
+restingDir="$PWD/$1/fMRI/rfMRI_$2.ica"
 logFile="$subjectLogsDir/bb_fixlogs_${1}.log"
 
 for fixFile in ".fix.log" ".fix" ".fix_2b_predict.log" ; do
@@ -33,6 +33,6 @@ for fixFile in ".fix.log" ".fix" ".fix_2b_predict.log" ; do
     fi
 done
 
-rm $restingDir/.fix*
+# rm $restingDir/.fix*
 
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
