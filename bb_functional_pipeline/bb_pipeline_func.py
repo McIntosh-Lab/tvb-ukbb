@@ -48,7 +48,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
         + subject
     )
 
-    #print(st)
+    # print(st)
 
     jobPOSTPROCESS = LT.runCommand(
         logger,
@@ -64,8 +64,10 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
     )
 
     # TODO: Embed the checking of the fieldmap inside the independent steps -- Every step should check if the previous one has ended.
+    rfMRI_nums = [k.split("_")[-1] for k in fileConfiguration.keys() if "rfMRI" in k]
     print(f"FILE CONFIG IN FUNC: {fileConfiguration}")
-    if ("rfMRI" in fileConfiguration) and (fileConfiguration["rfMRI"] != ""):
+    # if ("rfMRI" in fileConfiguration) and (fileConfiguration["rfMRI"] != ""):
+    for i in range(len(rfMRI_nums)):
 
         jobPREPARE_R = LT.runCommand(
             logger,
@@ -77,7 +79,8 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
             + " -j "
             + jobPOSTPROCESS
             + " $BB_BIN_DIR/bb_functional_pipeline/bb_prepare_rfMRI "
-            + subject,
+            + subject
+            + f" {rfMRI_nums[i]}",
         )
         jobFEAT_R = LT.runCommand(
             logger,
@@ -90,8 +93,8 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
             + jobPREPARE_R
             + " feat "
             + baseDir
-            + "/fMRI/rfMRI.fsf "
-            + subject,
+            #
+            + f"/fMRI/rfMRI_{i}.fsf " + subject,
         )
         jobFIX = LT.runCommand(
             logger,
@@ -103,7 +106,8 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
             + " -j "
             + jobFEAT_R
             + " $BB_BIN_DIR/bb_functional_pipeline/bb_fix "
-            + subject,
+            + subject
+            + f" {rfMRI_nums[i]}",
         )
         ### compute FC using parcellation
         jobFC = LT.runCommand(
@@ -115,7 +119,8 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
             + " -j "
             + jobFIX
             + " $BB_BIN_DIR/bb_functional_pipeline/bb_FC "
-            + subject,
+            + subject
+            + f" {rfMRI_nums[i]}",
         )
         ### don't generate group-ICA RSNs
         # jobDR = LT.runCommand(
@@ -141,7 +146,8 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
             # + jobDR
             + jobFC
             + " $BB_BIN_DIR/bb_functional_pipeline/bb_clean_fix_logs "
-            + subject,
+            + subject
+            + f" {rfMRI_nums[i]}",
         )
 
         jobsToWaitFor = jobCLEAN
@@ -151,7 +157,16 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
             "There is no rFMRI info. Thus, the Resting State part will not be run"
         )
 
-    if ("tfMRI" in fileConfiguration) and (fileConfiguration["tfMRI"] != ""):
+    if jobsToWaitFor != "":
+        jobsToWaitFor += ","
+    tfMRI_nums = [
+        k.split("_")[-1]
+        for k in fileConfiguration.keys()
+        if "tfMRI" in k and k != "tfMRI_SBREF"
+    ]
+    # if ("rfMRI" in fileConfiguration) and (fileConfiguration["rfMRI"] != ""):
+    for i in range(len(tfMRI_nums)):
+        # if ("tfMRI" in fileConfiguration) and (fileConfiguration["tfMRI"] != ""):
         jobPREPARE_T = LT.runCommand(
             logger,
             #'${FSLDIR}/bin/fsl_sub -T  15 -N "bb_prepare_tfMRI_'
@@ -162,12 +177,13 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
             + " -j "
             + jobPOSTPROCESS
             + " $BB_BIN_DIR/bb_functional_pipeline/bb_prepare_tfMRI "
-            + subject,
+            + subject
+            + f" {rfMRI_nums[i]}",
         )
         jobFEAT_T = LT.runCommand(
             logger,
             #'${FSLDIR}/bin/fsl_sub -T 400 -N "bb_feat_tfMRI_'
-            '${FSLDIR}/bin/fsl_sub -q all.ac -N "bb_feat_tfMRI_'
+            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -N "bb_feat_tfMRI_'
             + subname
             + '" -l '
             + logDir
@@ -175,13 +191,14 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
             + jobPREPARE_T
             + " feat  "
             + baseDir
-            + "/fMRI/tfMRI.fsf",
+            + f"/fMRI/tfMRI_{i}.fsf",
         )
 
         if jobsToWaitFor != "":
-            jobsToWaitFor = jobsToWaitFor + "," + jobFEAT_T
+            # jobsToWaitFor = jobsToWaitFor + "," + jobFEAT_T
+            jobsToWaitFor += f",{jobFEAT_T}"
         else:
-            jobsToWaitFor = "" + jobFEAT_T
+            jobsToWaitFor = jobFEAT_T
 
     else:
         logger.error(
