@@ -25,38 +25,41 @@
 
 nameDir="$PWD/$1"
 
-cp $BB_BIN_DIR/bb_data/design_ICA_nonSmoothed.fsf $1/fMRI/rfMRI.fsf
+cp $BB_BIN_DIR/bb_data/design_ICA_nonSmoothed.fsf $1/fMRI/rfMRI_$2.fsf
 
-for elem in `cat $1/fMRI/rfMRI.fsf | grep -oP '_--_\K.*?(?=_-_)' | sort | uniq` ; do
+for elem in `cat $1/fMRI/rfMRI_$2.fsf | grep -oP '_--_\K.*?(?=_-_)' | sort | uniq` ; do
     val=`echo ${!elem} | sed 's|/|\\\/|g'`
     echo $val
-    sed -i "s/_--_${elem}_-_/${val}/g" $1/fMRI/rfMRI.fsf
+    sed -i "s/_--_${elem}_-_/${val}/g" $1/fMRI/rfMRI_$2.fsf
 done 
 
-fmriNumVol=`${FSLDIR}/bin/fslval $1/fMRI/rfMRI.nii.gz dim4`
-fmriTR=`${FSLDIR}/bin/fslval $1/fMRI/rfMRI.nii.gz pixdim4`
-descrip=`${FSLDIR}/bin/fslval $1/fMRI/rfMRI.nii.gz descrip`
+fmriNumVol=`${FSLDIR}/bin/fslval $1/fMRI/rfMRI_$2.nii.gz dim4`
+fmriTR=`${FSLDIR}/bin/fslval $1/fMRI/rfMRI.nii_$2.gz pixdim4`
+descrip=`${FSLDIR}/bin/fslval $1/fMRI/rfMRI.nii_$2.gz descrip`
 descrip=(`echo $descrip | tr ';' ' '`)
 fmriTE=${descrip[0]:3}
-fmriDwell=`${BB_BIN_DIR}/bb_pipeline_tools/bb_get_dwell_time $1/fMRI/rfMRI.nii.gz`
+fmriDwell=`${BB_BIN_DIR}/bb_pipeline_tools/bb_get_dwell_time $1/fMRI/rfMRI_$2.nii.gz`
 
 ### no GDC for our data
 #$BB_BIN_DIR/bb_pipeline_tools/bb_GDC_half_voxel --workingdir=$1/fMRI/rfMRI_SBREF_GDC --in=$1/fMRI/rfMRI_SBREF.nii.gz --out=$1/fMRI/rfMRI_SBREF_ud.nii.gz --owarp=$1/fMRI/rfMRI_SBREF_ud_warp.nii.gz
 
 # append the following to the rfMRI.fsf design file
-echo "set fmri(outputdir)     \""$nameDir"/fMRI/rfMRI.ica\"" >> $1/fMRI/rfMRI.fsf
-echo "set fmri(regunwarp_yn) 1" >> $1/fMRI/rfMRI.fsf
-echo "set feat_files(1)       \""$nameDir"/fMRI/rfMRI.nii.gz\"" >> $1/fMRI/rfMRI.fsf
-echo "set alt_ex_func(1)      \""$nameDir"/fMRI/rfMRI_SBREF.nii.gz\"" >> $1/fMRI/rfMRI.fsf
-echo "set unwarp_files(1)     \""$nameDir"/gradEchoFieldMap/fmap_rads.nii.gz\"" >> $1/fMRI/rfMRI.fsf
-echo "set unwarp_files_mag(1) \""$nameDir"/gradEchoFieldMap/fmap_mag_brain_ero.nii.gz\"" >> $1/fMRI/rfMRI.fsf
-echo "set highres_files(1)    \""$nameDir"/fMRI/symlink/T1_brain.nii.gz\"" >> $1/fMRI/rfMRI.fsf
-echo "set fmri(unwarp_dir) -y" >> $1/fMRI/rfMRI.fsf
+echo "set fmri(outputdir)     \""$nameDir"/fMRI/rfMRI_$2.ica\"" >> $1/fMRI/rfMRI_$2.fsf
+echo "set fmri(regunwarp_yn) 1" >> $1/fMRI/rfMRI_$2.fsf
+echo "set feat_files(1)       \""$nameDir"/fMRI/rfMRI_$2.nii.gz\"" >> $1/fMRI/rfMRI_$2.fsf
+echo "set alt_ex_func(1)      \""$nameDir"/fMRI/rfMRI_SBREF.nii.gz\"" >> $1/fMRI/rfMRI_$2.fsf
+echo "set unwarp_files(1)     \""$nameDir"/gradEchoFieldMap/fmap_rads.nii.gz\"" >> $1/fMRI/rfMRI_$2.fsf
+echo "set unwarp_files_mag(1) \""$nameDir"/gradEchoFieldMap/fmap_mag_brain_ero.nii.gz\"" >> $1/fMRI/rfMRI_$2.fsf
+echo "set unwarp_files(1) 0" >> $1/fMRI/rfMRI_$2.fsf
+echo "set unwarp_files_mag(1) 0" >> $1/fMRI/rfMRI_$2.fsf
+echo "set highres_files(1)    \""$nameDir"/fMRI/symlink/T1_brain.nii.gz\"" >> $1/fMRI/rfMRI_$2.fsf
+echo "set fmri(unwarp_dir) -y" >> $1/fMRI/rfMRI_$2.fsf
 
-echo "set fmri(tr) $fmriTR" >> $1/fMRI/rfMRI.fsf
-echo "set fmri(npts) $fmriNumVol"  >> $1/fMRI/rfMRI.fsf
-echo "set fmri(dwell) $fmriDwell" >> $1/fMRI/rfMRI.fsf
-echo "set fmri(te) $fmriTE" >> $1/fMRI/rfMRI.fsf
-echo "set fmri(st) 2" >> $1/fMRI/rfMRI.fsf #slice time correction, descending
+echo "set fmri(tr) $fmriTR" >> $1/fMRI/rfMRI_$2.fsf
+echo "set fmri(npts) $fmriNumVol"  >> $1/fMRI/rfMRI_$2.fsf
+echo "set fmri(dwell) $fmriDwell" >> $1/fMRI/rfMRI_$2.fsf
+echo "set fmri(te) $fmriTE" >> $1/fMRI/rfMRI_$2.fsf
+echo "set fmri(st) 2" >> $1/fMRI/rfMRI_$2.fsf #slice time correction, descending
+>>>>>>> Cam-CAN
 
-. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer

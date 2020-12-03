@@ -18,9 +18,9 @@ origDir=`pwd`
 
 [ "$1" = "" ] && exit
 
-if [ -d $1/fMRI/rfMRI.ica ] ; then 
+if [ -d $1/fMRI/rfMRI_$2.ica ] ; then 
 
-    cd $1/fMRI/rfMRI.ica
+    cd $1/fMRI/rfMRI_$2.ica
 
     ${FSLDIR}/bin/imcp ${origDir}/$1/T1/T1_fast/T1_brain_pveseg reg/highres_pveseg
     ${FSLDIR}/bin/invwarp --ref=reg/example_func -w reg/example_func2standard_warp -o reg/standard2example_func_warp

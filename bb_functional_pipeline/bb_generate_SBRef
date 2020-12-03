@@ -24,7 +24,12 @@
 
 origIN=`$FSLDIR/bin/remove_ext $1`
 IN=${origIN}_tmp
-OUT=${origIN}_SBREF
+# OUT=${origIN}_SBREF
+OUT=${origIN:0:${#origIN} - 2}_SBREF
+
+echo "origIN: $origIN"
+echo "input: $IN"
+echo "output: $OUT"
 
 $FSLDIR/bin/fslroi $origIN $IN 0 5
 

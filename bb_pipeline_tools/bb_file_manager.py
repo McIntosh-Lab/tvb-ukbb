@@ -225,6 +225,18 @@ def move_file_add_to_config(oldPath, key, boolAppend):
         print(f"key: {key}, fileConfig: {fileConfig[key]}")
 
 
+def move_index_file_add_to_config(oldPath, key, index, boolAppend):
+    if boolAppend:
+        move_file(oldPath, idealConfig[key] + "/" + oldPath)
+        fileConfig[key].append(idealConfig[key] + "/" + oldPath)
+    else:
+        new_name = idealConfig[key][:-7] + f"_{index}" + idealConfig[key][-7:]
+        move_file(oldPath, new_name)
+        # fileConfig[key] = idealConfig[key] + f"_{index}"
+        fileConfig[key + f"_{index}"] = new_name
+        print(f"key: {key + f'_{index}'}, fileConfig: {fileConfig[key + f'_{index}']}")
+
+
 def robustSort(listFiles):
     listFiles.sort()
     finalList = copy.copy(listFiles)
@@ -310,91 +322,84 @@ def manage_fMRI(listFiles, flag):
 
     # Get the dimensions for all the fMRI images
     for fileName in listFiles:
-        print("MAYBE HERE")
         epi_img = nib.load(fileName)
         dim.append(epi_img.get_header()["dim"][4])
 
     if numFiles == 0:
         logger.warn("There was no " + flag + " FMRI data")
 
-    elif numFiles == 1:
-        # If the only fMRI we have is the SBRef
-        if dim[0] == 1:
-            logger.error(
-                "There was only SBRef data for the subject. There will be no "
-                + flag
-                + "fMRI processing"
-            )
-            move_file_add_to_config(listFiles[0], flag + "_SBRef", False)
+    # elif numFiles == 1:
+    #     # If the only fMRI we have is the SBRef
+    #     if dim[0] == 1:
+    #         logger.error(
+    #             "There was only SBRef data for the subject. There will be no "
+    #             + flag
+    #             + "fMRI processing"
+    #         )
+    #         move_file_add_to_config(listFiles[0], flag + "_SBRef", False)
 
-        # If we have fMRI data but no SBRef, we generate it.
-        else:
-            move_file_add_to_config(listFiles[0], flag, False)
-            generate_SBRef(idealConfig[flag], idealConfig[flag + "_SBRef"])
-            fileConfig[flag + "_SBRef"] = idealConfig[flag + "_SBRef"]
+    # If we have fMRI data but no SBRef, we generate it.
+    # else:
+    #     index = 0
+    #     move_index_file_add_to_config(listFiles[0], flag, index, False)
+    #     generate_SBRef(idealConfig[flag], idealConfig[flag + "_SBRef"])
+    #     fileConfig[flag + "_SBRef"] = idealConfig[flag + "_SBRef"]
 
-    elif numFiles == 2:
-        biggestImageDim = max(dim)
-        indBiggestImage = dim.index(biggestImageDim)
-        indSmallestImage = 1 - indBiggestImage
+    # elif numFiles == 2:
+    #     biggestImageDim = max(dim)
+    #     indBiggestImage = dim.index(biggestImageDim)
+    #     indSmallestImage = 1 - indBiggestImage
 
-        # If there is at least one propper fMRI image
-        if biggestImageDim > 1:
-            move_file_add_to_config(listFiles[indBiggestImage], flag, False)
+    #     # If there is at least one propper fMRI image
+    #     if biggestImageDim > 1:
+    #         move_file_add_to_config(listFiles[indBiggestImage], flag, False)
 
-            # If the other image is an SBRef image
-            if dim[indSmallestImage] == 1:
-                move_file_add_to_config(
-                    listFiles[indSmallestImage], flag + "_SBRef", False
-                )
+    #         # If the other image is an SBRef image
+    #         if dim[indSmallestImage] == 1:
+    #             move_file_add_to_config(
+    #                 listFiles[indSmallestImage], flag + "_SBRef", False
+    #             )
 
-            # If not, forget about it and generate and SBRef
-            else:
-                generate_SBRef(idealConfig[flag], idealConfig[flag + "_SBRef"])
-                fileConfig[flag + "_SBRef"] = idealConfig[flag + "_SBRef"]
+    #         # If not, forget about it and generate and SBRef
+    #         else:
+    #             generate_SBRef(idealConfig[flag], idealConfig[flag + "_SBRef"])
+    #             fileConfig[flag + "_SBRef"] = idealConfig[flag + "_SBRef"]
 
-        else:
-            logger.error(
-                "There was only SBRef data for the subject. There will be no "
-                + flag
-                + "fMRI processing"
-            )
-            move_file_add_to_config(listFiles[numFiles - 1], flag + "_SBRef", False)
+    #     else:
+    #         logger.error(
+    #             "There was only SBRef data for the subject. There will be no "
+    #             + flag
+    #             + "fMRI processing"
+    #         )
+    #         move_file_add_to_config(listFiles[numFiles - 1], flag + "_SBRef", False)
 
     # If there are more than 2 rfMRI images, and at least one has more than one volume,
     # we will take the biggest one as the fMRI volume and generate take as SBRef the one
     # with the previous numeration. If that one is not a proper SBRef, generate it.
-    elif max(dim) > 1:
-        indBiggestImage = dim.index(max(dim))
-        move_file_add_to_config(listFiles[indBiggestImage], flag, False)
+    elif numFiles >= 1:
+        print(f"files: {listFiles}")
 
-        fileName = listFiles[indBiggestImage]
-        plainFileName = bb_path.removeImageExt(fileName)
-        number = int(plainFileName.split("_")[-1])
+        # chose index with smallest dimension
+        ind = dim.index(min(dim))
+        print(f"smallest index: {ind}")
 
-        ind = -1
+        # add each fMRI file plus the index to the config
+        for i in range(len(listFiles)):
+            # don't add SBref file if it was added to the config
+            if not (i == ind and dim[i] == 1):
+                move_index_file_add_to_config(listFiles[i], flag, i, False)
 
-        for fileToCheck in listFiles:
-            # Check if the file with the previous numeration is in the list
-            numberToCheck = int(bb_path.removeImageExt(fileName).split("_")[-1])
-            if numberToCheck == (number - 1):
-                ind = listFiles.index(fileToCheck)
-
-        # If there is a file with the file number that should correspond to this case
-        if ind > 0:
-            # If the file with the previous numeration is a SBREF file
-            if dim[ind] == 1:
-                move_file_add_to_config(listFiles[ind], flag + "_SBRef", False)
+        if dim[ind] == 1:
+            move_file_add_to_config(listFiles[ind], flag + "_SBRef", False)
 
             # If not, forget about it and generate a new one
-            else:
-                generate_SBRef(idealConfig[flag], idealConfig[flag + "_SBRef"])
-                fileConfig[flag + "_SBRef"] = idealConfig[flag + "_SBRef"]
-
         else:
-            generate_SBRef(idealConfig[flag], idealConfig[flag + "_SBRef"])
+            # pick index 0 of listFiles and generate SBRef from it
+            idx = 0
+            SBRef_name = idealConfig[flag][:-7] + f"_{idx}" + idealConfig[flag][-7:]
+            print(f"SBRef_name: {SBRef_name}")
+            generate_SBRef(SBRef_name, idealConfig[flag + "_SBRef"])
             fileConfig[flag + "_SBRef"] = idealConfig[flag + "_SBRef"]
-
     # There are several fMRI images but neither of them have more than one volume
     else:
         logger.error(
@@ -682,19 +687,26 @@ def bb_file_manager(subject):
         [["*.[^log]"], capitalize_and_clean],
         [["dicom", "DICOM"], move_to, "delete/"],
         [["*T1*.nii.gz"], manage_struct, "T1"],
-        [["T2*FLAIR*.nii.gz", "*FLAIR*.nii.gz"], manage_struct, "T2"],
+        [["T2*FLAIR*.nii.gz", "*FLAIR*.nii.gz", "*T2*.nii.gz"], manage_struct, "T2"],
         [
             [
                 "*FMRI*RESTING*.nii.gz",
                 "MB8*RESTING*.nii.gz",
                 "*TASK*REST*.nii.gz",
                 "*task*rest*.nii.gz",
+                "*epi_rest*.nii.gz",
+                "*epi_movie*.nii.gz",
             ],
             manage_fMRI,
             "rfMRI",
         ],
         [
-            ["*fmri*task*.nii.gz", "*FMRI*TASK*.nii.gz", "MB8*TASK*.nii.gz"],
+            [
+                "*fmri*task*.nii.gz",
+                "*FMRI*TASK*.nii.gz",
+                "MB8*TASK*.nii.gz",
+                "*epi_smt*.nii.gz",
+            ],
             manage_fMRI,
             "tfMRI",
         ],

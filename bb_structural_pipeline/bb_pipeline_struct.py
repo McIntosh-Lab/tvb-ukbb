@@ -54,6 +54,8 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
         jobsB0 = []
 
         if runTopup:
+            # if encDir in ["dwi"]:
+            # pass
             for encDir in ["AP", "PA"]:
                 bvals = np.loadtxt(subject + "/dMRI/raw/" + encDir + ".bval")
                 numVols = int(sum(bvals <= b0_threshold))
