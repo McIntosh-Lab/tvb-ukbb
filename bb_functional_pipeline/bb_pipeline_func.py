@@ -69,6 +69,17 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
     # if ("rfMRI" in fileConfiguration) and (fileConfiguration["rfMRI"] != ""):
     for i in range(len(rfMRI_nums)):
 
+        jobGEFIELDMAP = LT.runCommand(
+            logger,
+            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "tvb_prepare_gradEchoFieldMap_'
+            + subname
+            + '" -l '
+            + logDir
+            + " -j "
+            + jobPOSTPROCESS
+            + " $$BB_BIN_DIR/bb_functional_pipeline/tvb_prepare_gradEchoFieldMap "
+            + subject
+        )
         jobPREPARE_R = LT.runCommand(
             logger,
             #'${FSLDIR}/bin/fsl_sub -T 15   -N "bb_prepare_rfMRI_'
@@ -77,7 +88,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
             + '"  -l '
             + logDir
             + " -j "
-            + jobPOSTPROCESS
+            + jobGEFIELDMAP
             + " $BB_BIN_DIR/bb_functional_pipeline/bb_prepare_rfMRI "
             + subject
             + f" {rfMRI_nums[i]}",
