@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+#
+# Script name: tvb_prepare_gradEchoFieldMap
+#
+# Description: Script to prepare gradient echo field map for fMRI distortion correction
+#
+# Author: Kelly Shen
+#
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
+
+subjName=$1
+subjDir=${PWD}/$subjName
+
+gradEchoDir=${subjDir}/gradEchoFieldMap
+
+mkdir $gradEchoDir
+
+#TODO: put these in init_vars
+gradEcho_fmap_phase=${subjDir}/fmap_rest/${subjName}_fmap_rest.nii.gz
+gradEcho_fmap_mag1=${subjDir}/fmap_rest/${subjName}_run-01_fmap_rest
+gradEcho_fmap_mag2=${subjDir}/fmap_rest/${subjName}_run-02_fmap_rest
+deltaTE=2.46
+
+ln -s $gradEcho_fmap_phase ${gradEchoDir}/fmap_phase.nii.gz
+
+# concatenate two magnitude images
+fslmerge -t ${gradEchoDir}/fmap_mag $gradEcho_fmap_mag1 $gradEcho_fmap_mag2
+
+# extract magnitude image and erode
+$FSLDIR/bin/bet ${gradEchoDir}/fmap_mag ${gradEchoDir}/fmap_mag_brain
+$FSLDIR/bin/fslmaths ${gradEchoDir}/fmap_mag_brain -ero ${gradEchoDir}/fmap_mag_brain_ero
+
+# get fieldmap image in rads
+$FSLDIR/bin/fsl_prepare_fieldmap SIEMENS ${gradEchoDir}/fmap_phase.nii.gz ${gradEchoDir}/fmap_mag_brain_ero ${gradEchoDir}/fmap_rads $deltaTE
+
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
