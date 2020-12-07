@@ -200,7 +200,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
         + '" -j '
         + jobPROBTRACKX
         + " -l "
-        + logDIr
+        + logDir
         + " $BB_BIN_DIR/tvb_QC/tvb_eddyQUAD "
         + baseDir,
     )
