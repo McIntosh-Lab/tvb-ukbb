@@ -40,11 +40,19 @@ ln -s $direc/dMRI/raw/dwi.nii.gz $direc/dMRI/dMRI/DWI.nii.gz
 cp $direc/dMRI/raw/dwi.bval $direc/dMRI/dMRI/bvals
 cp $direc/dMRI/raw/dwi.bvec $direc/dMRI/dMRI/bvecs
 
-# create DTI brain mask
-### fslroi to get B0
-$FSLDIR/bin/fslroi $direc/dMRI/dMRI/DWI.nii.gz $direc/dMRI/dMRI/DWI_B0.nii.gz 0 1
-### bet to generate a mask for eddy
-$FSLDIR/bin/bet $direc/dMRI/dMRI/DWI_B0.nii.gz $direc/dMRI/dMRI/DWI_B0_brain -f 0.3 -m -R
+#TODO: detect B0 automatically
+# extract B0 (assumes B0 is first volume)
+${FSLDIR}/bin/fslroi $direc/dMRI/dMRI/DWI $direc/dMRI/dMRI/DWI_B0 0 1
+
+# register T1 to DTI for preliminary DTI mask for eddy
+mkdir -p ${direc}/dMRI/dMRI/transforms
+${BB_BIN_DIR}/bb_structural_pipeline/bb_epi_reg --epi=$direc/dMRI/dMRI/DWI_B0 --t1=$direc/T1/T1 --t1brain=$direc/T1/T1_brain --out=$direc/dMRI/dMRI/transforms/rawDTI_to_T1 --wmseg=$direc/T1/T1_fast/T1_brain_WM_mask
+
+# create inverse warp
+${FSLDIR}/bin/convert_xfm -omat $direc/dMRI/dMRI/transforms/T1_to_rawDTI.mat -inverse $direc/dMRI/dMRI/transforms/rawDTI_to_T1.mat
+
+# apply warp to get brain mask for uncorrected DTI data
+${FSLDIR}/bin/applywarp -i $direc/T1/T1_brain_mask -r $direc/dMRI/dMRI/DWI_B0 -o $direc/dMRI/dMRI/rawDTI_B0_brain_mask --premat=$direc/dMRI/dMRI/transforms/T1_to_rawDTI.mat --interp=nn
 
 
 indx=""
@@ -57,7 +65,20 @@ done
 
 echo $indx > $direc/dMRI/dMRI/eddy_index.txt
 
+
+# Creation of acqparam file, borrowed from TOPUP prep in bb_prepare_struct_field
+EPIfactor=50 #aka Echo Train Length, number of lines
+dtiDwell=`$BB_BIN_DIR/bb_pipeline_tools/bb_get_dwell_time $direc/dMRI/raw/dwi.nii.gz`
+topupValue="0"`echo "scale=4;("$dtiDwell" * ("$EPIfactor" -1.0)) / 1000.0 "| bc` #aka Total Readout Time
+
+cat /dev/null > $direc/dMRI/dMRI/acqparams.txt 
+
+#camCAN encoding is A>>P
+printf "0 -1 0 $topupValue\n" >>$direc/dMRI/dMRI/acqparams.txt
+
+
 ## set acqparams.txt by zwang
-printf "0 1 0 0.095" > $direc/dMRI/dMRI/acqparams.txt
+# exact params may not matter much if not doing TOPUP, or if two blips for TOPUP have the same Total Readout Time
+#printf "0 1 0 0.095" > $direc/dMRI/dMRI/acqparams.txt
 
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer
