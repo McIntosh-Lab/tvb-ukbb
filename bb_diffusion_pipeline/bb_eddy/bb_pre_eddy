@@ -67,9 +67,9 @@ echo $indx > $direc/dMRI/dMRI/eddy_index.txt
 
 
 # Creation of acqparam file, borrowed from TOPUP prep in bb_prepare_struct_field
-EPIfactor=96 #aka Echo Train Length, number of lines
+EPIfactor=50 #aka Echo Train Length, number of lines
 dtiDwell=`$BB_BIN_DIR/bb_pipeline_tools/bb_get_dwell_time $direc/dMRI/raw/dwi.nii.gz`
-topupValue="0"`echo "scale=4;("$dtiDwell" * ("$EPIfactor" -1.0)) / 1000.0 "| bc`
+topupValue="0"`echo "scale=4;("$dtiDwell" * ("$EPIfactor" -1.0)) / 1000.0 "| bc` #aka Total Readout Time
 
 cat /dev/null > $direc/dMRI/dMRI/acqparams.txt 
 
