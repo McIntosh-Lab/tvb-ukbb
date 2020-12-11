@@ -26,10 +26,20 @@
 baseDir=$1
 # no gdc for our data
 ###$BB_BIN_DIR/bb_pipeline_tools/bb_GDC --workingdir=$baseDir/dMRI/dMRI/data_GDC --in=$baseDir/dMRI/dMRI/data.nii.gz --out=$baseDir/dMRI/dMRI/data_ud.nii.gz --owarp=$baseDir/dMRI/dMRI/data_ud_warp.nii.gz
+
+#TODO: automatically detect and extract B0
 $FSLDIR/bin/fslroi $baseDir/dMRI/dMRI/data.nii.gz $baseDir/dMRI/dMRI/data_B0.nii.gz 0 1
 
-### final dti brain mask from eddy corrected data by zwang
-$FSLDIR/bin/bet $baseDir/dMRI/dMRI/data_B0.nii.gz $baseDir/dMRI/dMRI/nodif_brain -f 0.3 -m -R
+
+# register T1 to eddy-corrected DTI and get interface
+$BB_BIN_DIR/bb_structural_pipeline/bb_epi_reg --epi=$baseDir/dMRI/dMRI/data_B0.nii.gz --t1=$baseDir/T1/T1.nii.gz --t1brain=$baseDir/T1/T1_brain.nii.gz --out=$baseDir/dMRI/dMRI/transforms/DTI_to_T1 --wmseg=$baseDir/T1/T1_fast/T1_brain_WM_mask.nii.gz
+
+# create inverse warp
+${FSLDIR}/bin/convert_xfm -omat $baseDir/dMRI/dMRI/transforms/T1_to_DTI.mat -inverse $baseDir/dMRI/dMRI/transforms/DTI_to_T1.mat
+
+# apply warp to get brain mask for eddy-corrected DTI data
+${FSLDIR}/bin/applywarp -i $baseDir/T1/T1_brain_mask -r $baseDir/dMRI/dMRI/data_B0 -o $baseDir/dMRI/dMRI/nodif_brain_mask --premat=$baseDir/dMRI/dMRI/transforms/T1_to_DTI.mat --interp=nn
+${FSLDIR}/bin/fslmaths $baseDir/dMRI/dMRI/data_B0 -mas $baseDir/dMRI/dMRI/nodif_brain_mask $baseDir/dMRI/dMRI/nodif_brain
 
 #generate list of non-outlier volumes called data_1_shell and associated b-files
 $BB_BIN_DIR/bb_diffusion_pipeline/bb_select_dwi_vols $baseDir/dMRI/dMRI/data.nii.gz $baseDir/dMRI/dMRI/bvals $baseDir/dMRI/dMRI/data_1_shell 1000 1 $baseDir/dMRI/dMRI/bvecs
