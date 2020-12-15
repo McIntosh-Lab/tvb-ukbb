@@ -318,7 +318,29 @@ def manage_fMRI(listFiles, flag):
     numFiles = len(listFiles)
     dim = []
 
-    listFiles = [rename_no_coil_echo_info(x) for x in listFiles]
+    allFiles = [rename_no_coil_echo_info(x) for x in listFiles]
+    print(f"BEFORE: {allFiles}")
+    # keeping the naming consistent
+    listFiles = []
+
+    # read JSON to find echo with EchoTime closest
+    # to rest session (0.03 -> 0.03306) and only
+    # use that file
+    for f in allFiles:
+        if "echo" not in f:
+            listFiles.append(f)
+        else:
+            if "echo3" in f or "echo5" in f:
+
+                # get JSON version from NIFTI
+                jname = bb_path.removeImageExt(f) + ".json"
+
+                print(f"FILE: {jname}")
+                jfile = open(jname, "r")  # , encoding="utf-8")
+                jsn = json.loads(jfile.read())
+                if jsn["EchoTime"] == 0.03306:
+                    listFiles.append(f)
+    print(f"AFTER: {listFiles}")
 
     # Get the dimensions for all the fMRI images
     for fileName in listFiles:
