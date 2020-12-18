@@ -29,13 +29,13 @@ for mode in ${modes[@]}; do
 
     ln -s $gradEcho_fmap_phase ${gradEchoDir}/fmap_phase_${mode}.nii.gz
 
-    # concatenate two magnitude images
-    fslmerge -t ${gradEchoDir}/fmap_${mode}_mag $gradEcho_fmap_mag1 $gradEcho_fmap_mag2
-
     # extract magnitude image and erode
-    $FSLDIR/bin/bet ${gradEchoDir}/fmap_${mode}_mag ${gradEchoDir}/fmap_${mode}_mag_brain
+    $FSLDIR/bin/bet ${gradEchoDir}/$gradEcho_fmap_mag1 ${gradEchoDir}/fmap_${mode}_mag_brain
     $FSLDIR/bin/fslmaths ${gradEchoDir}/fmap_${mode}_mag_brain -ero ${gradEchoDir}/fmap_${mode}_mag_brain_ero
 
+    # concatenate two magnitude images
+    fslmerge -t ${gradEchoDir}/fmap_${mode}_mag $gradEcho_fmap_mag1 $gradEcho_fmap_mag2
+   
     # get fieldmap image in rads
     $FSLDIR/bin/fsl_prepare_fieldmap SIEMENS ${gradEchoDir}/fmap_phase_${mode}.nii.gz ${gradEchoDir}/fmap_${mode}_mag_brain_ero ${gradEchoDir}/fmap_${mode}_rads $deltaTE
 done
