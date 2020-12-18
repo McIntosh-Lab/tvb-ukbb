@@ -9,6 +9,7 @@
  """
 
 import os, sys, argparse
+sys.path.insert(1, os.path.dirname(__file__) + "/..")
 import bb_pipeline_tools.bb_logging_tool as LT
 import bb_pipeline_tools.bb_file_manager as FM
 
