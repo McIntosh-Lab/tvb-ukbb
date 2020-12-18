@@ -28,6 +28,14 @@ import os.path
 
 def bb_pipeline_func(subject, jobHold, fileConfiguration):
 
+    # building blocks for more elaborate, generic design.fsf matching system
+    # store old file paths in subject's fMRI directory
+    f = open(subject + "/rfMRI/filenames.txt", "w")
+    for k in fileConfiguration.keys():
+        if "oldpath" in k:
+            f.write(f"{k}:{fileConfiguration[k]}\n")
+    f.close()
+
     logger = LT.initLogging(__file__, subject)
     logDir = logger.logDir
     baseDir = logDir[0 : logDir.rfind("/logs/")]
