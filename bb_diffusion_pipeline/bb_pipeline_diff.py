@@ -206,6 +206,17 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
         + " $BB_BIN_DIR/bb_diffusion_pipeline/bb_probtrackx2/bb_post_probtrackx2 "
         + baseDir,
     )
+    jobEDDYQUAD = LT.runCommand(
+        logger,
+        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "tvb_eddyQUAD_'
+        + subname
+        + '" -j '
+        + jobPROBTRACKX
+        + " -l "
+        + logDir
+        + " $BB_BIN_DIR/tvb_QC/tvb_eddyQUAD "
+        + baseDir,
+    )
     print("SUBMITTED DIFFUSION")
     return jobPOSTPROBTRACKX
 
