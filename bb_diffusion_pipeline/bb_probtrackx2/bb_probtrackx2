@@ -15,7 +15,7 @@ DTI_mask=${subjdir}/bedpostx.bedpostX/nodif_brain_mask.nii.gz
 output_dir=${subjdir}/probtrackx
 
 
-${FSLDIR}/bin/probtrackx2 --network --ompl --seed=${seeds} --verbose=1 --loopcheck --onewaycondition --omatrix1 --cthr=0.2 --nsteps=2000 --steplength=0.5 --nsamples=5000 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --avoid=${subjdir}/probtrackx/exclude.nii.gz --forcedir --opd --samples=${subjdir}/bedpostx.bedpostX/merged --mask=${DTI_mask} --dir=${output_dir}
+${FSLDIR}/bin/probtrackx2 --network --ompl --seed=${seeds} --loopcheck --onewaycondition --cthr=0.2 --nsteps=2000 --steplength=0.5 --nsamples=5000 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --avoid=${subjdir}/probtrackx/exclude.nii.gz --forcedir --opd --samples=${subjdir}/bedpostx.bedpostX/merged --mask=${DTI_mask} --dir=${output_dir}
 
 
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer
