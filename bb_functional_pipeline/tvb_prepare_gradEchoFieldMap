@@ -29,9 +29,6 @@ for mode in ${modes[@]}; do
 
     ln -s $gradEcho_fmap_phase ${gradEchoDir}/fmap_phase_${mode}.nii.gz
 
-    # concatenate two magnitude images
-    fslmerge -t ${gradEchoDir}/fmap_${mode}_mag $gradEcho_fmap_mag1 $gradEcho_fmap_mag2
-
     # extract magnitude image and erode
     $FSLDIR/bin/bet ${gradEchoDir}/$gradEcho_fmap_mag1 ${gradEchoDir}/fmap_${mode}_mag_brain
     $FSLDIR/bin/fslmaths ${gradEchoDir}/fmap_${mode}_mag_brain -ero ${gradEchoDir}/fmap_${mode}_mag_brain_ero
@@ -44,4 +41,3 @@ for mode in ${modes[@]}; do
 done
 
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
-
