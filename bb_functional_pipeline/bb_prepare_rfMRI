@@ -50,6 +50,21 @@ echo "set feat_files(1)       \""$nameDir"/fMRI/rfMRI_$2.nii.gz\"" >> $1/fMRI/rf
 echo "set alt_ex_func(1)      \""$nameDir"/fMRI/rfMRI_SBREF.nii.gz\"" >> $1/fMRI/rfMRI_$2.fsf
 #echo "set unwarp_files(1)     \""$nameDir"/fieldmap/fieldmap_fout_to_T1_brain_rad.nii.gz\"" >> $1/fMRI/rfMRI.fsf
 #echo "set unwarp_files_mag(1) \""$nameDir"/fMRI/symlink/T1_brain.nii.gz\"" >> $1/fMRI/rfMRI.fsf
+
+# hard coded fsf handling until I get time to implement generic version
+# based on reading old file paths from file in fMRI directory
+
+# for now, any rfMRI file found that isn't the movie file is assigned
+# the rest fsf
+if [[ "$2" == 1 ]]; then
+    echo "set unwarp_files(1)     \""$nameDir"/gradEchoFieldMap/fmap_movie_rads.nii.gz\"" >> $1/fMRI/rfMRI_$2.fsf
+    echo "set unwarp_files_mag(1) \""$nameDir"/gradEchoFieldMap/fmap_movie_mag_brain_ero.nii.gz\"" >> $1/fMRI/rfMRI_$2.fsf
+else
+    echo "set unwarp_files(1)     \""$nameDir"/gradEchoFieldMap/fmap_rest_rads.nii.gz\"" >> $1/fMRI/rfMRI_$2.fsf
+    echo "set unwarp_files_mag(1) \""$nameDir"/gradEchoFieldMap/fmap_rest_mag_brain_ero.nii.gz\"" >> $1/fMRI/rfMRI_$2.fsf
+
+fi
+
 echo "set unwarp_files(1) 0" >> $1/fMRI/rfMRI_$2.fsf
 echo "set unwarp_files_mag(1) 0" >> $1/fMRI/rfMRI_$2.fsf
 echo "set highres_files(1)    \""$nameDir"/fMRI/symlink/T1_brain.nii.gz\"" >> $1/fMRI/rfMRI_$2.fsf
