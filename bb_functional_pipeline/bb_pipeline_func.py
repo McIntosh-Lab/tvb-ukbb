@@ -36,20 +36,6 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
 
     subname = subject.replace("/", "_")
 
-    st = (
-        # '${FSLDIR}/bin/fsl_sub -T 5 -N "bb_postprocess_struct_'
-        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -N "bb_postprocess_struct_'
-        + subname
-        + '" -l '
-        + logDir
-        + " -j "
-        + str(jobHold)
-        + " $BB_BIN_DIR/bb_functional_pipeline/bb_postprocess_struct "
-        + subject
-    )
-
-    # print(st)
-
     jobPOSTPROCESS = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 5 -N "bb_postprocess_struct_'
@@ -66,6 +52,19 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
     # TODO: Embed the checking of the fieldmap inside the independent steps -- Every step should check if the previous one has ended.
     rfMRI_nums = [k.split("_")[-1] for k in fileConfiguration.keys() if "rfMRI" in k]
     print(f"FILE CONFIG IN FUNC: {fileConfiguration}")
+
+    # job for preparing fieldmap files
+    jobGEFIELDMAP = LT.runCommand(
+        logger,
+        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "tvb_prepare_gradEchoFieldMap_'
+        + subname
+        + '" -l '
+        + logDir
+        + " -j "
+        + jobPOSTPROCESS
+        + " $$BB_BIN_DIR/bb_functional_pipeline/tvb_prepare_gradEchoFieldMap "
+        + subject,
+    )
     # if ("rfMRI" in fileConfiguration) and (fileConfiguration["rfMRI"] != ""):
     for i in range(len(rfMRI_nums)):
 
@@ -77,7 +76,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
             + '"  -l '
             + logDir
             + " -j "
-            + jobPOSTPROCESS
+            + jobGEFIELDMAP
             + " $BB_BIN_DIR/bb_functional_pipeline/bb_prepare_rfMRI "
             + subject
             + f" {rfMRI_nums[i]}",
