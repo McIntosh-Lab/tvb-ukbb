@@ -51,7 +51,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     jobEDDY = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 75  -N "bb_eddy_'
-        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD}  -N "bb_eddy_'
+        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM}  -N "bb_eddy_'
 
         + subname
         + '" -j '
