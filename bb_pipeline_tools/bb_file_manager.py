@@ -27,7 +27,7 @@ import glob
 import json
 import copy
 import nibabel as nib
-import bb_logging_tool as LT
+#import bb_logging_tool as LT
 
 import sys
 from shutil import copyfile
@@ -37,6 +37,7 @@ sys.path.insert(1, os.path.dirname(__file__) + "/..")
 # print("CWD: " + os.getcwd() + "/..")
 # print("FILE: " + os.path.dirname(__file__))
 
+import bb_pipeline_tools.bb_logging_tool as LT
 import bb_general_tools.bb_path as bb_path
 from subprocess import check_output
 
