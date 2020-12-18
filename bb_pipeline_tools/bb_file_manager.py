@@ -689,7 +689,7 @@ def bb_file_manager(subject):
         [["*.[^log]"], capitalize_and_clean],
         [["dicom", "DICOM"], move_to, "delete/"],
         [["*T1*.nii.gz"], manage_struct, "T1"],
-        [["T2*FLAIR*.nii.gz", "*FLAIR*.nii.gz", "*T2*.nii.gz"], manage_struct, "T2"],
+        [["T2*FLAIR*.nii.gz", "*FLAIR*.nii.gz"], manage_struct, "T2"],
         [
             [
                 "*FMRI*RESTING*.nii.gz",
