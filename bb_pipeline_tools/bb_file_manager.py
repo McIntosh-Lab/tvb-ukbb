@@ -233,6 +233,7 @@ def move_index_file_add_to_config(oldPath, key, index, boolAppend):
         new_name = idealConfig[key][:-7] + f"_{index}" + idealConfig[key][-7:]
         move_file(oldPath, new_name)
         # fileConfig[key] = idealConfig[key] + f"_{index}"
+        fileConfig[key + f"_oldpath_{index}"] = oldPath
         fileConfig[key + f"_{index}"] = new_name
         print(f"key: {key + f'_{index}'}, fileConfig: {fileConfig[key + f'_{index}']}")
 

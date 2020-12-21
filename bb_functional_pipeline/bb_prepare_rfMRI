@@ -34,8 +34,8 @@ for elem in `cat $1/fMRI/rfMRI_$2.fsf | grep -oP '_--_\K.*?(?=_-_)' | sort | uni
 done 
 
 fmriNumVol=`${FSLDIR}/bin/fslval $1/fMRI/rfMRI_$2.nii.gz dim4`
-fmriTR=`${FSLDIR}/bin/fslval $1/fMRI/rfMRI.nii_$2.gz pixdim4`
-descrip=`${FSLDIR}/bin/fslval $1/fMRI/rfMRI.nii_$2.gz descrip`
+fmriTR=`${FSLDIR}/bin/fslval $1/fMRI/rfMRI_$2.nii.gz pixdim4`
+descrip=`${FSLDIR}/bin/fslval $1/fMRI/rfMRI_$2.nii.gz descrip`
 descrip=(`echo $descrip | tr ';' ' '`)
 fmriTE=${descrip[0]:3}
 fmriDwell=`${BB_BIN_DIR}/bb_pipeline_tools/bb_get_dwell_time $1/fMRI/rfMRI_$2.nii.gz`
@@ -65,8 +65,8 @@ else
 
 fi
 
-echo "set unwarp_files(1) 0" >> $1/fMRI/rfMRI_$2.fsf
-echo "set unwarp_files_mag(1) 0" >> $1/fMRI/rfMRI_$2.fsf
+# echo "set unwarp_files(1) 0" >> $1/fMRI/rfMRI_$2.fsf
+# echo "set unwarp_files_mag(1) 0" >> $1/fMRI/rfMRI_$2.fsf
 echo "set highres_files(1)    \""$nameDir"/fMRI/symlink/T1_brain.nii.gz\"" >> $1/fMRI/rfMRI_$2.fsf
 echo "set fmri(unwarp_dir) -y" >> $1/fMRI/rfMRI_$2.fsf
 
