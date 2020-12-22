@@ -30,7 +30,7 @@ for mode in ${modes[@]}; do
     ln -s $gradEcho_fmap_phase ${gradEchoDir}/fmap_phase_${mode}.nii.gz
 
     # extract magnitude image and erode
-    $FSLDIR/bin/bet ${gradEchoDir}/$gradEcho_fmap_mag1 ${gradEchoDir}/fmap_${mode}_mag_brain
+    $FSLDIR/bin/bet $gradEcho_fmap_mag1 ${gradEchoDir}/fmap_${mode}_mag_brain
     $FSLDIR/bin/fslmaths ${gradEchoDir}/fmap_${mode}_mag_brain -ero ${gradEchoDir}/fmap_${mode}_mag_brain_ero
 
     # concatenate two magnitude images
