@@ -114,7 +114,7 @@ set fmri(st_file) ""
 set fmri(bet_yn) 1
 
 # Spatial smoothing FWHM (mm)
-set fmri(smooth) 0
+set fmri(smooth) "@@@"
 
 # Intensity normalization
 set fmri(norm_yn) 0
