@@ -85,8 +85,6 @@ def main():
     else:
         runTopup = True
 
-    # set for now
-    # runTopup = True
 
     # Default value for job id. SGE does not wait for a job with this id.
     jobSTEP1 = "-1"
@@ -104,12 +102,9 @@ def main():
     if jobSTEP1[-3:] == ",-1":
         jobSTEP1 = jobSTEP1[:-3]
 
-    # print(f"jobSTEP1: {jobSTEP1}")
-    # jobSTEP1 = int(jobSTEP1)
-
     # if runTopup:
     jobSTEP2 = bb_pipeline_func(subject, jobSTEP1, fileConfig)
-    jobSTEP3 = bb_pipeline_diff(subject, jobSTEP1, fileConfig)
+    #jobSTEP3 = bb_pipeline_diff(subject, jobSTEP1, fileConfig)
 
     jobSTEP4 = bb_IDP(
         subject, str(jobSTEP1) + "," + str(jobSTEP2) + "," + str(jobSTEP3), fileConfig
