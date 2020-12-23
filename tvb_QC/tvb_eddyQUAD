@@ -9,9 +9,10 @@
 
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
 
-baseDir=$PWD/$1
+# baseDir=$PWD/$1
+baseDir=/$1
 
-mkdir -p ${baseDir}/QC/eddyQUAD
+# mkdir -p ${baseDir}/QC/eddyQUAD
 
 ${FSLDIR}/bin/eddy_quad ${baseDir}/dMRI/dMRI/data -idx ${baseDir}/dMRI/dMRI/eddy_index.txt -par ${baseDir}/dMRI/dMRI/acqparams.txt -m ${baseDir}/dMRI/dMRI/nodif_brain_mask.nii.gz -b ${baseDir}/dMRI/dMRI/bvals -o ${baseDir}/QC/eddyQUAD
 
