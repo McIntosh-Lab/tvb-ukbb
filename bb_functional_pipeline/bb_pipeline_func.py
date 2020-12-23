@@ -144,7 +144,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
         #    + subject,
         #)
 
-        #jobsToWaitFor = jobCLEAN
+        jobsToWaitFor = jobFEAT_R
 
     else:
         logger.error(
