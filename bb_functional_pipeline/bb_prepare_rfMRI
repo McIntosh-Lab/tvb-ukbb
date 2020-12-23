@@ -75,6 +75,6 @@ echo "set fmri(npts) $fmriNumVol"  >> $1/fMRI/rfMRI_$2.fsf
 echo "set fmri(dwell) $fmriDwell" >> $1/fMRI/rfMRI_$2.fsf
 echo "set fmri(te) $fmriTE" >> $1/fMRI/rfMRI_$2.fsf
 echo "set fmri(st) 2" >> $1/fMRI/rfMRI_$2.fsf #slice time correction, descending
-echo "set fmri(smooth) 5" >> $1/fMRI/rfMRI_$2.fsf #spatial smoothing FWHM (mm)
+echo "set fmri(smooth) 8" >> $1/fMRI/rfMRI_$2.fsf #spatial smoothing FWHM (mm)
 
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer

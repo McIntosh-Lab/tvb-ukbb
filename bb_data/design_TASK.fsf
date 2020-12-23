@@ -105,7 +105,7 @@ set fmri(unwarp_dir) y-
 # 3 : Use slice order file
 # 4 : Use slice timings file
 # 5 : Interleaved (0, 2, 4 ... 1, 3, 5 ... )
-set fmri(st) 0
+set fmri(st) "@@@"
 
 # Slice timings file
 set fmri(st_file) ""
@@ -114,7 +114,7 @@ set fmri(st_file) ""
 set fmri(bet_yn) 1
 
 # Spatial smoothing FWHM (mm)
-set fmri(smooth) 5
+set fmri(smooth) 8
 
 # Intensity normalization
 set fmri(norm_yn) 0
