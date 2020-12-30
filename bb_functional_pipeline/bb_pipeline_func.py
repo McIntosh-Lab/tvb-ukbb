@@ -36,24 +36,10 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
 
     subname = subject.replace("/", "_")
 
-    st = (
-        # '${FSLDIR}/bin/fsl_sub -T 5 -N "bb_postprocess_struct_'
-        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -N "bb_postprocess_struct_'
-        + subname
-        + '" -l '
-        + logDir
-        + " -j "
-        + str(jobHold)
-        + " $BB_BIN_DIR/bb_functional_pipeline/bb_postprocess_struct "
-        + subject
-    )
-
-    #print(st)
-
     jobPOSTPROCESS = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 5 -N "bb_postprocess_struct_'
-        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -N "bb_postprocess_struct_'
+        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_postprocess_struct_'
         + subname
         + '" -l '
         + logDir
