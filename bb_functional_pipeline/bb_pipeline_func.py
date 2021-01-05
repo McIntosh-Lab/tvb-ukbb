@@ -89,7 +89,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
                 logger,
                 #'${FSLDIR}/bin/fsl_sub -T 15   -N "bb_prepare_rfMRI_'
                 '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM}   -N "bb_prepare_rfMRI_'
-                + subname
+                + f"{i}_{subname}"
                 + '"  -l '
                 + logDir
                 + " -j "
@@ -102,7 +102,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
                 logger,
                 #'${FSLDIR}/bin/fsl_sub -T 1200 -N "bb_feat_rfMRI_ns_'
                 '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -N "bb_feat_rfMRI_ns_'
-                + subname
+                + f"{i}_{subname}"
                 + '"  -l '
                 + logDir
                 + " -j "
@@ -116,7 +116,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
                 logger,
                 #'${FSLDIR}/bin/fsl_sub -T 175  -N "bb_fix_'
                 '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MAX_MEM}  -N "bb_fix_'
-                + subname
+                + f"{i}_{subname}"
                 + '"  -l '
                 + logDir
                 + " -j "
@@ -129,7 +129,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
             jobFC = LT.runCommand(
                 logger,
                 '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -N "bb_FC_'
-                + subname
+                + f"{i}_{subname}"
                 + '"  -l '
                 + logDir
                 + " -j "
@@ -155,7 +155,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
                 logger,
                 #'${FSLDIR}/bin/fsl_sub -T 5  -N "bb_rfMRI_clean_'
                 '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM}  -N "bb_rfMRI_clean_'
-                + subname
+                + f"{i}_{subname}"
                 + '"  -l '
                 + logDir
                 + " -j "
@@ -178,32 +178,32 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
     tfMRI_nums = [
         k.split("_")[-1]
         for k in fileConfiguration.keys()
-        if "tfMRI" in k and k != "tfMRI_SBREF" and "oldpath" not in k
+        if "tfMRI" in k and "SBRef" not in k and "oldpath" not in k
     ]
 
     # print(f"tfMRI_nums: {tfMRI_nums}")
     # if ("rfMRI" in fileConfiguration) and (fileConfiguration["rfMRI"] != ""):
-    if len(rfMRI_nums) > 0:
+    if len(tfMRI_nums) > 0:
         for i in range(len(tfMRI_nums)):
             # if ("tfMRI" in fileConfiguration) and (fileConfiguration["tfMRI"] != ""):
             jobPREPARE_T = LT.runCommand(
                 logger,
                 #'${FSLDIR}/bin/fsl_sub -T  15 -N "bb_prepare_tfMRI_'
                 '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -N "bb_prepare_tfMRI_'
-                + subname
+                + f"{i}_{subname}"
                 + '" -l '
                 + logDir
                 + " -j "
                 + jobPOSTPROCESS
                 + " $BB_BIN_DIR/bb_functional_pipeline/bb_prepare_tfMRI "
                 + subject
-                + f" {rfMRI_nums[i]}",
+                + f" {tfMRI_nums[i]}",
             )
             jobFEAT_T = LT.runCommand(
                 logger,
                 #'${FSLDIR}/bin/fsl_sub -T 400 -N "bb_feat_tfMRI_'
                 '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -N "bb_feat_tfMRI_'
-                + subname
+                + f"{i}_{subname}"
                 + '" -l '
                 + logDir
                 + " -j "
