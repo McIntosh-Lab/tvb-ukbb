@@ -40,7 +40,9 @@ export FSLGECUDAQ=cuda.q                                                        
 #TODO implement this in the files
 export QUEUE_STANDARD="all.q"                                                   #TO BE MODIFIED BY USER
 export QUEUE_MORE_MEM="bigmem_16.q"                                             #TO BE MODIFIED BY USER
-export QUEUE_MAX_MEM="bigmem_64.q"                                              #TO BE MODIFIED BY USER
+# export QUEUE_MAX_MEM="bigmem_64.q"                                              #TO BE MODIFIED BY USER
+export QUEUE_MAX_MEM=$QUEUE_MORE_MEM                                              #TO BE MODIFIED BY USER
+export QUEUE_PARALLEL="parallel.q"
 
 #SETUP AFNI
 export AFNIDIR=/opt/afni                                                        #TO BE MODIFIED BY USER

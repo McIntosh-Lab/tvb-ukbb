@@ -423,6 +423,7 @@ def manage_fMRI(listFiles, flag):
             print(f"SBRef_name: {SBRef_name}")
             generate_SBRef(SBRef_name, idealConfig[flag + "_SBRef"])
             fileConfig[flag + "_SBRef"] = idealConfig[flag + "_SBRef"]
+            print("SBRef generated.")
     # There are several fMRI images but neither of them have more than one volume
     else:
         logger.error(
