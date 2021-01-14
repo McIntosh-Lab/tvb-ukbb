@@ -42,7 +42,7 @@ set fmri(tr) 0.672
 set fmri(npts) 523
 
 # Delete volumes
-set fmri(ndelete) 0
+set fmri(ndelete) "@@@"
 
 # Perfusion tag/control order
 set fmri(tagfirst) 1
