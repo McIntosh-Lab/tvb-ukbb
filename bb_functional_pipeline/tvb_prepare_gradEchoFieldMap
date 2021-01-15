@@ -23,9 +23,9 @@ deltaTE=2.46
 for mode in ${modes[@]}; do
 
     #TODO: put these in init_vars
-    gradEcho_fmap_phase=${subjDir}/fmap_${mode}/${subjName}_fmap_${mode}.nii.gz
-    gradEcho_fmap_mag1=${subjDir}/fmap_${mode}/${subjName}_run-01_fmap_${mode}
-    gradEcho_fmap_mag2=${subjDir}/fmap_${mode}/${subjName}_run-02_fmap_${mode}
+    gradEcho_fmap_phase=${subjDir}/rawdata/fmap_${mode}/${subjName}_fmap_${mode}.nii.gz
+    gradEcho_fmap_mag1=${subjDir}/rawdata/fmap_${mode}/${subjName}_run-01_fmap_${mode}
+    gradEcho_fmap_mag2=${subjDir}/rawdata/fmap_${mode}/${subjName}_run-02_fmap_${mode}
 
     ln -s $gradEcho_fmap_phase ${gradEchoDir}/fmap_phase_${mode}.nii.gz
 
