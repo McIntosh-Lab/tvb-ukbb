@@ -132,7 +132,8 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
                 + " feat "
                 + baseDir
                 #
-                + f"/fMRI/rfMRI_{i}.fsf " + subject,
+                # + f"/fMRI/rfMRI_{i}.fsf " + subject,
+                + f"/fMRI/rfMRI_{i}.fsf",
             )
             jobFIX = LT.runCommand(
                 logger,
