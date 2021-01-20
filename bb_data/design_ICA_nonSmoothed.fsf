@@ -238,7 +238,7 @@ set fmri(reghighres_yn) 1
 # 0   : No search
 # 90  : Normal search
 # 180 : Full search
-set fmri(reghighres_search) 90
+set fmri(reghighres_search) 180
 
 # Degrees of Freedom for registration to main structural
 set fmri(reghighres_dof) BBR
