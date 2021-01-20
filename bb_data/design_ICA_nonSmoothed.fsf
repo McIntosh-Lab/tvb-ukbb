@@ -284,7 +284,7 @@ set feat_files(1) "@@@"
 set fmri(confoundevs) 0
 
 # Session's alternate reference image for analysis 1
-set alt_ex_func(1) ""
+set alt_ex_func(1) 0
 
 # B0 unwarp input image for analysis 1
 set unwarp_files(1) "@@@"
