@@ -68,7 +68,7 @@ fi
 # echo "set unwarp_files(1) 0" >> $1/fMRI/rfMRI_$2.fsf
 # echo "set unwarp_files_mag(1) 0" >> $1/fMRI/rfMRI_$2.fsf
 echo "set highres_files(1)    \""$nameDir"/fMRI/symlink/T1_brain.nii.gz\"" >> $1/fMRI/rfMRI_$2.fsf
-echo "set fmri(unwarp_dir) -y" >> $1/fMRI/rfMRI_$2.fsf
+echo "set fmri(unwarp_dir) y-" >> $1/fMRI/rfMRI_$2.fsf
 
 echo "set fmri(tr) $fmriTR" >> $1/fMRI/rfMRI_$2.fsf
 echo "set fmri(npts) $fmriNumVol"  >> $1/fMRI/rfMRI_$2.fsf

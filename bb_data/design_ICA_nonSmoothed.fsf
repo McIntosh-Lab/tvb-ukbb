@@ -1,6 +1,6 @@
 
 # FEAT version number
-set fmri(version) 3.14
+set fmri(version) 6.00
 
 # Are we in MELODIC?
 set fmri(inmelodic) 1
@@ -36,10 +36,10 @@ set fmri(sscleanup_yn) 0
 set fmri(outputdir) "@@@"
 
 # TR(s)
-set fmri(tr) 0.672
+set fmri(tr) 1.97
 
 # Total volumes
-set fmri(npts) 523
+set fmri(npts) 261
 
 # Delete volumes
 set fmri(ndelete) 0
@@ -87,10 +87,10 @@ set fmri(sh_yn) 0
 set fmri(regunwarp_yn) "@@@"
 
 # EPI dwell time (ms)
-set fmri(dwell) 0.26
+set fmri(dwell) 0.51
 
 # EPI TE (ms)
-set fmri(te) 34.8
+set fmri(te) 30.0
 
 # % Signal loss threshold
 set fmri(signallossthresh) 10
@@ -238,7 +238,7 @@ set fmri(reghighres_yn) 1
 # 0   : No search
 # 90  : Normal search
 # 180 : Full search
-set fmri(reghighres_search) 180
+set fmri(reghighres_search) 90
 
 # Degrees of Freedom for registration to main structural
 set fmri(reghighres_dof) BBR
@@ -247,7 +247,7 @@ set fmri(reghighres_dof) BBR
 set fmri(regstandard_yn) 1
 
 # Use alternate reference images?
-set fmri(alternateReference_yn) 1
+set fmri(alternateReference_yn) 0
 
 # Standard image
 set fmri(regstandard) "_--_FSLDIR_-_/data/standard/MNI152_T1_2mm_brain"
@@ -271,7 +271,7 @@ set fmri(regstandard_nonlinear_warpres) 10
 set fmri(paradigm_hp) 100
 
 # Total voxels
-set fmri(totalVoxels) 259207168
+set fmri(totalVoxels) 34209792
 
 
 # Number of lower-level copes feeding into higher-level analysis
