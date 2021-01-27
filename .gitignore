@@ -5,4 +5,4 @@ __pycache__/
 .nfs*
 bb_python/python_installation/gradunwarp_FMRIB/
 *.RData
-
+.DS_Store
