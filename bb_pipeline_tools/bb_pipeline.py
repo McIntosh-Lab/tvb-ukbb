@@ -1,4 +1,4 @@
-#!/bin/env python
+#!../../software/env/bin/python
 #
 # Script name: bb_pipeline.py
 #
@@ -117,6 +117,7 @@ def main():
     )
 
     LT.finishLogging(logger)
+    print(f"IDP PID: {jobSTEP4}")
     return jobSTEP4
 
 
