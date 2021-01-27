@@ -247,7 +247,7 @@ set fmri(reghighres_dof) BBR
 set fmri(regstandard_yn) 1
 
 # Use alternate reference images?
-set fmri(alternateReference_yn) 0
+set fmri(alternateReference_yn) 1
 
 # Standard image
 set fmri(regstandard) "_--_FSLDIR_-_/data/standard/MNI152_T1_2mm_brain"

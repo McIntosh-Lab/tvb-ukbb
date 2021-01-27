@@ -47,7 +47,7 @@ fmriDwell=`${BB_BIN_DIR}/bb_pipeline_tools/bb_get_dwell_time $1/fMRI/rfMRI_$2.ni
 echo "set fmri(outputdir)     \""$nameDir"/fMRI/rfMRI_$2.ica\"" >> $1/fMRI/rfMRI_$2.fsf
 echo "set fmri(regunwarp_yn) 1" >> $1/fMRI/rfMRI_$2.fsf
 echo "set feat_files(1)       \""$nameDir"/fMRI/rfMRI_$2.nii.gz\"" >> $1/fMRI/rfMRI_$2.fsf
-#echo "set alt_ex_func(1)      \""$nameDir"/fMRI/rfMRI_SBREF.nii.gz\"" >> $1/fMRI/rfMRI_$2.fsf
+echo "set alt_ex_func(1)      \""$nameDir"/fMRI/rfMRI_SBREF.nii.gz\"" >> $1/fMRI/rfMRI_$2.fsf
 #echo "set unwarp_files(1)     \""$nameDir"/fieldmap/fieldmap_fout_to_T1_brain_rad.nii.gz\"" >> $1/fMRI/rfMRI.fsf
 #echo "set unwarp_files_mag(1) \""$nameDir"/fMRI/symlink/T1_brain.nii.gz\"" >> $1/fMRI/rfMRI.fsf
 
