@@ -1,4 +1,4 @@
-#!../../software/env/bin/python
+#!../../software/env python
 #
 # Script name: bb_pipeline.py
 #
