@@ -38,7 +38,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
 
     st = (
         # '${FSLDIR}/bin/fsl_sub -T 5 -N "bb_postprocess_struct_'
-        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -N "bb_postprocess_struct_'
+        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_postprocess_struct_'
         + subname
         + '" -l '
         + logDir
@@ -53,7 +53,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
     jobPOSTPROCESS = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 5 -N "bb_postprocess_struct_'
-        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -N "bb_postprocess_struct_'
+        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_postprocess_struct_'
         + subname
         + '" -l '
         + logDir
@@ -70,7 +70,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
         jobPREPARE_R = LT.runCommand(
             logger,
             #'${FSLDIR}/bin/fsl_sub -T 15   -N "bb_prepare_rfMRI_'
-            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM}   -N "bb_prepare_rfMRI_'
+            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD}   -N "bb_prepare_rfMRI_'
             + subname
             + '"  -l '
             + logDir
@@ -133,7 +133,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
         jobCLEAN = LT.runCommand(
             logger,
             #'${FSLDIR}/bin/fsl_sub -T 5  -N "bb_rfMRI_clean_'
-            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM}  -N "bb_rfMRI_clean_'
+            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD}  -N "bb_rfMRI_clean_'
             + subname
             + '"  -l '
             + logDir
@@ -155,7 +155,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
         jobPREPARE_T = LT.runCommand(
             logger,
             #'${FSLDIR}/bin/fsl_sub -T  15 -N "bb_prepare_tfMRI_'
-            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -N "bb_prepare_tfMRI_'
+            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_prepare_tfMRI_'
             + subname
             + '" -l '
             + logDir
@@ -167,7 +167,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
         jobFEAT_T = LT.runCommand(
             logger,
             #'${FSLDIR}/bin/fsl_sub -T 400 -N "bb_feat_tfMRI_'
-            '${FSLDIR}/bin/fsl_sub -q all.ac -N "bb_feat_tfMRI_'
+            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -N "bb_feat_tfMRI_'
             + subname
             + '" -l '
             + logDir
