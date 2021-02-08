@@ -1,5 +1,4 @@
-#!../../software/env python
-#
+#!/bin/env python
 # Script name: bb_pipeline.py
 #
 # Description: Main script. This script will call the rest of scripts.
