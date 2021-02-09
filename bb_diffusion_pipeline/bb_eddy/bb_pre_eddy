@@ -73,7 +73,7 @@ topupValue="0"`echo "scale=4;("$dtiDwell" * ("$EPIfactor" -1.0)) / 1000.0 "| bc`
 
 cat /dev/null > $direc/dMRI/dMRI/acqparams.txt 
 
-#camCAN encoding is A>>P
+#PPMI encoding is j- or A>>P
 printf "0 -1 0 $topupValue\n" >>$direc/dMRI/dMRI/acqparams.txt
 
 
