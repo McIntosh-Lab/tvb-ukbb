@@ -688,7 +688,7 @@ def bb_file_manager(subject):
     patterns_actions = [
         [["*.[^log]"], capitalize_and_clean],
         [["dicom", "DICOM"], move_to, "delete/"],
-        [["*T1*.nii.gz","*MPRAGE*.nii.gz"], manage_struct, "T1"],
+        [["*T1*.nii.gz", "*MPRAGE*.nii.gz"], manage_struct, "T1"],
         [["T2*FLAIR*.nii.gz", "*FLAIR*.nii.gz"], manage_struct, "T2"],
         [
             [
@@ -714,7 +714,7 @@ def bb_file_manager(subject):
             "tfMRI",
         ],
         [["SWI*nii.gz"], manage_SWI],
-        [["DIFF_*", "MB3_*", "*dwi*.*", "*DWI*.*","*DTI_gated.*", manage_DWI],
+        [["DIFF_*", "MB3_*", "*dwi*.*", "*DWI*.*", "*DTI_gated.*", manage_DWI],
         [["SWI*.*"], move_to, "SWI/unclassified/"],
         [["*.[^log]"], move_to, "unclassified/"],
     ]
