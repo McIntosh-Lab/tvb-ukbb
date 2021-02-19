@@ -68,7 +68,7 @@ ${FSLDIR}/bin/fnirt --in=T1 --ref=$FSLDIR/data/standard/MNI152_T1_1mm --aff=T1_t
 
 #Create brain mask and mask T1
 ${FSLDIR}/bin/invwarp --ref=T1 -w T1_to_MNI_warp_coef -o T1_to_MNI_warp_coef_inv
-${FSLDIR}/bin/applywarp --rel --interp=trilinear --in=$templ/MNI152_T1_1mm_brain_mask --ref=T1 -w T1_to_MNI_warp_coef_inv -o T1_brain_mask
+${FSLDIR}/bin/applywarp --rel --interp=nn --in=$templ/MNI152_T1_1mm_brain_mask --ref=T1 -w T1_to_MNI_warp_coef_inv -o T1_brain_mask
 ${FSLDIR}/bin/fslmaths T1 -mul T1_brain_mask T1_brain
 ${FSLDIR}/bin/fslmaths T1_brain_to_MNI -mul $templ/MNI152_T1_1mm_brain_mask T1_brain_to_MNI
 
