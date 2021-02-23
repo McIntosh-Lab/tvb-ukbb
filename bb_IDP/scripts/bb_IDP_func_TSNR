@@ -45,7 +45,7 @@ for i in $baserfMRI/filtered_func_data $baserfMRI/filtered_func_data_clean $base
     TheSNR=`fslstats /tmp/${nameFil}_SNR_$1 -l 0.1 -p 50`
     TheSNRrecip=`echo "10 k 1 $TheSNR / p" | dc -`
     result="$result $TheSNRrecip"
-    fmriNumVol=`${FSLDIR}/bin/fslval $1/fMRI/rfMRI_$2.nii.gz dim4
+    fmriNumVol=`${FSLDIR}/bin/fslval $1/fMRI/rfMRI.nii.gz dim4
     result="$result $fmriNumVol" 
     imrm /tmp/${nameFil}_SNR_$1
   else
