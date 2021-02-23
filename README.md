@@ -56,7 +56,7 @@ pkgs_dirs:
 
 **GENERAL INSTALL INSTRUCTIONS**
 
-1) Download the release .zip from the repository.
+1) Download the [latest release .zip from the repository here](https://github.com/McIntosh-Lab-RRI/tvb-ukbb/releases/latest) (read the instructions on the release page)
 2) Unzip the .zip file to where you'd like the pipeline to be installed; e.g. unzipping it in `/home/<username>` will yield `/home/<username>/tvb-pipeline`
 3) `cd` into `tvb-pipeline` and run `chmod +x install_ukbb.sh`
 4) Run `./install_ukbb.sh`. This may take a while and **you will have to enter your GitHub username and password midway through** as the repository is currently invite-only.
