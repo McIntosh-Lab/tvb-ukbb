@@ -55,7 +55,7 @@ mv $dirT1/T1_unbiased_bianca_mask.nii.gz $dirT1/T1_unbiased_ventmask.nii.gz $dir
 echo $origDir/$dirT1/T1_unbiased_brain.nii.gz $origDir/$dirT2/T2_FLAIR_unbiased.nii.gz $origDir/$dirT1/transforms/T1_to_MNI_linear.mat > $dirT2/lesions/conf_file.txt;
 
 #Run BIANCA
-$FSLDIR/bin/bianca --singlefile=$dirT2/lesions/conf_file.txt --querysubjectnum=1 --brainmaskfeaturenum=1 --loadclassifierdata=$BB_BIN_DIR/bb_data/bianca_class_data --matfeaturenum=3 --featuresubset=1,2 -o $dirT2/lesions/bianca_mask
+$FSLDIR/bin/bianca --singlefile=$dirT2/lesions/conf_file.txt --querysubjectnum=1 --brainmaskfeaturenum=1 --loadclassifierdata=$BB_BIN_DIR/bb_data/ADNI3_bianca_class_data --matfeaturenum=3 --featuresubset=1,2 -o $dirT2/lesions/bianca_mask
 
 #Apply the inclusion mask to BIANCA output to get the final thresholded mask
 fslmaths $dirT2/lesions/bianca_mask -mul $dirT2/lesions/T1_unbiased_bianca_mask.nii.gz -thr 0.8 -bin $dirT2/lesions/final_mask
