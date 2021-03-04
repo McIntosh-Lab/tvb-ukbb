@@ -72,8 +72,10 @@ ${FSLDIR}/bin/applywarp --rel --interp=nn --in=$templ/MNI152_T1_1mm_brain_mask -
 ${FSLDIR}/bin/fslmaths T1 -mul T1_brain_mask T1_brain
 ${FSLDIR}/bin/fslmaths T1_brain_to_MNI -mul $templ/MNI152_T1_1mm_brain_mask T1_brain_to_MNI
 
-#register parcellation to T1
+#register parcellation, cerebellar & brainstem masks to T1
 ${FSLDIR}/bin/applywarp --rel --interp=nn --in=$PARC_IMG --ref=T1 -w T1_to_MNI_warp_coef_inv -o parcel_to_T1
+${FSLDIR}/bin/applywarp --rel --interp=nn --in=${templ}/cerebellum --ref=T1 -w T1_to_MNI_warp_coef_inv -o cerebellum_to_T1
+${FSLDIR}/bin/applywarp --rel --interp=nn --in=${templ}/brainstem --ref=T1 -w T1_to_MNI_warp_coef_inv -o brainstem_to_T1
 
 #Defacing T1
 ${FSLDIR}/bin/convert_xfm -omat grot.mat -concat T1_to_MNI_linear.mat T1_orig_ud_to_T1.mat
@@ -171,7 +173,7 @@ cd T1
 
 #Run fast
 mkdir T1_fast
-${FSLDIR}/bin/fast -b -o T1_fast/T1_brain T1_brain
+${FSLDIR}/bin/fast -b -o T1_fast/T1_brain T1_brain 
 
 #Binarize PVE masks
 if [ -f T1_fast/T1_brain_pveseg.nii.gz ] ; then
@@ -179,6 +181,11 @@ if [ -f T1_fast/T1_brain_pveseg.nii.gz ] ; then
     $FSLDIR/bin/fslmaths T1_fast/T1_brain_pve_1.nii.gz -thr 0.5 -bin T1_fast/T1_brain_GM_mask.nii.gz
     $FSLDIR/bin/fslmaths T1_fast/T1_brain_pve_2.nii.gz -thr 0.5 -bin T1_fast/T1_brain_WM_mask.nii.gz
 fi
+
+#remove cerebellum and brainstem from GM and WM mask
+${FSLDIR}/bin/fslmaths T1_fast/T1_brain_GM_mask -sub transforms/cerebellum_to_T1 -sub transforms/brainstem_to_T1 -bin T1_fast/T1_brain_GM_mask_noCerebBS
+${FSLDIR}/bin/fslmaths T1_fast/T1_brain_WM_mask -sub transforms/cerebellum_to_T1 -sub transforms/brainstem_to_T1 -bin T1_fast/T1_brain_WM_mask_noCerebBS
+
 
 #Apply bias field correction to T1
 if [ -f T1_fast/T1_brain_bias.nii.gz ] ; then
@@ -199,10 +206,8 @@ ${FSLDIR}/bin/run_first_all -i T1_first/T1_unbiased_brain -b -o T1_first/T1_firs
 ${FSLDIR}/bin/fslmaths T1_first/T1_first_all_fast_firstseg -uthr 15 T1_first/subcort_upperthresh_seg
 ${FSLDIR}/bin/fslmaths T1_first/T1_first_all_fast_firstseg -thr 17 T1_first/subcort_lowerthresh_seg
 ${FSLDIR}/bin/fslmaths T1_first/subcort_upperthresh_seg -add T1_first/subcort_lowerthresh_seg -bin T1_first/subcort_GM
-${FSLDIR}/bin/fslmaths T1_fast/T1_brain_GM_mask -add T1_first/subcort_GM -bin cort_subcort_GM
+${FSLDIR}/bin/fslmaths T1_fast/T1_brain_GM_mask_noCerebBS -add T1_first/subcort_GM -bin cort_subcort_GM
 
-#label GM with ROIs
-${AFNIDIR}/3dROIMaker -inset cort_subcort_GM.nii.gz -thresh 0.1 -prefix labelled -refset transforms/parcel_to_T1.nii.gz -nifti -neigh_upto_vert
 
 #Run Siena
 $BB_BIN_DIR/bb_structural_pipeline/bb_sienax `pwd`/..
@@ -241,6 +246,27 @@ cd ../..
 #Run BIANCA
 $BB_BIN_DIR/bb_structural_pipeline/bb_BIANCA $1
 
+#remove BIANCA estimated lesion voxels from GM masks & add to WM mask
+cp $1/T1/T1_fast/T1_brain_GM_mask.nii.gz $1/T1/T1_fast/T1_brain_GM_mask_preBIANCA.nii.gz
+${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_GM_mask_preBIANCA -sub $1/T2_FLAIR/lesions/final_mask -bin $1/T1/T1_fast/T1_brain_GM_mask
+cp $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS.nii.gz $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS_preBIANCA.nii.gz
+${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS_preBIANCA -sub $1/T2_FLAIR/lesions/final_mask -bin $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS
+cp $1/T1/cort_subcort_GM.nii.gz $1/T1/cort_subcort_GM_preBIANCA.nii.gz
+${FSLDIR}/bin/fslmaths $1/T1/cort_subcort_GM_preBIANCA -sub $1/T2_FLAIR/lesions/final_mask -bin $1/T1/cort_subcort_GM
+cp $1/T1/T1_fast/T1_brain_WM_mask.nii.gz $1/T1/T1_fast/T1_brain_WM_mask_preBIANCA.nii.gz
+${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_WM_mask_preBIANCA -add $1/T2_FLAIR/lesions/final_mask -bin $1/T1/T1_fast/T1_brain_WM_mask
+cp $1/T1/T1_fast/T1_brain_WM_mask_noCerebBS.nii.gz $1/T1/T1_fast/T1_brain_WM_mask_noCerebBS_preBIANCA.nii.gz
+${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_WM_mask_noCerebBS_preBIANCA -add $1/T2_FLAIR/lesions/final_mask -bin $1/T1/T1_fast/T1_brain_WM_mask_noCerebBS
+
+#create GM-WM interface for dMRI tractography seeds
+${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS -kernel sphere 1 -dilM $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS_dil
+${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS_dil -add $1/T1/T1_fast/T1_brain_WM_mask_noCerebBS -thr 2 -bin $1/T1/interface
+
+#label GM with ROIs
+${AFNIDIR}/3dROIMaker -inset $1/T1/cort_subcort_GM.nii.gz -thresh 0.1 -inflate 1 -prefix $1/T1/labelled -refset $1/T1/transforms/parcel_to_T1.nii.gz -nifti -neigh_upto_vert
+
+#for some reason both labelled_GM and labelled_GMI are inflated; fix it here
+${FSLDIR}/bin/fslmaths $1/T1/labelled_GM -mas $1/T1/cort_subcort_GM.nii.gz $1/T1/labelled_GM
 
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
 
