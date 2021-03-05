@@ -9,8 +9,8 @@ import numpy as np
 import sys
 
 def compute_SC(subj_name_dmri):
-    SC_abs = np.load(subj_name_dmri + "/probtrackx/fdt_network_matrix")
-    waytotal = np.load(subj_name_dmri + "/probtrackx/waytotal")
+    SC_abs = np.loadtxt(subj_name_dmri + "/probtrackx/fdt_network_matrix")
+    waytotal = np.loadtxt(subj_name_dmri + "/probtrackx/waytotal")
     SC = np.divide(SC_abs, waytotal)
     np.savetxt(subj_name_dmri + "/sc.txt", SC)
 
