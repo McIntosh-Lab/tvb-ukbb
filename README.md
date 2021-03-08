@@ -17,6 +17,7 @@ The only external dependencies required for this pipeline are:
 * Anaconda/Miniconda (latest release)
 * git (>=2)
 * gfortran (installation only)
+* OGS/GE (Open Grid Scheduler/Grid Engine version 2011.11)
 
 Note: these software versions are what we used to develop the pipeline. Newer versions may work but we cannot guarantee that.
 
