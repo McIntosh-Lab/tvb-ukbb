@@ -21,6 +21,8 @@ The only external dependencies required for this pipeline are:
 
 Note: these software versions are what we used to develop the pipeline. Newer versions may work but we cannot guarantee that.
 
+Note: these software versions are what we used to develop the pipeline. Newer versions may work but we cannot guarantee that.
+
 
 Installation
 ------------
