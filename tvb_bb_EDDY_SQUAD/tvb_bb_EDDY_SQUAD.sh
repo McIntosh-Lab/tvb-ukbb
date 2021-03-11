@@ -37,4 +37,4 @@ dirScript=`dirname $0`
 		rm -r $EDDY_SQUAD_output_folder
 		
 		
-		eddy_squad -o $EDDY_SQUAD_output_folder $origDir/eddy_quad_list.txt
+		${FSLDIR}/bin/eddy_squad -o $EDDY_SQUAD_output_folder $origDir/eddy_quad_list.txt
