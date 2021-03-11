@@ -8,10 +8,10 @@ subjdir=$1
 
 html_output_dir="/QC/html"
 
-mkdir $subjdir$html_output_dir
-mkdir $subjdir$html_output_dir"/notes"
-mkdir $subjdir$html_output_dir"/images"
-mkdir $subjdir$html_output_dir"/css"
+mkdir -p $subjdir$html_output_dir
+mkdir -p $subjdir$html_output_dir"/notes"
+mkdir -p $subjdir$html_output_dir"/images"
+mkdir -p $subjdir$html_output_dir"/css"
 
 
 cp $BB_BIN_DIR/tvb_bb_QC_images/resources/sidebartoggles.js $subjdir$html_output_dir

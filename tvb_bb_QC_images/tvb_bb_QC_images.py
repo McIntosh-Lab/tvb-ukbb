@@ -43,7 +43,7 @@ def tvb_bb_QC_images(subject, jobHold, fileConfiguration):
         + jobHold
         + "  -l "
         + logDir
-        + "xvfb-run -s '-screen 0 640x480x24' $BB_BIN_DIR/tvb_bb_QC_images/tvb_bb_QC_images.sh "
+        + "xvfb-run -a $BB_BIN_DIR/tvb_bb_QC_images/tvb_bb_QC_images.sh "   #-s '-screen 0 640x480x24'
         + subject,
     )
     print("SUBMITTED QC_IMAGES")

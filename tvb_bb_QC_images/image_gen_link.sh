@@ -14,7 +14,7 @@ second_overlay_link=$7
 last_addition=$8
 
 
-mkdir $subjdir"/QC/html"
+mkdir -p $subjdir"/QC/html"
 
 image_gen_link_js=$subjdir"/QC/html/image_gen_links.js"
 
@@ -44,7 +44,7 @@ EOF
 
 if [ $last_addition -eq 1 ]; then
 	
-cat > $image_gen_link_js << EOF
+cat <<EOF >> $image_gen_link_js
 
 
 };
