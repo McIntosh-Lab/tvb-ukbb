@@ -120,8 +120,10 @@ hide_combo[2]="--hidex --hidey"
 overlay_template=""
 if [ "$label_or_volume" = "volume" ]; then
 	overlay_template="--overlayType volume --alpha $alpha --brightness 49.75000000000001 --contrast 49.90029860765409 --cmap $cmap --negativeCmap greyscale --gamma 0.0 --cmapResolution 256 --interpolation none --numSteps 100 --blendFactor 0.1 --smoothing 0 --resolution 100 --numInnerSteps 10 --clipMode intersection --volume 0"
-else
+elif [ "$label_or_volume" = "label" ]; then 
 	overlay_template="--overlayType label --alpha $alpha --brightness 49.75000000000001 --contrast 49.90029860765409 --lut $cmap --outlineWidth 1 --volume 0"
+else
+	overlay_template="--overlayType linevector --alpha 100.0 --brightness 50.0 --contrast 50.0 --cmap greyscale --lineWidth 1.0 --lengthScale 100.0 --xColour 1.0 0.0 0.0 --yColour 0.0 1.0 0.0 --zColour 0.0 0.0 1.0 --suppressMode white"
 fi
 
 
@@ -131,6 +133,15 @@ subject_folder=$2
 	dim1=`${FSLDIR}/bin/fslval $subject_folder$underlay dim1`
 	dim2=`${FSLDIR}/bin/fslval $subject_folder$underlay dim2`
 	dim3=`${FSLDIR}/bin/fslval $subject_folder$underlay dim3`
+
+	#use if voxel loc depends on pixdim
+	#pixdim1=`${FSLDIR}/bin/fslval $subject_folder$underlay pixdim1`
+	#pixdim2=`${FSLDIR}/bin/fslval $subject_folder$underlay pixdim2`
+	#pixdim3=`${FSLDIR}/bin/fslval $subject_folder$underlay pixdim3`
+	#dim1=$(echo "scale=4;$dim1 * $pixdim1" | bc)
+	#dim2=$(echo "scale=4;$dim2 * $pixdim2" | bc)
+	#dim3=$(echo "scale=4;$dim3 * $pixdim3" | bc)
+
 
 
 	startingx=$(echo "scale=4;$dim1 * $xlimit/100" | bc) #`$(($dim1*$xlimit/100)) | bc` #10 #50

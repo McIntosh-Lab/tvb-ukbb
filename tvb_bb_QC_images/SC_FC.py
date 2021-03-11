@@ -1,3 +1,4 @@
+#!/bin/env python
 import numpy as np
 import sys
 from scipy.stats import zscore
@@ -6,7 +7,7 @@ import matplotlib
 import os
 
 #increasing font size
-font = {'size'   : 30}
+font = {'size'   : 100}
 matplotlib.rc('font', **font)
 
 
@@ -32,9 +33,16 @@ def SC_FC_png(subj):
 
         subjName=subj[subj.rfind('sub'):]
 
-        SC_abs=np.loadtxt(subj + '/dMRI/probtrackx/fdt_network_matrix')
-        waytotal=np.loadtxt(subj + '/dMRI/probtrackx/waytotal')
-        SC=np.divide(SC_abs,waytotal)
+        #SC_abs=np.loadtxt(subj + '/dMRI/probtrackx/fdt_network_matrix')
+        #waytotal=np.loadtxt(subj + '/dMRI/probtrackx/waytotal')
+        #SC=np.divide(SC_abs,waytotal)
+        
+
+        SC=""
+        try:
+            SC=np.loadtxt(subj + '/dMRI/sc.txt')
+        except:
+            print("ERROR: sc file not found")
 
         tract_lengths=np.loadtxt(subj + '/dMRI/probtrackx/fdt_network_matrix_lengths')
         
@@ -49,9 +57,9 @@ def SC_FC_png(subj):
                 #norm_ts=np.loadtxt(subj + '/fMRI/rfMRI_0.ica/norm_ts.txt');
 
             except:
-                print("ERROR: file not found")
+                print("ERROR: ts file not found")
 
-            f, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(50, 50))
+            f, ax = plt.subplots(1, 1, figsize=(50, 50))
         
 
         else:     
@@ -61,7 +69,7 @@ def SC_FC_png(subj):
                 #norm_ts_0=np.loadtxt(subj + '/fMRI/rfMRI_0.ica/norm_ts.txt');
 
             except:
-                print("ERROR: file not found")
+                print("ERROR: rFMRI_0 ts file not found")
                 
 
             try:
@@ -70,70 +78,133 @@ def SC_FC_png(subj):
                 #norm_ts_1=np.loadtxt(subj + '/fMRI/rfMRI_1.ica/ts.txt');
 
             except:
-                print("ERROR: file not found")
+                print("ERROR: rFMRI_1 ts file not found")
 
 
-            f, ((ax1, ax2), (ax3, ax4), (ax5, ax6)) = plt.subplots(3, 2, figsize=(50, 50))
             
-        #division by 0 occurs in np.log10(SC) if 0 values aren't turned into small values
-        for i in range(SC.shape[0]):
-            for j in range(SC.shape[1]):
-                if SC[i][j] == 0:
-                   SC[i][j] = 10**-10
-                
-                
-        ax1.set_title('SC')
-        im1= ax1.imshow(np.log10(SC))
-        f.colorbar(im1, ax=ax1)
-        
-        ax2.set_title('tract length')
-        im2= ax2.imshow(tract_lengths)
-        f.colorbar(im2, ax=ax2)
-        
+        try:    
+            #division by 0 occurs in np.log10(SC) if 0 values aren't turned into small values
+            #for i in range(SC.shape[0]):
+            #    for j in range(SC.shape[1]):
+            #        if SC[i][j] == 0:
+            #           SC[i][j] = 10**-10
+           
+            
+    
+            f, ax = plt.subplots(1, 1, figsize=(50, 50))
+            ax.set_title('SC')
+            ax.set_facecolor('#000000')
+            im= ax.imshow(np.log10(SC))
+            f.colorbar(im, ax=ax)
+            
+            plt.tight_layout()
+            saveNm=subj + '/QC/SC_FC/' +subjName + '_SC.png'
+            f.savefig(saveNm)
+        except: 
+            print("ERROR: Can't create SC graph")
+        try:
+            f, ax = plt.subplots(1, 1, figsize=(50, 50))
+            ax.set_title('tract length')
+            ax.set_facecolor('#000000')
+            im= ax.imshow(tract_lengths)
+            f.colorbar(im, ax=ax)
+            
+            plt.tight_layout()
+            saveNm=subj + '/QC/SC_FC/' +subjName + '_TL.png'
+            f.savefig(saveNm)
+            
+            
+            tract_lengths=np.log10(tract_lengths)
+            f, ax = plt.subplots(1, 1, figsize=(50, 50))
+            ax.set_title('tract length log scale')
+            ax.set_facecolor('#000000')
+            im= ax.imshow(tract_lengths)
+            f.colorbar(im, ax=ax)
+            
+            plt.tight_layout()
+            saveNm=subj + '/QC/SC_FC/' +subjName + '_TL_log.png'
+            f.savefig(saveNm)
+        except:
+            print("ERROR: Can't create TL graph")
 
         if os.path.isfile(subj + '/fMRI/rfMRI.ica/fc.txt'):
             try:
-                ax3.set_title('FC')
-                im3= ax3.imshow(FC)
-                f.colorbar(im3, ax=ax3)
+                f, ax = plt.subplots(1, 1, figsize=(50, 50))
+                ax.set_title('FC')
+                im= ax.imshow(FC)
+                f.colorbar(im, ax=ax)
                 
-                ax4.set_xlabel('volume')
-                ax4.set_ylabel('ROI')
-                ax4.set_title('ROI timeseries carpet plot')
-                im4= ax4.imshow(norm_ts.transpose(), cmap='gray', aspect = 'auto')
+                plt.tight_layout()
+                saveNm=subj + '/QC/SC_FC/' +subjName + '_FC_0.png'
+                f.savefig(saveNm)
+
+
+                f, ax = plt.subplots(1, 1, figsize=(50, 50))
+                ax.set_xlabel('volume')
+                ax.set_ylabel('ROI')
+                ax.set_title('ROI timeseries carpet plot')
+                im= ax.imshow(norm_ts.transpose(), cmap='gray', aspect = 'auto')
+
+                plt.tight_layout()
+                saveNm=subj + '/QC/SC_FC/' +subjName + '_carpet_0.png'
+                f.savefig(saveNm)
             except:
                 print("ERROR: can't generate graph")
 
         else:
             try:
-                ax3.set_title('FC_0')
-                im3= ax3.imshow(FC_0)
-                f.colorbar(im3, ax=ax3)
+                f, ax = plt.subplots(1, 1, figsize=(50, 50))
+                ax.set_title('FC_0')
+                im= ax.imshow(FC_0)
+                f.colorbar(im, ax=ax)
                 
-                ax4.set_xlabel('volume')
-                ax4.set_ylabel('ROI')
-                ax4.set_title('ROI timeseries carpet plot')
-                im4= ax4.imshow(norm_ts_0.transpose(), cmap='gray', aspect = 'auto')
+                plt.tight_layout()
+                saveNm=subj + '/QC/SC_FC/' +subjName + '_FC_0.png'
+                f.savefig(saveNm)
+
+
+                f, ax = plt.subplots(1, 1, figsize=(50, 30))
+                ax.set_xlabel('volume')
+                ax.set_ylabel('ROI')
+                ax.set_title('ROI timeseries carpet plot 0')
+                im= ax.imshow(norm_ts_0.transpose(), cmap='gray', aspect = 'auto')
+                ax.yaxis.set_label_position("right")
+                ax.yaxis.tick_right()
+
+                plt.tight_layout()
+                saveNm=subj + '/QC/SC_FC/' +subjName + '_carpet_0.png'
+                f.savefig(saveNm)
             except:
                 print("ERROR: can't generate graph")
 
 
             try:
-                ax5.set_title('FC_1')
-                im5= ax5.imshow(FC_1)
-                f.colorbar(im5, ax=ax5)
+                f, ax = plt.subplots(1, 1, figsize=(50, 50))
+                ax.set_title('FC_1')
+                im= ax.imshow(FC_1)
+                f.colorbar(im, ax=ax)
+
+                plt.tight_layout()
+                saveNm=subj + '/QC/SC_FC/' +subjName + '_FC_1.png'
+                f.savefig(saveNm)
                 
-                ax6.set_xlabel('volume')
-                ax6.set_ylabel('ROI')
-                ax6.set_title('ROI timeseries carpet plot')
-                im6= ax6.imshow(norm_ts_1.transpose(), cmap='gray', aspect = 'auto')
+
+                f, ax = plt.subplots(1, 1, figsize=(50, 30))
+                ax.set_xlabel('volume')
+                ax.set_ylabel('ROI')
+                ax.set_title('ROI timeseries carpet plot 1')
+                im= ax.imshow(norm_ts_1.transpose(), cmap='gray', aspect = 'auto')
+
+                ax.yaxis.set_label_position("right")
+                ax.yaxis.tick_right()
+
+                plt.tight_layout()
+                saveNm=subj + '/QC/SC_FC/' +subjName + '_carpet_1.png'
+                f.savefig(saveNm)
             except:
                 print("ERROR: can't generate graph")
- 
-        saveNm=subj + '/QC/SC_FC/' +subjName + '_SCFC.png'
-        f.savefig(saveNm)
-
-
+        
+        
 
 
 

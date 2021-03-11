@@ -135,6 +135,12 @@ subject_folder=$2
   dim1=`${FSLDIR}/bin/fslval $subject_folder$underlay dim1`
   dim2=`${FSLDIR}/bin/fslval $subject_folder$underlay dim2`
   dim3=`${FSLDIR}/bin/fslval $subject_folder$underlay dim3`
+  pixdim1=`${FSLDIR}/bin/fslval $subject_folder$underlay pixdim1`
+  pixdim2=`${FSLDIR}/bin/fslval $subject_folder$underlay pixdim2`
+  pixdim3=`${FSLDIR}/bin/fslval $subject_folder$underlay pixdim3`
+  dim1=$(echo "scale=4;$dim1 * $pixdim1" | bc)
+  dim2=$(echo "scale=4;$dim2 * $pixdim2" | bc)
+  dim3=$(echo "scale=4;$dim3 * $pixdim3" | bc)
 
   startingx=$(echo "scale=4;$dim1 * $xlimit/100" | bc) #`$(($dim1*$xlimit/100)) | bc` #10 #50
   endingx=$(echo "scale=4;$dim1 * (100-$xlimit)/100" | bc)  #$(($dim1*$((100-$xlimit))/100)) #95 #130

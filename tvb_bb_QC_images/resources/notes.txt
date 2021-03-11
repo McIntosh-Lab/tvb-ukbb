@@ -1,0 +1,63 @@
+==================================
+-------- ANATOMICAL NOTES --------
+==================================
+
+
+  --- Extraction/Brain Mask ---
+
+SCORE: 
+NOTES: 
+
+
+
+  ------- Segmentation --------
+
+SCORE: 
+NOTES: 
+
+
+
+  ------- Registration --------
+
+SCORE: 
+NOTES: 
+
+
+
+
+==================================
+--------- DWI/DTI NOTES ----------
+==================================
+
+
+  --- Extraction/Brain Mask ---
+
+SCORE: 
+NOTES: 
+
+
+
+  ------- Segmentation --------
+
+SCORE: 
+NOTES: 
+
+
+
+  ------- Registration --------
+
+SCORE: 
+NOTES: 
+
+
+
+
+==================================
+---------- fMRI NOTES ------------
+==================================
+
+SCORE: 
+NOTES: 
+
+
+

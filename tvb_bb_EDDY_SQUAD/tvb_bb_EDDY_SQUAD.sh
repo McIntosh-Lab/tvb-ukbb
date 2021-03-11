@@ -1,5 +1,4 @@
-
-#!/bin/sh
+#!/bin/bash
 #
 # Script name: tvb_bb_EDDY_SQUAD.sh
 #
@@ -26,15 +25,16 @@ dirScript=`dirname $0`
 
 	#EDDY SQUAD
 	
-		EDDY_SQUAD_output_folder_base=$origDir/EDDY_SQUAD
+		#EDDY_SQUAD_output_folder_base=$origDir/EDDY_SQUAD
 		EDDY_SQUAD_output_folder=$origDir/EDDY_SQUAD
-		i=0
+		#i=0
 
-		while [ -d $EDDY_SQUAD_output_folder ]
-		do
-			EDDY_SQUAD_output_folder=$EDDY_SQUAD_output_folder_base$i
-			((i+=1))
-		done
+		#while [ -d $EDDY_SQUAD_output_folder ]
+		#do
+			#EDDY_SQUAD_output_folder=$EDDY_SQUAD_output_folder_base$i
+			#((i+=1))
+		#done
+		rm -r $EDDY_SQUAD_output_folder
 		
 		
 		eddy_squad -o $EDDY_SQUAD_output_folder $origDir/eddy_quad_list.txt
