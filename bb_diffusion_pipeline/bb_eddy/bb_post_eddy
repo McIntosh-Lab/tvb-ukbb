@@ -31,7 +31,7 @@ baseDir=$1
 $FSLDIR/bin/fslroi $baseDir/dMRI/dMRI/data.nii.gz $baseDir/dMRI/dMRI/data_B0.nii.gz 0 1
 
 
-# register T1 to eddy-corrected DTI and get interface
+# register T1 to eddy-corrected DTI
 $BB_BIN_DIR/bb_structural_pipeline/bb_epi_reg --epi=$baseDir/dMRI/dMRI/data_B0.nii.gz --t1=$baseDir/T1/T1.nii.gz --t1brain=$baseDir/T1/T1_brain.nii.gz --out=$baseDir/dMRI/dMRI/transforms/DTI_to_T1 --wmseg=$baseDir/T1/T1_fast/T1_brain_WM_mask.nii.gz
 
 # create inverse warp
