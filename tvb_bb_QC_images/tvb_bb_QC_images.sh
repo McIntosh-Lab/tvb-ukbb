@@ -56,10 +56,7 @@ FSLDIR=/opt/fsl
 		$BB_BIN_DIR/tvb_bb_QC_images/image_gen_link.sh $dirSubject "ug_under" "../../T1/T1.nii.gz" "ug_over1" "../../T1/T1_fast/T1_brain_GM_mask.nii.gz" "NA5" "NA5_link" 0
 
 
-	#T1 segmentation unlabelled GM blue
-		$BB_BIN_DIR/tvb_bb_QC_images/lightbox.sh -a 45.0 -p blue-lightblue -o /T1/T1_fast/T1_brain_GM_mask.nii.gz /T1/T1.nii.gz $dirSubject  T1_segmentation_unlabelled_GM_blue
 
-		$BB_BIN_DIR/tvb_bb_QC_images/image_gen_link.sh $dirSubject "ugb_under" "../../T1/T1.nii.gz $dirSubject" "ugb_over1" "../../T1/T1_fast/T1_brain_GM_mask.nii.gz" "NA6" "NA6_link" 0
 
 
 	#T1 segmentation unlabelled subcort GM
@@ -268,7 +265,9 @@ FSLDIR=/opt/HCPpipelines-4.1.3/fsl
 		${FSLDIR}/bin/eddy_quad $dirSubject/dMRI/dMRI/data -idx $dirSubject/dMRI/dMRI/eddy_index.txt -par $dirSubject/dMRI/dMRI/acqparams.txt -m $dirSubject/dMRI/dMRI/nodif_brain_mask.nii.gz -b $dirSubject/dMRI/dMRI/bvals -o $EDDY_QUAD_output_folder
 
 		if [ $? -eq 0 ]; then
-			echo $EDDY_QUAD_output_folder >> $eddy_quad_list
+			if ![grep -Fxq "$EDDY_QUAD_output_folder" $eddy_quad_list]; then
+				echo $EDDY_QUAD_output_folder >> $eddy_quad_list
+			fi
 		fi
 
 

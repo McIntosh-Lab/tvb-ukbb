@@ -10,6 +10,13 @@ NOTES:
 
 
 
+  ------- Registration --------
+
+SCORE: 
+NOTES: 
+
+
+
   ------- Segmentation --------
 
 SCORE: 
@@ -17,7 +24,10 @@ NOTES:
 
 
 
-  ------- Registration --------
+
+==================================
+---------- fMRI NOTES ------------
+==================================
 
 SCORE: 
 NOTES: 
@@ -37,7 +47,7 @@ NOTES:
 
 
 
-  ------- Segmentation --------
+  -------- Orientation --------
 
 SCORE: 
 NOTES: 
@@ -51,13 +61,45 @@ NOTES:
 
 
 
-
-==================================
----------- fMRI NOTES ------------
-==================================
+  ------- Tractography --------
 
 SCORE: 
 NOTES: 
+
+
+
+
+==================================
+---------- SC/FC NOTES -----------
+==================================
+
+
+  -- Structural Connectivity --
+
+SCORE: 
+NOTES: 
+
+
+
+  ------- Tract Length --------
+
+SCORE: 
+NOTES: 
+
+
+
+  ---------- tfMRI ------------
+
+SCORE: 
+NOTES: 
+
+
+
+  ---------- rfMRI ------------
+
+SCORE: 
+NOTES: 
+
 
 
 

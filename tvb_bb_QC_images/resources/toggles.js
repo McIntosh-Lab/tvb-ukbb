@@ -225,7 +225,7 @@ c 3rd ori or b=2000  (if not hidden)
       document.getElementById("EDDY_opts").style.display="none";
       document.getElementById("ori_opts").style.display="inline";
       if (ove == false){
-        if(ana=="us" || ana == "ls" || ana == "dxc" || ana == "dfs" || ana == "dxs" || ana == "dfsrb"){
+        if(ana=="us" || ana == "ls" || ana == "dxc" || ana == "dfs" || ana == "dfsrb"){
           ana="under_sub"
         }
         else if(ana=="Tbi"){
@@ -233,6 +233,9 @@ c 3rd ori or b=2000  (if not hidden)
         }
         else if(ana=="dorf"){
           ana="under_dorf"
+        }
+        else if(ana=="dxs"){
+          ana="dxc"
         }
         else{
           ana="under"

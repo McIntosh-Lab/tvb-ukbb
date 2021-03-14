@@ -17,6 +17,7 @@ origDir=`pwd`
 dirScript=`dirname $0`
 
 
+FSLDIR=/opt/HCPpipelines-4.1.3/fsl
 
 
 ### EDDY SQUAD ###

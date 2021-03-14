@@ -1,4 +1,6 @@
 #!/bin/env python
+
+
 import numpy as np
 import sys
 from scipy.stats import zscore
@@ -94,36 +96,48 @@ def SC_FC_png(subj):
             f, ax = plt.subplots(1, 1, figsize=(50, 50))
             ax.set_title('SC')
             ax.set_facecolor('#000000')
-            im= ax.imshow(np.log10(SC))
+            SC = np.log10(SC)
+            im= ax.imshow(SC)
             f.colorbar(im, ax=ax)
             
             plt.tight_layout()
             saveNm=subj + '/QC/SC_FC/' +subjName + '_SC.png'
             f.savefig(saveNm)
+
+
+
+            plt.clf()
+            SC = SC[SC > float("-inf")]
+            f = plt.hist(SC.ravel(), bins=100)
+            saveNm=subj + '/QC/SC_FC/' +subjName + '_SC_hist.png'
+            plt.savefig(saveNm)
+
+
         except: 
             print("ERROR: Can't create SC graph")
         try:
+            
+            
+            
+            tract_lengths_log=np.log10(tract_lengths)
             f, ax = plt.subplots(1, 1, figsize=(50, 50))
             ax.set_title('tract length')
             ax.set_facecolor('#000000')
-            im= ax.imshow(tract_lengths)
+            im= ax.imshow(tract_lengths_log)
             f.colorbar(im, ax=ax)
             
             plt.tight_layout()
             saveNm=subj + '/QC/SC_FC/' +subjName + '_TL.png'
             f.savefig(saveNm)
-            
-            
-            tract_lengths=np.log10(tract_lengths)
-            f, ax = plt.subplots(1, 1, figsize=(50, 50))
-            ax.set_title('tract length log scale')
-            ax.set_facecolor('#000000')
-            im= ax.imshow(tract_lengths)
-            f.colorbar(im, ax=ax)
-            
-            plt.tight_layout()
-            saveNm=subj + '/QC/SC_FC/' +subjName + '_TL_log.png'
-            f.savefig(saveNm)
+
+
+
+            plt.clf()
+            tract_lengths=tract_lengths[tract_lengths!=0]
+            f = plt.hist(tract_lengths.ravel(), bins=100)
+            saveNm=subj + '/QC/SC_FC/' +subjName + '_TL_hist.png'
+            plt.savefig(saveNm)
+
         except:
             print("ERROR: Can't create TL graph")
 
@@ -135,7 +149,7 @@ def SC_FC_png(subj):
                 f.colorbar(im, ax=ax)
                 
                 plt.tight_layout()
-                saveNm=subj + '/QC/SC_FC/' +subjName + '_FC_0.png'
+                saveNm=subj + '/QC/SC_FC/' +subjName + '_FC.png'
                 f.savefig(saveNm)
 
 
@@ -146,8 +160,17 @@ def SC_FC_png(subj):
                 im= ax.imshow(norm_ts.transpose(), cmap='gray', aspect = 'auto')
 
                 plt.tight_layout()
-                saveNm=subj + '/QC/SC_FC/' +subjName + '_carpet_0.png'
+                saveNm=subj + '/QC/SC_FC/' +subjName + '_carpet.png'
                 f.savefig(saveNm)
+
+
+
+                plt.clf()
+                f = plt.hist(FC.ravel(), bins=100)
+                saveNm=subj + '/QC/SC_FC/' +subjName + '_FC_hist.png'
+                plt.savefig(saveNm)
+
+
             except:
                 print("ERROR: can't generate graph")
 
@@ -174,6 +197,12 @@ def SC_FC_png(subj):
                 plt.tight_layout()
                 saveNm=subj + '/QC/SC_FC/' +subjName + '_carpet_0.png'
                 f.savefig(saveNm)
+
+                plt.clf()
+                f = plt.hist(FC_0.ravel(), bins=100)
+                saveNm=subj + '/QC/SC_FC/' +subjName + '_FC_0_hist.png'
+                plt.savefig(saveNm)
+
             except:
                 print("ERROR: can't generate graph")
 
@@ -201,6 +230,11 @@ def SC_FC_png(subj):
                 plt.tight_layout()
                 saveNm=subj + '/QC/SC_FC/' +subjName + '_carpet_1.png'
                 f.savefig(saveNm)
+
+                plt.clf()
+                f = plt.hist(FC_1.ravel(), bins=100)
+                saveNm=subj + '/QC/SC_FC/' +subjName + '_FC_1_hist.png'
+                plt.savefig(saveNm)
             except:
                 print("ERROR: can't generate graph")
         

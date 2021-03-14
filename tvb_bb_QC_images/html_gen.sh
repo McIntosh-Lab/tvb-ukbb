@@ -222,8 +222,7 @@ cat > $subjdir$html_output_dir"/anat.html" << EOF
     </optgroup>
     <optgroup label="T1 Segmentation">
       <option value="uw">T1 Unlabelled WM</option>
-      <option value="ug">T1 Unlabelled GM Yellow</option>
-      <option value="ugb">T1 Unlabelled GM Blue</option>
+      <option value="ug">T1 Unlabelled GM</option>
       <option value="lc">T1 Labelled cortex</option>
       <option value="us">T1 Unlabelled subcort GM</option>
       <option value="ls">T1 Labelled subcort GM</option>
@@ -255,9 +254,9 @@ cat > $subjdir$html_output_dir"/anat.html" << EOF
 
 <!-- order appears for registration analyses -->
 <div style="display: none; white-space: nowrap;" id="reg_opts"> 
-<label id="Order label 1"><input type="radio" id="Order 1" name="Order" value="Order 1" checked="true" onchange="updateTitle();updateImage();update_links();"> Order 1 <i>(s)</i></label>
+<label id="Order label 1"><input type="radio" id="Order 1" name="Order" value="Order 1" checked="true" onchange="updateTitle();updateImage();update_links();"> Overlay Order 1 <i>(s)</i></label>
 &nbsp&nbsp
-  <label id="Order label 2"><input type="radio" id="Order 2" name="Order" value="Order 2" onchange="updateTitle();updateImage();update_links();"> Order 2 <i>(s)</i></label>
+  <label id="Order label 2"><input type="radio" id="Order 2" name="Order" value="Order 2" onchange="updateTitle();updateImage();update_links();"> Overlay Order 2 <i>(s)</i></label>
 </div>
 
 <!-- overlay appears for non-registration analyses -->
@@ -351,9 +350,6 @@ NOTE: Image sizes and therefore maintaining zooms between different analyses can
   <img src="../images/T1_segmentation_unlabelled_GM/${sub}_T1_segmentation_unlabelled_GM_coronal.png" id="ug_c" style="display: none">
   <img src="../images/T1_segmentation_unlabelled_GM/${sub}_T1_segmentation_unlabelled_GM_saggital.png" id="ug_s" style="display: none">
 
-  <img src="../images/T1_segmentation_unlabelled_GM_blue/${sub}_T1_segmentation_unlabelled_GM_blue_axial.png" id="ugb_a" style="display: none">
-  <img src="../images/T1_segmentation_unlabelled_GM_blue/${sub}_T1_segmentation_unlabelled_GM_blue_coronal.png" id="ugb_c" style="display: none">
-  <img src="../images/T1_segmentation_unlabelled_GM_blue/${sub}_T1_segmentation_unlabelled_GM_blue_saggital.png" id="ugb_s" style="display: none">
 
   <img src="../images/T1_segmentation_labelled_cortex/${sub}_T1_segmentation_labelled_cortex_axial.png" id="lc_a" style="display: none">
   <img src="../images/T1_segmentation_labelled_cortex/${sub}_T1_segmentation_labelled_cortex_coronal.png" id="lc_c" style="display: none">
@@ -544,9 +540,9 @@ cat > $subjdir$html_output_dir"/DTI.html" << EOF
 
 <!-- order appears for registration analyses -->
 <div style="display: none;white-space:nowrap;" id="reg_opts">
-<label id="Order label 1"><input type="radio" id="Order 1" name="Order" value="Order 1" checked="true" onchange="updateTitle();updateImage();update_links();"> Order 1 <i>(s)</i></label>
+<label id="Order label 1"><input type="radio" id="Order 1" name="Order" value="Order 1" checked="true" onchange="updateTitle();updateImage();update_links();"> Overlay Order 1 <i>(s)</i></label>
 &nbsp&nbsp
-  <label id="Order label 2"><input type="radio" id="Order 2" name="Order" value="Order 2" onchange="updateTitle();updateImage();update_links();"> Order 2 <i>(s)</i></label>
+  <label id="Order label 2"><input type="radio" id="Order 2" name="Order" value="Order 2" onchange="updateTitle();updateImage();update_links();"> Overlay Order 2 <i>(s)</i></label>
 </div>
 
 <!-- overlay appears for non-registration analyses -->
@@ -896,9 +892,6 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
     <optgroup label="Tract Length">
       <option value="group_tl" id="tl">Tract Length</option>
     </optgroup>
-    <optgroup label="Tract Length log">
-      <option value="group_tllog" id="tllog">Tract Length</option>
-    </optgroup>
     <optgroup label="tfMRI_0">
       <option value="group_t" id="t">tfMRI_0 Graphs</option>
     </optgroup>
@@ -946,10 +939,6 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
   <img src="../SC_FC/${sub}_TL.png" class="tl" width="1000"  style="padding-top: 20px">
 </div>
 
-
-<div class="group_tllog" style="display: none;">
-  <img src="../SC_FC/${sub}_TL_log.png" class="tllog" width="1000"  style="padding-top: 20px">
-</div>
 
 <div class="group_rr" style="display: none;">
    <div style="color:black; text-align: center; background-color: white">

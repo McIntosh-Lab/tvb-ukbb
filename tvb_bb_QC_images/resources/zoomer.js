@@ -1,3 +1,5 @@
+//https://github.com/bearhotel515/image-viewer
+
 class Viewer {
   constructor(canvas, image) {
     this.canvas = canvas
