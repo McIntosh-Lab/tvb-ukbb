@@ -819,7 +819,7 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
       <h1 class="w3-hide-medium w3-hide-small w3-xxxlarge">SC/FC IMAGE REPORT</h1>
       <h5 class="w3-hide-large" style="white-space:nowrap">SC/FC IMAGE REPORT</h5>
       
-      <h3 class="w3-hide-medium w3-hide-small">${sub}</h3>
+      <h3 class="w3-hide-medium w3-hide-small">$sub_upper</h3>
       
     </div>
  
@@ -871,7 +871,7 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
 
 
   <br>______<br><br>
-  <h1> ${sub} SC/FC 
+  <h1> $sub_upper SC/FC 
   <br>
   <div id="analysis_title" style="display: inline; font-size: 28px">STRUCTURAL CONNECTIVITY</div></h1>
   ______<br><br>
