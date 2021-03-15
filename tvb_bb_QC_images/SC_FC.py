@@ -106,9 +106,11 @@ def SC_FC_png(subj):
 
 
 
-            plt.clf()
+            f, ax = plt.subplots(1, 1, figsize=(50, 30))
+            ax.set_title('SC histogram')
             SC = SC[SC > float("-inf")]
             f = plt.hist(SC.ravel(), bins=100)
+
             saveNm=subj + '/QC/SC_FC/' +subjName + '_SC_hist.png'
             plt.savefig(saveNm)
 
@@ -132,7 +134,9 @@ def SC_FC_png(subj):
 
 
 
-            plt.clf()
+            f, ax = plt.subplots(1, 1, figsize=(50, 30))
+            ax.set_title('tract length histogram')
+            
             tract_lengths=tract_lengths[tract_lengths!=0]
             f = plt.hist(tract_lengths.ravel(), bins=100)
             saveNm=subj + '/QC/SC_FC/' +subjName + '_TL_hist.png'
@@ -165,7 +169,9 @@ def SC_FC_png(subj):
 
 
 
-                plt.clf()
+                f, ax = plt.subplots(1, 1, figsize=(50, 30))
+                ax.set_title('FC histogram')
+                
                 f = plt.hist(FC.ravel(), bins=100)
                 saveNm=subj + '/QC/SC_FC/' +subjName + '_FC_hist.png'
                 plt.savefig(saveNm)
@@ -198,7 +204,9 @@ def SC_FC_png(subj):
                 saveNm=subj + '/QC/SC_FC/' +subjName + '_carpet_0.png'
                 f.savefig(saveNm)
 
-                plt.clf()
+                f, ax = plt.subplots(1, 1, figsize=(50, 30))
+                ax.set_title('FC_0 histogram')
+                
                 f = plt.hist(FC_0.ravel(), bins=100)
                 saveNm=subj + '/QC/SC_FC/' +subjName + '_FC_0_hist.png'
                 plt.savefig(saveNm)
@@ -231,7 +239,9 @@ def SC_FC_png(subj):
                 saveNm=subj + '/QC/SC_FC/' +subjName + '_carpet_1.png'
                 f.savefig(saveNm)
 
-                plt.clf()
+                f, ax = plt.subplots(1, 1, figsize=(50, 30))
+                ax.set_title('FC_1 histogram')
+                
                 f = plt.hist(FC_1.ravel(), bins=100)
                 saveNm=subj + '/QC/SC_FC/' +subjName + '_FC_1_hist.png'
                 plt.savefig(saveNm)

@@ -137,7 +137,7 @@ cat > $subjdir$html_output_dir"/anat.html" << EOF
 <script src="./sidebartoggles.js" type="text/javascript" charset="utf-8"></script>
 <script src="./image_gen_links.js" type="text/javascript" charset="utf-8"></script>
 
-<body class="w3-main" style="background-color:black; " onload="update_links();updateImage();updateTitle();">
+<body class="w3-main" style="background-color:black; " onload="updateImage();updateTitle();update_links();">
 <!--document.getElementById('image_link').innerHTML = document.getElementById('ex_a').src;-->
 
 
@@ -819,7 +819,7 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
       <h1 class="w3-hide-medium w3-hide-small w3-xxxlarge">SC/FC IMAGE REPORT</h1>
       <h5 class="w3-hide-large" style="white-space:nowrap">SC/FC IMAGE REPORT</h5>
       
-      <h3 class="w3-hide-medium w3-hide-small">$sub_upper</h3>
+      <h3 class="w3-hide-medium w3-hide-small">${sub}</h3>
       
     </div>
  
@@ -871,7 +871,7 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
 
 
   <br>______<br><br>
-  <h1> $sub_upper SC/FC 
+  <h1> ${sub} SC/FC 
   <br>
   <div id="analysis_title" style="display: inline; font-size: 28px">STRUCTURAL CONNECTIVITY</div></h1>
   ______<br><br>
@@ -930,14 +930,20 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
 
 
 <div class="group_sc" style="display: none;">
-<img src="../SC_FC/${sub}_SC.png" class="sc" width="1000" >
 
+<img src="../SC_FC/${sub}_SC.png" class="sc" width="1000" >
+<br><br>
+<img src="../SC_FC/${sub}_SC_hist.png" class="sc" width="1000" >
 </div>
 
 
 <div class="group_tl" style="display: none;">
-  <img src="../SC_FC/${sub}_TL.png" class="tl" width="1000"  style="padding-top: 20px">
+
+<img src="../SC_FC/${sub}_TL.png" class="tl" width="1000" >
+<br><br>
+<img src="../SC_FC/${sub}_TL_hist.png" class="tl" width="1000" >
 </div>
+
 
 
 <div class="group_rr" style="display: none;">
@@ -950,19 +956,22 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
 </div>
 
 <div class="group_rf" style="display: none;">
-    <img src="../SC_FC/${sub}_FC.png"  class="r1f" width="1000"  style="">
-
+    <img src="../SC_FC/${sub}_FC.png"  class="rf" width="1000"  style="">
+    <br><br>
+    <img src="../SC_FC/${sub}_FC_hist.png"  class="rf" width="1000"  style="">
 </div>
 
 <div class="group_r1f" style="display: none;">
   <img src="../SC_FC/${sub}_FC_1.png"  class="r1f" width="1000"  style="">
-
+  <br><br>
+    <img src="../SC_FC/${sub}_FC_1_hist.png"  class="r1f" width="1000"  style="">
 </div>
 
 
 <div class="group_r0f" style="display: none;">
   <img src="../SC_FC/${sub}_FC_0.png"  class="r0f" width="1000"  style="">
-
+  <br><br>
+    <img src="../SC_FC/${sub}_FC_0_hist.png"  class="r0f" width="1000"  style="">
 </div>
 
 
@@ -1007,6 +1016,7 @@ IMAGE 3 FILE:<br> <a id="im3" href="" >N/A</a>
 
 
 </html>
+
 
 
 
