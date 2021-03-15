@@ -7,7 +7,6 @@
 ## Author: Justin Wang
 
 
-#RUN IN DIRECTORY CONTAINING THE eddy_quad_list.txt
 
 
 set -x

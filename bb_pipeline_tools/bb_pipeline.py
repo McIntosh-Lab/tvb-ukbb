@@ -34,7 +34,7 @@ from bb_structural_pipeline.bb_pipeline_struct import bb_pipeline_struct
 from bb_functional_pipeline.bb_pipeline_func import bb_pipeline_func
 from bb_diffusion_pipeline.bb_pipeline_diff import bb_pipeline_diff
 from bb_IDP.bb_IDP import bb_IDP
-from tvb_bb_QC_images.tvb_bb_QC_images import tvb_bb_QC_images
+from tvb_bb_QC.tvb_bb_QC import tvb_bb_QC
 
 
 class MyParser(argparse.ArgumentParser):
@@ -116,7 +116,7 @@ def main():
         subject, str(jobSTEP1) + "," + str(jobSTEP2) + "," + str(jobSTEP3), fileConfig
     )
 
-    jobSTEP5 = tvb_bb_QC_images(
+    jobSTEP5 = tvb_bb_QC(
         subject, str(jobSTEP1) + "," + str(jobSTEP2) + "," + str(jobSTEP3)+ "," + str(jobSTEP4), fileConfig
     )
 

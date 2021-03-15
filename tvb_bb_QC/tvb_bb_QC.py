@@ -26,7 +26,7 @@ import bb_pipeline_tools.bb_logging_tool as LT   #HOW DOES THIS PACKAGING WORK..
 import os.path
 
 
-def tvb_bb_QC_images(subject, jobHold, fileConfiguration):
+def tvb_bb_QC(subject, jobHold, fileConfiguration):
 
     logger = LT.initLogging(__file__, subject)
     logDir = logger.logDir
@@ -37,14 +37,14 @@ def tvb_bb_QC_images(subject, jobHold, fileConfiguration):
     jobIDP = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 30 -N "bb_IDP_'
-        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "tvb_bb_QC_images_'
+        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "tvb_bb_QC_'
         + subname
         + '" -j '
         + jobHold
         + "  -l "
         + logDir
-        + "xvfb-run -a $BB_BIN_DIR/tvb_bb_QC_images/tvb_bb_QC_images.sh "   #-s '-screen 0 640x480x24'
+        + "xvfb-run -a $BB_BIN_DIR/tvb_bb_QC/tvb_bb_QC.sh "   #-s '-screen 0 640x480x24'
         + subject,
     )
-    print("SUBMITTED QC_IMAGES")
+    print("SUBMITTED QC")
     return jobIDP
