@@ -14,15 +14,15 @@ mkdir -p $subjdir$html_output_dir"/images"
 mkdir -p $subjdir$html_output_dir"/css"
 
 
-cp $BB_BIN_DIR/tvb_bb_QC_images/resources/sidebartoggles.js $subjdir$html_output_dir
-cp $BB_BIN_DIR/tvb_bb_QC_images/resources/toggles.js $subjdir$html_output_dir
-cp $BB_BIN_DIR/tvb_bb_QC_images/resources/togglesSCFC.js $subjdir$html_output_dir
-cp $BB_BIN_DIR/tvb_bb_QC_images/resources/zoomer.js $subjdir$html_output_dir
-cp $BB_BIN_DIR/tvb_bb_QC_images/resources/notes.txt $subjdir$html_output_dir"/notes"
-cp $BB_BIN_DIR/tvb_bb_QC_images/resources/1.jpg $subjdir$html_output_dir"/images"
-cp $BB_BIN_DIR/tvb_bb_QC_images/resources/missing.png $subjdir$html_output_dir"/images"
-cp $BB_BIN_DIR/tvb_bb_QC_images/resources/missingw.png $subjdir$html_output_dir"/images"
-cp $BB_BIN_DIR/tvb_bb_QC_images/resources/w3.css $subjdir$html_output_dir"/css"
+cp $BB_BIN_DIR/tvb_bb_QC/resources/sidebartoggles.js $subjdir$html_output_dir
+cp $BB_BIN_DIR/tvb_bb_QC/resources/toggles.js $subjdir$html_output_dir
+cp $BB_BIN_DIR/tvb_bb_QC/resources/togglesSCFC.js $subjdir$html_output_dir
+cp $BB_BIN_DIR/tvb_bb_QC/resources/zoomer.js $subjdir$html_output_dir
+cp $BB_BIN_DIR/tvb_bb_QC/resources/notes.txt $subjdir$html_output_dir"/notes"
+cp $BB_BIN_DIR/tvb_bb_QC/resources/1.jpg $subjdir$html_output_dir"/images"
+cp $BB_BIN_DIR/tvb_bb_QC/resources/missing.png $subjdir$html_output_dir"/images"
+cp $BB_BIN_DIR/tvb_bb_QC/resources/missingw.png $subjdir$html_output_dir"/images"
+cp $BB_BIN_DIR/tvb_bb_QC/resources/w3.css $subjdir$html_output_dir"/css"
 
 sub=$2
 sub_upper=${sub}
