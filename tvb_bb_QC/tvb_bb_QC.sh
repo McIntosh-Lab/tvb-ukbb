@@ -6,6 +6,7 @@
 #
 ## Author: Justin Wang
 
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header
 
 set -x
 
@@ -22,7 +23,7 @@ fi
 
 
 	
-FSLDIR=/opt/fsl
+export FSLDIR=/opt/fsl
 
 	
 ### T1 EXTRACTION ###
@@ -238,7 +239,7 @@ FSLDIR=/opt/fsl
 		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dxs_under" "../../dMRI/dMRI/dti_FA.nii.gz" "dxs_over1" "../../dMRI/probtrackx/exclude.nii.gz" "NA32" "dMRI/probtrackx/labelledWM_GM.nii.gz" 1
 
 
-FSLDIR=/opt/HCPpipelines-4.1.3/fsl
+export FSLDIR=/opt/HCPpipelines-4.1.3/fsl
 
 ### EDDY QUAD ###
 	echo ""
@@ -285,3 +286,6 @@ FSLDIR=/opt/HCPpipelines-4.1.3/fsl
 ### HTML REPORT GEN ###
 
 	$BB_BIN_DIR/tvb_bb_QC/html_gen.sh  $dirSubject $1
+
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer

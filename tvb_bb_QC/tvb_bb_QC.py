@@ -34,7 +34,7 @@ def tvb_bb_QC(subject, jobHold, fileConfiguration):
 
     subname = subject.replace("/", "_")
 
-    jobIDP = LT.runCommand(
+    jobQC = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 30 -N "bb_IDP_'
         '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "tvb_bb_QC_'
@@ -43,8 +43,8 @@ def tvb_bb_QC(subject, jobHold, fileConfiguration):
         + jobHold
         + "  -l "
         + logDir
-        + "xvfb-run -a $BB_BIN_DIR/tvb_bb_QC/tvb_bb_QC.sh "   #-s '-screen 0 640x480x24'
+        + " xvfb-run -a $BB_BIN_DIR/tvb_bb_QC/tvb_bb_QC.sh "   #-s '-screen 0 640x480x24'
         + subject,
     )
     print("SUBMITTED QC")
-    return jobIDP
+    return jobQC

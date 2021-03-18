@@ -7,7 +7,7 @@
 ## Author: Justin Wang
 
 
-
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header
 
 set -x
 
@@ -16,7 +16,7 @@ origDir=`pwd`
 dirScript=`dirname $0`
 
 
-FSLDIR=/opt/HCPpipelines-4.1.3/fsl
+export FSLDIR=/opt/HCPpipelines-4.1.3/fsl
 
 
 ### EDDY SQUAD ###
@@ -38,3 +38,6 @@ FSLDIR=/opt/HCPpipelines-4.1.3/fsl
 		
 		
 		${FSLDIR}/bin/eddy_squad -o $EDDY_SQUAD_output_folder $origDir/eddy_quad_list.txt
+
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer
