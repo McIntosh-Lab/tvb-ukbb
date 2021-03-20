@@ -688,7 +688,7 @@ def bb_file_manager(subject):
     patterns_actions = [
         [["*.[^log]"], capitalize_and_clean],
         [["dicom", "DICOM"], move_to, "delete/"],
-        [["*T1*.nii.gz"], manage_struct, "T1"],
+        [["*T1*.nii.gz", "*MPRAGE*.nii.gz", "*IR-FSPGR*.nii.gz"], manage_struct, "T1"],
         [["T2*FLAIR*.nii.gz", "*FLAIR*.nii.gz"], manage_struct, "T2"],
         [
             [
