@@ -92,6 +92,7 @@ def main():
     jobSTEP1 = "-1"
     jobSTEP2 = "-1"
     jobSTEP3 = "-1"
+    jobSTEP4 = "-1"
 
     jobSTEP1 = bb_pipeline_struct(subject, runTopup, fileConfig)
 
