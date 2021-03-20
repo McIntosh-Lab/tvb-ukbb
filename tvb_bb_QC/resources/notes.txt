@@ -1,0 +1,105 @@
+==================================
+-------- ANATOMICAL NOTES --------
+==================================
+
+
+  --- Extraction/Brain Mask ---
+
+SCORE: 
+NOTES: 
+
+
+
+  ------- Registration --------
+
+SCORE: 
+NOTES: 
+
+
+
+  ------- Segmentation --------
+
+SCORE: 
+NOTES: 
+
+
+
+
+==================================
+---------- fMRI NOTES ------------
+==================================
+
+SCORE: 
+NOTES: 
+
+
+
+
+==================================
+--------- DWI/DTI NOTES ----------
+==================================
+
+
+  --- Extraction/Brain Mask ---
+
+SCORE: 
+NOTES: 
+
+
+
+  -------- Orientation --------
+
+SCORE: 
+NOTES: 
+
+
+
+  ------- Registration --------
+
+SCORE: 
+NOTES: 
+
+
+
+  ------- Tractography --------
+
+SCORE: 
+NOTES: 
+
+
+
+
+==================================
+---------- SC/FC NOTES -----------
+==================================
+
+
+  -- Structural Connectivity --
+
+SCORE: 
+NOTES: 
+
+
+
+  ------- Tract Length --------
+
+SCORE: 
+NOTES: 
+
+
+
+  ---------- tfMRI ------------
+
+SCORE: 
+NOTES: 
+
+
+
+  ---------- rfMRI ------------
+
+SCORE: 
+NOTES: 
+
+
+
+

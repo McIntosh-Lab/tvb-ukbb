@@ -115,6 +115,10 @@ def main():
         subject, str(jobSTEP1) + "," + str(jobSTEP2) + "," + str(jobSTEP3), fileConfig
     )
 
+    jobSTEP5 = tvb_bb_QC(
+        subject, str(jobSTEP1) + "," + str(jobSTEP2) + "," + str(jobSTEP3)+ "," + str(jobSTEP4), fileConfig
+    )
+
     LT.finishLogging(logger)
 
 
