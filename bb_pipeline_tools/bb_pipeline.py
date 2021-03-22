@@ -34,6 +34,7 @@ from bb_structural_pipeline.bb_pipeline_struct import bb_pipeline_struct
 from bb_functional_pipeline.bb_pipeline_func import bb_pipeline_func
 from bb_diffusion_pipeline.bb_pipeline_diff import bb_pipeline_diff
 from bb_IDP.bb_IDP import bb_IDP
+from tvb_bb_QC.tvb_bb_QC import tvb_bb_QC
 
 
 class MyParser(argparse.ArgumentParser):
