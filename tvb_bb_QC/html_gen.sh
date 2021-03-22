@@ -17,6 +17,7 @@ mkdir -p $subjdir$html_output_dir"/css"
 cp $BB_BIN_DIR/tvb_bb_QC/resources/sidebartoggles.js $subjdir$html_output_dir
 cp $BB_BIN_DIR/tvb_bb_QC/resources/toggles.js $subjdir$html_output_dir
 cp $BB_BIN_DIR/tvb_bb_QC/resources/togglesSCFC.js $subjdir$html_output_dir
+cp $BB_BIN_DIR/tvb_bb_QC/resources/togglesMELODIC.js $subjdir$html_output_dir
 cp $BB_BIN_DIR/tvb_bb_QC/resources/zoomer.js $subjdir$html_output_dir
 cp $BB_BIN_DIR/tvb_bb_QC/resources/notes.txt $subjdir$html_output_dir"/notes"
 cp $BB_BIN_DIR/tvb_bb_QC/resources/1.jpg $subjdir$html_output_dir"/images"
@@ -84,6 +85,7 @@ cat > $subjdir$html_output_dir"/report.html" << EOF
     <a href="report.html" class="w3-bar-item w3-button">Home</a>
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
+    <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
   </div>
@@ -95,6 +97,7 @@ cat > $subjdir$html_output_dir"/report.html" << EOF
   <a href="report.html" class="w3-bar-item w3-button">Home</a>
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
+    <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
 </div>
@@ -177,6 +180,7 @@ cat > $subjdir$html_output_dir"/anat.html" << EOF
     <a href="report.html" class="w3-bar-item w3-button">Home</a>
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
+    <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
   </div>
@@ -188,6 +192,7 @@ cat > $subjdir$html_output_dir"/anat.html" << EOF
   <a href="report.html" class="w3-bar-item w3-button">Home</a>
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
+    <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
 </div>
@@ -452,6 +457,7 @@ cat > $subjdir$html_output_dir"/DTI.html" << EOF
     <a href="report.html" class="w3-bar-item w3-button">Home</a>
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
+    <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
   </div>
@@ -463,6 +469,7 @@ cat > $subjdir$html_output_dir"/DTI.html" << EOF
   <a href="report.html" class="w3-bar-item w3-button">Home</a>
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
+    <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
 </div>
@@ -728,6 +735,7 @@ cat > $subjdir$html_output_dir"/fMRI.html" << EOF
     <a href="report.html" class="w3-bar-item w3-button">Home</a>
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
+    <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
   </div>
@@ -739,6 +747,7 @@ cat > $subjdir$html_output_dir"/fMRI.html" << EOF
   <a href="report.html" class="w3-bar-item w3-button">Home</a>
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
+    <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
 </div>
@@ -846,6 +855,7 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
     <a href="report.html" class="w3-bar-item w3-button">Home</a>
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
+    <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
   </div>
@@ -857,6 +867,7 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
   <a href="report.html" class="w3-bar-item w3-button">Home</a>
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
+    <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
 </div>
@@ -1021,3 +1032,6 @@ IMAGE 3 FILE:<br> <a id="im3" href="" >N/A</a>
 
 
 EOF
+
+
+$BB_BIN_DIR/tvb_bb_QC/MELODIC_html_gen.sh $subjdir $sub
