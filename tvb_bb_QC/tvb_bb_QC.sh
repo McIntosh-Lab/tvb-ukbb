@@ -260,7 +260,7 @@ export FSLDIR=/opt/HCPpipelines-4.1.3/fsl
 		
 
 
-		rm -r $EDDY_QUAD_output_folder
+		rm -rf $EDDY_QUAD_output_folder
 		
 
 		${FSLDIR}/bin/eddy_quad $dirSubject/dMRI/dMRI/data -idx $dirSubject/dMRI/dMRI/eddy_index.txt -par $dirSubject/dMRI/dMRI/acqparams.txt -m $dirSubject/dMRI/dMRI/nodif_brain_mask.nii.gz -b $dirSubject/dMRI/dMRI/bvals -o $EDDY_QUAD_output_folder
