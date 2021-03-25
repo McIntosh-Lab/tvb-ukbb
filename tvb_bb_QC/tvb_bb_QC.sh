@@ -26,7 +26,7 @@ fi
 export FSLDIR=/opt/fsl
 
 #if image gen link exists remove 
-rm $dirSubject"/QC/html/image_gen_links.js"
+rm -f $dirSubject"/QC/html/image_gen_links.js"
 
 	
 ### T1 EXTRACTION ###

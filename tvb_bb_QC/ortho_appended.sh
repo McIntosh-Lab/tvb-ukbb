@@ -234,9 +234,9 @@ subject_folder=$2
 	
 	for ((j=0; j<3; j++)); do
 		if { [ "$single_orientation" -eq "1" ] && [ "$j" -eq "$orientation" ]; } || [ "$single_orientation" -eq "0" ]; then
-			rm $output_folder/$sub"_$3_"${axisNames[$j]}"_first_half.png"
-			rm $output_folder/$sub"_$3_"${axisNames[$j]}"_second_half.png"
-			rm $output_folder/$sub"_$3_"${axisNames[$j]}"_third_part.png"
+			rm -f $output_folder/$sub"_$3_"${axisNames[$j]}"_first_half.png"
+			rm -f $output_folder/$sub"_$3_"${axisNames[$j]}"_second_half.png"
+			rm -f $output_folder/$sub"_$3_"${axisNames[$j]}"_third_part.png"
 		fi
 	done
 	
@@ -244,7 +244,7 @@ subject_folder=$2
 	for ((i=0; i<18; i++)); do
 		for ((j=0; j<3; j++)); do
 			if { [ "$single_orientation" -eq "1" ] && [ "$j" -eq "$orientation" ]; } || [ "$single_orientation" -eq "0" ]; then
-				rm $output_folder/$sub"_$3_"${axisNames[$j]}_$(($i+1)).png
+				rm -f $output_folder/$sub"_$3_"${axisNames[$j]}_$(($i+1)).png
 			fi
 		done
 	done
