@@ -161,9 +161,9 @@ subject_folder=$3
 	for ((i=1; i<3; i++)); do
 		for ((j=0; j<3; j++)); do
 
-			rm $output_folder/order$i"_"$sub"_$4_"${axisNames[$j]}"_first_half.png"
-			rm $output_folder/order$i"_"$sub"_$4_"${axisNames[$j]}"_second_half.png"
-			rm $output_folder/order$i"_"$sub"_$4_"${axisNames[$j]}"_third_part.png"
+			rm -f $output_folder/order$i"_"$sub"_$4_"${axisNames[$j]}"_first_half.png"
+			rm -f $output_folder/order$i"_"$sub"_$4_"${axisNames[$j]}"_second_half.png"
+			rm -f $output_folder/order$i"_"$sub"_$4_"${axisNames[$j]}"_third_part.png"
 
 		done
 	done
@@ -171,8 +171,8 @@ subject_folder=$3
 
 	for ((i=0; i<18; i++)); do
 		for ((j=0; j<3; j++)); do
-			rm $output_folder/order1_$sub"_$4_"${axisNames[$j]}_$(($i+1)).png
-			rm $output_folder/order2_$sub"_$4_"${axisNames[$j]}_$(($i+1)).png
+			rm -f $output_folder/order1_$sub"_$4_"${axisNames[$j]}_$(($i+1)).png
+			rm -f $output_folder/order2_$sub"_$4_"${axisNames[$j]}_$(($i+1)).png
 		done
 	done
 

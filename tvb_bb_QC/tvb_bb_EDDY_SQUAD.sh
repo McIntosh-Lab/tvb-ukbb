@@ -34,7 +34,7 @@ export FSLDIR=/opt/HCPpipelines-4.1.3/fsl
 			#EDDY_SQUAD_output_folder=$EDDY_SQUAD_output_folder_base$i
 			#((i+=1))
 		#done
-		rm -r $EDDY_SQUAD_output_folder
+		rm -rf $EDDY_SQUAD_output_folder
 		
 		
 		${FSLDIR}/bin/eddy_squad -o $EDDY_SQUAD_output_folder $origDir/eddy_quad_list.txt
