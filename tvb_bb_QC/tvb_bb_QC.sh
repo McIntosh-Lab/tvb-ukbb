@@ -269,7 +269,8 @@ export FSLDIR=/opt/HCPpipelines-4.1.3/fsl
 		${FSLDIR}/bin/eddy_quad $dirSubject/dMRI/dMRI/data -idx $dirSubject/dMRI/dMRI/eddy_index.txt -par $dirSubject/dMRI/dMRI/acqparams.txt -m $dirSubject/dMRI/dMRI/nodif_brain_mask.nii.gz -b $dirSubject/dMRI/dMRI/bvals -o $EDDY_QUAD_output_folder
 
 		if [ $? -eq 0 ]; then
-			if ![ grep -Fxq "$EDDY_QUAD_output_folder" $eddy_quad_list ]; then
+			grep -Fxq "$EDDY_QUAD_output_folder" $eddy_quad_list
+			if [ $? != 0 ]; then
 				echo $EDDY_QUAD_output_folder >> $eddy_quad_list
 			fi
 		fi
