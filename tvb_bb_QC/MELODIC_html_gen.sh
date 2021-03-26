@@ -227,12 +227,9 @@ cat <<EOF >> $MELODIC_html
   <label for="Analysis" style="white-space:nowrap;">Analysis <i>(z/c)</i>:
   <select name="Analysis" id="Analysis" onchange="updateTitle();updateImage();" onkeydown="IgnoreAlpha(event);">
     
-      <option value="ic" id="ic">IC Map</option>
-      <option value="th" id="th">Thresholded IC Map</option>
-      <option value="mm" id="mm">Mixture Model Probability Map</option>
-      <option value="pt" id="pt">Powerspectrum of Timecourse (frequency)</option>
-      <option value="tc" id="tc">Timecourse (time)</option>
-      <option value="gg" id="gg">Gaussian/Gamma Mixture Model Fit</option>
+      <option value="ev" id="ev">Eigenspectrum Analysis</option>
+      <option value="ic" id="ic">IC</option>
+      <option value="mm" id="mm">IC Mixture Model Fit</option>
   </select></label>
   &nbsp&nbsp&nbsp&nbsp
 
@@ -311,13 +308,14 @@ cat <<EOF >> $MELODIC_html
 &nbsp&nbsp<a href="../../fMRI/$rfMRI_ver/filtered_func_data.ica/report/IC_${n}.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
 <a href="../../fMRI/$rfMRI_ver/filtered_func_data.ica/report/IC_${n}_MM.html">IC MM report</a><br>
 
-      <br>
-<img id="${rfMRI_ver}_${n}_ic" src="../../fMRI/$rfMRI_ver/filtered_func_data.ica/report/IC_${n}.png" class="${n}" width="1000" >
-<img id="${rfMRI_ver}_${n}_th" src="../../fMRI/$rfMRI_ver/filtered_func_data.ica/report/IC_${n}_thresh.png" class="${n}" width="1000" >
-<img id="${rfMRI_ver}_${n}_mm" src="../../fMRI/$rfMRI_ver/filtered_func_data.ica/report/IC_${n}_prob.png" class="${n}" width="1000" >
-<img id="${rfMRI_ver}_${n}_pt" src="../../fMRI/$rfMRI_ver/filtered_func_data.ica/report/f${n}.png" class="${n}" width="1000" >
-<img id="${rfMRI_ver}_${n}_tc" src="../../fMRI/$rfMRI_ver/filtered_func_data.ica/report/t${n}.png" class="${n}" width="1000" >
-<img id="${rfMRI_ver}_${n}_gg" src="../../fMRI/$rfMRI_ver/filtered_func_data.ica/report/IC_${n}_MMfit.png" class="${n}" width="1000" >
+<br>
+<img name="${rfMRI_ver}_${n}_ev" src="../../fMRI/$rfMRI_ver/filtered_func_data.ica/report/EVplot.png" class="${n}" width="1000" style="padding: 10px" >
+<img name="${rfMRI_ver}_${n}_ic" src="../../fMRI/$rfMRI_ver/filtered_func_data.ica/report/IC_${n}_thresh.png" class="${n}" width="1000" style="padding: 30px" >
+<img name="${rfMRI_ver}_${n}_ic" src="../../fMRI/$rfMRI_ver/filtered_func_data.ica/report/t${n}.png" class="${n}" width="1000" style="padding: 10px" >
+<img name="${rfMRI_ver}_${n}_ic" src="../../fMRI/$rfMRI_ver/filtered_func_data.ica/report/f${n}.png" class="${n}" width="1000" style="padding: 10px" >
+<img name="${rfMRI_ver}_${n}_mm" src="../../fMRI/$rfMRI_ver/filtered_func_data.ica/report/IC_${n}.png" class="${n}" width="1000" style="padding: 30px" >
+<img name="${rfMRI_ver}_${n}_mm" src="../../fMRI/$rfMRI_ver/filtered_func_data.ica/report/IC_${n}_prob.png" class="${n}" width="1000" style="padding: 30px" >
+<img name="${rfMRI_ver}_${n}_mm" src="../../fMRI/$rfMRI_ver/filtered_func_data.ica/report/IC_${n}_MMfit.png" class="${n}" width="1000" style="padding-top: 30px" >
 </div>
 
 
@@ -341,7 +339,11 @@ cat <<EOF >> $MELODIC_html
 
 
 <div style="text-align: left; font-size: 12px" >
-IMAGE 1 FILE:<br> <a id="image_link" href="../images/T1_extraction_masked/sub-CC520055_T1_extraction_masked_axial.png">N/A</a>
+IMAGE 1 FILE:<br> <a id="image_link_0" href="../images/T1_extraction_masked/sub-CC520055_T1_extraction_masked_axial.png">N/A</a>
+<br>
+IMAGE 2 FILE:<br> <a id="image_link_1" href="../images/T1_extraction_masked/sub-CC520055_T1_extraction_masked_axial.png">N/A</a>
+<br>
+IMAGE 3 FILE:<br> <a id="image_link_2" href="../images/T1_extraction_masked/sub-CC520055_T1_extraction_masked_axial.png">N/A</a>
 <br><br><br>
 </div>
 <!-- End page content -->

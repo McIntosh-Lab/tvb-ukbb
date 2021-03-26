@@ -173,16 +173,31 @@ c 3rd ori or b=2000  (if not hidden)
 
     for (var i = 0;i<document.getElementById("Analysis").length; i++) {
       var j = document.getElementById("Analysis")[i].value;
-      document.getElementById(ica+"_"+com+"_"+j).style.display = "none";
+      for (var k=0; k<document.getElementsByName(ica+"_"+com+"_"+j).length; k++){
+        document.getElementsByName(ica+"_"+com+"_"+j)[k].style.display = "none";
+      }
+    }
 
+    for (var k=0; k<3; k++){
+      document.getElementById("image_link_"+k).innerHTML = "N/A";
+      document.getElementById("image_link_"+k).href = "N/A";
     }
 
     var new_img = ica+"_"+com+"_"+ana;
-      
-    document.getElementById(new_img).style.display="inline";
+    for (var k=0; k<document.getElementsByName(ica+"_"+com+"_"+ana).length; k++){
+      document.getElementsByName(new_img)[k].style.display="inline";
 
-    document.getElementById("image_link").innerHTML = document.getElementById(new_img).src;
-    document.getElementById("image_link").href = document.getElementById(new_img).src.substring(0,document.getElementById(new_img).src.lastIndexOf("/")+1);
+      document.getElementById("image_link_"+k).innerHTML = document.getElementsByName(new_img)[k].src;
+      document.getElementById("image_link_"+k).href = document.getElementsByName(new_img)[k].src.substring(0,document.getElementsByName(new_img)[k].src.lastIndexOf("/")+1);
+
+      if (document.getElementById("image_link_"+k).innerHTML == ""){
+        document.getElementById("image_link_"+k).innerHTML="N/A"
+      }
+
+      if(document.getElementById("image_link_"+k).href == ""){
+        document.getElementById("image_link_"+k).href="N/A"
+      }
+    }  
 
   }
 
