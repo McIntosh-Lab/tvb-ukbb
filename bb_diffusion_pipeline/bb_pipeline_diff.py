@@ -51,7 +51,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     jobEDDY = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 75  -N "bb_eddy_'
-        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM}  -N "bb_eddy_'
+        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -R 16000 -N "bb_eddy_'
 
         + subname
         + '" -j '
@@ -135,7 +135,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     jobBEDPOSTX = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 190 -N "bb_bedpostx_gpu_'
-        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -N "bb_bedpostx_gpu_'
+        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -R 16000 -N "bb_bedpostx_gpu_'
         + subname
         + '" -j '
         + jobPREBEDPOSTX
@@ -183,7 +183,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     )
     jobPROBTRACKX = LT.runCommand(
         logger,
-        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -N "bb_probtrackx_'
+        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MAX_MEM}  -N "bb_probtrackx_'
         + subname
         + '" -j '
         + jobPREPROBTRACKX
