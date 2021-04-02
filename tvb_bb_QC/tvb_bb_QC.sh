@@ -9,6 +9,8 @@
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_header
 
 set -x
+echo "$-"
+set +e
 
 origDir=`pwd`
 
@@ -16,7 +18,13 @@ dirScript=`dirname $0`
 
 dirSubject=`pwd`/$1
 
-if [[ "$dirSubject" == "" ]] ; then
+
+if [[ "$dirSubject" =~ '/'$ ]]; then 
+  dirSubject=${dirSubject%?}
+fi
+
+
+if [[ "$1" == "" ]] ; then
     echo "Error: The selected subject does not exist"
     exit 0
 fi
@@ -291,5 +299,7 @@ export FSLDIR=/opt/HCPpipelines-4.1.3/fsl
 
 	$BB_BIN_DIR/tvb_bb_QC/html_gen.sh  $dirSubject $1
 
+
+set -e
 
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer
