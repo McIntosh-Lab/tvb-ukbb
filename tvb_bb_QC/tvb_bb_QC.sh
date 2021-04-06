@@ -18,9 +18,11 @@ dirScript=`dirname $0`
 
 dirSubject=`pwd`/$1
 
+sub=$1
 
 if [[ "$dirSubject" =~ '/'$ ]]; then 
   dirSubject=${dirSubject%?}
+  sub=${sub%?}
 fi
 
 
@@ -297,7 +299,7 @@ export FSLDIR=/opt/HCPpipelines-4.1.3/fsl
 
 ### HTML REPORT GEN ###
 
-	$BB_BIN_DIR/tvb_bb_QC/html_gen.sh  $dirSubject $1
+	$BB_BIN_DIR/tvb_bb_QC/html_gen.sh  $dirSubject $sub
 
 
 set -e
