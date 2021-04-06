@@ -1,6 +1,6 @@
   
-  document.addEventListener('keyup', logKey);
-document.addEventListener('keyup', logKey);
+document.addEventListener('keydown', logKey);
+//document.addEventListener('keyup', logKey);
 
 
 function IgnoreAlpha(e) {
@@ -16,6 +16,18 @@ function IgnoreAlpha(e) {
 
 
 function logKey(e) {
+  if(e.code=="KeyI"){
+    view.pan(0,75);
+  }
+  if(e.code=="KeyK"){
+    view.pan(0,-75);
+  }
+  if(e.code=="KeyJ"){
+    view.pan(75,0);
+  }
+  if(e.code=="KeyL"){
+    view.pan(-75,0);
+  }
   if(e.code=="KeyQ"){
     view.scale(0.85);
   }

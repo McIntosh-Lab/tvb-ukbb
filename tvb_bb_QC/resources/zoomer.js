@@ -304,4 +304,10 @@ class Viewer {
 
     this.renderImage(this.imgX, this.imgY, size.w * this.imgScale, size.h * this.imgScale)
   }
+  pan(x,y){
+    this.imgX += x
+    this.imgY += y
+    // drawImage()
+    this.draw()
+  }
 }
