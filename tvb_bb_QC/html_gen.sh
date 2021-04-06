@@ -272,6 +272,10 @@ cat > $subjdir$html_output_dir"/anat.html" << EOF
   <br>
 <br>
 
+Pan enabled for mouse and keyboard <i>(i/j/k/l)</i>
+
+  <br>
+<br>
 
 
 
@@ -360,13 +364,13 @@ NOTE: Image sizes and therefore maintaining zooms between different analyses can
   <img src="../images/T1_segmentation_labelled_cortex/${sub}_T1_segmentation_labelled_cortex_coronal.png" id="lc_c" style="display: none">
   <img src="../images/T1_segmentation_labelled_cortex/${sub}_T1_segmentation_labelled_cortex_saggital.png" id="lc_s" style="display: none">
 
-  <img src="../images/T2_registration/order1_${sub}_T2_registration_axial.png" id="Tre1_a" style="display: none">
-  <img src="../images/T2_registration/order1_${sub}_T2_registration_coronal.png" id="Tre1_c" style="display: none">
-  <img src="../images/T2_registration/order1_${sub}_T2_registration_saggital.png" id="Tre1_s" style="display: none">
+  <img src="../images/T2_registration/order1_${sub}_T2_registration_axial_appended.png" id="Tre1_a" style="display: none">
+  <img src="../images/T2_registration/order1_${sub}_T2_registration_coronal_appended.png" id="Tre1_c" style="display: none">
+  <img src="../images/T2_registration/order1_${sub}_T2_registration_saggital_appended.png" id="Tre1_s" style="display: none">
 
-  <img src="../images/T2_registration/order2_${sub}_T2_registration_axial.png" id="Tre2_a" style="display: none">
-  <img src="../images/T2_registration/order2_${sub}_T2_registration_coronal.png" id="Tre2_c" style="display: none">
-  <img src="../images/T2_registration/order2_${sub}_T2_registration_saggital.png" id="Tre2_s" style="display: none">
+  <img src="../images/T2_registration/order2_${sub}_T2_registration_axial_appended.png" id="Tre2_a" style="display: none">
+  <img src="../images/T2_registration/order2_${sub}_T2_registration_coronal_appended.png" id="Tre2_c" style="display: none">
+  <img src="../images/T2_registration/order2_${sub}_T2_registration_saggital_appended.png" id="Tre2_s" style="display: none">
 
   <img src="../images/T2_FLAIR_BIANCA_masked/${sub}_T2_FLAIR_BIANCA_masked_axial.png" id="Tbi_a" style="display: none">
   <img src="../images/T2_FLAIR_BIANCA_masked/${sub}_T2_FLAIR_BIANCA_masked_coronal.png" id="Tbi_c" style="display: none">
@@ -559,6 +563,10 @@ cat > $subjdir$html_output_dir"/DTI.html" << EOF
   <br>
 <br>
 
+Pan enabled for mouse and keyboard <i>(i/j/k/l)</i>
+
+  <br>
+<br>
 
 <!---Zoom Canvas--->
 <div  id="canvas-container">
