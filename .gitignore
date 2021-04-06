@@ -4,5 +4,4 @@ __pycache__/
 .*.sw[op]
 .nfs*
 bb_python/python_installation/gradunwarp_FMRIB/
-*.RData
 
