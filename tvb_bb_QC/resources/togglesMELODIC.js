@@ -3,7 +3,7 @@
   let canvas
 
 
-document.addEventListener('keyup', logKey);
+document.addEventListener('keydown', logKey);
 
 
 function IgnoreAlpha(e) {
