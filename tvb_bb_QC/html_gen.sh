@@ -940,9 +940,9 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
   <div class="group_t" style="display: none;">
       <a href="../../fMRI/tfMRI_0.feat/report_prestats.html">tfMRI SC FC</a>
       <br>
+      <img src="../../fMRI/tfMRI_0.feat/mc/disp.png" class="t" style="width:100%" >
       <img src="../../fMRI/tfMRI_0.feat/mc/rot.png" class="t" style="width:100%" >
       <img src="../../fMRI/tfMRI_0.feat/mc/trans.png" class="t" style="width:100%" >
-      <img src="../../fMRI/tfMRI_0.feat/mc/disp.png" class="t" style="width:100%" >
 
 </div>
 
@@ -970,6 +970,8 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
   <img src="../SC_FC/${sub}_carpet.png"  class="rr" width="1000"  style="float: right; width:97%;">
   <br>
   <img src="../../fMRI/rfMRI.ica/mc/disp.png"  class="rr" style="width:100%" />
+  <img src="../../fMRI/rfMRI.ica/mc/rot.png"  class="rr" style="width:100%" />
+  <img src="../../fMRI/rfMRI.ica/mc/trans.png"  class="rr" style="width:100%" />
   </div>
 
 </div>
@@ -999,6 +1001,8 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
   <img src="../SC_FC/${sub}_carpet_1.png"  class="r1r" width="1000"  style="float: right; width:97%;">
   <br>
   <img src="../../fMRI/rfMRI_1.ica/mc/disp.png"  class="r1r" style="width:100%" />
+  <img src="../../fMRI/rfMRI_1.ica/mc/rot.png"  class="r1r" style="width:100%" />
+  <img src="../../fMRI/rfMRI_1.ica/mc/trans.png"  class="r1r" style="width:100%" />
 </div>
 </div>
 
@@ -1009,6 +1013,8 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
   <img src="../SC_FC/${sub}_carpet_0.png"  class="r0r" width="1000"  style="float: right; width:97%;">
   <br>
   <img src="../../fMRI/rfMRI_0.ica/mc/disp.png"  class="r0r" style="width:100%" />
+  <img src="../../fMRI/rfMRI_0.ica/mc/rot.png"  class="r0r" style="width:100%" />
+  <img src="../../fMRI/rfMRI_0.ica/mc/trans.png"  class="r0r" style="width:100%" />
 </div>
 </div>
 
