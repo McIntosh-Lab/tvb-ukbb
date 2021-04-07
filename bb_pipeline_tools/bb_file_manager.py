@@ -27,7 +27,8 @@ import glob
 import json
 import copy
 import nibabel as nib
-#import bb_logging_tool as LT
+
+import bb_logging_tool as LT
 
 import sys
 from shutil import copyfile
@@ -549,7 +550,9 @@ def manage_DWI(listFiles):
 
             if os.path.isfile(fileName):
                 fpath, fname = os.path.split(fileName)
-                move_file(fileName, "unclassified/" + fname)
+                # quick way to prevent dwi files from being copied into unclassified
+                if not ("dwi" in fileName and "dwi" in fileConfig):
+                    move_file(fileName, "unclassified/" + fname)
 
 
 def manage_SWI(listFiles):
