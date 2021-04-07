@@ -83,7 +83,7 @@ def main(cli_args=None):
         (("AP" in fileConfig) and (fileConfig["AP"] != ""))
         and (("PA" in fileConfig) and (fileConfig["PA"] != ""))
     ):
-        logger.warning("There is no proper AP/PA data. Thus, TOPUP will not be run")
+        logger.warn("There is no proper AP/PA data. Thus, TOPUP will not be run")
         runTopup = False
         print("NO TOPUP")
     else:
