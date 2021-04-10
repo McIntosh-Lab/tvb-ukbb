@@ -27,3 +27,41 @@ ${AFNIDIR}/3dROIMaker -inset ${subjdir}/dMRI/dMRI/interface.nii.gz -thresh 0.1 -
 
 # get masks of ROIs and make a list of seeds
 ${BB_BIN_DIR}/bb_diffusion_pipeline/bb_probtrackx2/createDTImasks.py -i ${subjdir}/dMRI/dMRI/interface.nii.gz -LUT ${PARC_LUT} -ri ${subjdir}/dMRI/probtrackx/labelledWM_GM.nii.gz -od ${subjdir}/dMRI/probtrackx
+
+
+
+
+DTI_mask=$subjdir/dMRI/bedpostx.bedpostX/nodif_brain_mask.nii.gz
+
+
+for ((i = 0 ; i < 10 ; i++)); do
+	
+	batch=batch_$i
+	output_dir=$subjdir/dMRI/probtrackx/$batch/
+	mkdir $output_dir
+	
+
+	seeds=$subjdir/dMRI/probtrackx/seeds.txt
+	commands=$subjdir/dMRI/probtrackx/probtrackx_commands.txt
+
+
+	if [ $i -eq 0 ]; then
+
+
+cat > $commands << EOF
+${FSLDIR}/bin/probtrackx2 --rseed=$i --network --ompl --seed=${seeds} --loopcheck --onewaycondition --cthr=0.2 --nsteps=2000 --steplength=0.5 --nsamples=500 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --avoid=$subjdir/dMRI/probtrackx/exclude.nii.gz --forcedir --opd --samples=$subjdir/dMRI/bedpostx.bedpostX/merged --mask=${DTI_mask} --dir=${output_dir}
+EOF
+		
+	
+	else
+
+
+cat <<EOF >> $commands
+${FSLDIR}/bin/probtrackx2 --rseed=$i --network --ompl --seed=${seeds} --loopcheck --onewaycondition --cthr=0.2 --nsteps=2000 --steplength=0.5 --nsamples=500 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --avoid=$subjdir/dMRI/probtrackx/exclude.nii.gz --forcedir --opd --samples=$subjdir/dMRI/bedpostx.bedpostX/merged --mask=${DTI_mask} --dir=${output_dir}
+EOF
+
+
+	fi
+
+
+done
