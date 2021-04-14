@@ -17,10 +17,10 @@ def bb_post_probtrackx2(subj):
 #
 
         
-        m = 0
+        m = 1
         fdt=""
         way=""
-        for m in range (10):
+        for m in range (1,11):
             batch_dir = (subj + '/dMRI/probtrackx/batch_'+str(m))
             
             if m == 0:
@@ -41,12 +41,12 @@ def bb_post_probtrackx2(subj):
 
 
 
-        m = 0
+        m = 1
         mat_lengths=""
         fdt1=""
         mtx=""
         mat_sum=""
-        for m in range (10):
+        for m in range (1,11):
             batch_dir = (subj + '/dMRI/probtrackx/batch_'+str(m))
             
             if m == 0:
