@@ -23,7 +23,7 @@ def bb_post_probtrackx2(subj):
         for m in range (1,11):
             batch_dir = (subj + '/dMRI/probtrackx/batch_'+str(m))
             
-            if m == 0:
+            if m == 1:
                 fdt = np.loadtxt(batch_dir + '/fdt_network_matrix')
                 way = np.loadtxt(batch_dir + '/waytotal')
             else:
@@ -49,7 +49,7 @@ def bb_post_probtrackx2(subj):
         for m in range (1,11):
             batch_dir = (subj + '/dMRI/probtrackx/batch_'+str(m))
             
-            if m == 0:
+            if m == 1:
                 mat_lengths = np.loadtxt(batch_dir + '/fdt_network_matrix_lengths')
                 fdt1 = np.loadtxt(batch_dir + '/fdt_network_matrix')
                 mtx = np.multiply(fdt1, mat_lengths)
