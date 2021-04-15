@@ -50,7 +50,9 @@ for ((i = 1 ; i < 11 ; i++)); do
 cat > $commands << EOF
 ${FSLDIR}/bin/probtrackx2 --rseed=$i --network --ompl --seed=${seeds} --loopcheck --onewaycondition --cthr=0.2 --nsteps=2000 --steplength=0.5 --nsamples=500 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --avoid=$subjdir/dMRI/probtrackx/exclude.nii.gz --forcedir --opd --samples=$subjdir/dMRI/bedpostx.bedpostX/merged --mask=${DTI_mask} --dir=${output_dir}
 EOF
-		
+
+
+chmod +x $commands		
 	
 	#else
 
