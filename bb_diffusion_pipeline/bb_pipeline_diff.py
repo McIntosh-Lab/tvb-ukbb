@@ -183,13 +183,13 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     )
     jobPROBTRACKX = LT.runCommand(
         logger,
-        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MAX_MEM}  -N "bb_probtrackx_'
+        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM}  -N "bb_probtrackx_'
         + subname
         + '" -j '
         + jobPREPROBTRACKX
         + " -l "
         + logDir
-        + " $BB_BIN_DIR/bb_diffusion_pipeline/bb_probtrackx2/bb_probtrackx2 "
+        + " -t "
         + baseDir
         + "/dMRI",
     )
