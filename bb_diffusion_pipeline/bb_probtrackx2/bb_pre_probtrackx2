@@ -67,3 +67,5 @@ chmod +x $commands
 
 
 done
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer
