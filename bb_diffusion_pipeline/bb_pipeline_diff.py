@@ -183,7 +183,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     )
     jobPROBTRACKX = LT.runCommand(
         logger,
-        'qsub -V -cwd -q ${QUEUE_MORE_MEM} -N "bb_probtrackx_'
+        'qsub -V -cwd -terse -q ${QUEUE_MORE_MEM} -N "bb_probtrackx_'
         + subname
         + '" -hold_jid '
         + jobPREPROBTRACKX
@@ -191,6 +191,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
         + baseDir
         + "/dMRI/probtrackx/probtrackx_commands_$SGE_TASK_ID.txt'",
     )
+    jobPROBTRACKX = jobPROBTRACKX.split(".")[0]
     jobPOSTPROBTRACKX = LT.runCommand(
         logger,
         '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_post_probtrackx_'
