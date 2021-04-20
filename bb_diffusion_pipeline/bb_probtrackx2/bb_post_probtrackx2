@@ -1,0 +1,23 @@
+#!/bin/sh
+#### bb_post_probtrackx2
+#
+# concatenate parallelized probtrackx outputs
+# and clean up probtrackx log files
+#
+
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header
+
+subjdir=`fsl_abspath $1`
+subjdir=`echo ${subjdir} | sed 's/\/$/$/g'`
+echo subjectdir is $subjdir
+
+
+python $BB_BIN_DIR/bb_diffusion_pipeline/bb_probtrackx2/tvb_concat_probtrackx2.py $subjdir
+
+# move probtrackx logs to subject log directory
+mv bb_probtrackx*.e* $subjdir/logs/.
+mv bb_probtrackx*.o* $subjdir/logs/.
+
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer
