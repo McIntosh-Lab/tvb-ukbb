@@ -34,6 +34,8 @@ ${BB_BIN_DIR}/bb_diffusion_pipeline/bb_probtrackx2/createDTImasks.py -i ${subjdi
 DTI_mask=$subjdir/dMRI/bedpostx.bedpostX/nodif_brain_mask.nii.gz
 
 
+set +e
+
 for ((i = 1 ; i < 11 ; i++)); do
 	
 	batch=batch_$i
@@ -67,5 +69,7 @@ chmod +x $commands
 
 
 done
+
+set -e
 
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer
