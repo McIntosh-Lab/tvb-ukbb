@@ -16,8 +16,31 @@ echo subjectdir is $subjdir
 python $BB_BIN_DIR/bb_diffusion_pipeline/bb_probtrackx2/tvb_concat_probtrackx2.py $subjdir
 
 # move probtrackx logs to subject log directory
-mv bb_probtrackx*.e* $subjdir/logs/.
-mv bb_probtrackx*.o* $subjdir/logs/.
+mv bb_probtrackx*.e* $subjdir/logs/. || true
+mv bb_probtrackx*.o* $subjdir/logs/. || true
+
+
+#generate tvb input zip
+mkdir $subjdir/tvb_inputs
+
+cp $subjdir/dMRI/sc.txt $subjdir/dMRI/distance.txt $subjdir/tvb_inputs
+
+array=()
+while IFS=  read -r -d $'\0'; do
+    array+=("$REPLY")
+done < <(find $subjdir/fMRI -maxdepth 1 -type d -name "*.ica" -print0)
+
+#for each .ica file
+for t in ${array[@]}; do
+	mkdir $subjdir/tvb_inputs/`basename $t`
+	cp $t/fc.txt $t/ts.txt $subjdir/tvb_inputs/`basename $t`
+done
+
+
+cd $subjdir && zip -r ./tvb_inputs.zip ./tvb_inputs && cd -
+
+rm -rf $subjdir/tvb_inputs
+
 
 
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer
