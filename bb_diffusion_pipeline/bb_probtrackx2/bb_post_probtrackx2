@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #### bb_post_probtrackx2
 #
 # concatenate parallelized probtrackx outputs
