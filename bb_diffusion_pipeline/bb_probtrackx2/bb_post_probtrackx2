@@ -25,7 +25,7 @@ mv bb_probtrackx*.o* $subjdir/logs/.
 #generate tvb input zip
 mkdir $subjdir/tvb_inputs
 
-cp $subjdir/dMRI/sc.txt $subjdir/dMRI/distance.txt $subjdir/tvb_inputs
+cp $subjdir/dMRI/sc.txt $subjdir/dMRI/distance.txt $subjdir/T2_FLAIR/lesions/volume.txt $subjdir/tvb_inputs
 
 array=()
 while IFS=  read -r -d $'\0'; do
