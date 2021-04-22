@@ -139,7 +139,7 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 
 
 	#T2 FLAIR BIANCA masked
-		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /T2_FLAIR/lesions/final_mask.nii.gz /T2_FLAIR/T2_FLAIR_unbiased.nii.gz $dirSubject  T2_FLAIR_BIANCA_masked
+		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /T2_FLAIR/lesions/final_mask.nii.gz -a 50.0 -p red /T2_FLAIR/T2_FLAIR_unbiased.nii.gz $dirSubject  T2_FLAIR_BIANCA_masked
 
 		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "Tbi_under" "../../T2_FLAIR/T2_FLAIR_unbiased.nii.gz" "Tbi_over1" "../../T2_FLAIR/lesions/final_mask.nii.gz" "NA18" "NA18_link" 0
 
