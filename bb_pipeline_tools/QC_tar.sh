@@ -17,9 +17,13 @@ set +e
 
 origDir=`pwd`
 
-dirScript=`dirname $0`
+if [[ -d "$2" ]]; then
+    dirSubject=$2/$1
+else
+    dirSubject=`pwd`$1
+fi
 
-dirSubject=`pwd`/$1
+dirScript=`dirname $0`
 
 sub=$1
 
