@@ -183,16 +183,25 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     )
     jobPROBTRACKX = LT.runCommand(
         logger,
-        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MAX_MEM} -N "bb_probtrackx_'
+        'qsub -V -cwd -terse -q ${QUEUE_MORE_MEM} -N "bb_probtrackx_'
+        + subname
+        + '" -hold_jid '
+        + jobPREPROBTRACKX
+        + " -l h_vmem=16G -b y -t 1-10 '"
+        + baseDir
+        + "/dMRI/probtrackx/probtrackx_commands_$SGE_TASK_ID.txt'",
+    )
+    jobPROBTRACKX = jobPROBTRACKX.split(".")[0]
+    jobPOSTPROBTRACKX = LT.runCommand(
+        logger,
+        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_post_probtrackx_'
         + subname
         + '" -j '
-        + jobPREPROBTRACKX
+        + jobPROBTRACKX
         + " -l "
         + logDir
-        + " $BB_BIN_DIR/bb_diffusion_pipeline/bb_probtrackx2/bb_probtrackx2 "
-        + baseDir
-        + "/dMRI",
+        + " $BB_BIN_DIR/bb_diffusion_pipeline/bb_probtrackx2/bb_post_probtrackx2 "
+        + baseDir,
     )
-    
     print("SUBMITTED DIFFUSION")
-    return jobPROBTRACKX
+    return jobPOSTPROBTRACKX
