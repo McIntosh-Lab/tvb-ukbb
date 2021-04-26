@@ -17,12 +17,12 @@ mkdir -p ${subjdir}/dMRI/probtrackx
 ### link merged files from bedpostx
 ln -s ${subjdir}/dMRI/bedpostx.bedpostX/merged* ${subjdir}/dMRI/probtrackx
 
-# apply previously generated inverse warp to get parcellation, interface and exclude masks in DTI space
-${FSLDIR}/bin/applywarp -i $subjdir/T1/transforms/parcel_to_T1 -r $subjdir/dMRI/dMRI/data_B0 -o $subjdir/dMRI/dMRI/parcellation --premat=$subjdir/dMRI/dMRI/transforms/T1_to_DTI.mat --interp=nn
-${FSLDIR}/bin/applywarp -i $subjdir/dMRI/dMRI/transforms/DTI_to_T1_fast_wmedge -r $subjdir/dMRI/dMRI/data_B0 -o $subjdir/dMRI/dMRI/interface --premat=$subjdir/dMRI/dMRI/transforms/T1_to_DTI.mat --interp=nn
+# apply previously generated inverse warp to get inflated parcellation, interface and exclude masks in DTI space
+${FSLDIR}/bin/applywarp -i $subjdir/T1/labelled_GMI -r $subjdir/dMRI/dMRI/data_B0 -o $subjdir/dMRI/dMRI/parcellation --premat=$subjdir/dMRI/dMRI/transforms/T1_to_DTI.mat --interp=nn
+${FSLDIR}/bin/applywarp -i $subjdir/T1/interface -r $subjdir/dMRI/dMRI/data_B0 -o $subjdir/dMRI/dMRI/interface --premat=$subjdir/dMRI/dMRI/transforms/T1_to_DTI.mat --interp=nn
 ${FSLDIR}/bin/applywarp -i $subjdir/T1/T1_fast/T1_brain_GM_mask -r $subjdir/dMRI/dMRI/data_B0 -o $subjdir/dMRI/probtrackx/exclude --premat=$subjdir/dMRI/dMRI/transforms/T1_to_DTI.mat --interp=nn
 
-# label the interface (search space = 1)
+# label the interface with inflated parcellation
 ${AFNIDIR}/3dROIMaker -inset ${subjdir}/dMRI/dMRI/interface.nii.gz -thresh 0.1 -prefix ${subjdir}/dMRI/probtrackx/labelledWM -refset ${subjdir}/dMRI/dMRI/parcellation.nii.gz -nifti -neigh_upto_vert
 
 # get masks of ROIs and make a list of seeds
@@ -30,8 +30,11 @@ ${BB_BIN_DIR}/bb_diffusion_pipeline/bb_probtrackx2/createDTImasks.py -i ${subjdi
 
 
 
+
 DTI_mask=$subjdir/dMRI/bedpostx.bedpostX/nodif_brain_mask.nii.gz
 
+
+set +e
 
 for ((i = 1 ; i < 11 ; i++)); do
 	
@@ -51,8 +54,8 @@ cat > $commands << EOF
 ${FSLDIR}/bin/probtrackx2 --rseed=$i --network --ompl --seed=${seeds} --loopcheck --onewaycondition --cthr=0.2 --nsteps=2000 --steplength=0.5 --nsamples=500 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --avoid=$subjdir/dMRI/probtrackx/exclude.nii.gz --forcedir --opd --samples=$subjdir/dMRI/bedpostx.bedpostX/merged --mask=${DTI_mask} --dir=${output_dir}
 EOF
 
-
-chmod +x $commands		
+chmod +x $commands
+		
 	
 	#else
 
@@ -66,3 +69,7 @@ chmod +x $commands
 
 
 done
+
+set -e
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer

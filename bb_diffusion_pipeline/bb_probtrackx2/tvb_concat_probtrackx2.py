@@ -33,12 +33,16 @@ def bb_post_probtrackx2(subj):
 
 
         SC=np.divide(fdt,way)
+        SC = (SC + SC.T)/2
 
         np.savetxt(subj + "/dMRI/probtrackx/fdt_network_matrix",fdt)
         np.savetxt(subj + "/dMRI/probtrackx/waytotal",way)
         np.savetxt(subj + "/dMRI/sc.txt",SC)
         
 
+     
+        
+        
 
 
         m = 1
@@ -63,10 +67,12 @@ def bb_post_probtrackx2(subj):
                 
 
         tract_lengths = np.divide(mtx,mat_sum)
-
         np.savetxt(subj + "/dMRI/probtrackx/fdt_network_matrix_lengths",tract_lengths)
     
         
+        tract_lengths = (tract_lengths + tract_lengths.T)/2
+        np.savetxt(subj + "/dMRI/distance.txt",tract_lengths)
+
 
 
 
