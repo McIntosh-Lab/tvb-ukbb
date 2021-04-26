@@ -82,7 +82,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
         jobFEAT_R = LT.runCommand(
             logger,
             #'${FSLDIR}/bin/fsl_sub -T 1200 -N "bb_feat_rfMRI_ns_'
-            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -N "bb_feat_rfMRI_ns_'
+            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -R 16000 -N "bb_feat_rfMRI_ns_'
             + subname
             + '"  -l '
             + logDir
@@ -108,7 +108,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
         ### compute FC using parcellation
         jobFC = LT.runCommand(
             logger,
-            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -N "bb_FC_'
+            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_FC_'
             + subname
             + '"  -l '
             + logDir
@@ -133,7 +133,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
         jobCLEAN = LT.runCommand(
             logger,
             #'${FSLDIR}/bin/fsl_sub -T 5  -N "bb_rfMRI_clean_'
-            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM}  -N "bb_rfMRI_clean_'
+            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD}  -N "bb_rfMRI_clean_'
             + subname
             + '"  -l '
             + logDir
@@ -155,7 +155,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
         jobPREPARE_T = LT.runCommand(
             logger,
             #'${FSLDIR}/bin/fsl_sub -T  15 -N "bb_prepare_tfMRI_'
-            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -N "bb_prepare_tfMRI_'
+            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_prepare_tfMRI_'
             + subname
             + '" -l '
             + logDir
@@ -167,7 +167,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
         jobFEAT_T = LT.runCommand(
             logger,
             #'${FSLDIR}/bin/fsl_sub -T 400 -N "bb_feat_tfMRI_'
-            '${FSLDIR}/bin/fsl_sub -q all.ac -N "bb_feat_tfMRI_'
+            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -R 16000 -N "bb_feat_tfMRI_'
             + subname
             + '" -l '
             + logDir
