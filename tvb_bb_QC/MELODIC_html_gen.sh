@@ -12,7 +12,7 @@ mkdir -p $dirSubject"/QC/html"
 
 MELODIC_html=$dirSubject"/QC/html/MELODIC.html"
 
-rm $MELODIC_html
+rm -f $MELODIC_html
 
 if [ ! -e $MELODIC_html ]; then
   

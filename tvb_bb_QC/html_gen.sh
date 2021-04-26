@@ -693,6 +693,24 @@ EOF
 
 
 
+farray=()
+while IFS=  read -r -d $'\0'; do
+    farray+=("$REPLY")
+done < <(find $subjdir/fMRI -maxdepth 1 -type d -name "*.feat" -print0)
+
+
+
+
+array=()
+while IFS=  read -r -d $'\0'; do
+    array+=("$REPLY")
+done < <(find $subjdir/fMRI -maxdepth 1 -type d -name "*.ica" -print0)
+
+
+
+
+
+
 cat > $subjdir$html_output_dir"/fMRI.html" << EOF
 
 <!DOCTYPE html>
@@ -770,28 +788,49 @@ cat > $subjdir$html_output_dir"/fMRI.html" << EOF
 
 <br><br><a name="fMRI_REPORTS">______</a><br><br>
   <h1> fMRI REPORTS </h1>
-  ______<br><br><br>
-  <h3> <a href="../../fMRI/tfMRI_0.feat/report.html">tFMRI_0 REPORT</a> </h3><a href="../../fMRI/tfMRI_0.feat/report_unwarp.html">tfMRI_0 Field Map Report</a><br>
+  ______
+
+EOF
+
+
+#for each .feat file
+for t in ${farray[@]}; do
+  tfMRI_dir=`basename $t`
+  tfMRI_ver=`basename $t`
+  tfMRI_ver=${tfMRI_ver%.*}
+cat <<EOF >> $subjdir$html_output_dir"/fMRI.html"
+
+<br><br><br>
+  <h3> <a href="../../fMRI/$tfMRI_dir/report.html">$tfMRI_ver REPORT</a> </h3><a href="../../fMRI/$tfMRI_dir/report_unwarp.html">$tfMRI_ver Field Map Report</a><br>
  
 
-     <br><br><br><br>
- <h3><a href="../../fMRI/rfMRI.ica/report.html">rfMRI REPORT</a></h3>
-  <a href="../../fMRI/rfMRI.ica/report_unwarp.html">rfMRI  Field Map Report</a><br>
+     <br>
+
+EOF
+done
 
 
 
-    <br><br><br><br>
- <h3><a href="../../fMRI/rfMRI_1.ica/report.html">rfMRI_1 REPORT</a></h3>
-  <a href="../../fMRI/rfMRI_1.ica/report_unwarp.html">rfMRI_1  Field Map Report</a><br>
 
-  
+#for each .ica file
+for t in ${array[@]}; do
+  rfMRI_dir=`basename $t`
+  rfMRI_ver=`basename $t`
+  rfMRI_ver=${rfMRI_ver%.*}
+cat <<EOF >> $subjdir$html_output_dir"/fMRI.html"
+
+<br><br><br>
+  <h3> <a href="../../fMRI/$rfMRI_dir/report.html">$rfMRI_ver REPORT</a> </h3><a href="../../fMRI/$rfMRI_dir/report_unwarp.html">$rfMRI_ver Field Map Report</a><br>
+ 
+
+     <br>
+
+EOF
+done
 
 
-   <br><br><br><br>
- <h3><a href="../../fMRI/rfMRI_0.ica/report.html">rfMRI_0 REPORT</a></h3>
-  <a href="../../fMRI/rfMRI_0.ica/report_unwarp.html">rfMRI_0  Field Map Report</a><br>
-<br>
-  
+cat <<EOF >> $subjdir$html_output_dir"/fMRI.html"
+
 <!-- End page content -->
 </div>
 
@@ -904,28 +943,51 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
 <!-- Analyses -->
   <label for="Analysis" style="white-space:nowrap;">Analysis <i>(a/d)</i>:
   <select name="Analysis" id="Analysis" onchange="updateTitle();updateImage();" onkeydown="IgnoreAlpha(event);">
-    
+
     <optgroup label="Structural Connectivity">
       <option value="group_sc" id="sc" selected="selected">Structural Connectivity</option>
     </optgroup>
     <optgroup label="Tract Length">
       <option value="group_tl" id="tl">Tract Length</option>
     </optgroup>
-    <optgroup label="tfMRI_0">
-      <option value="group_t" id="t">tfMRI_0 Graphs</option>
+
+
+EOF
+
+
+#for each .feat file
+for t in ${farray[@]}; do
+  tfMRI_ver=`basename $t`
+  tfMRI_ver=${tfMRI_ver%.*}
+cat <<EOF >> $subjdir$html_output_dir"/SCFC.html"
+
+    <optgroup label="$tfMRI_ver">
+      <option value="group_$tfMRI_ver" id="$tfMRI_ver">$tfMRI_ver Graphs</option>
     </optgroup>
-    <optgroup label="rfMRI_0">
-      <option value="group_r0f" id="r0f">rfMRI_0 Functional Connectivity</option>
-      <option value="group_r0r" id="r0r">rfMRI_0 ROI Carpet Plot & Displacement Graph</option>
+
+EOF
+done
+
+
+
+
+#for each .ica file
+for t in ${array[@]}; do
+  rfMRI_ver=`basename $t`
+  rfMRI_ver=${rfMRI_ver%.*}
+cat <<EOF >> $subjdir$html_output_dir"/SCFC.html"
+
+    <optgroup label="$rfMRI_ver">
+      <option value="group_f$rfMRI_ver" id="f$rfMRI_ver">$rfMRI_ver Functional Connectivity</option>
+      <option value="group_r$rfMRI_ver" id="r$rfMRI_ver">$rfMRI_ver ROI Carpet Plot & Displacement Graph</option>
     </optgroup>
-    <optgroup label="rfMRI_1">
-      <option value="group_r1f" id="r1f">rfMRI_1 Functional Connectivity</option>
-      <option value="group_r1r" id="r1r">rfMRI_1 ROI Carpet Plot & Displacement Graph</option>
-    </optgroup>
-    <optgroup label="rfMRI">
-      <option value="group_rf" id="rf">rfMRI Functional Connectivity</option>
-      <option value="group_rr" id="rr">rfMRI ROI Carpet Plot & Displacement Graph</option>
-    </optgroup>
+
+EOF
+done
+
+
+cat <<EOF >> $subjdir$html_output_dir"/SCFC.html"
+
   </select></label>
   &nbsp&nbsp&nbsp&nbsp
 
@@ -936,17 +998,6 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
 
 
   <br> <br> 
-
-  <div class="group_t" style="display: none;">
-      <a href="../../fMRI/tfMRI_0.feat/report_prestats.html">tfMRI SC FC</a>
-      <br>
-      <img src="../../fMRI/tfMRI_0.feat/mc/disp.png" class="t" style="width:100%" >
-      <img src="../../fMRI/tfMRI_0.feat/mc/rot.png" class="t" style="width:100%" >
-      <img src="../../fMRI/tfMRI_0.feat/mc/trans.png" class="t" style="width:100%" >
-
-</div>
-
-
 
 <div class="group_sc" style="display: none;">
 
@@ -963,63 +1014,66 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
 <img src="../SC_FC/${sub}_TL_hist.png" class="tl" width="1000" >
 </div>
 
+EOF
 
 
-<div class="group_rr" style="display: none;">
-   <div style="color:black; text-align: center; background-color: white">
-  <img src="../SC_FC/${sub}_carpet.png"  class="rr" width="1000"  style="float: right; width:97%;">
-  <br>
-  <img src="../../fMRI/rfMRI.ica/mc/disp.png"  class="rr" style="width:100%" />
-  <img src="../../fMRI/rfMRI.ica/mc/rot.png"  class="rr" style="width:100%" />
-  <img src="../../fMRI/rfMRI.ica/mc/trans.png"  class="rr" style="width:100%" />
-  </div>
+#for each .feat file
+for t in ${farray[@]}; do
+  tfMRI_dir=`basename $t`
+  tfMRI_ver=`basename $t`
+  tfMRI_ver=${tfMRI_ver%.*}
+
+cat <<EOF >> $subjdir$html_output_dir"/SCFC.html"
+
+  <div class="group_$tfMRI_ver" style="display: none;">
+      <a href="../../fMRI/$tfMRI_dir/report_prestats.html">tfMRI SC FC</a>
+      <br>
+      <img src="../../fMRI/$tfMRI_dir/mc/disp.png" class="$tfMRI_ver" style="width:100%" >
+      <img src="../../fMRI/$tfMRI_dir/mc/rot.png" class="$tfMRI_ver" style="width:100%" >
+      <img src="../../fMRI/$tfMRI_dir/mc/trans.png" class="$tfMRI_ver" style="width:100%" >
 
 </div>
+EOF
+done
 
-<div class="group_rf" style="display: none;">
-    <img src="../SC_FC/${sub}_FC.png"  class="rf" width="1000"  style="">
-    <br><br>
-    <img src="../SC_FC/${sub}_FC_hist.png"  class="rf" width="1000"  style="">
-</div>
 
-<div class="group_r1f" style="display: none;">
-  <img src="../SC_FC/${sub}_FC_1.png"  class="r1f" width="1000"  style="">
+
+
+
+#for each .ica file
+for t in ${array[@]}; do
+  rfMRI_dir=`basename $t`
+  rfMRI_ver=`basename $t`
+  rfMRI_ver=${rfMRI_ver%.*}
+
+cat <<EOF >> $subjdir$html_output_dir"/SCFC.html"
+
+
+
+<div class="group_f$rfMRI_ver" style="display: none;">
+  <img src="../SC_FC/${sub}_${rfMRI_ver}_ica_FC.png"  class="f$rfMRI_ver" width="1000"  style="">
   <br><br>
-    <img src="../SC_FC/${sub}_FC_1_hist.png"  class="r1f" width="1000"  style="">
+    <img src="../SC_FC/${sub}_${rfMRI_ver}_ica_FC_hist.png"  class="f$rfMRI_ver" width="1000"  style="">
 </div>
 
 
-<div class="group_r0f" style="display: none;">
-  <img src="../SC_FC/${sub}_FC_0.png"  class="r0f" width="1000"  style="">
-  <br><br>
-    <img src="../SC_FC/${sub}_FC_0_hist.png"  class="r0f" width="1000"  style="">
-</div>
-
-
-<div class="group_r1r" style="display: none;; ">
+<div class="group_r$rfMRI_ver" style="display: none;; ">
     <div style="color:black; text-align: center; background-color: white">
-  <img src="../SC_FC/${sub}_carpet_1.png"  class="r1r" width="1000"  style="float: right; width:97%;">
+  <img src="../SC_FC/${sub}_${rfMRI_ver}_ica_carpet.png"  class="r$rfMRI_ver" width="1000"  style="float: left; width:90%;">
   <br>
-  <img src="../../fMRI/rfMRI_1.ica/mc/disp.png"  class="r1r" style="width:100%" />
-  <img src="../../fMRI/rfMRI_1.ica/mc/rot.png"  class="r1r" style="width:100%" />
-  <img src="../../fMRI/rfMRI_1.ica/mc/trans.png"  class="r1r" style="width:100%" />
+  <img src="../../fMRI/$rfMRI_dir/mc/disp.png"  class="r$rfMRI_ver" style="float: left;padding-left: 39px; width:97.5%" />
+  <img src="../../fMRI/$rfMRI_dir/mc/rot.png"  class="r$rfMRI_ver" style="float: left;padding-left: 15px;  width:92.5%" />
+  <img src="../../fMRI/$rfMRI_dir/mc/trans.png"  class="r$rfMRI_ver" style="padding-right: 38px;  width:94%" />
 </div>
 </div>
 
 
 
-<div class="group_r0r" style="display: none;">
-  <div style="color:black; text-align: center; background-color: white">
-  <img src="../SC_FC/${sub}_carpet_0.png"  class="r0r" width="1000"  style="float: right; width:97%;">
-  <br>
-  <img src="../../fMRI/rfMRI_0.ica/mc/disp.png"  class="r0r" style="width:100%" />
-  <img src="../../fMRI/rfMRI_0.ica/mc/rot.png"  class="r0r" style="width:100%" />
-  <img src="../../fMRI/rfMRI_0.ica/mc/trans.png"  class="r0r" style="width:100%" />
-</div>
-</div>
 
- <br> <br>
- 
+EOF
+done
+
+cat <<EOF >> $subjdir$html_output_dir"/SCFC.html"
 
 <div style="text-align: left; font-size: 12px" >
 IMAGE 1 FILE:<br> <a id="im1" href="../images/T1_extraction_masked/${sub}_T1_extraction_masked_axial.png">N/A</a>
