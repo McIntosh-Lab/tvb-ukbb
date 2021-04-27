@@ -36,7 +36,7 @@ def SC_FC_png(subj):
 
 
 
-        subjName=subj[subj.rfind('sub'):]
+        subjName=subj[subj.rfind('/')+1:]
 
         
 
