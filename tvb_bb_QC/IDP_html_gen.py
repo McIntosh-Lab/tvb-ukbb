@@ -49,7 +49,7 @@ def IDP_html_gen(subj,IDP_list_path,IDPoi_list_path):
 		os.makedirs(IDP_dir)
 
 
-	subjName=subj[subj.rfind('sub'):]
+	subjName=subj[subj.rfind('/')+1:]
 
 
 	IDP_list = []
