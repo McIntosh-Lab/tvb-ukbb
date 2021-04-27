@@ -227,6 +227,26 @@ $BB_BIN_DIR/bb_structural_pipeline/bb_QC_CNR_corners_complete ../$1
 #The rest of the script works with T2 only if there is one.
 if [ `${FSLDIR}/bin/imtest T2_FLAIR/T2_FLAIR_orig` = 0 ] ; then
   echo "WARNING: No T2 in $1"
+
+  #create GM-WM interface for dMRI tractography seeds
+  ${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS -kernel sphere 1 -dilM $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS_dil
+  ${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS_dil -add $1/T1/T1_fast/T1_brain_WM_mask_noCerebBS -thr 2 -bin $1/T1/interface
+
+  #check interface, re-do with extra dilation if empty
+  maskMAX=$(fslstats $1/T1/interface -R | awk '{print int($2)}')
+  if [ $maskMAX -lt 1 ]
+  then
+     echo "interface mask empty, dilating GM mask by 2 and re-doing interface"
+     ${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS -kernel sphere 2 -dilM $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS_dil2
+     ${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS_dil2 -add $1/T1/T1_fast/T1_brain_WM_mask_noCerebBS -thr 2 -bin $1/T1/interface
+  fi
+
+  #label GM with ROIs
+  ${AFNIDIR}/3dROIMaker -inset $1/T1/cort_subcort_GM.nii.gz -thresh 0.1 -inflate 1 -prefix $1/T1/labelled -refset $1/T1/transforms/parcel_to_T1.nii.gz -nifti -neigh_upto_vert
+
+  #for some reason both labelled_GM and labelled_GMI are inflated; fix it here
+  ${FSLDIR}/bin/fslmaths $1/T1/labelled_GM -mas $1/T1/cort_subcort_GM.nii.gz $1/T1/labelled_GM
+
   . $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
   exit
 fi
