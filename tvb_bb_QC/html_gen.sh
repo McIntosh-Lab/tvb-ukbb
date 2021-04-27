@@ -88,6 +88,7 @@ cat > $subjdir$html_output_dir"/report.html" << EOF
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+    <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
   </div>
 </header>
 
@@ -100,6 +101,7 @@ cat > $subjdir$html_output_dir"/report.html" << EOF
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+    <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
 </div>
 </div>
 <!-- Page content -->
@@ -183,6 +185,7 @@ cat > $subjdir$html_output_dir"/anat.html" << EOF
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+    <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
   </div>
 </header>
 
@@ -195,6 +198,7 @@ cat > $subjdir$html_output_dir"/anat.html" << EOF
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+    <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
 </div>
 </div>
 <!-- Page content -->
@@ -464,6 +468,7 @@ cat > $subjdir$html_output_dir"/DTI.html" << EOF
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+    <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
   </div>
 </header>
 
@@ -476,6 +481,7 @@ cat > $subjdir$html_output_dir"/DTI.html" << EOF
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+    <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
 </div>
 </div>
 
@@ -764,6 +770,7 @@ cat > $subjdir$html_output_dir"/fMRI.html" << EOF
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+    <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
   </div>
 </header>
 
@@ -776,6 +783,7 @@ cat > $subjdir$html_output_dir"/fMRI.html" << EOF
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+    <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
 </div>
 </div>
 
@@ -905,6 +913,7 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+    <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
   </div>
 </header>
 
@@ -917,6 +926,7 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+    <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
 </div>
 </div>
 
