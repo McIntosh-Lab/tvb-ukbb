@@ -158,8 +158,8 @@ def start_queue(args):
 
         # assign PID returned from running pipeline to corresponding index
         # in pid_list
-        pid_list[subj_counter] = bb_pipeline([subject_dirs[subj_counter]])
-        subjs_running[subj_counter] = subject_dirs[subj_counter].strip("\n")
+        curr_pid = bb_pipeline([subject_dirs[subj_counter]])
+        curr_subj = subject_dirs[subj_counter].strip("\n")
         print(f"Submitted {subjs_running[subj_counter]} to grid.")
         logger.info(f"Submitted {subjs_running[subj_counter]} to grid.")
         # print in-progress file so resume can detect messed up subjects
@@ -171,7 +171,7 @@ def start_queue(args):
                 pass
         # error handling in case the file can't be written out
         except:
-            logger.info(
+            logger.warn(
                 f"Unable to save out in_progess file for "
                 f"subject {subjs_running[subj_counter]}"
             )
@@ -179,6 +179,39 @@ def start_queue(args):
                 f"Unable to save out in_progress file for "
                 f"subject {subjs_running[subj_counter]}"
             )
+        # if subject failed to be submitted in pipeline code
+        if curr_pid == "-1":
+            # don't assign to pid_list and subjs_running
+            logger.warn(
+                f"{curr_subj} failed to submit. "
+                "Skipping and submitting a new subject its place."
+            )
+            print(
+                f"{curr_subj} failed to submit. "
+                "Skipping and submitting a new subject its place."
+            )
+        # print errors.txt file so resume can detect messed up subjects
+        try:
+            with open(
+                f"{args.subjects_paths}/{subjs_running[subj_counter]}/errors.txt",
+                "w+",
+            ) as f:
+                f.write(f"Subject failed to submit")
+                pass
+        # error handling in case the file can't be written out
+        except:
+            logger.warn(
+                f"Unable to save out errors.txt file for "
+                f"subject {subjs_running[subj_counter]}"
+            )
+            print(
+                f"Unable to save out errors.txt file for "
+                f"subject {subjs_running[subj_counter]}"
+            )
+        else:
+            pid_list[subj_counter] = curr_pid
+            subjs_running[subj_counter] = curr_subj
+
         subj_counter += 1
 
     print(f"First {args.num_concurrents} subjects submitted.")
@@ -252,20 +285,6 @@ def check_handle_job_finished(
             [pid_list[i] in all_jobs[j].values() for j in range(len(all_jobs))]
         )
 
-        # if this subject's done, replace it with a new one and increment
-        if pid_done:
-            print(f"{i}")
-            print(f"{pid_list}")
-            print(f"{subjs_running}")
-            logger.info(
-                f"{subjs_running[i]} has completed. Submitting "
-                f"{subject_dirs[subj_counter]} in its place."
-            )
-            print(
-                f"{subjs_running[i]} has completed. Submitting "
-                f"{subject_dirs[subj_counter]} in its place."
-            )
-
             # call QC_tar script - arg 0 is script name, arg 1 is subj name,
             # arg 2 is directory containing subjs
             subprocess.call(
@@ -286,6 +305,25 @@ def check_handle_job_finished(
                 print(
                     f"Unable to save out completion file for "
                     f"subject {subjs_running[i]}"
+                )
+
+        # if this subject's done, replace it with a new one and increment
+        if pid_done:
+            # if only one subject, don't submit another
+            if args.num_concurrents == 1:
+                logger.info(f"{subjs_running[i]} has completed.")
+                print(f"{subjs_running[i]} has completed.")
+                # return empty vals and subj_counter
+                return ([], [], subj_counter + 1)
+                # otherwise, submit another
+            else:
+                logger.info(
+                    f"{subjs_running[i]} has completed. Submitting "
+                    f"{subject_dirs[subj_counter]} in its place."
+                )
+                print(
+                    f"{subjs_running[i]} has completed. Submitting "
+                    f"{subject_dirs[subj_counter]} in its place."
                 )
 
             # submit next subject
@@ -394,6 +432,40 @@ def check_handle_job_errored(args, pid_list, subj_counter, subject_dirs, subjs_r
             subj_counter += 1
             logger.info(f"Submitted {subjs_running[i]} to grid.")
             print(f"Submitted {subjs_running[i]} to grid.")
+
+        # submitted subject errored before submission completed
+        elif pid_list[i] == "-1":
+
+            # don't assign to pid_list and subjs_running
+            logger.warn(
+                f"{subjs_running[i]} failed to submit. "
+                "Skipping and submitting a new subject its place."
+            )
+            print(
+                f"{subjs_running[i]} failed to submit. "
+                "Skipping and submitting a new subject its place."
+            )
+            # print errors.txt file so resume can detect messed up subjects
+            try:
+                with open(
+                    f"{args.subjects_paths}/{subjs_running[subj_counter]}/errors.txt",
+                    "w+",
+                ) as f:
+                    f.write(f"Subject failed to submit")
+            # error handling in case the file can't be written out
+            except:
+                logger.warn(
+                    f"Unable to save out errors.txt file for "
+                    f"subject {subjs_running[subj_counter]}"
+                )
+                print(
+                    f"Unable to save out errors.txt file for "
+                    f"subject {subjs_running[subj_counter]}"
+                )
+            # increment subj_counter to run next subject
+            subj_counter += 1
+            pid_list[i] = bb_pipeline([subject_dirs[subj_counter]])
+            subjs_running[i] = subject_dirs[subj_counter]
 
     return pid_list, subjs_running, subj_counter
 
