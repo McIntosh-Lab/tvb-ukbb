@@ -105,7 +105,7 @@ def main(cli_args=None):
             print(
                 "This subject could not be run. Please check the logs for more information."
             )
-            exit(1)
+            return -1
     if jobSTEP1[-3:] == ",-1":
         jobSTEP1 = jobSTEP1[:-3]
 
