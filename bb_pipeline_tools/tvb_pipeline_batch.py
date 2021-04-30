@@ -193,8 +193,7 @@ def start_queue(args):
         # print errors.txt file so resume can detect messed up subjects
         try:
             with open(
-                f"{args.subjects_paths}/{subjs_running[subj_counter]}/errors.txt",
-                "w+",
+                f"{args.subjects_paths}/{subjs_running[subj_counter]}/errors.txt", "w+",
             ) as f:
                 f.write(f"Subject failed to submit")
                 pass
@@ -285,11 +284,16 @@ def check_handle_job_finished(
             [pid_list[i] in all_jobs[j].values() for j in range(len(all_jobs))]
         )
 
+        # if this subject's done, replace it with a new one and increment
+        if pid_done:
             # call QC_tar script - arg 0 is script name, arg 1 is subj name,
             # arg 2 is directory containing subjs
-            subprocess.call(
-                ["bash", f"{QC_tar_path}", f"{subjs_running[i]}", f"{os.getcwd()}"]
-            )
+            try:
+                subprocess.call(
+                    ["bash", f"{QC_tar_path}", f"{subjs_running[i]}", f"{os.getcwd()}"]
+                )
+            except:
+                print("Error occurred whlie calling script QC_tar_path.sh")
             # write completion file for just completed subject
             try:
                 with open(
@@ -307,15 +311,21 @@ def check_handle_job_finished(
                     f"subject {subjs_running[i]}"
                 )
 
-        # if this subject's done, replace it with a new one and increment
-        if pid_done:
             # if only one subject, don't submit another
-            if args.num_concurrents == 1:
-                logger.info(f"{subjs_running[i]} has completed.")
-                print(f"{subjs_running[i]} has completed.")
-                # return empty vals and subj_counter
-                return ([], [], subj_counter + 1)
-                # otherwise, submit another
+            # if args.num_concurrents == 1:
+            #     logger.info(f"{subjs_running[i]} has completed.")
+            #     print(f"{subjs_running[i]} has completed.")
+            #     # return empty vals and subj_counter
+            #     return ([], [], subj_counter + 1)
+            #     # otherwise, submit another
+            # else:
+            if subj_counter >= len(subject_dirs):
+                print(f"{subjs_running[i]} has completed. No more ubjects to run.")
+                logger.info(
+                    f"{subjs_running[i]} has completed. No more subjects to run."
+                )
+                return (pid_list, subjs_running, subj_counter + 1)
+
             else:
                 logger.info(
                     f"{subjs_running[i]} has completed. Submitting "
@@ -328,26 +338,25 @@ def check_handle_job_finished(
 
             # submit next subject
             pid_list[i] = bb_pipeline([subject_dirs[subj_counter]])
+            subjs_running[i] = subject_dirs[subj_counter]
 
             # write out in_progress file for resume checking
             try:
                 with open(
-                    f"{args.subjects_paths}/{subjs_running[subj_counter]}/in_progress.txt",
-                    "w+",
+                    f"{args.subjects_paths}/{subjs_running[i]}/in_progress.txt", "w+",
                 ) as f:
                     pass
             except:
                 logger.info(
                     f"Unable to save out in_progess file for "
-                    f"subject {subjs_running[subj_counter]}"
+                    f"subject {subjs_running[i]}"
                 )
                 print(
                     f"Unable to save out in_progress file for "
-                    f"subject {subjs_running[subj_counter]}"
+                    f"subject {subjs_running[i]}"
                 )
 
             # replace old subject with new and increment counter
-            subjs_running[i] = subject_dirs[subj_counter]
             subj_counter += 1
             logger.info(f"Submitted {subjs_running[i]} to grid.")
             print(f"Submitted {subjs_running[i]} to grid.")
@@ -448,19 +457,18 @@ def check_handle_job_errored(args, pid_list, subj_counter, subject_dirs, subjs_r
             # print errors.txt file so resume can detect messed up subjects
             try:
                 with open(
-                    f"{args.subjects_paths}/{subjs_running[subj_counter]}/errors.txt",
-                    "w+",
+                    f"{args.subjects_paths}/{subjs_running[i]}/errors.txt", "w+",
                 ) as f:
                     f.write(f"Subject failed to submit")
             # error handling in case the file can't be written out
             except:
                 logger.warn(
                     f"Unable to save out errors.txt file for "
-                    f"subject {subjs_running[subj_counter]}"
+                    f"subject {subjs_running[i]}"
                 )
                 print(
                     f"Unable to save out errors.txt file for "
-                    f"subject {subjs_running[subj_counter]}"
+                    f"subject {subjs_running[i]}"
                 )
             # increment subj_counter to run next subject
             subj_counter += 1
