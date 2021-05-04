@@ -22,7 +22,7 @@
 # limitations under the License.
 #
 
-import bb_pipeline_tools.bb_logging_tool as LT   #HOW DOES THIS PACKAGING WORK... 
+import bb_pipeline_tools.bb_logging_tool as LT  
 import os.path
 
 
@@ -43,7 +43,7 @@ def tvb_bb_QC(subject, jobHold, fileConfiguration):
         + jobHold
         + "  -l "
         + logDir
-        + " xvfb-run -a $BB_BIN_DIR/tvb_bb_QC/tvb_bb_QC.sh "   #-s '-screen 0 640x480x24'
+        + " xvfb-run -a $BB_BIN_DIR/tvb_bb_QC/tvb_bb_QC.sh "  # -s '-screen 0 640x480x24'
         + subject,
     )
     print("SUBMITTED QC")
