@@ -150,35 +150,28 @@ def start_queue(args):
     # store subject names corresponding to pid_list values
     subjs_running = [""] * args.num_concurrents
 
+    # tracks number of successfully submitted subjects
+    num_submitted = 0
     # populate pid_list with IDP PIDs from each subject (IDP is last step
     # of pipeline for each subject, so when it's done the subject is done
     print(f"Submitting first {args.num_concurrents} subjects to grid...")
     logger.info(f"Submitting first {args.num_concurrents} subjects to grid...")
-    while subj_counter < args.num_concurrents:
+    while num_submitted < args.num_concurrents:
 
         # assign PID returned from running pipeline to corresponding index
         # in pid_list
         curr_pid = bb_pipeline([subject_dirs[subj_counter]])
         curr_subj = subject_dirs[subj_counter].strip("\n")
-        print(f"Submitted {subjs_running[subj_counter]} to grid.")
-        logger.info(f"Submitted {subjs_running[subj_counter]} to grid.")
         # print in-progress file so resume can detect messed up subjects
         try:
-            with open(
-                f"{args.subjects_paths}/{subjs_running[subj_counter]}/in_progress.txt",
-                "w+",
-            ) as f:
+            with open(f"{args.subjects_paths}/{curr_subj}/in_progress.txt", "w+",) as f:
                 pass
         # error handling in case the file can't be written out
         except:
             logger.warn(
-                f"Unable to save out in_progess file for "
-                f"subject {subjs_running[subj_counter]}"
+                f"Unable to save out in_progess file for " f"subject {curr_subj}"
             )
-            print(
-                f"Unable to save out in_progress file for "
-                f"subject {subjs_running[subj_counter]}"
-            )
+            print(f"Unable to save out in_progress file for " f"subject {curr_subj}")
         # if subject failed to be submitted in pipeline code
         if curr_pid == "-1":
             # don't assign to pid_list and subjs_running
@@ -190,26 +183,23 @@ def start_queue(args):
                 f"{curr_subj} failed to submit. "
                 "Skipping and submitting a new subject its place."
             )
-        # print errors.txt file so resume can detect messed up subjects
-        try:
-            with open(
-                f"{args.subjects_paths}/{subjs_running[subj_counter]}/errors.txt", "w+",
-            ) as f:
-                f.write(f"Subject failed to submit")
-                pass
-        # error handling in case the file can't be written out
-        except:
-            logger.warn(
-                f"Unable to save out errors.txt file for "
-                f"subject {subjs_running[subj_counter]}"
-            )
-            print(
-                f"Unable to save out errors.txt file for "
-                f"subject {subjs_running[subj_counter]}"
-            )
+            # print errors.txt file so resume can detect messed up subjects
+            try:
+                with open(f"{args.subjects_paths}/{curr_subj}/errors.txt", "w+",) as f:
+                    f.write(f"Subject failed to submit")
+                    pass
+            # error handling in case the file can't be written out
+            except:
+                logger.warn(
+                    f"Unable to save out errors.txt file for " f"subject {curr_subj}"
+                )
+                print(f"Unable to save out errors.txt file for " f"subject {curr_subj}")
         else:
             pid_list[subj_counter] = curr_pid
             subjs_running[subj_counter] = curr_subj
+            num_submitted += 1
+            print(f"Submitted {subjs_running[subj_counter]} to grid.")
+            logger.info(f"Submitted {subjs_running[subj_counter]} to grid.")
 
         subj_counter += 1
 
@@ -517,7 +507,7 @@ def get_subject_statuses(subjs_running, queue_info, job_info):
             for dct in job_info:
                 if subj in dct["JB_name"]:
                     subj_statuses.append(f"pending: {dct['JB_name']}")
-
+                    break
     return subj_statuses
 
 
