@@ -39,7 +39,11 @@ def tvb_concat_probtrackx2(subj):
             fdt = np.add(fdt, np.loadtxt(batch_dir + "/fdt_network_matrix"))
             way = np.add(way, np.loadtxt(batch_dir + "/waytotal"))
 
-    SC = np.divide(fdt, way)
+    ones=np.ones(fdt.shape)
+    way_matrix = np.multiply(way,ones)
+    way_matrix = way_matrix.T
+    
+    SC = np.divide(fdt, way_matrix)
 
     #symmetrizing matrix
     SC = (SC + SC.T) / 2
