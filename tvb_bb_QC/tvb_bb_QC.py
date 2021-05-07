@@ -1,8 +1,8 @@
 #!/bin/env python
 #
-# Script name: bb_IDP.py
+# Script name: tvb_ukbb_QC.py
 #
-# Description: Script to run the IDP generation in a queueing system.
+# Description: Script to run the QC generation in a queueing system. Adapted by Justin Wang from UKBB pipeline.
 #
 #
 # Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
@@ -30,7 +30,7 @@ sys.path.insert(1, os.path.dirname(__file__) + "/..")
 import bb_pipeline_tools.bb_logging_tool as LT
 
 
-def bb_IDP(subject, jobHold, fileConfiguration):
+def tvb_bb_QC(subject, jobHold, fileConfiguration):
 
     logger = LT.initLogging(__file__, subject)
     logDir = logger.logDir
@@ -38,20 +38,20 @@ def bb_IDP(subject, jobHold, fileConfiguration):
 
     subname = subject.replace("/", "_")
 
-    jobIDP = LT.runCommand(
+    jobQC = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 30 -N "bb_IDP_'
-        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_IDP_'
+        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "tvb_bb_QC_'
         + subname
         + '" -j '
         + jobHold
         + "  -l "
         + logDir
-        + " $BB_BIN_DIR/bb_IDP/bb_IDP "
+        + " xvfb-run -a $BB_BIN_DIR/tvb_bb_QC/tvb_bb_QC.sh "  # -s '-screen 0 640x480x24'
         + subject,
     )
-    print("SUBMITTED IDP")
-    return jobIDP
+    print("SUBMITTED QC")
+    return jobQC
 
 
 if __name__ == "__main__":
@@ -72,4 +72,4 @@ if __name__ == "__main__":
         print(f"{json_path} could not be loaded. Exiting")
         sys.exit(1)
     # call pipeline
-    bb_IDP(subject, "-1", fileConfig)
+    tvb_bb_QC(subject, "-1", fileConfig)
