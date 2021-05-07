@@ -22,9 +22,12 @@
 # limitations under the License.
 #
 
-import bb_pipeline_tools.bb_logging_tool as LT
 import os.path
-import os
+import sys
+import json
+
+sys.path.insert(1, os.path.dirname(__file__) + "/..")
+import bb_pipeline_tools.bb_logging_tool as LT
 
 
 def bb_pipeline_func(subject, jobHold, fileConfiguration):
@@ -61,12 +64,16 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
         + subject,
     )
 
+<<<<<<< HEAD
     # TODO: Embed the checking of the fieldmap inside the independent steps -- Every step should check if the previous one has ended.
     rfMRI_nums = [
         k.split("_")[-1]
         for k in fileConfiguration.keys()
         if "rfMRI" in k and "oldpath" not in k and "SBRef" not in k
     ]
+=======
+    # print(st)
+>>>>>>> eedd4a8... all subpipes can now be run standalone; bugfixes for batch script
 
     # print(f"rfMRI_nums:{rfMRI_nums}")
     # job for preparing fieldmap files
@@ -275,3 +282,24 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
 
     os.rename(subjDir + "/filenames.txt", subjDir + "/fMRI/filenames.txt")
     return jobsToWaitFor
+
+
+if __name__ == "__main__":
+    # grab subject name from command
+    subject = sys.argv[1]
+    fd_fileName = "logs/file_descriptor.json"
+
+    # check if subject directory exists
+    if not os.path.isdir(subject):
+        print(f"{subject} is not a valid directory. Exiting")
+        sys.exit(1)
+    # attempt to open the JSON file
+    try:
+        json_path = os.path.abspath(f"./{subject}/{fd_fileName}")
+        with open(json_path, "r") as f:
+            fileConfig = json.load(f)
+    except:
+        print(f"{json_path} could not be loaded. Exiting")
+        sys.exit(1)
+    # call pipeline
+    bb_pipeline_func(subject, "-1", fileConfig)
