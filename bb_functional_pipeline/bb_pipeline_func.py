@@ -64,16 +64,8 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
         + subject,
     )
 
-<<<<<<< HEAD
-    # TODO: Embed the checking of the fieldmap inside the independent steps -- Every step should check if the previous one has ended.
-    rfMRI_nums = [
-        k.split("_")[-1]
-        for k in fileConfiguration.keys()
-        if "rfMRI" in k and "oldpath" not in k and "SBRef" not in k
-    ]
-=======
+
     # print(st)
->>>>>>> eedd4a8... all subpipes can now be run standalone; bugfixes for batch script
 
     # print(f"rfMRI_nums:{rfMRI_nums}")
     # job for preparing fieldmap files
@@ -90,114 +82,160 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
     )
     # if ("rfMRI" in fileConfiguration) and (fileConfiguration["rfMRI"] != ""):
 
-    jobCLEAN_LAST_rfMRI = "-1"
 
-    if len(rfMRI_nums) > 0:
-        for i in range(len(rfMRI_nums)):
+    # TODO: Embed the checking of the fieldmap inside the independent steps -- Every step should check if the previous one has ended.
+    print(f"FILE CONFIG IN FUNC: {fileConfiguration}")
+    if ("rfMRI" in fileConfiguration) and (fileConfiguration["rfMRI"] != ""):
 
-            # if it's the first rfMRI file start upon completion of fieldmap
-            # otherwise use clean job ID from previous rfMRI iteration
-            if i == 0:
-                jobPREPARE_R = LT.runCommand(
-                    logger,
-                    #'${FSLDIR}/bin/fsl_sub -T 15   -N "bb_prepare_rfMRI_'
-                    '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD}   -N "bb_prepare_rfMRI_'
-                    + f"{i}_{subname}"
-                    + '"  -l '
-                    + logDir
-                    + " -j "
-                    + jobGEFIELDMAP
-                    + " $BB_BIN_DIR/bb_functional_pipeline/bb_prepare_rfMRI "
-                    + subject
-                    + f" {rfMRI_nums[i]}",
-                )
+        jobPREPARE_R = LT.runCommand(
+            logger,
+            #'${FSLDIR}/bin/fsl_sub -T 15   -N "bb_prepare_rfMRI_'
+            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD}   -N "bb_prepare_rfMRI_'
+            + subname
+            + '"  -l '
+            + logDir
+            + " -j "
+            + jobPOSTPROCESS
+            + " $BB_BIN_DIR/bb_functional_pipeline/bb_prepare_rfMRI "
+            + subject,
+        )
+        jobFEAT_R = LT.runCommand(
+            logger,
+            #'${FSLDIR}/bin/fsl_sub -T 1200 -N "bb_feat_rfMRI_ns_'
+            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -R 16000 -N "bb_feat_rfMRI_ns_'
+            + subname
+            + '"  -l '
+            + logDir
+            + " -j "
+            + jobPREPARE_R
+            + " feat "
+            + baseDir
+            + "/fMRI/rfMRI.fsf "
+            + subject,
+        )
+        jobFIX = LT.runCommand(
+            logger,
+            #'${FSLDIR}/bin/fsl_sub -T 175  -N "bb_fix_'
+            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -R 16000 -N "bb_fix_'
+            + subname
+            + '"  -l '
+            + logDir
+            + " -j "
+            + jobFEAT_R
+            + " $BB_BIN_DIR/bb_functional_pipeline/bb_fix "
+            + subject,
+        )
+        ### compute FC using parcellation
+        jobFC = LT.runCommand(
+            logger,
+            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_FC_'
+            + subname
+            + '"  -l '
+            + logDir
+            + " -j "
+            + jobFIX
+            + " $BB_BIN_DIR/bb_functional_pipeline/bb_FC "
+            + subject,
+        )
+        ### don't generate group-ICA RSNs
+        # jobDR = LT.runCommand(
+        # logger,
+        ##'${FSLDIR}/bin/fsl_sub -T 120  -N "bb_ICA_dr_'
+        #'${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM}  -N "bb_ICA_dr_'
+        # + subname
+        # + '"  -l '
+        # + logDir
+        # + " -j "
+        # + jobFIX
+        # + " $BB_BIN_DIR/bb_functional_pipeline/bb_ICA_dual_regression "
+        # + subject,
+        # )
+        jobCLEAN = LT.runCommand(
+            logger,
+            #'${FSLDIR}/bin/fsl_sub -T 5  -N "bb_rfMRI_clean_'
+            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD}  -N "bb_rfMRI_clean_'
+            + subname
+            + '"  -l '
+            + logDir
+            + " -j "
+            # + jobDR
+            + jobFC
+            + " $BB_BIN_DIR/bb_functional_pipeline/bb_clean_fix_logs "
+            + subject,
+        )
 
-            else:
-                jobPREPARE_R = LT.runCommand(
-                    logger,
-                    #'${FSLDIR}/bin/fsl_sub -T 15   -N "bb_prepare_rfMRI_'
-                    '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD}   -N "bb_prepare_rfMRI_'
-                    + f"{i}_{subname}"
-                    + '"  -l '
-                    + logDir
-                    + " -j "
-                    + jobCLEAN_LAST_rfMRI
-                    + " $BB_BIN_DIR/bb_functional_pipeline/bb_prepare_rfMRI "
-                    + subject
-                    + f" {rfMRI_nums[i]}",
-                )
 
-            jobFEAT_R = LT.runCommand(
-                logger,
-                #'${FSLDIR}/bin/fsl_sub -T 1200 -N "bb_feat_rfMRI_ns_'
-                '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -R 16000 -N "bb_feat_rfMRI_ns_'
-                + f"{i}_{subname}"
-                + '"  -l '
-                + logDir
-                + " -j "
-                + jobPREPARE_R
-                + " feat "
-                + baseDir
-                #
-                # + f"/fMRI/rfMRI_{i}.fsf " + subject,
-                + f"/fMRI/rfMRI_{i}.fsf",
-            )
-            jobFIX = LT.runCommand(
-                logger,
-                #'${FSLDIR}/bin/fsl_sub -T 175  -N "bb_fix_'
-                '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MAX_MEM}  -N "bb_fix_'
-                + f"{i}_{subname}"
-                + '"  -l '
-                + logDir
-                + " -j "
-                + jobFEAT_R
-                + " $BB_BIN_DIR/bb_functional_pipeline/bb_fix "
-                + subject
-                + f" {rfMRI_nums[i]}",
-            )
-            ### compute FC using parcellation
-            jobFC = LT.runCommand(
-                logger,
-                '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_FC_'
-                + f"{i}_{subname}"
-                + '"  -l '
-                + logDir
-                + " -j "
-                + jobFIX
-                + " $BB_BIN_DIR/bb_functional_pipeline/bb_FC "
-                + subject
-                + f" {rfMRI_nums[i]}",
-            )
-            ### don't generate group-ICA RSNs
-            # jobDR = LT.runCommand(
-            # logger,
-            ##'${FSLDIR}/bin/fsl_sub -T 120  -N "bb_ICA_dr_'
-            #'${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM}  -N "bb_ICA_dr_'
-            # + subname
-            # + '"  -l '
-            # + logDir
-            # + " -j "
-            # + jobFIX
-            # + " $BB_BIN_DIR/bb_functional_pipeline/bb_ICA_dual_regression "
-            # + subject,
-            # )
-            jobCLEAN = LT.runCommand(
-                logger,
-                #'${FSLDIR}/bin/fsl_sub -T 5  -N "bb_rfMRI_clean_'
-                '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD}  -N "bb_rfMRI_clean_'
-                + f"{i}_{subname}"
-                + '"  -l '
-                + logDir
-                + " -j "
-                # + jobDR
-                + jobFC
-                + " $BB_BIN_DIR/bb_functional_pipeline/bb_clean_fix_logs "
-                + subject
-                + f" {rfMRI_nums[i]}",
-            )
+        jobFEAT_R = LT.runCommand(
+            logger,
+            #'${FSLDIR}/bin/fsl_sub -T 1200 -N "bb_feat_rfMRI_ns_'
+            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -R 16000 -N "bb_feat_rfMRI_ns_'
+            + f"{i}_{subname}"
+            + '"  -l '
+            + logDir
+            + " -j "
+            + jobPREPARE_R
+            + " feat "
+            + baseDir
+            #
+            # + f"/fMRI/rfMRI_{i}.fsf " + subject,
+            + f"/fMRI/rfMRI_{i}.fsf",
+        )
+        jobFIX = LT.runCommand(
+            logger,
+            #'${FSLDIR}/bin/fsl_sub -T 175  -N "bb_fix_'
+            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MAX_MEM}  -N "bb_fix_'
+            + f"{i}_{subname}"
+            + '"  -l '
+            + logDir
+            + " -j "
+            + jobFEAT_R
+            + " $BB_BIN_DIR/bb_functional_pipeline/bb_fix "
+            + subject
+            + f" {rfMRI_nums[i]}",
+        )
+        ### compute FC using parcellation
+        jobFC = LT.runCommand(
+            logger,
+            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_FC_'
+            + f"{i}_{subname}"
+            + '"  -l '
+            + logDir
+            + " -j "
+            + jobFIX
+            + " $BB_BIN_DIR/bb_functional_pipeline/bb_FC "
+            + subject
+            + f" {rfMRI_nums[i]}",
+        )
+        ### don't generate group-ICA RSNs
+        # jobDR = LT.runCommand(
+        # logger,
+        ##'${FSLDIR}/bin/fsl_sub -T 120  -N "bb_ICA_dr_'
+        #'${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM}  -N "bb_ICA_dr_'
+        # + subname
+        # + '"  -l '
+        # + logDir
+        # + " -j "
+        # + jobFIX
+        # + " $BB_BIN_DIR/bb_functional_pipeline/bb_ICA_dual_regression "
+        # + subject,
+        # )
+        jobCLEAN = LT.runCommand(
+            logger,
+            #'${FSLDIR}/bin/fsl_sub -T 5  -N "bb_rfMRI_clean_'
+            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD}  -N "bb_rfMRI_clean_'
+            + f"{i}_{subname}"
+            + '"  -l '
+            + logDir
+            + " -j "
+            # + jobDR
+            + jobFC
+            + " $BB_BIN_DIR/bb_functional_pipeline/bb_clean_fix_logs "
+            + subject
+            + f" {rfMRI_nums[i]}",
+        )
 
-            jobCLEAN_LAST_rfMRI = jobCLEAN
-            jobsToWaitFor += f"{jobCLEAN},"
+        jobCLEAN_LAST_rfMRI = jobCLEAN
+        jobsToWaitFor += f"{jobCLEAN},"
 
     else:
         logger.error(
