@@ -204,7 +204,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
         + " -l "
         + logDir
         + " $BB_BIN_DIR/bb_diffusion_pipeline/bb_probtrackx2/bb_post_probtrackx2 "
-        + baseDir,
+        + subject,
     )
     jobEDDYQUAD = LT.runCommand(
         logger,
