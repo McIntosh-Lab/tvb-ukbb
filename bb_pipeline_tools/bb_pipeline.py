@@ -113,8 +113,8 @@ def main(cli_args=None):
     # jobSTEP1 = int(jobSTEP1)
 
     # if runTopup:
-    jobSTEP2 = bb_pipeline_func(subject, jobSTEP1, fileConfig)
-    jobSTEP3 = bb_pipeline_diff(subject, jobSTEP2, fileConfig)
+    #jobSTEP2 = bb_pipeline_func(subject, jobSTEP1, fileConfig)
+    jobSTEP3 = bb_pipeline_diff(subject, jobSTEP1, fileConfig)
 
     jobSTEP4 = bb_IDP(
         subject, str(jobSTEP1) + "," + str(jobSTEP2) + "," + str(jobSTEP3), fileConfig
