@@ -66,7 +66,7 @@ def queuer(args):
 
     # start queue and collect variables
     subject_dirs, subj_counter, pid_list, subjs_running = start_queue(args)
-    rotman_avoid_comp98()
+
     # anchor time for checking and monitor timers
     start_time = time.time()
 
@@ -84,7 +84,6 @@ def queuer(args):
             pid_list, subjs_running, subj_counter = check_handle_job_errored(
                 args, pid_list, subj_counter, subject_dirs, subjs_running
             )
-            rotman_avoid_comp98()
         # wait 15 minutes between polling qstat
         wait_time_check_status = 900.0
         if (
@@ -433,7 +432,6 @@ def get_subject_statuses(subjs_running, queue_info, job_info):
             if subj in dct["JB_name"]:
                 subj_statuses.append(f"{dct['JB_name']}")
                 subj_running = True
-                break
         # if not running, print next up pending job
         if not subj_running:
             for dct in job_info:

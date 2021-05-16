@@ -23,12 +23,8 @@
 #
 import os
 import numpy as np
-import time
-import sys
-import json
-
-sys.path.insert(1, os.path.dirname(__file__) + "/..")
 import bb_pipeline_tools.bb_logging_tool as LT
+import time
 
 
 def bb_pipeline_struct(subject, runTopup, fileConfiguration):
@@ -217,24 +213,3 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
                 + subject,
             )
             return jobPOSTTOPUP
-
-
-if __name__ == "__main__":
-    # grab subject name from command
-    subject = sys.argv[1]
-    fd_fileName = "logs/file_descriptor.json"
-
-    # check if subject directory exists
-    if not os.path.isdir(subject):
-        print(f"{subject} is not a valid directory. Exiting")
-        sys.exit(1)
-    # attempt to open the JSON file
-    try:
-        json_path = os.path.abspath(f"./{subject}/{fd_fileName}")
-        with open(json_path, "r") as f:
-            fileConfig = json.load(f)
-    except:
-        print(f"{json_path} could not be loaded. Exiting")
-        sys.exit(1)
-    # call pipeline
-    bb_pipeline_struct(subject, "-1", fileConfig)
