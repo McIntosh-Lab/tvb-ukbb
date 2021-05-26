@@ -199,6 +199,9 @@ def IDP_html_gen(subj, IDP_list_path, IDPoi_list_path):
     )
 
 
+    new_IDP_output = pd.read_csv(r"" + IDP_dir + "non_priority_output.txt", delimiter = "\t")
+
+
     #write IDP.html with IDP information
     f = open(QC_dir + "IDP.html", "a")
 
@@ -295,7 +298,12 @@ def IDP_html_gen(subj, IDP_list_path, IDPoi_list_path):
         + str(IDP_dir)
         + "non_priority_output.txt"
         + """</a>
-	<br><br>
+	<br>
+    <a href="../../IDP_files/" class="w3-bar-item w3-button">New TVB IDPs: """
+        + str(IDP_dir)
+        + "tvb_new_IDP.txt"
+        + """</a>
+    <br><br>
 
 	  <table style="  margin-left: auto;
 	  margin-right: auto; text-align: left" >
@@ -360,6 +368,36 @@ def IDP_html_gen(subj, IDP_list_path, IDPoi_list_path):
 			"""
         )
         f.write(message)
+
+
+
+
+    #write new df in the same table
+    for index, row in new_IDP_output.iterrows():
+
+        message = (
+            """
+            <tr>
+              <td>"""
+            + str(row["short"])
+            + """</td>
+              <td>"""
+            + str(row["category"])
+            + """</td>
+              <td>"""
+            + str(row["value"])
+            + """</td>
+              <td>"""
+            + str(row["unit"])
+            + """</td>
+            </tr>
+
+            """
+        )
+        f.write(message)
+
+
+
 
     message = """ </table>
 

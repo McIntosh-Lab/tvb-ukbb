@@ -49,93 +49,100 @@ def SC_FC(subj):
 
     #import data and generate graphs for fMRI
     #for each ica folder in fMRI
-    for file in os.listdir(subj + "/fMRI/"):
-        if file.endswith(".ica"):
+    try:
+        for file in os.listdir(subj + "/fMRI/"):
+            if file.endswith(".ica"):
 
-            #import FC and TS data
-            fc_path = os.path.join(subj + "/fMRI/", file, "fc.txt")
-            ts_path = os.path.join(subj + "/fMRI/", file, "ts.txt")
+                #import FC and TS data
+                fc_path = os.path.join(subj + "/fMRI/", file, "fc.txt")
+                ts_path = os.path.join(subj + "/fMRI/", file, "ts.txt")
 
-            FC = ""
-            norm_ts = ""
+                FC = ""
+                norm_ts = ""
 
-            try:
-                FC = np.loadtxt(fc_path)
-                norm_ts = zscore(np.loadtxt(ts_path))
-                # norm_ts=np.loadtxt(subj + '/fMRI/rfMRI_0.ica/norm_ts.txt');
+                try:
+                    FC = np.loadtxt(fc_path)
+                    norm_ts = zscore(np.loadtxt(ts_path))
+                    # norm_ts=np.loadtxt(subj + '/fMRI/rfMRI_0.ica/norm_ts.txt');
 
-            except:
-                print("ERROR: fc, ts file not found")
-
-
-            #generate plots for FC and TS
-            try:
-                file_name_no_period = file.replace(".", "_")
-
-                #set range of -0.5 and 1 for FC values
-                FC_matrix = copy.deepcopy(FC)
-                for i in range(FC.shape[0]):
-                    for j in range(FC.shape[1]):
-                        if FC[i][j] < -0.5:
-                            FC_matrix[i][j] = -0.5
-                        if FC[i][j] > 1:
-                            FC_matrix[i][j] = 1
-
-                #save matrix for FC
-                f, ax = plt.subplots(1, 1, figsize=(50, 50))
-                ax.set_title(file_name_no_period + " FC (linear scale)")
-                im = ax.imshow(FC_matrix, cmap="jet")
-                f.colorbar(im, ax=ax)
-
-                plt.tight_layout()
-                saveNm = (
-                    subj
-                    + "/QC/SC_FC/"
-                    + subjName
-                    + "_"
-                    + file_name_no_period
-                    + "_FC.png"
-                )
-                f.savefig(saveNm)
+                except:
+                    print("ERROR: fc, ts file not found")
 
 
-                #save carpet plot for TS
-                f, ax = plt.subplots(1, 1, figsize=(50, 30))
-                ax.set_xlabel("volume")
-                ax.set_ylabel("ROI")
-                ax.set_title(file_name_no_period + " ROI timeseries carpet plot")
-                im = ax.imshow(norm_ts.transpose(), cmap="gray", aspect="auto")
+                #generate plots for FC and TS
+                try:
+                    file_name_no_period = file.replace(".", "_")
 
-                plt.tight_layout()
-                saveNm = (
-                    subj
-                    + "/QC/SC_FC/"
-                    + subjName
-                    + "_"
-                    + file_name_no_period
-                    + "_carpet.png"
-                )
-                f.savefig(saveNm)
+                    #set range of -0.5 and 1 for FC values
+                    FC_matrix = copy.deepcopy(FC)
+                    for i in range(FC.shape[0]):
+                        for j in range(FC.shape[1]):
+                            if FC[i][j] < -0.5:
+                                FC_matrix[i][j] = -0.5
+                            if FC[i][j] > 1:
+                                FC_matrix[i][j] = 1
+
+                    #save matrix for FC
+                    f, ax = plt.subplots(1, 1, figsize=(50, 50))
+                    ax.set_title(file_name_no_period + " FC (linear scale)")
+                    ax.set_xlabel("ROI")
+                    ax.set_ylabel("ROI")
+                    im = ax.imshow(FC_matrix, cmap="jet")
+                    cbar = f.colorbar(im, ax=ax)
+                    cbar.set_label('pearson correlation coefficient', rotation=270)
 
 
-                #save histogram for FC
-                f, ax = plt.subplots(1, 1, figsize=(50, 30))
-                ax.set_title(file_name_no_period + " FC histogram (linear scale)")
+                    plt.tight_layout()
+                    saveNm = (
+                        subj
+                        + "/QC/SC_FC/"
+                        + subjName
+                        + "_"
+                        + file_name_no_period
+                        + "_FC.png"
+                    )
+                    f.savefig(saveNm)
 
-                f = plt.hist(FC.ravel(), bins=100)
-                saveNm = (
-                    subj
-                    + "/QC/SC_FC/"
-                    + subjName
-                    + "_"
-                    + file_name_no_period
-                    + "_FC_hist.png"
-                )
-                plt.savefig(saveNm)
 
-            except:
-                print("ERROR: can't generate graph for " + file)
+                    #save carpet plot for TS
+                    f, ax = plt.subplots(1, 1, figsize=(50, 30))
+                    ax.set_xlabel("volume")
+                    ax.set_ylabel("ROI")
+                    ax.set_title(file_name_no_period + " ROI timeseries carpet plot")
+                    im = ax.imshow(norm_ts.transpose(), cmap="gray", aspect="auto")
 
+                    plt.tight_layout()
+                    saveNm = (
+                        subj
+                        + "/QC/SC_FC/"
+                        + subjName
+                        + "_"
+                        + file_name_no_period
+                        + "_carpet.png"
+                    )
+                    f.savefig(saveNm)
+
+
+                    #save histogram for FC
+                    f, ax = plt.subplots(1, 1, figsize=(50, 30))
+                    ax.set_title(file_name_no_period + " FC histogram (linear scale)")
+                    ax.set_xlabel("pearson correlation coefficient")
+                    ax.set_ylabel("number of connections")
+                    f = plt.hist(FC.ravel(), bins=100)
+                    saveNm = (
+                        subj
+                        + "/QC/SC_FC/"
+                        + subjName
+                        + "_"
+                        + file_name_no_period
+                        + "_FC_hist.png"
+                    )
+                    plt.savefig(saveNm)
+
+                except:
+                    print("ERROR: can't generate graph for " + file)
+    except:
+        print("ERROR: no fMRI folder in subject directory")
     
 
 
@@ -174,10 +181,13 @@ def SC_FC(subj):
 
         #save matrix for SC
         f, ax = plt.subplots(1, 1, figsize=(50, 50))
+        ax.set_xlabel("ROI")
+        ax.set_ylabel("ROI")
         ax.set_title("SC (log scale)")
         ax.set_facecolor("#000000")
         im = ax.imshow(SC_log_matrix, cmap="CMRmap")
-        f.colorbar(im, ax=ax)
+        cbar = f.colorbar(im, ax=ax)
+        cbar.set_label('probability of connection (log10)', rotation=270)
 
         plt.tight_layout()
         saveNm = subj + "/QC/SC_FC/" + subjName + "_SC.png"
@@ -186,6 +196,8 @@ def SC_FC(subj):
 
         #save histogram for SC
         f, ax = plt.subplots(1, 1, figsize=(50, 30))
+        ax.set_xlabel("probability of connection (log10)")
+        ax.set_ylabel("number of connections")
         ax.set_title("SC histogram (log scale, -inf removed)")
         SC_log = SC_log[SC_log > float("-inf")]
         f = plt.hist(SC_log.ravel(), bins=100)
@@ -214,10 +226,13 @@ def SC_FC(subj):
 
         #save matrix for TL
         f, ax = plt.subplots(1, 1, figsize=(50, 50))
+        ax.set_xlabel("ROI")
+        ax.set_ylabel("ROI")
         ax.set_title("tract length (log scale)")
         ax.set_facecolor("#000000")
         im = ax.imshow(tract_lengths_log_matrix, cmap="CMRmap")
-        f.colorbar(im, ax=ax)
+        cbar = f.colorbar(im, ax=ax)
+        cbar.set_label('tract length (log10 mm)', rotation=270)
 
         plt.tight_layout()
         saveNm = subj + "/QC/SC_FC/" + subjName + "_TL.png"
@@ -226,6 +241,8 @@ def SC_FC(subj):
 
         #save histogram for TL
         f, ax = plt.subplots(1, 1, figsize=(50, 30))
+        ax.set_xlabel("tract length (mm)")
+        ax.set_ylabel("number of tracts")
         ax.set_title("tract length histogram (linear scale, zeroes removed)")
         tract_lengths = tract_lengths[tract_lengths != 0]
         f = plt.hist(tract_lengths.ravel(), bins=100)
