@@ -371,11 +371,11 @@ def MELODIC_SNR(subj,fix4melviewtxt):
                             print (p_signal)
                             print (p_noise)
 
-                            write_to_IDP_file(subj, "MELODIC_SNR_prop_IC_unknown_"+name+"_"+file, "tvb_IDP_MELODIC_SNR", str(num_in_cat), "MELODIC_SNR_proportion_IC_unknown_"+name+"_"+file, "proportion out of 1", "float", "MELODIC signal to noise ratio - proportion of ICs that are unknown in "+name+" for "+file, str(p_unknown))
+                            write_to_IDP_file(subj, "MELODIC_SNR_prop_IC_unknown_"+str(os.path.basename(name))+"_"+file, "tvb_IDP_MELODIC_SNR", str(num_in_cat), "MELODIC_SNR_proportion_IC_unknown_"+str(os.path.basename(name))+"_"+file, "proportion out of 1", "float", "MELODIC signal to noise ratio - proportion of ICs that are unknown in "+str(os.path.basename(name))+" for "+file, str(p_unknown))
                             num_in_cat+=1
-                            write_to_IDP_file(subj, "MELODIC_SNR_prop_IC_signal_"+name+"_"+file, "tvb_IDP_MELODIC_SNR", str(num_in_cat), "MELODIC_SNR_proportion_IC_signal_"+name+"_"+file, "proportion out of 1", "float", "MELODIC signal to noise ratio - proportion of ICs that are signal in "+name+" for "+file, str(p_signal))
+                            write_to_IDP_file(subj, "MELODIC_SNR_prop_IC_signal_"+str(os.path.basename(name))+"_"+file, "tvb_IDP_MELODIC_SNR", str(num_in_cat), "MELODIC_SNR_proportion_IC_signal_"+str(os.path.basename(name))+"_"+file, "proportion out of 1", "float", "MELODIC signal to noise ratio - proportion of ICs that are signal in "+str(os.path.basename(name))+" for "+file, str(p_signal))
                             num_in_cat+=1
-                            write_to_IDP_file(subj, "MELODIC_SNR_prop_IC_noise_"+name+"_"+file, "tvb_IDP_MELODIC_SNR", str(num_in_cat), "MELODIC_SNR_proportion_IC_noise_"+name+"_"+file, "proportion out of 1", "float", "MELODIC signal to noise ratio - proportion of ICs that are noise in "+name+" for "+file, str(p_noise))
+                            write_to_IDP_file(subj, "MELODIC_SNR_prop_IC_noise_"+str(os.path.basename(name))+"_"+file, "tvb_IDP_MELODIC_SNR", str(num_in_cat), "MELODIC_SNR_proportion_IC_noise_"+str(os.path.basename(name))+"_"+file, "proportion out of 1", "float", "MELODIC signal to noise ratio - proportion of ICs that are noise in "+str(os.path.basename(name))+" for "+file, str(p_noise))
                             num_in_cat+=1
 
 

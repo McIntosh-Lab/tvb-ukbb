@@ -46,31 +46,34 @@ def generate_full_IDPoi_data(df, IDP_dir):
         
         #open the caregory's IDP value txt file, clean whitespaces, and split into a df
         cat_data = []
-        with open(IDP_dir + category + ".txt") as my_file:
-            for line in my_file:
-                line = line.strip()
-                line = line.split(" ")
-                cat_data.append(line)
-        cat_data = pd.DataFrame(cat_data)
-        cat_data = cat_data.T
-        cat_data.columns = ["value"]
-        cat_data["num_in_cat"] = cat_data.index + 1
+        try:
+            with open(IDP_dir + category + ".txt") as my_file:
+                for line in my_file:
+                    line = line.strip()
+                    line = line.split(" ")
+                    cat_data.append(line)
+            cat_data = pd.DataFrame(cat_data)
+            cat_data = cat_data.T
+            cat_data.columns = ["value"]
+            cat_data["num_in_cat"] = cat_data.index + 1
 
 
-        cat_data = cat_data.astype({"num_in_cat": int})
-        df_sub = df_sub.astype({"num_in_cat": int})
+            cat_data = cat_data.astype({"num_in_cat": int})
+            df_sub = df_sub.astype({"num_in_cat": int})
 
-        #inner join the category's IDP values with the sub-df for this category
-        df_sub = df_sub.merge(cat_data, how="inner", on="num_in_cat")
+            #inner join the category's IDP values with the sub-df for this category
+            df_sub = df_sub.merge(cat_data, how="inner", on="num_in_cat")
+            
+            #if this is the first sub-df, then the output df is the same as the sub-df for now
+            #otherwise, append sub-df ot output df
+            if not flag:
+                output = df_sub
+                flag = True
+            else:
+                output = output.append(df_sub, ignore_index=True)
         
-        #if this is the first sub-df, then the output df is the same as the sub-df for now
-        #otherwise, append sub-df ot output df
-        if not flag:
-            output = df_sub
-            flag = True
-        else:
-            output = output.append(df_sub, ignore_index=True)
-
+        except:
+            print(IDP_dir + category + ".txt file missing")
 
     return output
 
@@ -199,7 +202,7 @@ def IDP_html_gen(subj, IDP_list_path, IDPoi_list_path):
     )
 
 
-    new_IDP_output = pd.read_csv(r"" + IDP_dir + "non_priority_output.txt", delimiter = "\t")
+    new_IDP_output = pd.read_csv(r"" + IDP_dir + "tvb_new_IDP.txt", delimiter = "\t")
 
 
     #write IDP.html with IDP information
