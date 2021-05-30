@@ -39,7 +39,13 @@ for t in ${array[@]}; do
 done
 
 
-cd $subjdir && zip -r ./tvb_inputs.zip ./tvb_inputs && cd -
+subj=$1
+if [[ "$subj" =~ '/'$ ]]; then 
+  subj=${subj%?}
+fi
+subj=`basename $subj`
+
+cd $subjdir && zip -r ./$(subj)_tvb_inputs.zip ./tvb_inputs && cd -
 
 rm -rf $subjdir/tvb_inputs
 
