@@ -170,7 +170,7 @@ for t in ${array[@]}; do
   IFS=', ' read -r -a noise_array <<< "$noise"
 
 
-  declare -a unknown_array
+  declare -a unknown_array=()
 
   while read line; do
     IC_num="${line%%,*}"
