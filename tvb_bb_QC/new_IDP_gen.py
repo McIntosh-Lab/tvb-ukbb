@@ -90,6 +90,49 @@ def FC_distribution(subj):
                 write_to_IDP_file(subj, "FC_distribution_proportion_neg_"+file, "tvb_IDP_FC_distribution", str(num_in_cat), "FC_distribution_proportion_neg_"+file, "proportion out of 1", "float", "Functional connectivity proportion negative for "+file, str(FC_proportion_neg))
                 num_in_cat+=1
 
+
+
+                FC = FC.flatten()
+
+                y, x = np.histogram(FC[~np.isnan(FC)], bins=100)
+                for index, value in enumerate(x[0:-1]):
+                    x[index] = (value + x[index + 1]) / 2 
+                x=x[0:-1]
+                
+                total=np.sum(y)
+
+                dist_names = [
+            "norm"
+            ]
+                print(y)
+                print(x)
+                #h = plt.hist(y, bins=range(100))
+                for dist_name in dist_names:
+                    dist = getattr(scipy.stats, dist_name)
+                    params = dist.fit(FC[~np.isnan(FC)])
+                    pdf_fitted = dist.pdf(x, *params) #* total
+
+                    
+                    y=y - np.min(y)
+
+                    y=y / np.max(y)
+
+                    
+                    pdf_fitted=pdf_fitted - np.min(pdf_fitted)
+                    pdf_fitted=pdf_fitted / np.max(pdf_fitted)
+                    print(pdf_fitted)
+
+                    squared_error = mean_squared_error(pdf_fitted,y)
+                    print("------")
+                    print("SC_dist")
+
+                    print("dist: "+dist_name)
+                    print("squared error: "+str(squared_error))
+                    #plt.plot(pdf_fitted, label=dist_name)    
+                #plt.show()
+                    write_to_IDP_file(subj, "FC_"+dist_name+"_MSE", "tvb_IDP_FC_distribution", str(num_in_cat), "FC_"+dist_name+"_Mean_Squared_Error", "pearon correlation coefficient 2", "float", "Functional connectivity - mean squared error for "+dist_name+" distribution fit", str(squared_error))
+                    num_in_cat+=1
+
     except:
         print("ERROR: no fMRI folder in subject directory")
 
@@ -168,19 +211,19 @@ def SC_distribution(subj):
     print(SC_nan_lines)
 
     num_in_cat=1
-    write_to_IDP_file(subj, "SC_distribution_min", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_distribution_min", "pearson correlation coefficient", "float", "Structural connectivity minimum", str(SC_min))
+    write_to_IDP_file(subj, "SC_distribution_min", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_distribution_min", "pearson correlation coefficient (log 10)", "float", "Structural connectivity minimum", str(SC_min))
     num_in_cat+=1
-    write_to_IDP_file(subj, "SC_distribution_max", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_distribution_max", "pearson correlation coefficient", "float", "Structural connectivity maximum", str(SC_max))
+    write_to_IDP_file(subj, "SC_distribution_max", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_distribution_max", "pearson correlation coefficient (log 10)", "float", "Structural connectivity maximum", str(SC_max))
     num_in_cat+=1
-    write_to_IDP_file(subj, "SC_distribution_median", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_distribution_median", "pearson correlation coefficient", "float", "Structural connectivity median", str(SC_median))
+    write_to_IDP_file(subj, "SC_distribution_median", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_distribution_median", "pearson correlation coefficient (log 10)", "float", "Structural connectivity median", str(SC_median))
     num_in_cat+=1
-    write_to_IDP_file(subj, "SC_distribution_mean", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_distribution_mean", "pearson correlation coefficient", "float", "Structural connectivity mean", str(SC_mean))
+    write_to_IDP_file(subj, "SC_distribution_mean", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_distribution_mean", "pearson correlation coefficient (log 10)", "float", "Structural connectivity mean", str(SC_mean))
     num_in_cat+=1
-    write_to_IDP_file(subj, "SC_distribution_mean_to_max", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_distribution_mean_to_max", "pearson correlation coefficient", "float", "Structural connectivity distance from mean to max", str(SC_mean_to_max))
+    write_to_IDP_file(subj, "SC_distribution_mean_to_max", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_distribution_mean_to_max", "pearson correlation coefficient (log 10)", "float", "Structural connectivity distance from mean to max", str(SC_mean_to_max))
     num_in_cat+=1
-    write_to_IDP_file(subj, "SC_distribution_median_to_max", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_distribution_median_to_max", "pearson correlation coefficient", "float", "Structural connectivity distance from median to max", str(SC_median_to_max))
+    write_to_IDP_file(subj, "SC_distribution_median_to_max", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_distribution_median_to_max", "pearson correlation coefficient (log 10)", "float", "Structural connectivity distance from median to max", str(SC_median_to_max))
     num_in_cat+=1
-    write_to_IDP_file(subj, "SC_distribution_range", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_distribution_range", "pearson correlation coefficient", "float", "Structural connectivity range", str(SC_range))
+    write_to_IDP_file(subj, "SC_distribution_range", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_distribution_range", "pearson correlation coefficient (log 10)", "float", "Structural connectivity range", str(SC_range))
     num_in_cat+=1
     write_to_IDP_file(subj, "SC_distribution_proportion_neg", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_distribution_proportion_neg", "proportion out of 1", "float", "Structural connectivity proportion negative", str(SC_proportion_neg))
     num_in_cat+=1
@@ -190,123 +233,52 @@ def SC_distribution(subj):
     num_in_cat+=1
 
 
-#     SC = SC.flatten()
+    SC = SC.flatten()
 
-#     y, x = np.histogram(SC[~np.isnan(SC)], bins=100)
-#     for index, value in enumerate(x[0:-1]):
-#         x[index] = (value + x[index + 1]) / 2 
-#     x=x[0:-1]
+    y, x = np.histogram(SC[~np.isnan(SC)], bins=100)
+    for index, value in enumerate(x[0:-1]):
+        x[index] = (value + x[index + 1]) / 2 
+    x=x[0:-1]
     
-#     total=np.sum(y)
+    total=np.sum(y)
 
-#     dist_names = ["alpha"
-# ,"anglit"
-# ,"betaprime"
-# ,"bradford"
-# ,"burr"
-# ,"burr12"
-# ,"cauchy"
-# ,"chi"
-# ,"chi2"
-# ,"cosine"
-# ,"erlang"
-# ,"expon"
-# ,"exponnorm"
-# ,"exponpow"
-# ,"f"
-# ,"fatiguelife"
-# ,"fisk"
-# ,"foldnorm"
-# ,"genlogistic"
-# ,"gennorm"
-# ,"genpareto"
-# ,"genexpon"
-# ,"genextreme"
-# ,"gausshyper"
-# ,"gamma"
-# ,"gengamma"
-# ,"genhalflogistic"
-# ,"geninvgauss"
-# ,"gompertz"
-# ,"gumbel_r"
-# ,"gumbel_l"
-# ,"halfcauchy"
-# ,"halflogistic"
-# ,"halfnorm"
-# ,"halfgennorm"
-# ,"hypsecant"
-# ,"invgamma"
-# ,"invgauss"
-# ,"invweibull"
-# ,"johnsonsb"
-# ,"johnsonsu"
-# ,"kstwo"
-# ,"kstwobign"
-# ,"laplace"
-# ,"levy"
-# ,"levy_l"
-# ,"levy_stable"
-# ,"logistic"
-# ,"loggamma"
-# ,"loglaplace"
-# ,"lognorm"
-# ,"loguniform"
-# ,"lomax"
-# ,"maxwell"
-# ,"mielke"
-# ,"moyal"
-# ,"nakagami"
-# ,"ncx2"
-# ,"ncf"
-# ,"nct"
-# ,"norm"
-# ,"norminvgauss"
-# ,"pareto"
-# ,"pearson3"
-# ,"powerlaw"
-# ,"powerlognorm"
-# ,"powernorm"
-# ,"rdist"
-# ,"rayleigh"
-# ,"rice"
-# ,"recipinvgauss"
-# ,"semicircular"
-# ,"skewnorm"
-# ,"t"
-# ,"trapezoid"
-# ,"triang"
-# ,"truncexpon"
-# ,"truncnorm"
-# ,"tukeylambda"
-# ,"uniform"
-# ,"vonmises"
-# ,"vonmises_line"
-# ,"wald"
-# ,"weibull_min"
-# ,"weibull_max"
-# ,"wrapcauchy"
-# ]
-#     #h = plt.hist(y, bins=range(100))
-#     for dist_name in dist_names:
-#         dist = getattr(scipy.stats, dist_name)
-#         params = dist.fit(y)
-#         pdf_fitted = dist.pdf(x, *params) * total
+    dist_names = [
+"lognorm"
+]
+    print(y)
+    print(x)
+    #h = plt.hist(y, bins=range(100))
+    for dist_name in dist_names:
+        dist = getattr(scipy.stats, dist_name)
+        params = dist.fit(SC[~np.isnan(SC)])
+        pdf_fitted = dist.pdf(x, *params) #* total
 
-#         squared_error = mean_squared_error(pdf_fitted,y)
-#         print("------")
-#         print("SC_dist")
+        
+        y=y - np.min(y)
 
-#         print("dist: "+dist_name)
-#         print("squared error: "+str(squared_error))
-#         #plt.plot(pdf_fitted, label=dist_name)    
-#     #plt.show()
+        y=y / np.max(y)
+
+        
+        pdf_fitted=pdf_fitted - np.min(pdf_fitted)
+        pdf_fitted=pdf_fitted / np.max(pdf_fitted)
+        print(pdf_fitted)
+
+        squared_error = mean_squared_error(pdf_fitted,y)
+        print("------")
+        print("SC_dist")
+
+        print("dist: "+dist_name)
+        print("squared error: "+str(squared_error))
+        #plt.plot(pdf_fitted, label=dist_name)    
+    #plt.show()
+        write_to_IDP_file(subj, "SC_"+dist_name+"_MSE", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_"+dist_name+"_Mean_Squared_Error", "pearon correlation coefficient 2 (log 10)", "float", "Structural connectivity - mean squared error for "+dist_name+" distribution fit", str(squared_error))
+        num_in_cat+=1
 
 
-
-# def mean_squared_error(y,y_fit):
-#      squared_error = np.sum(np.square(np.subtract(y,y_fit)))
-#      mean_squared_error = squared_error/y.size
-#      return mean_squared_error
+def mean_squared_error(y,y_fit):
+     squared_error = np.sum(np.square(np.subtract(y,y_fit)))
+     mean_squared_error = squared_error/y.size
+     return mean_squared_error
 
 def MELODIC_SNR(subj,fix4melviewtxt):
 
