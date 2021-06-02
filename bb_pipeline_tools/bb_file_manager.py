@@ -718,7 +718,6 @@ def bb_file_manager(subject):
             "tfMRI",
         ],
         [["SWI*nii.gz"], manage_SWI],
-        # [["DIFF_*", "MB3_*", "*dwi*.nii.gz", "*DWI*.nii.gz"], manage_DWI],
         [["DIFF_*", "MB3_*", "*dwi*.*", "*DWI*.*"], manage_DWI],
         [["SWI*.*"], move_to, "SWI/unclassified/"],
         [["*.[^log]"], move_to, "unclassified/"],

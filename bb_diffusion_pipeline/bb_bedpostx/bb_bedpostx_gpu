@@ -40,7 +40,7 @@ if [ -d ${subjdir} ] ; then
 	#echo yes yes
         #${FSLDIR}/bin/xfibres --data=${subjdir}.bedpostX/data_0 --mask=${subjdir}.bedpostX/nodif_brain_mask -b ${subjdir}.bedpostX/bvals -r ${subjdir}.bedpostX/bvecs --forcedir --logdir=${subjdir}.bedpostX/diff_parts/data_part_0000 $opts ${subjdir} 0 1 $nvox
         #cd ${subjdir}/bedpostx
-        ${FSLDIR}/bin/bedpostx $subjdir/bedpostx --forcedir --nf=3 --bi=3000 --cnonlinear --model=1
+        ${FSLDIR}/bin/bedpostx $subjdir/bedpostx --forcedir --nf=3 --bi=3000 --cnonlinear
 	#cd ../../
 	file=${subjdir}/bedpostx.bedpostX/merged_ph1samples.nii.gz
 	while [ ! -f "$file" ]
