@@ -11,17 +11,12 @@ Dependencies
 ------------
 
 The only external dependencies required for this pipeline are:
-* FSL (6.0.4)
-* AFNI (18.0.22)
-* Freesurfer (5.3.0)
-* Anaconda/Miniconda (latest release)
+* FSL
+* AFNI
+* Freesurfer
+* Anaconda/Miniconda
 * git (>=2)
 * gfortran (installation only)
-* OGS/GE (Open Grid Scheduler/Grid Engine version 2011.11)
-
-Note: these software versions are what we used to develop the pipeline. Newer versions may work but we cannot guarantee that.
-
-Note: these software versions are what we used to develop the pipeline. Newer versions may work but we cannot guarantee that.
 
 
 Installation

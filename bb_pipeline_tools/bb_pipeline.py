@@ -49,12 +49,17 @@ class Usage(Exception):
         self.msg = msg
 
 
-def main():
+def main(cli_args=None):
 
-    parser = MyParser(description="BioBank Pipeline Manager")
-    parser.add_argument("subjectFolder", help="Subject Folder")
+    if cli_args == None:
+        parser = MyParser(description="BioBank Pipeline Manager")
+        parser.add_argument("subjectFolder", help="Subject Folder")
 
-    argsa = parser.parse_args()
+        argsa = parser.parse_args()
+    else:
+        parser = MyParser(description="BioBank Pipeline Manager")
+        parser.add_argument("subjectFolder", help="Subject Folder")
+        argsa = parser.parse_args(cli_args)
 
     subject = argsa.subjectFolder
     subject = subject.strip()
@@ -78,9 +83,7 @@ def main():
         (("AP" in fileConfig) and (fileConfig["AP"] != ""))
         and (("PA" in fileConfig) and (fileConfig["PA"] != ""))
     ):
-        logger.error(
-            "There is no proper DWI data. Thus, the B0 file cannot be generated in order to run topup"
-        )
+        logger.warn("There is no proper AP/PA data. Thus, TOPUP will not be run")
         runTopup = False
         print("NO TOPUP")
     else:
@@ -93,6 +96,7 @@ def main():
     jobSTEP1 = "-1"
     jobSTEP2 = "-1"
     jobSTEP3 = "-1"
+    jobSTEP4 = "-1"
 
     jobSTEP1 = bb_pipeline_struct(subject, runTopup, fileConfig)
 
@@ -110,20 +114,23 @@ def main():
 
     # if runTopup:
     jobSTEP2 = bb_pipeline_func(subject, jobSTEP1, fileConfig)
-    jobSTEP3 = bb_pipeline_diff(subject, jobSTEP1, fileConfig)
+    jobSTEP3 = bb_pipeline_diff(subject, jobSTEP2, fileConfig)
 
     jobSTEP4 = bb_IDP(
         subject, str(jobSTEP1) + "," + str(jobSTEP2) + "," + str(jobSTEP3), fileConfig
     )
 
     jobSTEP5 = tvb_bb_QC(
-        subject, str(jobSTEP1) + "," + str(jobSTEP2) + "," + str(jobSTEP3)+ "," + str(jobSTEP4), fileConfig
+        subject,
+        str(jobSTEP1) + "," + str(jobSTEP2) + "," + str(jobSTEP3) + "," + str(jobSTEP4),
+        fileConfig,
     )
 
 
     
 
     LT.finishLogging(logger)
+    return jobSTEP5
 
 
 if __name__ == "__main__":

@@ -37,6 +37,7 @@ sys.path.insert(1, os.path.dirname(__file__) + "/..")
 # print("CWD: " + os.getcwd() + "/..")
 # print("FILE: " + os.path.dirname(__file__))
 
+import bb_pipeline_tools.bb_logging_tool as LT
 import bb_general_tools.bb_path as bb_path
 from subprocess import check_output
 
@@ -548,7 +549,9 @@ def manage_DWI(listFiles):
 
             if os.path.isfile(fileName):
                 fpath, fname = os.path.split(fileName)
-                move_file(fileName, "unclassified/" + fname)
+                # quick way to prevent dwi files from being copied into unclassified
+                if not ("dwi" in fileName and "dwi" in fileConfig):
+                    move_file(fileName, "unclassified/" + fname)
 
 
 def manage_SWI(listFiles):
@@ -697,6 +700,8 @@ def bb_file_manager(subject):
                 "*TASK*REST*.nii.gz",
                 "*task*rest*.nii.gz",
                 "*epi_rest*.nii.gz",
+                "*rsfMRI*.nii.gz",
+                "*fcMRI*.nii.gz",
             ],
             manage_fMRI,
             "rfMRI",

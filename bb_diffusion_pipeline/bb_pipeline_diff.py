@@ -55,7 +55,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     jobEDDY = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 75  -N "bb_eddy_'
-        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD}  -N "bb_eddy_'
+        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -R 16000 -N "bb_eddy_'
         + subname
         + '" -j '
         + jobPREPARE
@@ -128,7 +128,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
         '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD}   -N "bb_pre_bedpostx_gpu_'
         + subname
         + '" -j '
-        + jobDTIFIT
+        + jobTBSS
         + "  -l "
         + logDir
         + " $BB_BIN_DIR/bb_diffusion_pipeline/bb_bedpostx/bb_pre_bedpostx_gpu "
@@ -138,7 +138,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     jobBEDPOSTX = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 190 -N "bb_bedpostx_gpu_'
-        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -N "bb_bedpostx_gpu_'
+        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -R 16000 -N "bb_bedpostx_gpu_'
         + subname
         + '" -j '
         + jobPREBEDPOSTX
@@ -205,17 +205,6 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
         + logDir
         + " $BB_BIN_DIR/bb_diffusion_pipeline/bb_probtrackx2/bb_post_probtrackx2 "
         + subject,
-    )
-    jobEDDYQUAD = LT.runCommand(
-        logger,
-        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "tvb_eddyQUAD_'
-        + subname
-        + '" -j '
-        + jobPROBTRACKX
-        + " -l "
-        + logDir
-        + " $BB_BIN_DIR/tvb_QC/tvb_eddyQUAD "
-        + baseDir,
     )
     print("SUBMITTED DIFFUSION")
     return jobPOSTPROBTRACKX
