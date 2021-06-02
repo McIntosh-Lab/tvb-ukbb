@@ -22,17 +22,13 @@
 # limitations under the License.
 #
 
-<<<<<<< HEAD
-import bb_pipeline_tools.bb_logging_tool as LT  
-import os.path
-=======
+
 import os.path
 import sys
 import json
 
 sys.path.insert(1, os.path.dirname(__file__) + "/..")
 import bb_pipeline_tools.bb_logging_tool as LT
->>>>>>> be17f25... cherry picking commit eedd4a8
 
 
 def tvb_bb_QC(subject, jobHold, fileConfiguration):
@@ -57,8 +53,7 @@ def tvb_bb_QC(subject, jobHold, fileConfiguration):
     )
     print("SUBMITTED QC")
     return jobQC
-<<<<<<< HEAD
-=======
+
 
 
 if __name__ == "__main__":
@@ -80,4 +75,3 @@ if __name__ == "__main__":
         sys.exit(1)
     # call pipeline
     tvb_bb_QC(subject, "-1", fileConfig)
->>>>>>> be17f25... cherry picking commit eedd4a8
