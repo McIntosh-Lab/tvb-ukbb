@@ -55,7 +55,8 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     jobEDDY = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 75  -N "bb_eddy_'
-        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD}  -N "bb_eddy_'
+
+        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -R 16000 -N "bb_eddy_'
         + subname
         + '" -j '
         + jobPREPARE
@@ -128,7 +129,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
         '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD}   -N "bb_pre_bedpostx_gpu_'
         + subname
         + '" -j '
-        + jobDTIFIT
+        + jobTBSS
         + "  -l "
         + logDir
         + " $BB_BIN_DIR/bb_diffusion_pipeline/bb_bedpostx/bb_pre_bedpostx_gpu "
@@ -138,7 +139,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     jobBEDPOSTX = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 190 -N "bb_bedpostx_gpu_'
-        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -N "bb_bedpostx_gpu_'
+        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -R 16000 -N "bb_bedpostx_gpu_'
         + subname
         + '" -j '
         + jobPREBEDPOSTX
@@ -186,29 +187,31 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     )
     jobPROBTRACKX = LT.runCommand(
         logger,
-        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MAX_MEM} -N "bb_probtrackx_'
+        'qsub -V -cwd -terse -q ${QUEUE_MORE_MEM} -N "bb_probtrackx_'
         + subname
-        + '" -j '
+        + '" -hold_jid '
         + jobPREPROBTRACKX
-        + " -l "
-        + logDir
-        + " $BB_BIN_DIR/bb_diffusion_pipeline/bb_probtrackx2/bb_probtrackx2 "
+        + " -l h_vmem=16G -b y -t 1-10 '"
         + baseDir
-        + "/dMRI",
+        + "/dMRI/probtrackx/probtrackx_commands_$SGE_TASK_ID.txt'",
     )
-    jobEDDYQUAD = LT.runCommand(
+    jobPROBTRACKX = jobPROBTRACKX.split(".")[0]
+    jobPOSTPROBTRACKX = LT.runCommand(
         logger,
-        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "tvb_eddyQUAD_'
+        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_post_probtrackx_'
         + subname
         + '" -j '
         + jobPROBTRACKX
         + " -l "
         + logDir
-        + " $BB_BIN_DIR/tvb_QC/tvb_eddyQUAD "
-        + baseDir,
+        + " $BB_BIN_DIR/bb_diffusion_pipeline/bb_probtrackx2/bb_post_probtrackx2 "
+        + subject,
     )
     print("SUBMITTED DIFFUSION")
-    return jobPROBTRACKX
+
+    return jobPOSTPROBTRACKX
+
+
 
 
 if __name__ == "__main__":

@@ -37,6 +37,7 @@ sys.path.insert(1, os.path.dirname(__file__) + "/..")
 # print("CWD: " + os.getcwd() + "/..")
 # print("FILE: " + os.path.dirname(__file__))
 
+import bb_pipeline_tools.bb_logging_tool as LT
 import bb_general_tools.bb_path as bb_path
 from subprocess import check_output
 
@@ -548,7 +549,9 @@ def manage_DWI(listFiles):
 
             if os.path.isfile(fileName):
                 fpath, fname = os.path.split(fileName)
-                move_file(fileName, "unclassified/" + fname)
+                # quick way to prevent dwi files from being copied into unclassified
+                if not ("dwi" in fileName and "dwi" in fileConfig):
+                    move_file(fileName, "unclassified/" + fname)
 
 
 def manage_SWI(listFiles):
@@ -688,7 +691,7 @@ def bb_file_manager(subject):
     patterns_actions = [
         [["*.[^log]"], capitalize_and_clean],
         [["dicom", "DICOM"], move_to, "delete/"],
-        [["*T1*.nii.gz"], manage_struct, "T1"],
+        [["*T1*.nii.gz", "*MPRAGE*.nii.gz", "*IR-FSPGR*.nii.gz"], manage_struct, "T1"],
         [["T2*FLAIR*.nii.gz", "*FLAIR*.nii.gz"], manage_struct, "T2"],
         [
             [
@@ -697,6 +700,8 @@ def bb_file_manager(subject):
                 "*TASK*REST*.nii.gz",
                 "*task*rest*.nii.gz",
                 "*epi_rest*.nii.gz",
+                "*rsfMRI*.nii.gz",
+                "*fcMRI*.nii.gz",
             ],
             manage_fMRI,
             "rfMRI",
@@ -713,7 +718,6 @@ def bb_file_manager(subject):
             "tfMRI",
         ],
         [["SWI*nii.gz"], manage_SWI],
-        # [["DIFF_*", "MB3_*", "*dwi*.nii.gz", "*DWI*.nii.gz"], manage_DWI],
         [["DIFF_*", "MB3_*", "*dwi*.*", "*DWI*.*"], manage_DWI],
         [["SWI*.*"], move_to, "SWI/unclassified/"],
         [["*.[^log]"], move_to, "unclassified/"],

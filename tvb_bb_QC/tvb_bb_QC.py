@@ -22,6 +22,7 @@
 # limitations under the License.
 #
 
+
 import os.path
 import sys
 import json
@@ -52,6 +53,7 @@ def tvb_bb_QC(subject, jobHold, fileConfiguration):
     )
     print("SUBMITTED QC")
     return jobQC
+
 
 
 if __name__ == "__main__":
