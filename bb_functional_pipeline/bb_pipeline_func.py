@@ -100,7 +100,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
         jobFIX = LT.runCommand(
             logger,
             #'${FSLDIR}/bin/fsl_sub -T 175  -N "bb_fix_'
-            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -R 16000 -N "bb_fix_'
+            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MAX_MEM}  -N "bb_fix_'
             + subname
             + '"  -l '
             + logDir
