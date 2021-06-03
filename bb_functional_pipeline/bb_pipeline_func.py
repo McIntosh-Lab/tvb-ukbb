@@ -127,8 +127,6 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
             #if ("rfMRI" in fileConfiguration) and (fileConfiguration["rfMRI"] != ""):
 
             
-
-
             jobFEAT_R = LT.runCommand(
                 logger,
                 #'${FSLDIR}/bin/fsl_sub -T 1200 -N "bb_feat_rfMRI_ns_'
@@ -147,7 +145,7 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
             jobFIX = LT.runCommand(
                 logger,
                 #'${FSLDIR}/bin/fsl_sub -T 175  -N "bb_fix_'
-                '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM}  -N "bb_fix_'
+                '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MAX_MEM}  -N "bb_fix_'
                 + f"{i}_{subname}"
                 + '"  -l '
                 + logDir
