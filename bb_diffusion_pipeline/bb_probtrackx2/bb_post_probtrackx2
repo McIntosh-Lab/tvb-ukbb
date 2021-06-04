@@ -45,7 +45,7 @@ if [[ "$subj" =~ '/'$ ]]; then
 fi
 subj=`basename $subj`
 
-cd $subjdir && zip -r ./$(subj)_tvb_inputs.zip ./tvb_inputs && cd -
+cd $subjdir && zip -r ./${subj}_tvb_inputs.zip ./tvb_inputs && cd -
 
 rm -rf $subjdir/tvb_inputs
 
