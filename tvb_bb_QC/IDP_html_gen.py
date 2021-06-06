@@ -210,81 +210,84 @@ def IDP_html_gen(subj, IDP_list_path, IDPoi_list_path):
 
     message = (
         """
-	<!DOCTYPE html>
-	<html lang="en">
-	<title>IDP IMAGE REPORT</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="css/w3.css">
-	<script src="./sidebartoggles.js" type="text/javascript" charset="utf-8"></script>
-	<style>
-	  th, td {
-	  padding: 10px;
-	}
-	</style>
-	<body class="w3-main" style="background-color:black; " onload="updateTitle();updateImage();updateTitle();">
-	<!--document.getElementById('image_link').innerHTML = document.getElementById('ex_a').src;-->
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <title>IDP IMAGE REPORT</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/w3.css">
+
+    <script src="./togglesIDP.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./sidebartoggles.js" type="text/javascript" charset="utf-8"></script>
+    <style>
+      th, td {
+      padding: 5px;
+    }
+    </style>
+    <body class="w3-main" style="background-color:black; " onload="updateTitle();updateImage();updateTitle();">
+    <!--document.getElementById('image_link').innerHTML = document.getElementById('ex_a').src;-->
 
 
-	<!-- Header -->
-	<header class="w3-display-container  w3-center" style="max-height:1000px; ">
-	  <img class="w3-image" src="images/1.jpg" alt="Me" width=100% style="max-height:1000px;object-fit: cover;">
-	  
-		<div class="w3-display-middle w3-padding-large w3-border w3-wide w3-text-light-grey w3-center" style="background-color:rgba(0, 0, 0, 0.75);">
+    <!-- Header -->
+    <header class="w3-display-container  w3-center" style="max-height:1000px; ">
+      <img class="w3-image" src="images/1.jpg" alt="Me" width=100% style="max-height:1000px;object-fit: cover;">
+      
+        <div class="w3-display-middle w3-padding-large w3-border w3-wide w3-text-light-grey w3-center" style="background-color:rgba(0, 0, 0, 0.75);">
 
-		  <h1 class="w3-hide-medium w3-hide-small w3-xxxlarge">IDP IMAGE REPORT</h1>
-		  <h5 class="w3-hide-large" style="white-space:nowrap">IDP IMAGE REPORT</h5>
-		  
-		  <h3 class="w3-hide-medium w3-hide-small">sub-CC520055</h3>
-		  
-		</div>
-	 
+          <h1 class="w3-hide-medium w3-hide-small w3-xxxlarge">IDP IMAGE REPORT</h1>
+          <h5 class="w3-hide-large" style="white-space:nowrap">IDP IMAGE REPORT</h5>
+          
+          <h3 class="w3-hide-medium w3-hide-small">sub-CC520055</h3>
+          
+        </div>
+     
 
-	  <!-- Sidebar -->
+      <!-- Sidebar -->
 
-	  <div id="mySidebar" class="sidebar" style="width: 0; margin-left: 0; font-size: 12px">
-		<a href="file:notes/" class="w3-center">open notes.txt file in local system to make changes</a>
-		<br>
-		<iframe src="notes/notes.txt" style="background: #FFFFFF; height: 90%"></iframe>
+      <div id="mySidebar" class="sidebar" style="width: 0; margin-left: 0; font-size: 12px">
+        <a href="file:notes/" class="w3-center">open notes.txt file in local system to make changes</a>
+        <br>
+        <iframe src="notes/notes.txt" style="background: #FFFFFF; height: 90%"></iframe>
 
-	  </div>
+      </div>
 
-	  <!-- Sidebar button -->
-	   <div id="main" align="left" >
-		<button id="togglebutton" class="openbtn sticky" onclick="toggNav()">NOTES</button>  
-	  </div>
-
-
+      <!-- Sidebar button -->
+       <div id="main" align="left" >
+        <button id="togglebutton" class="openbtn sticky" onclick="toggNav()">NOTES</button>  
+      </div>
 
 
-	  <!-- Navbar (placed at the bottom of the header image) -->
-	  <div class="w3-bar w3-light-grey w3-round w3-display-bottommiddle w3-hide-small w3-hide-medium" style="bottom:65px">
-		<a href="report.html" class="w3-bar-item w3-button">Home</a>
-		<a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
-		<a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
-		<a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
-		<a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
-		<a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
-		<a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
-	  </div>
-	</header>
-
-	<!-- Navbar on small screens -->
-	<div class="w3-center w3-black w3-padding-16 w3-hide-large ">
-	<div class="w3-bar w3-light-grey w3-round ">
-	  <a href="report.html" class="w3-bar-item w3-button">Home</a>
-		<a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
-		<a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
-		<a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
-		<a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
-		<a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
-		<a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
-	</div>
-	</div>
 
 
-	<!-- Page content -->
-	<div class="w3-content w3-padding-large w3-margin-top" id="portfolio" style="color:white; text-align: center; height: 925px">
+      <!-- Navbar (placed at the bottom of the header image) -->
+      <div class="w3-bar w3-light-grey w3-round w3-display-bottommiddle w3-hide-small w3-hide-medium" style="bottom:65px">
+        <a href="report.html" class="w3-bar-item w3-button">Home</a>
+        <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
+        <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
+        <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
+        <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
+        <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+        <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
+      </div>
+    </header>
+
+    <!-- Navbar on small screens -->
+    <div class="w3-center w3-black w3-padding-16 w3-hide-large ">
+    <div class="w3-bar w3-light-grey w3-round ">
+      <a href="report.html" class="w3-bar-item w3-button">Home</a>
+        <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
+        <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
+        <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
+        <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
+        <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+        <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
+    </div>
+    </div>
+
+
+    <!-- Page content -->
+    <div class="w3-content w3-padding-large w3-margin-top" id="portfolio" style="color:white; text-align: center; >
 
 
 	  <!-- Images (Portfolio) -->
@@ -292,31 +295,37 @@ def IDP_html_gen(subj, IDP_list_path, IDPoi_list_path):
 	<br><br><a name="fMRI_REPORTS">______</a><br><br>
 	  <h1> IDP REPORTS </h1>
 	  ______<br><br><br>
-	<a href="../../IDP_files/" class="w3-bar-item w3-button">High-Priority IDPs: """
-        + str(IDP_dir)
-        + "priority_output.txt"
-        + """</a>
-	<br>
-	<a href="../../IDP_files/" class="w3-bar-item w3-button">Lower-priority IDPs: """
-        + str(IDP_dir)
-        + "non_priority_output.txt"
-        + """</a>
-	<br>
-    <a href="../../IDP_files/" class="w3-bar-item w3-button">New TVB IDPs: """
-        + str(IDP_dir)
-        + "tvb_new_IDP.txt"
-        + """</a>
-    <br><br>
+	
+        <label for="IDPs" style="white-space:nowrap;">IDPs <i>(q/e)</i>:
+  <select name="IDPs" id="IDPs" onchange="updateTitle();updateImage();" onkeydown="IgnoreAlpha(event);">
+    
 
-	  <table style="  margin-left: auto;
-	  margin-right: auto; text-align: left" >
-		<tr>
-		  <th>IDP Name (short)</th>
-		  <th>Category</th>
-		  <th>Value</th>
-		  <th>Unit</th>
-		</tr>
-	  
+
+<option value="High-priority IDPs" id="High-priority IDPs">High-priority IDPs</option>
+
+
+<option value="Low-priority IDPs" id="Low-priority IDPs">Low-priority IDPs</option>
+
+<option value="New TVB IDPs" id="New TVB IDPs">New TVB IDPs</option>
+<option value="All IDPs" id="All IDPs">All IDPs</option>
+
+
+  </select></label>
+  &nbsp&nbsp&nbsp&nbsp
+
+<br><br>
+
+    
+  <div style="font-size: 10px">
+      <table style="  margin-left: auto;
+      margin-right: auto; text-align: left;">
+        <tr>
+          <th>IDP Name (short)</th>
+          <th>Category</th>
+          <th>Value</th>
+          <th>Unit</th>
+        </tr>
+
 	"""
     )
 
@@ -324,11 +333,12 @@ def IDP_html_gen(subj, IDP_list_path, IDPoi_list_path):
 
 
     #write priority df
+    #background-color:darkred or darkgreen depending on value
     for index, row in priority_output.iterrows():
 
         message = (
             """
-			<tr>
+			<tr style="display: none;" name="High-priority IDPs">
 			  <td>"""
             + str(row["short"])
             + """</td>
@@ -353,7 +363,7 @@ def IDP_html_gen(subj, IDP_list_path, IDPoi_list_path):
 
         message = (
             """
-			<tr>
+			<tr style="display: none" name="Low-priority IDPs">
 			  <td>"""
             + str(row["short"])
             + """</td>
@@ -380,7 +390,7 @@ def IDP_html_gen(subj, IDP_list_path, IDPoi_list_path):
 
         message = (
             """
-            <tr>
+            <tr style="display: none" name="New TVB IDPs">
               <td>"""
             + str(row["short"])
             + """</td>
@@ -402,8 +412,32 @@ def IDP_html_gen(subj, IDP_list_path, IDPoi_list_path):
 
 
 
-    message = """ </table>
+    message = (""" </table>
 
+
+    <br>
+
+    <br>
+
+    <br>
+    <a href="../../IDP_files/" class="w3-bar-item w3-button">High-Priority IDPs: """
+        + str(IDP_dir)
+        + "priority_output.txt"
+        + """</a>
+    <br>
+    <a href="../../IDP_files/" class="w3-bar-item w3-button">Lower-priority IDPs: """
+        + str(IDP_dir)
+        + "non_priority_output.txt"
+        + """</a>
+    <br>
+    <a href="../../IDP_files/" class="w3-bar-item w3-button">New TVB IDPs: """
+        + str(IDP_dir)
+        + "tvb_new_IDP.txt"
+        + """</a>
+
+        <br>
+        <br>
+        </div>
 
 	<!-- End page content -->
 	</div>
@@ -419,6 +453,7 @@ def IDP_html_gen(subj, IDP_list_path, IDPoi_list_path):
 	</html>
 
 	 """
+     )
     f.write(message)
 
     f.close()

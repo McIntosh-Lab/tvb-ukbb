@@ -18,6 +18,7 @@ cp $BB_BIN_DIR/tvb_bb_QC/resources/sidebartoggles.js $subjdir$html_output_dir
 cp $BB_BIN_DIR/tvb_bb_QC/resources/toggles.js $subjdir$html_output_dir
 cp $BB_BIN_DIR/tvb_bb_QC/resources/togglesSCFC.js $subjdir$html_output_dir
 cp $BB_BIN_DIR/tvb_bb_QC/resources/togglesMELODIC.js $subjdir$html_output_dir
+cp $BB_BIN_DIR/tvb_bb_QC/resources/togglesIDP.js $subjdir$html_output_dir
 cp $BB_BIN_DIR/tvb_bb_QC/resources/zoomer.js $subjdir$html_output_dir
 cp $BB_BIN_DIR/tvb_bb_QC/resources/notes.txt $subjdir$html_output_dir"/notes"
 cp $BB_BIN_DIR/tvb_bb_QC/resources/1.jpg $subjdir$html_output_dir"/images"
