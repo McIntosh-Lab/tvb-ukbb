@@ -118,6 +118,8 @@ def IDP_html_gen(subj, IDP_list_path, IDPoi_list_path):
             line = line.strip()
             IDP_list.append(line)
     i = 0
+    #remove header
+    IDP_list = IDP_list[1:]
     while i < len(IDP_list):
         IDP_list[i] = IDP_list[i].replace('"', "")
         IDP_list[i] = " ".join(IDP_list[i].split())
@@ -172,6 +174,7 @@ def IDP_html_gen(subj, IDP_list_path, IDPoi_list_path):
 
     #filling details about the IDPs for both priority and non priority IDPoi dfs
     #by merging the dfs with the IDP list dataframe
+    #TODO handle IDPoi that dont exist/typoed
     priority_df = priority_df[["short"]]
     priority_df = priority_df.merge(IDP, how="inner", left_on="short", right_on="short")
 
@@ -185,16 +188,27 @@ def IDP_html_gen(subj, IDP_list_path, IDPoi_list_path):
     non_priority_output = generate_full_IDPoi_data(non_priority_df, IDP_dir)
 
 
+    #retain 
+    priority_output=priority_output[["num","short","category","num_in_cat","long","unit","dtype","description","value"]]
+        
+    non_priority_output=non_priority_output[["num","short","category","num_in_cat","long","unit","dtype","description","value"]]
+        
+
+
+    #scientific notation for values
+    priority_output['value'] = priority_output['value'].apply(lambda x: "{:e}".format(float(x)))
+    non_priority_output['value'] = non_priority_output['value'].apply(lambda x: "{:e}".format(float(x)))
+
     #save IDPois to txt files for future reference
     priority_output.to_csv(
-        r"" + IDP_dir + "priority_output.txt",
+        r"" + IDP_dir + "priority_IDPs.txt",
         header=priority_output.columns.values,
         index=None,
         sep="\t",
         mode="w",
     )
     non_priority_output.to_csv(
-        r"" + IDP_dir + "non_priority_output.txt",
+        r"" + IDP_dir + "non_priority_IDPs.txt",
         header=non_priority_output.columns.values,
         index=None,
         sep="\t",
@@ -202,7 +216,21 @@ def IDP_html_gen(subj, IDP_list_path, IDPoi_list_path):
     )
 
 
-    new_IDP_output = pd.read_csv(r"" + IDP_dir + "tvb_new_IDP.txt", delimiter = "\t")
+    new_IDP_output = pd.read_csv(r"" + IDP_dir + "tvb_new_IDPs.txt", delimiter = "\t")
+    new_IDP_output=new_IDP_output[["num","short","category","num_in_cat","long","unit","dtype","description","value"]]
+
+    #prior, non prior, new tvb IDP compiled output
+    last_IDP_num=int(IDP['num'].iloc[-1])
+    new_IDP_output['num']  += last_IDP_num
+    compiled_IDPs = pd.concat([priority_output,new_IDP_output])
+    compiled_IDPs = pd.concat([compiled_IDPs,non_priority_output])
+    compiled_IDPs.to_csv(
+        r"" + IDP_dir + "significant_IDPs.txt",
+        header=compiled_IDPs.columns.values,
+        index=None,
+        sep="\t",
+        mode="w",
+    )
 
 
     #write IDP.html with IDP information
@@ -302,11 +330,11 @@ def IDP_html_gen(subj, IDP_list_path, IDPoi_list_path):
 
 
 <option value="High-priority IDPs" id="High-priority IDPs">High-priority IDPs</option>
+<option value="New TVB IDPs" id="New TVB IDPs">New TVB IDPs</option>
 
 
 <option value="Low-priority IDPs" id="Low-priority IDPs">Low-priority IDPs</option>
 
-<option value="New TVB IDPs" id="New TVB IDPs">New TVB IDPs</option>
 <option value="All IDPs" id="All IDPs">All IDPs</option>
 
 
@@ -358,32 +386,6 @@ def IDP_html_gen(subj, IDP_list_path, IDPoi_list_path):
         f.write(message)
 
 
-    #write non-priority df in the same table
-    for index, row in non_priority_output.iterrows():
-
-        message = (
-            """
-			<tr style="display: none" name="Low-priority IDPs">
-			  <td>"""
-            + str(row["short"])
-            + """</td>
-			  <td>"""
-            + str(row["category"])
-            + """</td>
-			  <td>"""
-            + str(row["value"])
-            + """</td>
-			  <td>"""
-            + str(row["unit"])
-            + """</td>
-			</tr>
-
-			"""
-        )
-        f.write(message)
-
-
-
 
     #write new df in the same table
     for index, row in new_IDP_output.iterrows():
@@ -412,6 +414,36 @@ def IDP_html_gen(subj, IDP_list_path, IDPoi_list_path):
 
 
 
+    #write non-priority df in the same table
+    for index, row in non_priority_output.iterrows():
+
+        message = (
+            """
+			<tr style="display: none" name="Low-priority IDPs">
+			  <td>"""
+            + str(row["short"])
+            + """</td>
+			  <td>"""
+            + str(row["category"])
+            + """</td>
+			  <td>"""
+            + str(row["value"])
+            + """</td>
+			  <td>"""
+            + str(row["unit"])
+            + """</td>
+			</tr>
+
+			"""
+        )
+        f.write(message)
+
+
+
+
+
+
+
     message = (""" </table>
 
 
@@ -422,17 +454,23 @@ def IDP_html_gen(subj, IDP_list_path, IDPoi_list_path):
     <br>
     <a href="../../IDP_files/" class="w3-bar-item w3-button">High-Priority IDPs: """
         + str(IDP_dir)
-        + "priority_output.txt"
-        + """</a>
-    <br>
-    <a href="../../IDP_files/" class="w3-bar-item w3-button">Lower-priority IDPs: """
-        + str(IDP_dir)
-        + "non_priority_output.txt"
+        + "priority_IDPs.txt"
         + """</a>
     <br>
     <a href="../../IDP_files/" class="w3-bar-item w3-button">New TVB IDPs: """
         + str(IDP_dir)
-        + "tvb_new_IDP.txt"
+        + "tvb_new_IDPs.txt"
+        + """</a>
+    <br>
+    <a href="../../IDP_files/" class="w3-bar-item w3-button">Lower-priority IDPs: """
+        + str(IDP_dir)
+        + "non_priority_IDPs.txt"
+        + """</a>
+    <br>
+
+    <a href="../../IDP_files/" class="w3-bar-item w3-button">Combination of the above IDPs: """
+        + str(IDP_dir)
+        + "significant_IDPs.txt"
         + """</a>
 
         <br>
@@ -477,6 +515,7 @@ if __name__ == "__main__":
 
     IDP_list_path : 
         Full path to IDP list (file containing IDP information).
+        ukbb_IDP_list.txt
         IDP list is a tab delimited file with columns:  "num",
                                                         "short",
                                                         "category",

@@ -529,7 +529,7 @@ def write_to_IDP_file(subj,short,category,num_in_cat,long_var,unit,dtype,descrip
 
     with open(file, 'a') as fp:
         fp.write("\n")
-        line = '\t'.join([short,str(IDP_num_counter),category,num_in_cat,long_var,unit,dtype,description,value])
+        line = '\t'.join([str(IDP_num_counter),short,category,num_in_cat,long_var,unit,dtype,description,"{:e}".format(float(value))])
         fp.write(line)
 
     IDP_num_counter += 1
@@ -566,7 +566,7 @@ def new_IDP_gen(subj,LUT_txt):      #,fix4melviewtxt
     # IDP_homotopic_file = os.path.join(subj + "/IDP_files/", "tvb_IDP_homotopic.txt")
     # new_IDP_list_file = os.path.join(subj + "/IDP_files/", "tvb_new_IDPs.txt")
 
-    new_IDP_file = os.path.join(subj + "/IDP_files/", "tvb_new_IDP.txt")
+    new_IDP_file = os.path.join(subj + "/IDP_files/", "tvb_new_IDPs.txt")
 
 
     # IDP_output_files = [IDP_FC_file,IDP_SC_file,IDP_MELODIC_file,IDP_MCFLIRT_file,IDP_homotopic_file]
