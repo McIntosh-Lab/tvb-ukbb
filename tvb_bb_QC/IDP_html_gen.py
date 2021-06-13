@@ -194,7 +194,7 @@ def IDP_html_gen(subj):
             + str(row["category"])
             + """</td>
 			  <td>"""
-            + str(row["value"])
+            + str("{:e}".format(float(row["value"])))
             + """</td>
 			  <td>"""
             + str(row["unit"])
@@ -204,7 +204,6 @@ def IDP_html_gen(subj):
 			"""
         )
         f.write(message)
-
 
 
     #write new df in the same table
@@ -266,7 +265,7 @@ def IDP_html_gen(subj):
             + str(row["category"])
             + """</td>
 			  <td>"""
-            + str(row["value"])
+            + str("{:e}".format(float(row["value"])))
             + """</td>
 			  <td>"""
             + str(row["unit"])
