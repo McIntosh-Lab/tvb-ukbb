@@ -525,13 +525,17 @@ def homotopic(subj,LUT_txt):
 def write_to_IDP_file(subj,short,category,num_in_cat,long_var,unit,dtype,description,value):
     
     global IDP_num_counter
-    file = os.path.join(subj + "/IDP_files/", "tvb_new_IDP.txt")
+    file = os.path.join(subj + "/IDP_files/", "tvb_new_IDPs.txt")
+
 
     with open(file, 'a') as fp:
         fp.write("\n")
-        line = '\t'.join([str(IDP_num_counter),short,category,num_in_cat,long_var,unit,dtype,description,"{:e}".format(float(value))])
-        fp.write(line)
-
+        try:
+            line = '\t'.join([str(IDP_num_counter),short,category,num_in_cat,long_var,unit,dtype,description,"{:e}".format(float(value))])
+            fp.write(line)
+        except:
+            line = '\t'.join([str(IDP_num_counter),short,category,num_in_cat,long_var,unit,dtype,description,value])
+            fp.write(line)
     IDP_num_counter += 1
 
 
@@ -576,7 +580,7 @@ def new_IDP_gen(subj,LUT_txt):      #,fix4melviewtxt
     #         pass
 
     with open(new_IDP_file, 'w') as fp:
-        line = '\t'.join(["short","num","category","num_in_cat","long","unit","dtype","description","value"])
+        line = '\t'.join(["num","short","category","num_in_cat","long","unit","dtype","description","value"])
 
         fp.write(line)
 
