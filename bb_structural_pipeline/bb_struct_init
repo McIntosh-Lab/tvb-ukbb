@@ -106,8 +106,8 @@ else
 
     cp T2_FLAIR_orig.nii.gz T2_FLAIR_orig_ud.nii.gz
 
-    #Take T2 to T1 and also the brain mask
-    ${FSLDIR}/bin/flirt -in T2_FLAIR_orig_ud -ref ../T1/T1_orig_ud -out T2_FLAIR_tmp -omat T2_FLAIR_tmp.mat -dof 6
+    #Take T2 to T1 and also the brain mask; T1 is already reoriented to standard so increase search space for T2 registration
+    ${FSLDIR}/bin/flirt -in T2_FLAIR_orig_ud -ref ../T1/T1_orig_ud -out T2_FLAIR_tmp -omat T2_FLAIR_tmp.mat -searchrx -180 180 -searchry -180 180 -searchrz -180 180 -dof 6
     ${FSLDIR}/bin/convert_xfm -omat T2_FLAIR_tmp2.mat -concat ../T1/transforms/T1_orig_ud_to_T1.mat  T2_FLAIR_tmp.mat
     ${FSLDIR}/bin/flirt -in T2_FLAIR_orig_ud -ref ../T1/T1_brain -refweight ../T1/T1_brain_mask -nosearch -init T2_FLAIR_tmp2.mat -omat T2_FLAIR_orig_ud_to_T2_FLAIR.mat -dof 6 -applyxfm -out T2_FLAIR 
     #${FSLDIR}/bin/applywarp --rel  -i T2_FLAIR_orig -r ../T1/T1_brain -o T2_FLAIR -w T2_FLAIR_orig_ud_warp --postmat=T2_FLAIR_orig_ud_to_T2_FLAIR.mat --interp=spline ###NO GDC###
