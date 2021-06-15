@@ -88,6 +88,18 @@ mv *warp*.* transforms || true
 mv *_to_* transforms || true
 mv transforms/T1_brain_to_MNI.nii.gz .
 
+#Run fast for initial bias correction
+mkdir T1_fast
+${FSLDIR}/bin/fast -b -o T1_fast/T1_fast T1_brain
+
+#Apply bias field correction to T1
+if [ -f T1_fast/T1_fast_bias.nii.gz ] ; then
+    ${FSLDIR}/bin/fslmaths T1.nii.gz -div T1_fast/T1_fast_bias.nii.gz T1_unbiased.nii.gz
+    ${FSLDIR}/bin/fslmaths T1_brain.nii.gz -div T1_fast/T1_fast_bias.nii.gz T1_unbiased_brain.nii.gz
+else
+    echo "WARNING: There was no bias field estimation. Bias field correction cannot be applied to T1."
+fi
+
 cd ..
 
 #Warping for T2_FLAIR
@@ -125,18 +137,18 @@ else
     ${FSLDIR}/bin/fslmaths T2_FLAIR_brain_to_MNI -mul $templ/MNI152_T1_1mm_brain_mask T2_FLAIR_brain_to_MNI
 
     #Defacing T2_FLAIR
-    ${FSLDIR}/bin/convert_xfm -omat grot.mat -concat T2_FLAIR_to_MNI_linear.mat T2_FLAIR_orig_ud_to_T2_FLAIR.mat
-    ${FSLDIR}/bin/convert_xfm -omat grot.mat -concat $templ/MNI_to_MNI_BigFoV_facemask.mat grot.mat
-    ${FSLDIR}/bin/convert_xfm -omat grot.mat -inverse grot.mat
-    ${FSLDIR}/bin/flirt -in $templ/MNI152_T1_1mm_BigFoV_facemask -ref T2_FLAIR_orig -out grot -applyxfm -init grot.mat
-    ${FSLDIR}/bin/fslmaths grot -binv -mul T2_FLAIR_orig T2_FLAIR_orig_defaced
+    #${FSLDIR}/bin/convert_xfm -omat grot.mat -concat T2_FLAIR_to_MNI_linear.mat T2_FLAIR_orig_ud_to_T2_FLAIR.mat
+    #${FSLDIR}/bin/convert_xfm -omat grot.mat -concat $templ/MNI_to_MNI_BigFoV_facemask.mat grot.mat
+    #${FSLDIR}/bin/convert_xfm -omat grot.mat -inverse grot.mat
+    #${FSLDIR}/bin/flirt -in $templ/MNI152_T1_1mm_BigFoV_facemask -ref T2_FLAIR_orig -out grot -applyxfm -init grot.mat
+    #${FSLDIR}/bin/fslmaths grot -binv -mul T2_FLAIR_orig T2_FLAIR_orig_defaced
 
-    cp T2_FLAIR.nii.gz T2_FLAIR_not_defaced_tmp.nii.gz  
-    ${FSLDIR}/bin/convert_xfm -omat grot.mat -concat $templ/MNI_to_MNI_BigFoV_facemask.mat T2_FLAIR_to_MNI_linear.mat
-    ${FSLDIR}/bin/convert_xfm -omat grot.mat -inverse grot.mat
-    ${FSLDIR}/bin/flirt -in $templ/MNI152_T1_1mm_BigFoV_facemask -ref T2_FLAIR -out grot -applyxfm -init grot.mat
-    ${FSLDIR}/bin/fslmaths grot -binv -mul T2_FLAIR T2_FLAIR
-    rm grot*
+    #cp T2_FLAIR.nii.gz T2_FLAIR_not_defaced_tmp.nii.gz  
+    #${FSLDIR}/bin/convert_xfm -omat grot.mat -concat $templ/MNI_to_MNI_BigFoV_facemask.mat T2_FLAIR_to_MNI_linear.mat
+    #${FSLDIR}/bin/convert_xfm -omat grot.mat -inverse grot.mat
+    #${FSLDIR}/bin/flirt -in $templ/MNI152_T1_1mm_BigFoV_facemask -ref T2_FLAIR -out grot -applyxfm -init grot.mat
+    #${FSLDIR}/bin/fslmaths grot -binv -mul T2_FLAIR T2_FLAIR
+    #rm grot*
 
     #Clean and reorganize
     rm *_tmp*
@@ -144,35 +156,40 @@ else
     mv *.mat transforms
     mv *warp*.* transforms
     
+    #Run fast for initial bias correction
+    mkdir T2_fast
+    ${FSLDIR}/bin/fast -t 2 -n 3 -H 0.1 -I 4 -l 20.0 --nopve -B -o T2_fast/T2_fast T2_FLAIR_brain
+
+    #Apply bias field correction to T2_FLAIR warped
+    #if [ -f ../T1/T1_fast/T1_brain_bias.nii.gz ] ; then
+	#${FSLDIR}/bin/fslmaths T2_FLAIR.nii.gz -div ../T1/T1_fast/T1_fast_bias.nii.gz T2_FLAIR_unbiased.nii.gz
+	#${FSLDIR}/bin/fslmaths T2_FLAIR_brain.nii.gz -div ../T1/T1_fast/T1_fast_bias.nii.gz T2_FLAIR_unbiased_brain.nii.gz
+    #else
+    #	echo "WARNING: There was no bias field estimation. Bias field correction cannot be applied to T2."
+    #fi
+    
     cd ..
 
 fi
 
 cd T1
 
-#Run fast
-mkdir T1_fast
-${FSLDIR}/bin/fast -b -o T1_fast/T1_brain T1_brain
+#Run multichannel FAST
+#${FSLDIR}/bin/fast -S 2 -n 3 -H 0.1 -I 1 -l 20.0 -o T1_fast/T1_brain T1_unbiased_brain ../T2_FLAIR/T2_FLAIR_unbiased_brain.nii.gz
+${FSLDIR}/bin/fast -S 2 -n 3 -H 0.1 -I 1 -l 20.0 -o T1_fast/T1_brain T1_unbiased_brain ../T2_FLAIR/T2_fast/T2_fast_restore.nii.gz
+
 
 #Binarize PVE masks
 if [ -f T1_fast/T1_brain_pveseg.nii.gz ] ; then
-    $FSLDIR/bin/fslmaths T1_fast/T1_brain_pve_0.nii.gz -thr 0.5 -bin T1_fast/T1_brain_CSF_mask.nii.gz
+    $FSLDIR/bin/fslmaths T1_fast/T1_brain_pve_0.nii.gz -thr 0.5 -bin T1_fast/T1_brain_WM_mask.nii.gz
     $FSLDIR/bin/fslmaths T1_fast/T1_brain_pve_1.nii.gz -thr 0.5 -bin T1_fast/T1_brain_GM_mask.nii.gz
-    $FSLDIR/bin/fslmaths T1_fast/T1_brain_pve_2.nii.gz -thr 0.5 -bin T1_fast/T1_brain_WM_mask.nii.gz
+    $FSLDIR/bin/fslmaths T1_fast/T1_brain_pve_2.nii.gz -thr 0.5 -bin T1_fast/T1_brain_CSF_mask.nii.gz
 fi
 
 #remove cerebellum and brainstem from GM and WM mask
 ${FSLDIR}/bin/fslmaths T1_fast/T1_brain_GM_mask -sub transforms/cerebellum_to_T1 -sub transforms/brainstem_to_T1 -bin T1_fast/T1_brain_GM_mask_noCerebBS
 ${FSLDIR}/bin/fslmaths T1_fast/T1_brain_WM_mask -sub transforms/cerebellum_to_T1 -sub transforms/brainstem_to_T1 -bin T1_fast/T1_brain_WM_mask_noCerebBS
 
-
-#Apply bias field correction to T1
-if [ -f T1_fast/T1_brain_bias.nii.gz ] ; then
-    ${FSLDIR}/bin/fslmaths T1.nii.gz -div T1_fast/T1_brain_bias.nii.gz T1_unbiased.nii.gz
-    ${FSLDIR}/bin/fslmaths T1_brain.nii.gz -div T1_fast/T1_brain_bias.nii.gz T1_unbiased_brain.nii.gz
-else
-    echo "WARNING: There was no bias field estimation. Bias field correction cannot be applied to T1."
-fi
 
 #Run First
 mkdir T1_first
@@ -190,6 +207,17 @@ ${FSLDIR}/bin/fslmaths T1_fast/T1_brain_GM_mask_noCerebBS -add T1_first/subcort_
 #create GM-WM interface for dMRI tractography seeds
 ${FSLDIR}/bin/fslmaths T1_fast/T1_brain_GM_mask_noCerebBS -kernel sphere 1 -dilM T1_fast/T1_brain_GM_mask_noCerebBS_dil
 ${FSLDIR}/bin/fslmaths T1_fast/T1_brain_GM_mask_noCerebBS_dil -add T1_fast/T1_brain_WM_mask_noCerebBS -thr 2 -bin interface
+
+
+#check interface, re-do with extra dilation if empty
+maskMAX=$(fslstats $1/T1/interface -R | awk '{print int($2)}')
+if [ $maskMAX -lt 1 ]
+then
+     echo "interface mask empty, dilating GM mask by 2 and re-doing interface"
+     ${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS -kernel sphere 2 -dilM $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS_dil2
+     ${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS_dil2 -add $1/T1/T1_fast/T1_brain_WM_mask_noCerebBS -thr 2 -bin $1/T1/interface
+fi
+
 
 #label GM with ROIs
 ${AFNIDIR}/3dROIMaker -inset cort_subcort_GM.nii.gz -thresh 0.1 -inflate 1 -prefix labelled -refset transforms/parcel_to_T1.nii.gz -nifti -neigh_upto_vert
@@ -212,59 +240,6 @@ $BB_BIN_DIR/bb_structural_pipeline/bb_QC_CNR_corners_complete ../$1
 
 
 
-#The rest of the script works with T2 only if there is one.
-if [ `${FSLDIR}/bin/imtest T2_FLAIR/T2_FLAIR_orig` = 0 ] ; then
-  echo "WARNING: No T2 in $1"
-  . $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
-  exit
-fi
-
-cd T2_FLAIR
-
-#Apply bias field correction to T2_FLAIR warped
-if [ -f ../T1/T1_fast/T1_brain_bias.nii.gz ] ; then
-    ${FSLDIR}/bin/fslmaths T2_FLAIR.nii.gz -div ../T1/T1_fast/T1_brain_bias.nii.gz T2_FLAIR_unbiased.nii.gz
-    ${FSLDIR}/bin/fslmaths T2_FLAIR_brain.nii.gz -div ../T1/T1_fast/T1_brain_bias.nii.gz T2_FLAIR_unbiased_brain.nii.gz
-else
-    echo "WARNING: There was no bias field estimation. Bias field correction cannot be applied to T2."
-fi
-
-cd ../..
-
-#Run BIANCA
-$BB_BIN_DIR/bb_structural_pipeline/bb_BIANCA $1
-
-
-#remove BIANCA estimated lesion voxels from GM masks & add to WM mask
-cp $1/T1/T1_fast/T1_brain_GM_mask.nii.gz $1/T1/T1_fast/T1_brain_GM_mask_preBIANCA.nii.gz
-${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_GM_mask_preBIANCA -sub $1/T2_FLAIR/lesions/final_mask -bin $1/T1/T1_fast/T1_brain_GM_mask
-cp $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS.nii.gz $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS_preBIANCA.nii.gz
-${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS_preBIANCA -sub $1/T2_FLAIR/lesions/final_mask -bin $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS
-cp $1/T1/cort_subcort_GM.nii.gz $1/T1/cort_subcort_GM_preBIANCA.nii.gz
-${FSLDIR}/bin/fslmaths $1/T1/cort_subcort_GM_preBIANCA -sub $1/T2_FLAIR/lesions/final_mask -bin $1/T1/cort_subcort_GM
-cp $1/T1/T1_fast/T1_brain_WM_mask.nii.gz $1/T1/T1_fast/T1_brain_WM_mask_preBIANCA.nii.gz
-${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_WM_mask_preBIANCA -add $1/T2_FLAIR/lesions/final_mask -bin $1/T1/T1_fast/T1_brain_WM_mask
-cp $1/T1/T1_fast/T1_brain_WM_mask_noCerebBS.nii.gz $1/T1/T1_fast/T1_brain_WM_mask_noCerebBS_preBIANCA.nii.gz
-${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_WM_mask_noCerebBS_preBIANCA -add $1/T2_FLAIR/lesions/final_mask -bin $1/T1/T1_fast/T1_brain_WM_mask_noCerebBS
-
-#create GM-WM interface for dMRI tractography seeds
-${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS -kernel sphere 1 -dilM $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS_dil
-${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS_dil -add $1/T1/T1_fast/T1_brain_WM_mask_noCerebBS -thr 2 -bin $1/T1/interface
-
-#check interface, re-do with extra dilation if empty
-maskMAX=$(fslstats $1/T1/interface -R | awk '{print int($2)}')
-if [ $maskMAX -lt 1 ]
-then
-     echo "interface mask empty, dilating GM mask by 2 and re-doing interface"
-     ${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS -kernel sphere 2 -dilM $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS_dil2
-     ${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS_dil2 -add $1/T1/T1_fast/T1_brain_WM_mask_noCerebBS -thr 2 -bin $1/T1/interface
-fi
-
-#label GM with ROIs
-${AFNIDIR}/3dROIMaker -inset $1/T1/cort_subcort_GM.nii.gz -thresh 0.1 -inflate 1 -prefix $1/T1/labelled -refset $1/T1/transforms/parcel_to_T1.nii.gz -nifti -neigh_upto_vert
-
-#for some reason both labelled_GM and labelled_GMI are inflated; fix it here
-${FSLDIR}/bin/fslmaths $1/T1/labelled_GM -mas $1/T1/cort_subcort_GM.nii.gz $1/T1/labelled_GM
 
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
 
