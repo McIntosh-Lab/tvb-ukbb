@@ -23,7 +23,7 @@
     "SWI_TOTAL_PHA_TE2":            "SWI/SWI_TOTAL_PHA_TE2.nii.gz",
     "T1":                           "T1/T1.nii.gz",
     "T1_notNorm":                   "raw/T1_notNorm.nii.gz",
-    "T2":                           "T2_FLAIR/T2_FLAIR.nii.gz",
+    "T2":                           "T2/T2.nii.gz",
     "T2_notNorm":                   "raw/T2_FLAIR_notNorm.nii.gz",
     "rfMRI":                        "fMRI/rfMRI.nii.gz",
     "rfMRI_SBRef":                  "fMRI/rfMRI_SBREF.nii.gz",
