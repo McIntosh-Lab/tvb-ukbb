@@ -237,9 +237,8 @@ cat > $subjdir$html_output_dir"/anat.html" << EOF
       <option value="us">T1 Unlabelled subcort GM</option>
       <option value="ls">T1 Labelled subcort GM</option>
     </optgroup>
-    <optgroup label="T2 FLAIR">
+    <optgroup label="T2">
       <option value="Tre">T2 Registration</option>
-      <option value="Tbi">T2 BIANCA</option>
     </optgroup>
   </select></label>
   &nbsp&nbsp&nbsp&nbsp
@@ -322,9 +321,6 @@ NOTE: Image sizes and therefore maintaining zooms between different analyses can
   <img src="../images/T1_segmentation_unmasked_subcort/${sub}_T1_segmentation_unmasked_subcort_saggital_appended.png" id="under_sub_s" style="display: none">
 
 
-  <img src="../images/T2_FLAIR_BIANCA_unmasked/${sub}_T2_FLAIR_BIANCA_unmasked_axial.png" id="under_T2_a" style="display: none">
-  <img src="../images/T2_FLAIR_BIANCA_unmasked/${sub}_T2_FLAIR_BIANCA_unmasked_coronal.png" id="under_T2_c" style="display: none">
-  <img src="../images/T2_FLAIR_BIANCA_unmasked/${sub}_T2_FLAIR_BIANCA_unmasked_saggital.png" id="under_T2_s" style="display: none">
 
 
 <!-------------- OVERLAYS -------------->
@@ -377,9 +373,6 @@ NOTE: Image sizes and therefore maintaining zooms between different analyses can
   <img src="../images/T2_registration/order2_${sub}_T2_registration_coronal_appended.png" id="Tre2_c" style="display: none">
   <img src="../images/T2_registration/order2_${sub}_T2_registration_saggital_appended.png" id="Tre2_s" style="display: none">
 
-  <img src="../images/T2_FLAIR_BIANCA_masked/${sub}_T2_FLAIR_BIANCA_masked_axial.png" id="Tbi_a" style="display: none">
-  <img src="../images/T2_FLAIR_BIANCA_masked/${sub}_T2_FLAIR_BIANCA_masked_coronal.png" id="Tbi_c" style="display: none">
-  <img src="../images/T2_FLAIR_BIANCA_masked/${sub}_T2_FLAIR_BIANCA_masked_saggital.png" id="Tbi_s" style="display: none">
 
 
 <br><br><br><br>________<br><br><br>
