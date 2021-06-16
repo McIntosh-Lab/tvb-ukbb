@@ -119,31 +119,14 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 	#T2 registration edges
 
 
-	if [ -e "$dirSubject/T2_FLAIR/T2_FLAIR_brain_to_MNI.nii.gz" ]; then	#maybe -r if readable?
-		$BB_BIN_DIR/tvb_bb_QC/edges.sh -s ${FSLDIR}/data/standard -l 10 /MNI152_T1_1mm.nii.gz /T2_FLAIR/T2_FLAIR_brain_to_MNI.nii.gz $dirSubject  T2_registration
+	if [ -e "$dirSubject/T2/T2_brain_to_MNI.nii.gz" ]; then	#maybe -r if readable?
+		$BB_BIN_DIR/tvb_bb_QC/edges.sh -s ${FSLDIR}/data/standard -l 10 /MNI152_T1_1mm.nii.gz /T2/T2_brain_to_MNI.nii.gz $dirSubject  T2_registration
 	
-		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "Tre_under" "../../T2_FLAIR/T2_FLAIR_brain_to_MNI.nii.gz" "Tre_over1" "${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz" "NA14" "NA14_link" 0
-		#$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "uw_under" "${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz" "uw_over1" "../../T2_FLAIR/T2_FLAIR_brain_to_MNI.nii.gz" "NA15" "NA15_link" 0
+		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "Tre_under" "../../T2/T2_brain_to_MNI.nii.gz" "Tre_over1" "${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz" "NA14" "NA14_link" 0
+		#$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "uw_under" "${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz" "uw_over1" "../../T2/T2_brain_to_MNI.nii.gz" "NA15" "NA15_link" 0
 
 	fi
 
-
-### T2 FLAIR BIANCA ###
-		
-	if [ -e "$dirSubject/T2_FLAIR/T2_FLAIR_unbiased.nii.gz" ] && [ -e "$dirSubject/T2_FLAIR/lesions/final_mask.nii.gz" ]; then	
-
-	#T2 FLAIR BIANCA unmasked
-		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh /T2_FLAIR/T2_FLAIR_unbiased.nii.gz $dirSubject  T2_FLAIR_BIANCA_unmasked
-
-		#$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "Tbi_under" "../../T2_FLAIR/T2_FLAIR_unbiased.nii.gz" "NA16" "NA16_link" "NA17" "NA17_link" 0
-
-
-	#T2 FLAIR BIANCA masked
-		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /T2_FLAIR/lesions/final_mask.nii.gz -a 50.0 -p red /T2_FLAIR/T2_FLAIR_unbiased.nii.gz $dirSubject  T2_FLAIR_BIANCA_masked
-
-		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "Tbi_under" "../../T2_FLAIR/T2_FLAIR_unbiased.nii.gz" "Tbi_over1" "../../T2_FLAIR/lesions/final_mask.nii.gz" "NA18" "NA18_link" 0
-
-	fi
 
 
 ### DTI ORIENTATION ###
