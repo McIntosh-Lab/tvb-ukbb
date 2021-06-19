@@ -119,10 +119,10 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 	#T2 registration edges
 
 
-	if [ -e "$dirSubject/T2/T2_brain_to_MNI.nii.gz" ]; then	#maybe -r if readable?
-		$BB_BIN_DIR/tvb_bb_QC/edges.sh -s ${FSLDIR}/data/standard -l 10 /MNI152_T1_1mm.nii.gz /T2/T2_brain_to_MNI.nii.gz $dirSubject  T2_registration
+	if [ -e "$dirSubject/T2/T2.nii.gz" ]; then	#maybe -r if readable?
+		$BB_BIN_DIR/tvb_bb_QC/edges.sh -l 10 /T1/T1.nii.gz /T2/T2.nii.gz $dirSubject  T2_registration
 	
-		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "Tre_under" "../../T2/T2_brain_to_MNI.nii.gz" "Tre_over1" "${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz" "NA14" "NA14_link" 0
+		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "Tre_under" "../../T2/T2.nii.gz" "Tre_over1" "../../T1/T1.nii.gz" "NA14" "NA14_link" 0
 		#$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "uw_under" "${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz" "uw_over1" "../../T2/T2_brain_to_MNI.nii.gz" "NA15" "NA15_link" 0
 
 	fi
