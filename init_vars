@@ -31,7 +31,7 @@
 export BBDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && cd ..; pwd )"
 
 #SETUP FSL  
-export FSLDIR=/opt/HCPpipelines-4.1.3/fsl                                       #TO BE MODIFIED BY USER
+export FSLDIR=/opt/fsl                                       #TO BE MODIFIED BY USER
 . $FSLDIR/etc/fslconf/fsl.sh
 export FSLCONFDIR="${FSLDIR}/config"
 export FSLOUTPUTTYPE="NIFTI_GZ"
@@ -43,14 +43,18 @@ export QUEUE_MORE_MEM="bigmem_16.q"                                             
 export QUEUE_MAX_MEM="bigmem_64.q"                                              #TO BE MODIFIED BY USER
 
 #SETUP AFNI
-export AFNIDIR=/opt/afni                                                        #TO BE MODIFIED BY USER
+# export AFNIDIR=/opt/afni                                                        #TO BE MODIFIED BY USER
+export AFNIDIR="/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Compiler/gcc9/afni/20.3.05/"
 
 #SETUP FREESURFER 
 export FREESURFER_HOME=/opt/freesurfer                                          #TO BE MODIFIED BY USER
 source $FREESURFER_HOME/SetUpFreeSurfer.sh  > /dev/null
 
+export SOFTDIR="/opt/tvb-pipeline"
+
+
 # SET UP MATLAB
-export MCROOT="$BBDIR/software/MCR_2017b_glnxa64"
+export MCROOT="$SOFTDIR/software/MCR_2017b_glnxa64"
 export MCRV="v93"
 
 #Move $FSLDIR/bin before $FREESURFER_HOME in the path
@@ -59,8 +63,8 @@ PATH=`echo $PATH | sed "s|$FSLDIR/bin||g"`
 export PATH="$FSLDIR/bin:$PATH"
 
 #SETUP EXTERNAL LIBRARIES
-export R_LIBS="$BBDIR/software/env/lib/R/library"
-export R_DIR="$BBDIR/software/env/lib/R"
+export R_LIBS="$SOFTDIR/software/env/lib/R/library"
+export R_DIR="$SOFTDIR/software/env/lib/R"
 
 
 #SET LOCALE FOR FLOATING POINT FORMATTING
@@ -94,4 +98,4 @@ export MATLAB_COMPILER_RUNTIME="$MCROOT/$MCRV"
 
 export XAPPLRESDIR="$MCROOT/$MCRV/X11/app-defaults"
 
-conda activate $BBDIR/software/env
+source activate $SOFTDIR/software/env
