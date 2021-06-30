@@ -67,12 +67,7 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
                 # numVols= LT.runCommand(logger, "for f in `cat " + subject +"/dMRI/raw/" + encDir + ".bval` ; do echo $f; done | awk '{if($1==$1+0 && $1 < " + b0_threshold + " ) print $1}' |wc | awk '{print $1}'")
                 jobGETB01 = LT.runCommand(
                     logger,
-                    #'${FSLDIR}/bin/fsl_sub -T 5  -N "bb_get_b0s_1_'
-                    '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD}  -N "bb_get_b0s_1_'
-                    + subname
-                    + '" -l '
-                    + logDir
-                    + " $BB_BIN_DIR/bb_structural_pipeline/bb_get_b0s.py -i "
+                    " $BB_BIN_DIR/bb_structural_pipeline/bb_get_b0s.py -i "
                     + subject
                     + "/dMRI/raw/"
                     + encDir
@@ -84,18 +79,13 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
                     + str(numVols)
                     + " -l "
                     + str(b0_threshold),
+                    "bb_get_b0s_1_"
+                    + subname
                 )
                 jobsB0.append(
                     LT.runCommand(
                         logger,
-                        #'${FSLDIR}/bin/fsl_sub -T 20 -N "bb_choose_bestB0_1_'
-                        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_choose_bestB0_1_'
-                        + subname
-                        + '" -l '
-                        + logDir
-                        + " -j "
-                        + jobGETB01
-                        + " $BB_BIN_DIR/bb_structural_pipeline/bb_choose_bestB0 "
+                        " $BB_BIN_DIR/bb_structural_pipeline/bb_choose_bestB0 "
                         + subject
                         + "/fieldmap/total_B0_"
                         + encDir
@@ -104,78 +94,55 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
                         + "/fieldmap/B0_"
                         + encDir
                         + ".nii.gz ",
+                        "bb_choose_bestB0_1_"
+                        + subname
                     )
                 )
 
             jobMERGE = LT.runCommand(
                 logger,
-                #'${FSLDIR}/bin/fsl_sub -T 5 -N "bb_fslmerge_'
-                '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_fslmerge_'
-                + subname
-                + '" -j '
-                + ",".join(jobsB0)
-                + " -l "
-                + logDir
-                + " ${FSLDIR}/bin/fslmerge -t "
+                " ${FSLDIR}/bin/fslmerge -t "
                 + subject
                 + "/fieldmap/B0_AP_PA "
                 + subject
                 + "/fieldmap/B0_AP "
                 + subject
                 + "/fieldmap/B0_PA",
+                "bb_fslmerge_"
+                + subname
             )
 
         # Registrations - T1 to MNI - T2 to T1 - T2 to MNI (Combining the 2 previous ones)
         jobSTRUCTINIT = LT.runCommand(
             logger,
-            #'${FSLDIR}/bin/fsl_sub -T 850 -N "bb_structinit_'
-            '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_structinit_'
-            + subname
-            + '" -l '
-            + logDir
-            + "  $BB_BIN_DIR/bb_structural_pipeline/bb_struct_init "
+            "  $BB_BIN_DIR/bb_structural_pipeline/bb_struct_init "
             + subject,
+            "bb_structinit_"
+            + subname
         )
 
         # TODO: Do a better check here. This one looks arbitrary
         if "SWI_TOTAL_MAG_TE2" in fileConfiguration:
             jobSWI = LT.runCommand(
                 logger,
-                #'${FSLDIR}/bin/fsl_sub -T 90 -N "bb_swi_reg_'
-                '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_swi_reg_'
-                + subname
-                + '" -l '
-                + logDir
-                + " -j "
-                + jobSTRUCTINIT
-                + "  $BB_BIN_DIR/bb_structural_pipeline/bb_swi_reg "
+                "  $BB_BIN_DIR/bb_structural_pipeline/bb_swi_reg "
                 + subject,
+                "bb_swi_reg_"
+                + subname
             )
 
         # Topup
         if runTopup:
             jobPREPAREFIELDMAP = LT.runCommand(
                 logger,
-                #'${FSLDIR}/bin/fsl_sub -T 5 -N "bb_prepare_struct_fieldmap_'
-                '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_prepare_struct_fieldmap_'
-                + subname
-                + '" -l '
-                + logDir
-                + " -j "
-                + jobMERGE
-                + " $BB_BIN_DIR/bb_structural_pipeline/bb_prepare_struct_fieldmap "
+                " $BB_BIN_DIR/bb_structural_pipeline/bb_prepare_struct_fieldmap "
                 + subject,
+                "bb_prepare_struct_fieldmap_"
+                + subname
             )
             jobTOPUP = LT.runCommand(
                 logger,
-                #'${FSLDIR}/bin/fsl_sub -T 90 -N "bb_topup_'
-                '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_topup_'
-                + subname
-                + '" -l '
-                + logDir
-                + " -j "
-                + jobPREPAREFIELDMAP
-                + " ${FSLDIR}/bin/topup --imain="
+                " ${FSLDIR}/bin/topup --imain="
                 + subject
                 + "/fieldmap/B0_AP_PA --datain="
                 + subject
@@ -186,6 +153,8 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
                 + "/fieldmap/fieldmap_fout --jacout="
                 + subject
                 + "/fieldmap/fieldmap_jacout -v",
+                "bb_topup_"
+                + subname
             )
 
         else:
@@ -202,19 +171,10 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
         else:
             jobPOSTTOPUP = LT.runCommand(
                 logger,
-                #'${FSLDIR}/bin/fsl_sub -T 60 -N "bb_post_topup_'
-                '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_post_topup_'
-                + subname
-                + '" -l '
-                + logDir
-                + " -j "
-                + jobTOPUP
-                + ","
-                + jobSTRUCTINIT
-                + ","
-                + jobSWI
-                + " $BB_BIN_DIR/bb_structural_pipeline/bb_post_topup "
+                " $BB_BIN_DIR/bb_structural_pipeline/bb_post_topup "
                 + subject,
+                "bb_post_topup_"
+                + subname
             )
             return jobPOSTTOPUP
 

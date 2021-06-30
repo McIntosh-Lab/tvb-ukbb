@@ -24,7 +24,7 @@
 import os
 import time
 import logging
-from subprocess import check_output
+from subprocess import run
 
 
 def initLogging(fileName, subject, batching=False):
@@ -74,12 +74,21 @@ def finishLogging(logger):
     )
 
 
-def runCommand(logger, command):
+def runCommand(logger, command, jobname):
 
     try:
         logger.info("COMMAND TO RUN: \t" + command.strip())
-        jobOUTPUT = check_output(command, shell=True).decode("UTF-8")
+        jobOUTPUT=run(command, stdout=PIPE, stderr=STDOUT, shell=True)
+        #jobOUTPUT=popen(command, stdout=PIPE, stderr=STDOUT, shell=True)
+        logfile=jobname+".txt"
+        logfile=os.path.join(logger.logDir,logfile)
+        f= open( logfile ,"w+")
+        f.write(jobOUTPUT.stdout)
+        f.close()
+
+        jobOUTPUT=jobOUTPUT.decode("UTF-8")
         logger.info("COMMAND OUTPUT: \t" + jobOUTPUT.strip())
+
     except Exception as e:
         logger.error("Exception raised during execution of: \t" + command.strip())
         logger.error("Exception type: \t" + str(type(e)))

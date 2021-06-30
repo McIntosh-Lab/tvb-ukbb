@@ -40,15 +40,10 @@ def bb_IDP(subject, jobHold, fileConfiguration):
 
     jobIDP = LT.runCommand(
         logger,
-        #'${FSLDIR}/bin/fsl_sub -T 30 -N "bb_IDP_'
-        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_IDP_'
-        + subname
-        + '" -j '
-        + jobHold
-        + "  -l "
-        + logDir
-        + " $BB_BIN_DIR/bb_IDP/bb_IDP "
+        " $BB_BIN_DIR/bb_IDP/bb_IDP "
         + subject,
+        "bb_IDP_"
+        + subname
     )
     print("SUBMITTED IDP")
     return jobIDP
@@ -72,4 +67,4 @@ if __name__ == "__main__":
         print(f"{json_path} could not be loaded. Exiting")
         sys.exit(1)
     # call pipeline
-    bb_IDP(subject, "-1", fileConfig)
+    bb_IDP(subject, fileConfig)
