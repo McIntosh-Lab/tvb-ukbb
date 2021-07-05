@@ -27,6 +27,14 @@ mkdir $subjdir/tvb_inputs
 
 cp $subjdir/dMRI/sc.txt $subjdir/dMRI/distance.txt $subjdir/T2_FLAIR/lesions/volume.txt $subjdir/tvb_inputs
 
+mv $subjdir/tvb_inputs/sc.txt $subjdir/tvb_inputs/structural_weights.txt
+mv $subjdir/tvb_inputs/distance.txt $subjdir/tvb_inputs/tract_lengths.txt
+
+
+python $BB_BIN_DIR/bb_general_tools/replace_nans.py $subjdir/tvb_inputs/structural_weights.txt
+python $BB_BIN_DIR/bb_general_tools/replace_nans.py $subjdir/tvb_inputs/tract_lengths.txt
+
+
 array=()
 while IFS=  read -r -d $'\0'; do
     array+=("$REPLY")
@@ -36,7 +44,16 @@ done < <(find $subjdir/fMRI -maxdepth 1 -type d -name "*.ica" -print0)
 for t in ${array[@]}; do
 	mkdir $subjdir/tvb_inputs/`basename $t`
 	cp $t/fc.txt $t/ts.txt $subjdir/tvb_inputs/`basename $t`
+	mv $subjdir/tvb_inputs/`basename $t`/fc.txt $subjdir/tvb_inputs/`basename $t`_functional_connectivity.txt
+	mv $subjdir/tvb_inputs/`basename $t`/ts.txt $subjdir/tvb_inputs/`basename $t`_time_series.txt
+
+	python $BB_BIN_DIR/bb_general_tools/replace_nans.py $subjdir/tvb_inputs/`basename $t`_functional_connectivity.txt
+
 done
+
+
+#generate cortical.txt and centres.txt
+python $BB_BIN_DIR/bb_diffusion_pipeline/bb_probtrackx2/generate_centres_cortical.py $subjdir $PARC_LUT
 
 
 subj=$1
@@ -52,3 +69,8 @@ rm -rf $subjdir/tvb_inputs
 
 set -e
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer
+
+
+# mkdir tvb_inputs
+# mv ./dMRI/sc.txt ./tvb_inputs/structural_weights.txt
+# mv ./dMRI/tl.txt ./tvb_inputs/tract_lengths.txt
