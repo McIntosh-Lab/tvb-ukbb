@@ -82,7 +82,7 @@ def runCommand(logger, command, jobname):
         #jobOUTPUT=popen(command, stdout=PIPE, stderr=STDOUT, shell=True)
         logfile=jobname+".txt"
         logfile=os.path.join(logger.logDir,logfile)
-        f= open( logfile ,"w+")
+        f= open( logfile ,"a+")
         f.write(jobOUTPUT.stdout)
         f.close()
 

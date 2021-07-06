@@ -71,7 +71,7 @@ def generate_SBRef(origPath, outputPath):
         "The SBRef data will be generated now using the middle point of the subject"
     )
     logger.warn("Command to run: " + commandToRun)
-    LT.runCommand(logger, commandToRun)
+    LT.runCommand(logger, commandToRun, "SBRef")
 
 
 def remove_phase_info(fileName):
