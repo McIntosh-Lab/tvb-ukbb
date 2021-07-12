@@ -24,15 +24,21 @@ python $BB_BIN_DIR/bb_diffusion_pipeline/bb_probtrackx2/tvb_concat_probtrackx2.p
 
 #generate tvb input zip
 mkdir $subjdir/tvb_inputs
+mkdir $subjdir/tvb_inputs/structural_inputs
+mkdir $subjdir/tvb_inputs/misc_inputs
+mkdir $subjdir/tvb_inputs/functional_inputs
+
+
 
 cp $subjdir/dMRI/sc.txt $subjdir/dMRI/distance.txt $subjdir/T2_FLAIR/lesions/volume.txt $subjdir/tvb_inputs
 
-mv $subjdir/tvb_inputs/sc.txt $subjdir/tvb_inputs/structural_weights.txt
-mv $subjdir/tvb_inputs/distance.txt $subjdir/tvb_inputs/tract_lengths.txt
+mv $subjdir/tvb_inputs/sc.txt $subjdir/tvb_inputs/structural_inputs/weights.txt
+mv $subjdir/tvb_inputs/distance.txt $subjdir/tvb_inputs/structural_inputs/tract_lengths.txt
+mv $subjdir/tvb_inputs/volume.txt $subjdir/tvb_inputs/misc_inputs/lesion_volume.txt
 
 
-python $BB_BIN_DIR/bb_general_tools/replace_nans.py $subjdir/tvb_inputs/structural_weights.txt
-python $BB_BIN_DIR/bb_general_tools/replace_nans.py $subjdir/tvb_inputs/tract_lengths.txt
+python $BB_BIN_DIR/bb_general_tools/replace_nans.py $subjdir/tvb_inputs/structural_inputs/weights.txt
+python $BB_BIN_DIR/bb_general_tools/replace_nans.py $subjdir/tvb_inputs/structural_inputs/tract_lengths.txt
 
 
 array=()
@@ -42,12 +48,12 @@ done < <(find $subjdir/fMRI -maxdepth 1 -type d -name "*.ica" -print0)
 
 #for each .ica file
 for t in ${array[@]}; do
-	mkdir $subjdir/tvb_inputs/`basename $t`
-	cp $t/fc.txt $t/ts.txt $subjdir/tvb_inputs/`basename $t`
-	mv $subjdir/tvb_inputs/`basename $t`/fc.txt $subjdir/tvb_inputs/`basename $t`_functional_connectivity.txt
-	mv $subjdir/tvb_inputs/`basename $t`/ts.txt $subjdir/tvb_inputs/`basename $t`_time_series.txt
+	mkdir $subjdir/tvb_inputs/functional_inputs/`basename $t`
+	cp $t/fc.txt $t/ts.txt $subjdir/tvb_inputs/functional_inputs/`basename $t`
+	mv $subjdir/tvb_inputs/functional_inputs/`basename $t`/fc.txt $subjdir/tvb_inputs/functional_inputs/`basename $t`/`basename $t`_functional_connectivity.txt
+	mv $subjdir/tvb_inputs/functional_inputs/`basename $t`/ts.txt $subjdir/tvb_inputs/functional_inputs/`basename $t`/`basename $t`_time_series.txt
 
-	python $BB_BIN_DIR/bb_general_tools/replace_nans.py $subjdir/tvb_inputs/`basename $t`_functional_connectivity.txt
+	python $BB_BIN_DIR/bb_general_tools/replace_nans.py $subjdir/tvb_inputs/functional_inputs/`basename $t`/`basename $t`_functional_connectivity.txt
 
 done
 
@@ -61,6 +67,10 @@ if [[ "$subj" =~ '/'$ ]]; then
   subj=${subj%?}
 fi
 subj=`basename $subj`
+
+cd $subjdir/tvb_inputs && zip -r ./${subj}_tvb_structural_inputs.zip ./structural_inputs && cd -
+
+rm -rf $subjdir/tvb_inputs/structural_inputs
 
 cd $subjdir && zip -r ./${subj}_tvb_inputs.zip ./tvb_inputs && cd -
 
