@@ -25,9 +25,9 @@ def generate_centres_cortical(subjdir, PARC_LUT):
 	#print(t1_data[np.nonzero(t1_data)])
 
 
-	centres_file=os.path.join(subjdir,"tvb_inputs/centres.txt")
-	cortical_file=os.path.join(subjdir,"tvb_inputs/cortical.txt")
-	hemi_file=os.path.join(subjdir,"tvb_inputs/hemisphere.txt")
+	centres_file=os.path.join(subjdir,"tvb_inputs/structural_inputs/centres.txt")
+	cortical_file=os.path.join(subjdir,"tvb_inputs/structural_inputs/cortical.txt")
+	hemi_file=os.path.join(subjdir,"tvb_inputs/structural_inputs/hemisphere.txt")
 
 	f = open(centres_file, "a")
 	g = open(cortical_file, "a")
