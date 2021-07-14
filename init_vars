@@ -46,8 +46,8 @@ export QUEUE_MAX_MEM="bigmem_64.q"                                              
 export AFNIDIR=/opt/afni                                                        #TO BE MODIFIED BY USER
 
 #SETUP FREESURFER 
-export FREESURFER_HOME=/opt/freesurfer                                          #TO BE MODIFIED BY USER
-source $FREESURFER_HOME/SetUpFreeSurfer.sh  > /dev/null
+export FREESURFER_HOME=/cvmfs/soft.computecanada.ca/easybuild/software/2020/Core/freesurfer/5.3.0/bin/freesurfer                                          #TO BE MODIFIED BY USER
+# source $FREESURFER_HOME/SetUpFreeSurfer.sh  > /dev/null
 
 # SET UP MATLAB
 export MCROOT="$BBDIR/software/MCR_2017b_glnxa64"
