@@ -99,7 +99,8 @@ def main(cli_args=None):
     jobSTEP4 = "-1"
     jobSTEP5 = "-1"
 
-    jobSTEP1 = bb_pipeline_struct(subject, runTopup, fileConfig)
+    # jobSTEP1 = bb_pipeline_struct(subject, runTopup, fileConfig)
+    bb_pipeline_struct(subject, runTopup, fileConfig)
     #handle cases: when jobstep1 would typically trigger the following
     if isinstance(jobSTEP1, int):
         if jobSTEP1 == -1:
@@ -114,20 +115,31 @@ def main(cli_args=None):
     # jobSTEP1 = int(jobSTEP1)
 
     # if runTopup:
-    jobSTEP2 = bb_pipeline_func(subject, fileConfig)
-    jobSTEP3 = bb_pipeline_diff(subject, fileConfig)
+    # jobSTEP2 = bb_pipeline_func(subject, fileConfig)
+    # jobSTEP3 = bb_pipeline_diff(subject, fileConfig)
 
-    jobSTEP4 = bb_IDP(
+    # jobSTEP4 = bb_IDP(
+    #     subject, fileConfig
+    # )
+
+    # jobSTEP5 = tvb_bb_QC(
+    #     subject,
+    #     fileConfig
+    # )
+    bb_pipeline_func(subject, fileConfig)
+    bb_pipeline_diff(subject, fileConfig)
+
+    bb_IDP(
         subject, fileConfig
     )
 
-    jobSTEP5 = tvb_bb_QC(
+    tvb_bb_QC(
         subject,
         fileConfig
     )
 
     LT.finishLogging(logger)
-    return jobSTEP5
+    # return jobSTEP5
 
 
 if __name__ == "__main__":

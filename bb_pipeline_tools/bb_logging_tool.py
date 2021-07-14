@@ -25,6 +25,7 @@ import os
 import time
 import logging
 from subprocess import run
+import shlex
 
 
 def initLogging(fileName, subject, batching=False):
@@ -78,15 +79,26 @@ def runCommand(logger, command, jobname):
 
     try:
         logger.info("COMMAND TO RUN: \t" + command.strip())
-        jobOUTPUT=run(command, stdout=PIPE, stderr=STDOUT, shell=True)
+        # resolve evironment var filepaths and parse
+        command_list = shlex.split(os.path.expandvars(command))
+        jobOUTPUT = run(command_list, capture_output=True, text=True)
         #jobOUTPUT=popen(command, stdout=PIPE, stderr=STDOUT, shell=True)
-        logfile=jobname+".txt"
-        logfile=os.path.join(logger.logDir,logfile)
-        f= open( logfile ,"a+")
+        logfile = f"{jobname}.log"
+        logfile = os.path.join(logger.logDir, logfile)
+        f = open(logfile ,"a+")
+        f.write("STANDARD OUT:\n")
         f.write(jobOUTPUT.stdout)
+        f.write("\n\nSTANDARD ERROR:\n")
+        f.write(jobOUTPUT.stderr)
         f.close()
+        # logfile = f"{jobname}.e"
+        # logfile = os.path.join(logger.logDir, logfile)
+        # f = open(logfile ,"a+")
+        # f.write(jobOUTPUT.stderr)
+        # f.close()
 
-        jobOUTPUT=jobOUTPUT.decode("UTF-8")
+        # TODO: remove decode since there's no need to do so
+        # jobOUTPUT=jobOUTPUT.decode("UTF-8")
         logger.info("COMMAND OUTPUT: \t" + jobOUTPUT.strip())
 
     except Exception as e:

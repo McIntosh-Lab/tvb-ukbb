@@ -30,7 +30,7 @@ sys.path.insert(1, os.path.dirname(__file__) + "/..")
 import bb_pipeline_tools.bb_logging_tool as LT
 
 
-def bb_IDP(subject, jobHold, fileConfiguration):
+def bb_IDP(subject, fileConfiguration):
 
     logger = LT.initLogging(__file__, subject)
     logDir = logger.logDir
@@ -38,6 +38,7 @@ def bb_IDP(subject, jobHold, fileConfiguration):
 
     subname = subject.replace("/", "_")
 
+    print("Running IDP pipeline...")
     jobIDP = LT.runCommand(
         logger,
         " $BB_BIN_DIR/bb_IDP/bb_IDP "
@@ -45,7 +46,7 @@ def bb_IDP(subject, jobHold, fileConfiguration):
         "bb_IDP_"
         + subname
     )
-    print("SUBMITTED IDP")
+    print("IDP pipeline complete.")
     return jobIDP
 
 

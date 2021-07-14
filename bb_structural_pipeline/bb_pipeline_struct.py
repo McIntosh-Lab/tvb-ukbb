@@ -41,7 +41,7 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
 
     subname = subject.replace("/", "_")
 
-    print("HERE")
+    print("Beginning structural pipeline")
 
     if (not "T1" in fileConfiguration) or (fileConfiguration["T1"] == ""):
         logger.error("There is no T1. Subject " + subject + " cannot be processed.")
@@ -60,6 +60,7 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
         if runTopup:
             # if encDir in ["dwi"]:
             # pass
+            print("Running topup setup...")
             for encDir in ["AP", "PA"]:
                 bvals = np.loadtxt(subject + "/dMRI/raw/" + encDir + ".bval")
                 numVols = int(sum(bvals <= b0_threshold))
@@ -67,7 +68,7 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
                 # numVols= LT.runCommand(logger, "for f in `cat " + subject +"/dMRI/raw/" + encDir + ".bval` ; do echo $f; done | awk '{if($1==$1+0 && $1 < " + b0_threshold + " ) print $1}' |wc | awk '{print $1}'")
                 jobGETB01 = LT.runCommand(
                     logger,
-                    " $BB_BIN_DIR/bb_structural_pipeline/bb_get_b0s.py -i "
+                    "$BB_BIN_DIR/bb_structural_pipeline/bb_get_b0s.py -i "
                     + subject
                     + "/dMRI/raw/"
                     + encDir
@@ -85,7 +86,7 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
                 jobsB0.append(
                     LT.runCommand(
                         logger,
-                        " $BB_BIN_DIR/bb_structural_pipeline/bb_choose_bestB0 "
+                        "$BB_BIN_DIR/bb_structural_pipeline/bb_choose_bestB0 "
                         + subject
                         + "/fieldmap/total_B0_"
                         + encDir
@@ -101,7 +102,7 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
 
             jobMERGE = LT.runCommand(
                 logger,
-                " ${FSLDIR}/bin/fslmerge -t "
+                "${FSLDIR}/bin/fslmerge -t "
                 + subject
                 + "/fieldmap/B0_AP_PA "
                 + subject
@@ -111,38 +112,41 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
                 "bb_fslmerge_"
                 + subname
             )
-
+            print("Topup setup completed.")
         # Registrations - T1 to MNI - T2 to T1 - T2 to MNI (Combining the 2 previous ones)
+        print("Running bb_struct_init...")
         jobSTRUCTINIT = LT.runCommand(
             logger,
-            "  $BB_BIN_DIR/bb_structural_pipeline/bb_struct_init "
+            "${BB_BIN_DIR}/bb_structural_pipeline/bb_struct_init "
             + subject,
             "bb_structinit_"
             + subname
         )
-
+        print("bb_struct_init completed.")
         # TODO: Do a better check here. This one looks arbitrary
         if "SWI_TOTAL_MAG_TE2" in fileConfiguration:
+            print("Running SWI registration...")
             jobSWI = LT.runCommand(
                 logger,
-                "  $BB_BIN_DIR/bb_structural_pipeline/bb_swi_reg "
+                "$BB_BIN_DIR/bb_structural_pipeline/bb_swi_reg "
                 + subject,
                 "bb_swi_reg_"
                 + subname
             )
-
+            print("SWI registration complete.")
         # Topup
         if runTopup:
+            print("Topup enabled. Running topup...")
             jobPREPAREFIELDMAP = LT.runCommand(
                 logger,
-                " $BB_BIN_DIR/bb_structural_pipeline/bb_prepare_struct_fieldmap "
+                "$BB_BIN_DIR/bb_structural_pipeline/bb_prepare_struct_fieldmap "
                 + subject,
                 "bb_prepare_struct_fieldmap_"
                 + subname
             )
             jobTOPUP = LT.runCommand(
                 logger,
-                " ${FSLDIR}/bin/topup --imain="
+                "${FSLDIR}/bin/topup --imain="
                 + subject
                 + "/fieldmap/B0_AP_PA --datain="
                 + subject
@@ -156,7 +160,7 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
                 "bb_topup_"
                 + subname
             )
-
+            print("Topup complete.")
         else:
             logger.error(
                 "There is not enough/correct DWI data. TOPUP cannot be run. Continuing to run DWI and fMRI processing without TOPUP."
@@ -165,17 +169,21 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
         # HCP Structural pipeline
         # jobHCPSTRUCT = LT.runCommand(logger, 'bb_HCP_structural ' + subject + ' ' + jobSTRUCTINIT + ' ' + str(boolT2))
 
-        print("SUBMITTED STRUCTURAL")
         if not runTopup:
+            print("Structural pipeline complete. Logfiles located in subject's logs directory.")
             return ",".join([jobSTRUCTINIT, jobSWI])
         else:
+            print("Running post-topup...")
             jobPOSTTOPUP = LT.runCommand(
                 logger,
-                " $BB_BIN_DIR/bb_structural_pipeline/bb_post_topup "
+                "$BB_BIN_DIR/bb_structural_pipeline/bb_post_topup "
                 + subject,
                 "bb_post_topup_"
                 + subname
             )
+
+            print("Post-topup complete.")
+            print("Structural pipeline complete. Logfiles located in subject's logs directory.")
             return jobPOSTTOPUP
 
 
@@ -197,4 +205,4 @@ if __name__ == "__main__":
         print(f"{json_path} could not be loaded. Exiting")
         sys.exit(1)
     # call pipeline
-    bb_pipeline_struct(subject, "-1", fileConfig)
+    bb_pipeline_struct(subject, False, fileConfig)
