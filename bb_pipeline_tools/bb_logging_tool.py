@@ -75,7 +75,7 @@ def finishLogging(logger):
     )
 
 
-def runCommand(logger, command):
+def runCommand(logger, command, jobname):
 
     try:
         logger.info("COMMAND TO RUN: \t" + command.strip())
