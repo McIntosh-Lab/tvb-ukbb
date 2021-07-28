@@ -79,7 +79,7 @@ export PYTHONPATH="$BBDIR/software/env/bin/python"
 export FSL_FIXDIR="$BB_BIN_DIR/bb_functional_pipeline/bb_fix_dir"
 export PARC_IMG="$templ/parcellations/TVB_SchaeferTian/TVB_SchaeferTian_316.nii.gz"                      #TO BE MODIFIED BY USER
 export PARC_LUT="$templ/parcellations/TVB_SchaeferTian/TVB_SchaeferTian_316_LUT.txt"                     #TO BE MODIFIED BY USER
-export numROI="316"                                                              #TO BE MODIFIED BY USER
+#export numROI="316"                                                              #TO BE MODIFIED BY USER
 export TRAINING_FILE="ADNI3_Training.RData"                                            #TO BE MODIFIED BY USER
 
 #INCLUDE 3 MAIN BIOBANK DIRECTORIES IN PATH
