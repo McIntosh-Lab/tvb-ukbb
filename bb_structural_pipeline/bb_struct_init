@@ -101,6 +101,16 @@ cd ..
 #Warping for T2
 if [ `${FSLDIR}/bin/imtest T2/T2` = 0 ] ; then
   echo "WARNING: No T2 in $1"
+
+  #use initial FAST outputs for rest of structural pipeline
+  cp T1/T1_fast/T1_fast_mixeltype.nii.gz T1/T1_fast/T1_brain_mixeltype.nii.gz
+  cp T1/T1_fast/T1_fast_pve_0.nii.gz T1/T1_fast/T1_brain_pve_0.nii.gz
+  cp T1/T1_fast/T1_fast_pve_1.nii.gz T1/T1_fast/T1_brain_pve_1.nii.gz
+  cp T1/T1_fast/T1_fast_pve_2.nii.gz T1/T1_fast/T1_brain_pve_2.nii.gz
+  cp T1/T1_fast/T1_fast_pveseg.nii.gz T1/T1_fast/T1_brain_pveseg.nii.gz
+  cp T1/T1_fast/T1_fast_seg.nii.gz T1/T1_fast/T1_brain_seg.nii.gz
+
+
 else
 
     cd T2
@@ -139,12 +149,12 @@ else
 
     cd ..
 
+    #Run multichannel FAST
+    ${FSLDIR}/bin/fast -S 2 -n 3 -H 0.1 -I 1 -l 20.0 -o T1/T1_fast/T1_brain T1_unbiased_brain T2/T2_fast/T2_fast_restore.nii.gz
+
 fi
 
 cd T1
-
-#Run multichannel FAST
-${FSLDIR}/bin/fast -S 2 -n 3 -H 0.1 -I 1 -l 20.0 -o T1_fast/T1_brain T1_unbiased_brain ../T2/T2_fast/T2_fast_restore.nii.gz
 
 
 #Binarize PVE masks
