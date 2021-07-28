@@ -29,7 +29,7 @@ import copy
 import nibabel as nib
 import bb_logging_tool as LT
 import sys,argparse,os.path,shutil
-import bb_general_tools.bb_path as bb_path
+#import bb_general_tools.bb_path as bb_path
 from subprocess import check_output
 
 logger=None
