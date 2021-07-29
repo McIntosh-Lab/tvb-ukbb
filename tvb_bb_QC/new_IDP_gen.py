@@ -130,7 +130,7 @@ def FC_distribution(subj):
                     print("squared error: "+str(squared_error))
                     #plt.plot(pdf_fitted, label=dist_name)    
                 #plt.show()
-                    write_to_IDP_file(subj, "FC_"+dist_name+"_MSE", "tvb_IDP_FC_distribution", str(num_in_cat), "FC_"+dist_name+"_Mean_Squared_Error", "pearon correlation coefficient 2", "float", "Functional connectivity - mean squared error for "+dist_name+" distribution fit", str(squared_error))
+                    write_to_IDP_file(subj, "FC_"+dist_name+"_MSE_"+file, "tvb_IDP_FC_distribution", str(num_in_cat), "FC_"+dist_name+"_Mean_Squared_Error_"+file, "pearson correlation coefficient 2", "float", "Functional connectivity - mean squared error for "+dist_name+" distribution fit for "+file, str(squared_error))
                     num_in_cat+=1
 
     except:
