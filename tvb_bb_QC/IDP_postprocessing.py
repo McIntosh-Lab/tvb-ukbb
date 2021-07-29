@@ -123,6 +123,8 @@ def IDP_postprocessing(subj, IDP_list_path, IDPoi_list_path, thresholds_txt):
     i = 0
     #remove header
     IDP_list = IDP_list[1:]
+
+    #cleaning just in case - should run fine even if data is already clean
     while i < len(IDP_list):
         IDP_list[i] = IDP_list[i].replace('"', "")
         IDP_list[i] = " ".join(IDP_list[i].split())
@@ -259,9 +261,9 @@ def IDP_postprocessing(subj, IDP_list_path, IDPoi_list_path, thresholds_txt):
             f.write(failed_IDP+"\n")
             f.close()
 
-        print(IDPs_with_thresholds)
+        #print(IDPs_with_thresholds)
 
-
+        #merging with threshold information
         priority_output = priority_output.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
         non_priority_output = non_priority_output.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
         compiled_IDPs = compiled_IDPs.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
