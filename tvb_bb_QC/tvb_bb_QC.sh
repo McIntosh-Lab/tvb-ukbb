@@ -301,7 +301,10 @@ export FSLDIR=/opt/HCPpipelines-4.1.3/fsl
 ### IDP REPORT GEN ###
 	
 	python $BB_BIN_DIR/tvb_bb_QC/new_IDP_gen.py $dirSubject $PARC_LUT
-	python $BB_BIN_DIR/tvb_bb_QC/IDP_postprocessing.py $dirSubject $PARC_LUT $BB_BIN_DIR/bb_IDP/thresholds.txt
+	#python $BB_BIN_DIR/tvb_bb_QC/IDP_postprocessing.py $dirSubject $PARC_LUT $BB_BIN_DIR/bb_IDP/thresholds.txt
+	python $BB_BIN_DIR/tvb_bb_QC/IDP_postprocessing.py $dirSubject $BB_BIN_DIR/bb_IDP/ukbb_IDP_list.txt $BB_BIN_DIR/bb_IDP/IDPoi.txt $BB_BIN_DIR/bb_IDP/thresholds.txt
+	#TODO: only give $BB_BIN_DIR as arg for above and resolve relative pathing in script
+	
 	python $BB_BIN_DIR/tvb_bb_QC/IDP_html_gen.py $dirSubject
 
 
