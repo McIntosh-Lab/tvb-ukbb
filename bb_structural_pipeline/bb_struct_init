@@ -150,7 +150,7 @@ else
     cd ..
 
     #Run multichannel FAST
-    ${FSLDIR}/bin/fast -S 2 -n 3 -H 0.1 -I 1 -l 20.0 -o T1/T1_fast/T1_brain T1_unbiased_brain T2/T2_fast/T2_fast_restore.nii.gz
+    ${FSLDIR}/bin/fast -S 2 -n 3 -H 0.1 -I 1 -l 20.0 -o T1/T1_fast/T1_brain T1/T1_unbiased_brain T2/T2_fast/T2_fast_restore.nii.gz
 
 fi
 
@@ -160,7 +160,7 @@ cd T1
 #Binarize PVE masks
 if [ -f T1_fast/T1_brain_pveseg.nii.gz ] ; then
 
-    python $BB_BIN_DIR/bb_structural_pipeline/rename_pve.py $1/T1/T1.nii.gz $1/T1/T1_fast/T1_brain_pve_0.nii.gz $1/T1/T1_fast/T1_brain_pve_1.nii.gz $1/T1/T1_fast/T1_brain_pve_2.nii.gz
+    python $BB_BIN_DIR/bb_structural_pipeline/rename_pve.py T1.nii.gz T1_fast/T1_brain_pve_0.nii.gz T1_fast/T1_brain_pve_1.nii.gz T1_fast/T1_brain_pve_2.nii.gz
 
     $FSLDIR/bin/fslmaths T1_fast/T1_brain_pve_0.nii.gz -thr 0.5 -bin T1_fast/T1_brain_WM_mask.nii.gz
     $FSLDIR/bin/fslmaths T1_fast/T1_brain_pve_1.nii.gz -thr 0.5 -bin T1_fast/T1_brain_GM_mask.nii.gz
@@ -191,12 +191,12 @@ ${FSLDIR}/bin/fslmaths T1_fast/T1_brain_GM_mask_noCerebBS_dil -add T1_fast/T1_br
 
 
 #check interface, re-do with extra dilation if empty
-maskMAX=$(fslstats $1/T1/interface -R | awk '{print int($2)}')
+maskMAX=$(fslstats interface -R | awk '{print int($2)}')
 if [ $maskMAX -lt 1 ]
 then
      echo "interface mask empty, dilating GM mask by 2 and re-doing interface"
-     ${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS -kernel sphere 2 -dilM $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS_dil2
-     ${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS_dil2 -add $1/T1/T1_fast/T1_brain_WM_mask_noCerebBS -thr 2 -bin $1/T1/interface
+     ${FSLDIR}/bin/fslmaths T1_fast/T1_brain_GM_mask_noCerebBS -kernel sphere 2 -dilM T1_fast/T1_brain_GM_mask_noCerebBS_dil2
+     ${FSLDIR}/bin/fslmaths T1_fast/T1_brain_GM_mask_noCerebBS_dil2 -add T1_fast/T1_brain_WM_mask_noCerebBS -thr 2 -bin interface
 fi
 
 
