@@ -31,7 +31,7 @@ sys.path.insert(1, os.path.dirname(__file__) + "/..")
 import bb_pipeline_tools.bb_logging_tool as LT
 
 
-def tvb_bb_QC(subject, jobHold, fileConfiguration):
+def tvb_bb_QC(subject, fileConfiguration):
 
     logger = LT.initLogging(__file__, subject)
     logDir = logger.logDir
@@ -39,19 +39,15 @@ def tvb_bb_QC(subject, jobHold, fileConfiguration):
 
     subname = subject.replace("/", "_")
 
+    print("Beginning QC pipeline...")
     jobQC = LT.runCommand(
         logger,
-        #'${FSLDIR}/bin/fsl_sub -T 30 -N "bb_IDP_'
-        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "tvb_bb_QC_'
-        + subname
-        + '" -j '
-        + jobHold
-        + "  -l "
-        + logDir
         + " xvfb-run -a $BB_BIN_DIR/tvb_bb_QC/tvb_bb_QC.sh "  # -s '-screen 0 640x480x24'
         + subject,
+        "tvb_bb_QC_"
+        + subname
     )
-    print("SUBMITTED QC")
+    print("QC pipeline complete.")
     return jobQC
 
 
