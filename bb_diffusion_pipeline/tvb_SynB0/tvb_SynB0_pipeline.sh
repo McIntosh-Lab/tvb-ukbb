@@ -1,0 +1,61 @@
+#!/bin/bash
+
+direc=$PWD/$1
+SynB0_OUTPUTS=${direc}/dMRI/dMRI/SynB0
+
+SynB0_TOPUP=1
+
+for arg in "$@"
+do
+    case $arg in
+        -i|--notopup)
+        SynB0_TOPUP=0
+    esac
+done
+
+
+# Set paths for executables
+SynB0_DIR=$BB_BIN_DIR/bb_diffusion_pipeline/tvb_SynB0
+export PATH=$PATH:$SynB0_DIR/data_processing:$SynB0_DIR/src
+export PATH=$PATH:/Applications/Convert3DGUI.app/Contents/bin/ # << this should be part of ANTS?? Will have to check CC
+
+# Set up ANTS << move to init_vars?
+export ANTSPATH=/Applications/ANTs/install/bin # MODIFY for CC
+export PATH=$PATH:$ANTSPATH:/Applications/ANTS/Scripts # MODIFY for CC
+
+# Set up pytorch << move to init_vars?
+source /extra/pytorch/bin/activate #MODIFY for CC
+
+# Prepare input
+${SynB0_DIR}/data_processing/prepare_input.sh ${direc}/dMRI/dMRI/DWI_B0.nii.gz ${direc}/T1/T1_unbiased.nii.gz.nii.gz ${direc}/T1/T1_unbiased_brain.nii.gz ${SynB0_DIR}/atlases/mni_icbm152_t1_tal_nlin_asym_09c.nii.gz ${SynB0_DIR}/atlases/mni_icbm152_t1_tal_nlin_asym_09c_2_5.nii.gz $SynB0_OUTPUTS
+
+# Run inference
+NUM_FOLDS=5
+for i in $(seq 1 $NUM_FOLDS);
+  do echo Performing inference on FOLD: "$i"
+  python $SynB0_DIR/src/inference.py $SynB0_OUTPUTS/T1_norm_lin_atlas_2_5.nii.gz $SynB0_OUTPUTS/b0_d_lin_atlas_2_5.nii.gz $SynB0_OUTPUTS/b0_u_lin_atlas_2_5_FOLD_"$i".nii.gz $SynB0_DIR/src/train_lin/num_fold_"$i"_total_folds_"$NUM_FOLDS"_seed_1_num_epochs_100_lr_0.0001_betas_\(0.9\,\ 0.999\)_weight_decay_1e-05_num_epoch_*.pth
+done
+
+# Take mean
+echo Taking ensemble average
+fslmerge -t $SynB0_OUTPUTS/b0_u_lin_atlas_2_5_merged.nii.gz $SynB0_OUTPUTS/b0_u_lin_atlas_2_5_FOLD_*.nii.gz
+fslmaths $SynB0_OUTPUTS/b0_u_lin_atlas_2_5_merged.nii.gz -Tmean $SynB0_OUTPUTS/b0_u_lin_atlas_2_5.nii.gz
+
+# Apply inverse xform to undistorted b0
+echo Applying inverse xform to undistorted b0
+antsApplyTransforms -d 3 -i $SynB0_OUTPUTS/b0_u_lin_atlas_2_5.nii.gz -r $SynB0_OUTPUTS/b0.nii.gz -n BSpline -t [$SynB0_OUTPUTS/epi_reg_d_ANTS.txt,1] -t [$SynB0_OUTPUTS/ANTS0GenericAffine.mat,1] -o $SynB0_OUTPUTS/b0_u.nii.gz
+
+# Smooth image
+echo Applying slight smoothing to distorted b0
+fslmaths ${direc}/dMRI/dMRI/DWI_B0.nii.gz -s 1.15 $SynB0_OUTPUTS/DWI_B0_d_smooth.nii.gz
+
+if [[ $SynB0_TOPUP -eq 1 ]]; then
+    # Merge results and run through topup
+    echo Running topup
+    fslmerge -t $SynB0_OUTPUTS/DWI_B0_all.nii.gz $SynB0_OUTPUTS/DWI_B0_d_smooth.nii.gz $SynB0_OUTPUTS/DWI_B0_u.nii.gz
+    topup -v --imain=$SynB0_OUTPUTS/DWI_B0_all.nii.gz --datain=${direc}/dMRI/dMRI/acqparams.txt --config=b02b0.cnf --iout=$SynB0_OUTPUTS/DWI_B0_all_topup.nii.gz --out=$SynB0_OUTPUTS/topup --subsamp=1,1,1,1,1,1,1,1,1 --miter=10,10,10,10,10,20,20,30,30 --lambda=0.00033,0.000067,0.0000067,0.000001,0.00000033,0.000000033,0.0000000033,0.000000000033,0.00000000000067 --scale=0
+fi
+
+
+# Done
+echo FINISHED!!!
