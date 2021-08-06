@@ -17,14 +17,14 @@ done
 # Set paths for executables
 SynB0_DIR=$BB_BIN_DIR/bb_diffusion_pipeline/tvb_SynB0
 export PATH=$PATH:$SynB0_DIR/data_processing:$SynB0_DIR/src
-export PATH=$PATH:/Applications/Convert3DGUI.app/Contents/bin/ # << this should be part of ANTS?? Will have to check CC
+#export PATH=$PATH:/Applications/Convert3DGUI.app/Contents/bin/ # << why did I add this?
 
 # Set up ANTS << move to init_vars?
-export ANTSPATH=/Applications/ANTs/install/bin # MODIFY for CC
-export PATH=$PATH:$ANTSPATH:/Applications/ANTS/Scripts # MODIFY for CC
+export ANTSPATH="/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Compiler/gcc9/ants/2.3.5/bin"
+#export PATH=$PATH:$ANTSPATH:/Applications/ANTS/Scripts # these look like they're in ants /bin folder on CC already
 
-# Set up pytorch << move to init_vars?
-source /extra/pytorch/bin/activate #MODIFY for CC
+# Set up pytorch
+source /extra/pytorch/bin/activate # do I need to create a virtual environment on CC to activate this?
 
 # Prepare input
 ${SynB0_DIR}/data_processing/SynB0_prepare_input.sh ${direc}/dMRI/dMRI/DWI_B0.nii.gz ${direc}/T1/T1_unbiased.nii.gz.nii.gz ${direc}/T1/T1_unbiased_brain.nii.gz ${SynB0_DIR}/atlases/mni_icbm152_t1_tal_nlin_asym_09c.nii.gz ${SynB0_DIR}/atlases/mni_icbm152_t1_tal_nlin_asym_09c_2_5.nii.gz $SynB0_OUTPUTS
