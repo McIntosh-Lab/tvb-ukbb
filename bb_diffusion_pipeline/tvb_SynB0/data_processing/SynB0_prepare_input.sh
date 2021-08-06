@@ -31,7 +31,7 @@ echo -------
 echo Normalizing T1
 T1_N3_PATH=$JOB_PATH/T1_N3.nii.gz
 T1_NORM_PATH=$JOB_PATH/T1_norm.nii.gz
-NORMALIZE_CMD="normalize_T1.sh $T1_PATH $T1_N3_PATH $T1_NORM_PATH"
+NORMALIZE_CMD="SynB0_normalize_T1.sh $T1_PATH $T1_N3_PATH $T1_NORM_PATH"
 echo $NORMALIZE_CMD
 eval $NORMALIZE_CMD
 
