@@ -27,13 +27,13 @@ export PATH=$PATH:$ANTSPATH:/Applications/ANTS/Scripts # MODIFY for CC
 source /extra/pytorch/bin/activate #MODIFY for CC
 
 # Prepare input
-${SynB0_DIR}/data_processing/prepare_input.sh ${direc}/dMRI/dMRI/DWI_B0.nii.gz ${direc}/T1/T1_unbiased.nii.gz.nii.gz ${direc}/T1/T1_unbiased_brain.nii.gz ${SynB0_DIR}/atlases/mni_icbm152_t1_tal_nlin_asym_09c.nii.gz ${SynB0_DIR}/atlases/mni_icbm152_t1_tal_nlin_asym_09c_2_5.nii.gz $SynB0_OUTPUTS
+${SynB0_DIR}/data_processing/SynB0_prepare_input.sh ${direc}/dMRI/dMRI/DWI_B0.nii.gz ${direc}/T1/T1_unbiased.nii.gz.nii.gz ${direc}/T1/T1_unbiased_brain.nii.gz ${SynB0_DIR}/atlases/mni_icbm152_t1_tal_nlin_asym_09c.nii.gz ${SynB0_DIR}/atlases/mni_icbm152_t1_tal_nlin_asym_09c_2_5.nii.gz $SynB0_OUTPUTS
 
 # Run inference
 NUM_FOLDS=5
 for i in $(seq 1 $NUM_FOLDS);
   do echo Performing inference on FOLD: "$i"
-  python $SynB0_DIR/src/inference.py $SynB0_OUTPUTS/T1_norm_lin_atlas_2_5.nii.gz $SynB0_OUTPUTS/b0_d_lin_atlas_2_5.nii.gz $SynB0_OUTPUTS/b0_u_lin_atlas_2_5_FOLD_"$i".nii.gz $SynB0_DIR/src/train_lin/num_fold_"$i"_total_folds_"$NUM_FOLDS"_seed_1_num_epochs_100_lr_0.0001_betas_\(0.9\,\ 0.999\)_weight_decay_1e-05_num_epoch_*.pth
+  python $SynB0_DIR/src/SynB0_inference.py $SynB0_OUTPUTS/T1_norm_lin_atlas_2_5.nii.gz $SynB0_OUTPUTS/b0_d_lin_atlas_2_5.nii.gz $SynB0_OUTPUTS/b0_u_lin_atlas_2_5_FOLD_"$i".nii.gz $SynB0_DIR/src/train_lin/num_fold_"$i"_total_folds_"$NUM_FOLDS"_seed_1_num_epochs_100_lr_0.0001_betas_\(0.9\,\ 0.999\)_weight_decay_1e-05_num_epoch_*.pth
 done
 
 # Take mean

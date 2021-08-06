@@ -80,7 +80,7 @@ if __name__ == '__main__':
     # Run code ---------------------------------------------#
 
     # Get device
-    device = torch.device("cpu")
+    device = torch.device("cpu") #<< change back go gpu for CC?
 
     # Get model
     model = UNet3D(2, 1).to(device)
