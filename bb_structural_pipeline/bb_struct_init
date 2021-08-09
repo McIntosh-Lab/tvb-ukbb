@@ -98,11 +98,11 @@ fi
 
 
 #Generate additional registration to age-specific template (and its inverse) and apply to FAST priors
-${FSLDIR}/bin/flirt -in T1_unbiased_brain -ref $AGE_SPEC_PREFIX -o transforms/T1_to_AgeSpecTemplate
+${FSLDIR}/bin/flirt -in T1_unbiased_brain -ref $AGE_SPEC_TEMPLATE -o transforms/T1_to_AgeSpecTemplate
 ${FSLDIR}/bin/convert_xfm -omat transforms/AgeSpecTemplate_to_T1_brain.mat -inverse transforms/T1_brain_to_AgeSpecTemplate.mat
-${FSLDIR}/bin/flirt -interp nearestneighbour -in ${AGE_SPEC_PREFIX}_image_seg_csf -ref T1_unbiased_brain -out T1_fast/priors_csf -init transforms/AgeSpecTemplate_to_T1_brain.mat -applyxfm
-${FSLDIR}/bin/flirt -interp nearestneighbour -in ${AGE_SPEC_PREFIX}_image_seg_gm -ref T1_unbiased_brain -out T1_fast/priors_gm -init transforms/AgeSpecTemplate_to_T1_brain.mat -applyxfm
-${FSLDIR}/bin/flirt -interp nearestneighbour -in ${AGE_SPEC_PREFIX}_image_seg_wm -ref T1_unbiased_brain -out T1_fast/priors_wm -init transforms/AgeSpecTemplate_to_T1_brain.mat -applyxfm
+${FSLDIR}/bin/flirt -interp nearestneighbour -in ${FAST_PRIORS_PREFIX}_image_seg_csf -ref T1_unbiased_brain -out T1_fast/priors_csf -init transforms/AgeSpecTemplate_to_T1_brain.mat -applyxfm
+${FSLDIR}/bin/flirt -interp nearestneighbour -in ${FAST_PRIORS_PREFIX}_image_seg_gm -ref T1_unbiased_brain -out T1_fast/priors_gm -init transforms/AgeSpecTemplate_to_T1_brain.mat -applyxfm
+${FSLDIR}/bin/flirt -interp nearestneighbour -in ${FAST_PRIORS_PREFIX}_image_seg_wm -ref T1_unbiased_brain -out T1_fast/priors_wm -init transforms/AgeSpecTemplate_to_T1_brain.mat -applyxfm
 
 #Run FAST with age-specific priors on bias-corrected T1 brain
 ${FSLDIR}/bin/fast -N -A T1_fast/priors_csf T1_fast/priors_gm T1_fast/priors_wm -o T1_fast/T1_brain T1_unbiased_brain
