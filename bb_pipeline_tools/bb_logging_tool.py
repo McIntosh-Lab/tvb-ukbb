@@ -99,7 +99,7 @@ def runCommand(logger, command, jobname):
 
         # TODO: remove decode since there's no need to do so
         # jobOUTPUT=jobOUTPUT.decode("UTF-8")
-        logger.info("COMMAND OUTPUT: \t" + jobOUTPUT.strip())
+        logger.info("COMMAND OUTPUT: \t" + jobOUTPUT.stderr)
 
     except Exception as e:
         logger.error("Exception raised during execution of: \t" + command.strip())
@@ -108,4 +108,5 @@ def runCommand(logger, command, jobname):
         logger.error("Exception message: \t" + str(e))
 
         jobOUTPUT = ""
-    return jobOUTPUT.strip()
+    # placeholder for now until i strip out all the returns
+    return ""
