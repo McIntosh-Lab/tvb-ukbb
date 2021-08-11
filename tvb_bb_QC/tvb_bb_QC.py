@@ -22,7 +22,10 @@
 # limitations under the License.
 #
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 972eee20d4fc0a73ec4dd0e9cba3d4e6da8cbf78
 import os.path
 import sys
 import json
@@ -42,7 +45,11 @@ def tvb_bb_QC(subject, fileConfiguration):
     print("Beginning QC pipeline...")
     jobQC = LT.runCommand(
         logger,
+<<<<<<< HEAD
         + " xvfb-run -a $BB_BIN_DIR/tvb_bb_QC/tvb_bb_QC.sh "  # -s '-screen 0 640x480x24'
+=======
+        " xvfb-run -a $BB_BIN_DIR/tvb_bb_QC/tvb_bb_QC.sh "  # -s '-screen 0 640x480x24'
+>>>>>>> 972eee20d4fc0a73ec4dd0e9cba3d4e6da8cbf78
         + subject,
         "tvb_bb_QC_"
         + subname
@@ -51,7 +58,10 @@ def tvb_bb_QC(subject, fileConfiguration):
     return jobQC
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 972eee20d4fc0a73ec4dd0e9cba3d4e6da8cbf78
 if __name__ == "__main__":
     # grab subject name from command
     subject = sys.argv[1]
@@ -70,4 +80,8 @@ if __name__ == "__main__":
         print(f"{json_path} could not be loaded. Exiting")
         sys.exit(1)
     # call pipeline
+<<<<<<< HEAD
     tvb_bb_QC(subject, "-1", fileConfig)
+=======
+    tvb_bb_QC(subject, fileConfig)
+>>>>>>> 972eee20d4fc0a73ec4dd0e9cba3d4e6da8cbf78

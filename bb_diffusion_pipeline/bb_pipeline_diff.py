@@ -30,7 +30,7 @@ sys.path.insert(1, os.path.dirname(__file__) + "/..")
 import bb_pipeline_tools.bb_logging_tool as LT
 
 
-def bb_pipeline_diff(subject, jobHold, fileConfiguration):
+def bb_pipeline_diff(subject, fileConfiguration):
 
     logger = LT.initLogging(__file__, subject)
     logDir = logger.logDir
@@ -118,7 +118,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
         "$BB_BIN_DIR/bb_diffusion_pipeline/bb_bedpostx/bb_pre_bedpostx_gpu "
         + baseDir
         + "/dMRI",
-        "bb_pre_bedpostx_gpu"
+        "bb_pre_bedpostx_gpu_"
         + subname
     )
     print("pre_bedpostx completed.")
@@ -129,7 +129,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
         "$BB_BIN_DIR/bb_diffusion_pipeline/bb_bedpostx/bb_bedpostx_gpu "
         + baseDir
         + "/dMRI",
-        "bb_bedpostx_gpu"
+        "bb_bedpostx_gpu_"
         + subname
     )
     print("bedpostx completed.")
@@ -192,8 +192,6 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     return jobPOSTPROBTRACKX
 
 
-
-
 if __name__ == "__main__":
     # grab subject name from command
     subject = sys.argv[1]
@@ -212,4 +210,4 @@ if __name__ == "__main__":
         print(f"{json_path} could not be loaded. Exiting")
         sys.exit(1)
     # call pipeline
-    bb_pipeline_diff(subject, "-1", fileConfig)
+    bb_pipeline_diff(subject, fileConfig)

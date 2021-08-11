@@ -30,7 +30,7 @@ sys.path.insert(1, os.path.dirname(__file__) + "/..")
 import bb_pipeline_tools.bb_logging_tool as LT
 
 
-def bb_pipeline_func(subject, jobHold, fileConfiguration):
+def bb_pipeline_func(subject, fileConfiguration):
 
     logger = LT.initLogging(__file__, subject)
     logDir = logger.logDir
@@ -205,4 +205,4 @@ if __name__ == "__main__":
         print(f"{json_path} could not be loaded. Exiting")
         sys.exit(1)
     # call pipeline
-    bb_pipeline_func(subject, "-1", fileConfig)
+    bb_pipeline_func(subject, fileConfig)

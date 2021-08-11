@@ -68,4 +68,4 @@ if __name__ == "__main__":
         print(f"{json_path} could not be loaded. Exiting")
         sys.exit(1)
     # call pipeline
-    bb_IDP(subject, "-1", fileConfig)
+    bb_IDP(subject, fileConfig)
