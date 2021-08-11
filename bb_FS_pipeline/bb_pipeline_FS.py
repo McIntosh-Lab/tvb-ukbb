@@ -44,36 +44,24 @@ def bb_pipeline_FS(subject, jobHold, fileConfiguration):
     else:
         jobFS01 = LT.runCommand(
             logger,
-            'fsl_sub -q ${QUEUE_STANDARD}  -N "bb_FS_run_'
-            + subname
-            + '" -l '
-            + logDir
-            + " -j "
-            + jobHold
-            + " $BB_BIN_DIR/bb_FS_pipeline/bb_FS_run.sh  "
+            " $BB_BIN_DIR/bb_FS_pipeline/bb_FS_run.sh  "
             + subject,
+            "bb_FS_run_"
+            + subname
         )
         jobFS02 = LT.runCommand(
             logger,
-            'fsl_sub -q ${QUEUE_STANDARD} -N "bb_FS_segm_'
-            + subname
-            + '" -l '
-            + logDir
-            + " -j "
-            + jobFS01
             + " $BB_BIN_DIR/bb_FS_pipeline/bb_FS_segm.sh "
             + subject,
+            "bb_FS_segm_"
+            + subname
         )
         jobFS03 = LT.runCommand(
             logger,
-            'fsl_sub -q ${QUEUE_STANDARD} -N "bb_FS_IDPs_'
-            + subname
-            + '" -l '
-            + logDir
-            + " -j "
-            + jobFS02
             + " $BB_BIN_DIR/bb_FS_pipeline/bb_FS_get_IDPs.py "
             + subject,
+            "bb_FS_IDPs_"
+            + subname
         )
 
         LT.finishLogging(logger)

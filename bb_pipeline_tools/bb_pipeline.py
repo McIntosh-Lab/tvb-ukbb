@@ -97,6 +97,7 @@ def main(cli_args=None):
     jobSTEP2 = "-1"
     jobSTEP3 = "-1"
     jobSTEP4 = "-1"
+    jobSTEP5 = "-1"
 
     # jobSTEP1 = bb_pipeline_struct(subject, runTopup, fileConfig)
     bb_pipeline_struct(subject, runTopup, fileConfig)
@@ -134,12 +135,8 @@ def main(cli_args=None):
 
     tvb_bb_QC(
         subject,
-        str(jobSTEP1) + "," + str(jobSTEP2) + "," + str(jobSTEP3) + "," + str(jobSTEP4),
-        fileConfig,
+        fileConfig
     )
-
-
-    
 
     LT.finishLogging(logger)
     # return jobSTEP5

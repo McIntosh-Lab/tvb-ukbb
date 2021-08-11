@@ -147,11 +147,14 @@ c 3rd ori or b=2000  (if not hidden)
     if (document.getElementsByName(component_type)[0].options[document.getElementsByName(component_type)[0].selectedIndex].text.toUpperCase().startsWith("SIGNAL") ){
       color="green"
     }
+<<<<<<< HEAD
 
     if (document.getElementsByName(component_type)[0].options[document.getElementsByName(component_type)[0].selectedIndex].text.toUpperCase().startsWith("UNKNOWN") ){
       color="yellow"
     }
     
+=======
+>>>>>>> 972eee20d4fc0a73ec4dd0e9cba3d4e6da8cbf78
     //document.getElementById("analysis_title").innerHTML = document.getElementById("Analysis").options[document.getElementById("Analysis").selectedIndex].text.toUpperCase();
 
     document.getElementById("analysis_title_0").innerHTML = document.getElementById("ICA").options[document.getElementById("ICA").selectedIndex].text;

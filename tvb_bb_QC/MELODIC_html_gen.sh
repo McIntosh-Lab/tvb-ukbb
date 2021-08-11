@@ -71,7 +71,10 @@ cat > $MELODIC_html << EOF
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+<<<<<<< HEAD
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
+=======
+>>>>>>> 972eee20d4fc0a73ec4dd0e9cba3d4e6da8cbf78
   </div>
 </header>
 
@@ -84,7 +87,10 @@ cat > $MELODIC_html << EOF
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+<<<<<<< HEAD
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
+=======
+>>>>>>> 972eee20d4fc0a73ec4dd0e9cba3d4e6da8cbf78
 </div>
 </div>
 
@@ -156,8 +162,13 @@ EOF
 #printing components
 for t in ${array[@]}; do
   rfMRI_ver=`basename $t`
+<<<<<<< HEAD
   #TODO: deal with multiple fix4melview
   file=$(find $t -maxdepth 1 -name "fix4melview_*.txt") #TODO: multiple fix4melviews will be separated by spaces. needs to be handled 
+=======
+  #deal with multiple fix4melview
+  file=$(find $t -maxdepth 1 -name "fix4melview_*.txt" -print0)
+>>>>>>> 972eee20d4fc0a73ec4dd0e9cba3d4e6da8cbf78
 
 
     num=`tail -n2 $file| head -n1`
@@ -170,6 +181,7 @@ for t in ${array[@]}; do
   IFS=', ' read -r -a noise_array <<< "$noise"
 
 
+<<<<<<< HEAD
   declare -a unknown_array=()
 
   while read line; do
@@ -180,6 +192,8 @@ for t in ${array[@]}; do
     fi
   done < $file
 
+=======
+>>>>>>> 972eee20d4fc0a73ec4dd0e9cba3d4e6da8cbf78
 cat <<EOF >> $MELODIC_html
 
 <!-- Component -->
@@ -223,6 +237,7 @@ done
 
 cat <<EOF >> $MELODIC_html
     </optgroup>
+<<<<<<< HEAD
     <optgroup label="Unknown">
 EOF
 
@@ -243,6 +258,8 @@ done
 
 cat <<EOF >> $MELODIC_html
     </optgroup>
+=======
+>>>>>>> 972eee20d4fc0a73ec4dd0e9cba3d4e6da8cbf78
   </select></label>
 
 
@@ -287,7 +304,11 @@ for t in ${array[@]}; do
   echo $folder
 
 
+<<<<<<< HEAD
     file=$(find $t -maxdepth 1 -name "fix4melview_*.txt") #TODO: multiple fix4melviews will be separated by spaces. needs to be handled
+=======
+    file=$(find $t -maxdepth 1 -name "fix4melview_*.txt" -print0)
+>>>>>>> 972eee20d4fc0a73ec4dd0e9cba3d4e6da8cbf78
 
 
     num=`tail -n2 $file| head -n1`
@@ -316,10 +337,17 @@ for t in ${array[@]}; do
       SIG_or_NOISE="NOISE"
       # whatever you want to do when array contains value
     else
+<<<<<<< HEAD
       SIG_or_NOISE="SIGNAL OR UNKNOWN"
     fi
 
     IC_html=$report_dir/IC_${n}.html
+=======
+      SIG_or_NOISE="SIGNAL"
+    fi
+
+      IC_html=$report_dir/IC_${n}.html
+>>>>>>> 972eee20d4fc0a73ec4dd0e9cba3d4e6da8cbf78
     IC_MM_html=$report_dir/IC_${n}_MM.html
 
     IC_MMfit_png=$report_dir/IC_${n}_MMfit.png

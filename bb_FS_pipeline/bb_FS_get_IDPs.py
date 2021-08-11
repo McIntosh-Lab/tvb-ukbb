@@ -47,22 +47,22 @@ def generate_FS_IDP_files(SUBJECTS_DIR, subject_ID, subject, dataDir, \
     if os.path.isfile(statsDir + 'aseg.stats'):
         LT.runCommand(logger, 'python2.7 $FREESURFER_HOME/bin/asegstats2table  '+\
            ' -m volume --all-segs --tablefile ' + dataDir + 'aseg_1.txt ' +\
-           ' --subjects ' + subject_ID + ' --skip')
+           ' --subjects ' + subject_ID + ' --skip', "FS_IDP_aseg_1_"+subject_ID)
         LT.runCommand(logger, 'python2.7 $FREESURFER_HOME/bin/asegstats2table  '+\
             ' -m mean --all-segs --tablefile ' + dataDir + 'aseg_intensity.txt ' +\
-            ' --subjects ' + subject_ID + ' --skip')
+            ' --subjects ' + subject_ID + ' --skip', "FS_IDP_aseg_intensity_"+subject_ID)
 
     if os.path.isfile(statsDir + 'lh.w-g.pct.stats'):
         LT.runCommand(logger, 'python2.7 $FREESURFER_HOME/bin/asegstats2table ' +\
             ' -m mean --all-segs --stats=lh.w-g.pct.stats ' +\
             ' --tablefile ' + dataDir + 'wg_lh_mean.txt ' +\
-            ' --subjects ' + subject_ID + ' --skip')
+            ' --subjects ' + subject_ID + ' --skip', "FS_IDP_wg_lh_"+subject_ID)
 
     if os.path.isfile(statsDir + 'rh.w-g.pct.stats'):
         LT.runCommand(logger, 'python2.7 $FREESURFER_HOME/bin/asegstats2table ' +\
             ' -m mean --all-segs --stats=rh.w-g.pct.stats ' +\
             ' --tablefile ' + dataDir + 'wg_rh_mean.txt ' +\
-            ' --subjects ' + subject_ID + ' --skip')
+            ' --subjects ' + subject_ID + ' --skip', "FS_IDP_wg_rh_"+subject_ID)
 
     for hemi in ["lh", "rh"]:
         for value in ["volume", "area", "thickness"]:
@@ -72,7 +72,7 @@ def generate_FS_IDP_files(SUBJECTS_DIR, subject_ID, subject, dataDir, \
                     LT.runCommand(logger, 'python2.7 $FREESURFER_HOME/bin/aparcstats2table '+\
                         ' -m ' + value + ' --hemi=' + hemi +\
                         ' --tablefile ' + outFileName +\
-                        ' --subjects ' + subject_ID + ' --skip -p ' + atlas )
+                        ' --subjects ' + subject_ID + ' --skip -p ' + atlas,  "FS_IDP_hemi_"+subject_ID)
 
     atlas="aparc.pial"
     value="area"
@@ -82,7 +82,7 @@ def generate_FS_IDP_files(SUBJECTS_DIR, subject_ID, subject, dataDir, \
             LT.runCommand(logger, 'python2.7 $FREESURFER_HOME/bin/aparcstats2table '+\
                 ' -m ' + value + ' --hemi=' + hemi +\
                 ' --tablefile ' + outFileName +\
-                ' --subjects ' + subject_ID + ' --skip -p ' + atlas )
+                ' --subjects ' + subject_ID + ' --skip -p ' + atlas,  "FS_IDP_hemi_"+subject_ID)
 
     with open(os.environ["BB_BIN_DIR"]+'/bb_data/FS_initial_files.txt') as f:
         files_generated = [x.replace('\n','').split(" ") for x in f.readlines()]

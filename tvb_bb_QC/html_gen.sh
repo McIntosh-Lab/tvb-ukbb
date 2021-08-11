@@ -18,7 +18,10 @@ cp $BB_BIN_DIR/tvb_bb_QC/resources/sidebartoggles.js $subjdir$html_output_dir
 cp $BB_BIN_DIR/tvb_bb_QC/resources/toggles.js $subjdir$html_output_dir
 cp $BB_BIN_DIR/tvb_bb_QC/resources/togglesSCFC.js $subjdir$html_output_dir
 cp $BB_BIN_DIR/tvb_bb_QC/resources/togglesMELODIC.js $subjdir$html_output_dir
+<<<<<<< HEAD
 cp $BB_BIN_DIR/tvb_bb_QC/resources/togglesIDP.js $subjdir$html_output_dir
+=======
+>>>>>>> 972eee20d4fc0a73ec4dd0e9cba3d4e6da8cbf78
 cp $BB_BIN_DIR/tvb_bb_QC/resources/zoomer.js $subjdir$html_output_dir
 cp $BB_BIN_DIR/tvb_bb_QC/resources/notes.txt $subjdir$html_output_dir"/notes"
 cp $BB_BIN_DIR/tvb_bb_QC/resources/1.jpg $subjdir$html_output_dir"/images"
@@ -89,7 +92,10 @@ cat > $subjdir$html_output_dir"/report.html" << EOF
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+<<<<<<< HEAD
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
+=======
+>>>>>>> 972eee20d4fc0a73ec4dd0e9cba3d4e6da8cbf78
   </div>
 </header>
 
@@ -102,7 +108,10 @@ cat > $subjdir$html_output_dir"/report.html" << EOF
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+<<<<<<< HEAD
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
+=======
+>>>>>>> 972eee20d4fc0a73ec4dd0e9cba3d4e6da8cbf78
 </div>
 </div>
 <!-- Page content -->
@@ -186,7 +195,10 @@ cat > $subjdir$html_output_dir"/anat.html" << EOF
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+<<<<<<< HEAD
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
+=======
+>>>>>>> 972eee20d4fc0a73ec4dd0e9cba3d4e6da8cbf78
   </div>
 </header>
 
@@ -199,7 +211,10 @@ cat > $subjdir$html_output_dir"/anat.html" << EOF
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+<<<<<<< HEAD
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
+=======
+>>>>>>> 972eee20d4fc0a73ec4dd0e9cba3d4e6da8cbf78
 </div>
 </div>
 <!-- Page content -->
@@ -469,7 +484,10 @@ cat > $subjdir$html_output_dir"/DTI.html" << EOF
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+<<<<<<< HEAD
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
+=======
+>>>>>>> 972eee20d4fc0a73ec4dd0e9cba3d4e6da8cbf78
   </div>
 </header>
 
@@ -482,7 +500,10 @@ cat > $subjdir$html_output_dir"/DTI.html" << EOF
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+<<<<<<< HEAD
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
+=======
+>>>>>>> 972eee20d4fc0a73ec4dd0e9cba3d4e6da8cbf78
 </div>
 </div>
 
@@ -771,7 +792,10 @@ cat > $subjdir$html_output_dir"/fMRI.html" << EOF
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+<<<<<<< HEAD
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
+=======
+>>>>>>> 972eee20d4fc0a73ec4dd0e9cba3d4e6da8cbf78
   </div>
 </header>
 
@@ -784,7 +808,10 @@ cat > $subjdir$html_output_dir"/fMRI.html" << EOF
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+<<<<<<< HEAD
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
+=======
+>>>>>>> 972eee20d4fc0a73ec4dd0e9cba3d4e6da8cbf78
 </div>
 </div>
 
@@ -914,7 +941,10 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+<<<<<<< HEAD
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
+=======
+>>>>>>> 972eee20d4fc0a73ec4dd0e9cba3d4e6da8cbf78
   </div>
 </header>
 
@@ -927,7 +957,10 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+<<<<<<< HEAD
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
+=======
+>>>>>>> 972eee20d4fc0a73ec4dd0e9cba3d4e6da8cbf78
 </div>
 </div>
 

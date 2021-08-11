@@ -297,6 +297,7 @@ export FSLDIR=/opt/HCPpipelines-4.1.3/fsl
 		python $BB_BIN_DIR/tvb_bb_QC/SC_FC.py $dirSubject
 
 
+<<<<<<< HEAD
 
 ### IDP REPORT GEN ###
 	
@@ -304,6 +305,8 @@ export FSLDIR=/opt/HCPpipelines-4.1.3/fsl
 	python $BB_BIN_DIR/tvb_bb_QC/IDP_html_gen.py $dirSubject $BB_BIN_DIR/bb_IDP/list.txt $BB_BIN_DIR/bb_IDP/IDPoi.txt
 
 
+=======
+>>>>>>> 972eee20d4fc0a73ec4dd0e9cba3d4e6da8cbf78
 ### HTML REPORT GEN ###
 
 	$BB_BIN_DIR/tvb_bb_QC/html_gen.sh  $dirSubject $sub
