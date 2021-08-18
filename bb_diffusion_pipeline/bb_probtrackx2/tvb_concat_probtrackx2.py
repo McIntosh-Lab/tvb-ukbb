@@ -10,7 +10,7 @@ import numpy as np
 import sys
 
 
-def tvb_concat_probtrackx2(subj):
+def tvb_concat_probtrackx2(subj, batch=True):
     """Function that generates distance, fdt_network_matrix.txt,
     SC, waytotal, fdt_network_matrix for a subject.
 
@@ -19,7 +19,9 @@ def tvb_concat_probtrackx2(subj):
     ----------
     subj : 
         Full path to subject's directory.
-
+    batch : bool, optional
+        handles opening/concatenation of batched probtrackx files
+        if True, opens in main dir if False
     """
    
 
@@ -29,15 +31,24 @@ def tvb_concat_probtrackx2(subj):
     fdt = ""
     way = ""
 
-    for m in range(1, 11):
-        batch_dir = subj + "/dMRI/probtrackx/batch_" + str(m)
+    # handles opening of batched outputs
+    if batch:
+        for m in range(1, 11):
+            batch_dir = subj + "/dMRI/probtrackx/batch_" + str(m)
+    
+            if m == 1:
+                fdt = np.loadtxt(batch_dir + "/fdt_network_matrix")
+                way = np.loadtxt(batch_dir + "/waytotal")
+            else:
+                fdt = np.add(fdt, np.loadtxt(batch_dir + "/fdt_network_matrix"))
+                way = np.add(way, np.loadtxt(batch_dir + "/waytotal"))
+    
+    else:
+        standard_dir = subj + "/dMRI/probtrackx"
 
-        if m == 1:
-            fdt = np.loadtxt(batch_dir + "/fdt_network_matrix")
-            way = np.loadtxt(batch_dir + "/waytotal")
-        else:
-            fdt = np.add(fdt, np.loadtxt(batch_dir + "/fdt_network_matrix"))
-            way = np.add(way, np.loadtxt(batch_dir + "/waytotal"))
+        fdt = np.loadtxt(standard_dir + "/fdt_network_matrix")
+        way = np.loadtxt(standard_dir + "/waytotal")
+        
 
     ones=np.ones(fdt.shape)
     way_matrix = np.multiply(way,ones)
@@ -55,31 +66,46 @@ def tvb_concat_probtrackx2(subj):
 
 
     #calculating and saving distance, fdt_network_matrix_lengths from all 10 batches
-    m = 1
-    mat_lengths = ""
-    fdt1 = ""
-    mtx = ""
-    mat_sum = ""
-    for m in range(1, 11):
-        batch_dir = subj + "/dMRI/probtrackx/batch_" + str(m)
+    if batch:
+        m = 1
+        mat_lengths = ""
+        fdt1 = ""
+        mtx = ""
+        mat_sum = ""
+        for m in range(1, 11):
+            batch_dir = subj + "/dMRI/probtrackx/batch_" + str(m)
 
-        if m == 1:
-            mat_lengths = np.loadtxt(batch_dir + "/fdt_network_matrix_lengths")
-            fdt1 = np.loadtxt(batch_dir + "/fdt_network_matrix")
-            mtx = np.multiply(fdt1, mat_lengths)
-            mat_sum = fdt1
-        else:
-            mat_lengths = np.loadtxt(batch_dir + "/fdt_network_matrix_lengths")
-            fdt1 = np.loadtxt(batch_dir + "/fdt_network_matrix")
-            mtx = np.add(mtx, np.multiply(fdt1, mat_lengths))
-            mat_sum = np.add(mat_sum, fdt1)
+            if m == 1:
+                mat_lengths = np.loadtxt(batch_dir + "/fdt_network_matrix_lengths")
+                fdt1 = np.loadtxt(batch_dir + "/fdt_network_matrix")
+                mtx = np.multiply(fdt1, mat_lengths)
+                mat_sum = fdt1
+            else:
+                mat_lengths = np.loadtxt(batch_dir + "/fdt_network_matrix_lengths")
+                fdt1 = np.loadtxt(batch_dir + "/fdt_network_matrix")
+                mtx = np.add(mtx, np.multiply(fdt1, mat_lengths))
+                mat_sum = np.add(mat_sum, fdt1)
 
-    tract_lengths = np.divide(mtx, mat_sum)
-    np.savetxt(subj + "/dMRI/probtrackx/fdt_network_matrix_lengths", tract_lengths)
+        tract_lengths = np.divide(mtx, mat_sum)
+        np.savetxt(subj + "/dMRI/probtrackx/fdt_network_matrix_lengths", tract_lengths)
 
-    #symmetrizing matrix
-    tract_lengths = (tract_lengths + tract_lengths.T) / 2
-    np.savetxt(subj + "/dMRI/distance.txt", tract_lengths)
+        #symmetrizing matrix
+        tract_lengths = (tract_lengths + tract_lengths.T) / 2
+        np.savetxt(subj + "/dMRI/distance.txt", tract_lengths)
+    else:
+        standard_dir = subj + "/dMRI/probtrackx"
+
+        mat_lengths = np.loadtxt(standard_dir + "/fdt_network_matrix_lengths")
+        fdt1 = np.loadtxt(standard_dir + "/fdt_network_matrix")
+        mtx = np.multiply(fdt1, mat_lengths)
+        mat_sum = fdt1
+
+        tract_lengths = np.divide(mtx, mat_sum)
+        np.savetxt(subj + "/dMRI/probtrackx/fdt_network_matrix_lengths", tract_lengths)
+
+        #symmetrizing matrix
+        tract_lengths = (tract_lengths + tract_lengths.T) / 2
+        np.savetxt(subj + "/dMRI/distance.txt", tract_lengths)
 
 
 if __name__ == "__main__":
@@ -99,5 +125,8 @@ if __name__ == "__main__":
 
     """
     # try:
-    tvb_concat_probtrackx2(sys.argv[1])
+    if len(sys.argv) > 2 and sys.argv[2] == "GPU":
+        tvb_concat_probtrackx2(sys.argv[1], batch=False)
+    else:
+        tvb_concat_probtrackx2(sys.argv[1])
 
