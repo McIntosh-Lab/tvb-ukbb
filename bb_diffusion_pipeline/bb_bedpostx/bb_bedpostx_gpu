@@ -51,11 +51,11 @@ if [ -d ${subjdir} ] ; then
         done
 	sleep 1m
 	edir=$PWD
-	for entry in `ls ${subjdir}/bedpostx.bedpostX/logs/monitor`; do
-    	    var=$(expr 4 - ${#entry})
-    	    cd ${subjdir}/bedpostx.bedpostX/logs
-    	    ls | grep -P "^log0{$var}${entry}$" | xargs -d "\n" rm
-	done
+	# for entry in `ls ${subjdir}/bedpostx.bedpostX/logs/monitor`; do
+    	#     var=$(expr 4 - ${#entry})
+    	#     cd ${subjdir}/bedpostx.bedpostX/logs
+    	#     ls | grep -P "^log0{$var}${entry}$" | xargs -d "\n" rm
+	# done
 	cd $edir
     fi
 else

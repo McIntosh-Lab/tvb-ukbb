@@ -15,11 +15,11 @@ subjdir=`echo ${subjdir} | sed 's/\/$/$/g'`
 echo subjectdir is $subjdir
 
 
-python $BB_BIN_DIR/bb_diffusion_pipeline/bb_probtrackx2/tvb_concat_probtrackx2.py $subjdir
+python $BB_BIN_DIR/bb_diffusion_pipeline/bb_probtrackx2/tvb_concat_probtrackx2.py $subjdir "GPU"
 
 # move probtrackx logs to subject log directory
-mv bb_probtrackx_${1}.e* $subjdir/logs/.
-mv bb_probtrackx*_${1}.o* $subjdir/logs/.
+# mv bb_probtrackx_${1}.e* $subjdir/logs/.
+# mv bb_probtrackx*_${1}.o* $subjdir/logs/.
 
 
 #generate tvb input zip
