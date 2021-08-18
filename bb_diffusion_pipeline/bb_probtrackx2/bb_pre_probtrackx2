@@ -35,7 +35,7 @@ seeds=$subjdir/dMRI/probtrackx/seeds.txt
 
 DTI_mask=$subjdir/dMRI/bedpostx.bedpostX/nodif_brain_mask.nii.gz
 
-probtrackx2_gpu -V 2 --network --ompl --seed=${seeds} --loopcheck --onewaycondition --cthr=0.2 --nsteps=2000 --steplength=0.5 --nsamples=5000 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --avoid=${subjdir}/probtrackx/exclude.nii.gz --forcedir --opd --samples=${subjdir}/bedpostx.bedpostX/merged --mask=${DTI_mask} --dir=${output_dir}
+probtrackx2_gpu -V 2 --network --ompl --seed=${seeds} --loopcheck --onewaycondition --cthr=0.2 --nsteps=2000 --steplength=0.5 --nsamples=5000 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --avoid=${subjdir}/dMRI/probtrackx/exclude.nii.gz --forcedir --opd --samples=${subjdir}/dMRI/bedpostx.bedpostX/merged --mask=${DTI_mask} --dir=${output_dir}
 
 # set +e
 # 
