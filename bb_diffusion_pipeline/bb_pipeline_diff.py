@@ -207,7 +207,9 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
         + subject,
     )
     print("SUBMITTED DIFFUSION")
+
     return jobPOSTPROBTRACKX
+
 
 
 if __name__ == "__main__":
