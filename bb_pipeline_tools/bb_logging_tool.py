@@ -27,7 +27,7 @@ import logging
 from subprocess import check_output
 
 
-def initLogging(fileName, subject):
+def initLogging(fileName, subject, batching=False):
 
     scriptName = os.path.basename(fileName)
     scriptNameIndex = scriptName.rfind(".")
@@ -37,7 +37,12 @@ def initLogging(fileName, subject):
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger(scriptName)
     logger.propagate = False
-    logDir = os.getcwd() + "/" + subject + "/logs/"
+    if batching:
+        logDir = os.path.abspath(
+            os.path.join(os.getcwd() + "/../" + subject + "/logs/")
+        )
+    else:
+        logDir = os.getcwd() + "/" + subject + "/logs/"
     # logDir = "../../logs/"
     if not os.path.isdir(logDir):
         os.mkdir(logDir)

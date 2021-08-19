@@ -101,6 +101,16 @@ cd ..
 #Warping for T2
 if [ `${FSLDIR}/bin/imtest T2/T2` = 0 ] ; then
   echo "WARNING: No T2 in $1"
+
+  #use initial FAST outputs for rest of structural pipeline
+  cp T1/T1_fast/T1_fast_mixeltype.nii.gz T1/T1_fast/T1_brain_mixeltype.nii.gz
+  cp T1/T1_fast/T1_fast_pve_0.nii.gz T1/T1_fast/T1_brain_pve_0.nii.gz
+  cp T1/T1_fast/T1_fast_pve_1.nii.gz T1/T1_fast/T1_brain_pve_1.nii.gz
+  cp T1/T1_fast/T1_fast_pve_2.nii.gz T1/T1_fast/T1_brain_pve_2.nii.gz
+  cp T1/T1_fast/T1_fast_pveseg.nii.gz T1/T1_fast/T1_brain_pveseg.nii.gz
+  cp T1/T1_fast/T1_fast_seg.nii.gz T1/T1_fast/T1_brain_seg.nii.gz
+
+
 else
 
     cd T2
@@ -139,16 +149,21 @@ else
 
     cd ..
 
+    #Run multichannel FAST
+    ${FSLDIR}/bin/fast -S 2 -n 3 -H 0.1 -I 1 -l 20.0 -o T1/T1_fast/T1_brain T1/T1_unbiased_brain T2/T2_fast/T2_fast_restore.nii.gz
+
 fi
 
 cd T1
 
-#Run multichannel FAST
-${FSLDIR}/bin/fast -S 2 -n 3 -H 0.1 -I 1 -l 20.0 -o T1_fast/T1_brain T1_unbiased_brain ../T2/T2_fast/T2_fast_restore.nii.gz
 
 
 #Binarize PVE masks
 if [ -f T1_fast/T1_brain_pveseg.nii.gz ] ; then
+
+    python $BB_BIN_DIR/bb_structural_pipeline/rename_pve.py T1.nii.gz T1_fast/T1_brain_pve_0.nii.gz T1_fast/T1_brain_pve_1.nii.gz T1_fast/T1_brain_pve_2.nii.gz
+
+
     $FSLDIR/bin/fslmaths T1_fast/T1_brain_pve_0.nii.gz -thr 0.5 -bin T1_fast/T1_brain_WM_mask.nii.gz
     $FSLDIR/bin/fslmaths T1_fast/T1_brain_pve_1.nii.gz -thr 0.5 -bin T1_fast/T1_brain_GM_mask.nii.gz
     $FSLDIR/bin/fslmaths T1_fast/T1_brain_pve_2.nii.gz -thr 0.5 -bin T1_fast/T1_brain_CSF_mask.nii.gz
@@ -176,6 +191,17 @@ ${FSLDIR}/bin/fslmaths T1_fast/T1_brain_GM_mask_noCerebBS -add T1_first/subcort_
 ${FSLDIR}/bin/fslmaths T1_fast/T1_brain_GM_mask_noCerebBS -kernel sphere 1 -dilM T1_fast/T1_brain_GM_mask_noCerebBS_dil
 ${FSLDIR}/bin/fslmaths T1_fast/T1_brain_GM_mask_noCerebBS_dil -add T1_fast/T1_brain_WM_mask_noCerebBS -thr 2 -bin interface
 
+
+#check interface, re-do with extra dilation if empty
+maskMAX=$(fslstats interface -R | awk '{print int($2)}')
+if [ $maskMAX -lt 1 ]
+then
+     echo "interface mask empty, dilating GM mask by 2 and re-doing interface"
+     ${FSLDIR}/bin/fslmaths T1_fast/T1_brain_GM_mask_noCerebBS -kernel sphere 2 -dilM T1_fast/T1_brain_GM_mask_noCerebBS_dil2
+     ${FSLDIR}/bin/fslmaths T1_fast/T1_brain_GM_mask_noCerebBS_dil2 -add T1_fast/T1_brain_WM_mask_noCerebBS -thr 2 -bin interface
+fi
+
+
 #label GM with ROIs
 ${AFNIDIR}/3dROIMaker -inset cort_subcort_GM.nii.gz -thresh 0.1 -inflate 1 -prefix labelled -refset transforms/parcel_to_T1.nii.gz -nifti -neigh_upto_vert
 
@@ -194,6 +220,7 @@ cd ..
 $BB_BIN_DIR/bb_structural_pipeline/bb_QC_COG ../$1
 $BB_BIN_DIR/bb_structural_pipeline/bb_QC_CNR_eyes ../$1
 $BB_BIN_DIR/bb_structural_pipeline/bb_QC_CNR_corners_complete ../$1
+
 
 
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
