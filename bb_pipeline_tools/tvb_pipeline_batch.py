@@ -494,6 +494,7 @@ def get_subject_statuses(subjs_running, queue_info, job_info):
         List of statuses for each subject in `subjs_running`.
     """
     # get step subject is on from queue_info
+
     subj_statuses = [""] * len(subjs_running)
     for i in range(len(subjs_running)):
         # if running, append current job name
@@ -502,13 +503,16 @@ def get_subject_statuses(subjs_running, queue_info, job_info):
         for dct in queue_info:
             if subjs_running[i] in dct["JB_name"]:
                 subj_statuses[i] = f"{dct['JB_name']}"
+
                 subj_running = True
                 break
         # if not running, print next up pending job
         if not subj_running:
             for dct in job_info:
+
                 if subjs_running[i] in dct["JB_name"]:
                     subj_statuses[i] = f"pending: {dct['JB_name']}"
+
                     break
     return subj_statuses
 
@@ -543,8 +547,10 @@ def rotman_avoid_comp98():
 
     queue_info, job_info = qstat()
     for i in range(len(job_info)):
+
         # if "comp98" in job_info[i]["queue_name"]:
         if job_info[i]["queue_name"] != None and "comp98" in job_info[i]["queue_name"]:
+
             job_id = job_info[i]["JB_job_number"]
             subprocess.call(["qalter", "-l", "h='!comp98'", job_id])
 
@@ -601,12 +607,16 @@ def resume(args):
         subj_progress = f"{path_prefix}/{subj}/in_progress.txt"
         subj_error = f"{path_prefix}/{subj}/errors.txt"
         # if completion file doesn't exist, add subject to unfinished list
+
         if not os.path.isfile(subj_dir) and not os.path.isfile(subj_error):
+
             unfinished.append(subj)
         # in_progress file exists, but other two don't
         # not added to list
         elif os.path.isfile(subj_progress) and (
+
             not os.path.isfile(subj_dir) or not os.path.isfile(subj_error)
+
         ):
             logger.warn(
                 f"{subj} was not completed the last time this script was run. "
@@ -616,10 +626,12 @@ def resume(args):
                 f"{subj} was not completed the last time this script was run. "
                 f"Please reset the subject's directory before running it again."
             )
+
         # keep set at 0 since the list doesn't incldue any already completed subjects
         # # if it does exist, increment the counter
         # else:
         #     counter += 1
+
 
     if len(unfinished) == 0:
         logger.warn("No subjects to run. Exiting")

@@ -157,10 +157,12 @@ fi
 cd T1
 
 
+
 #Binarize PVE masks
 if [ -f T1_fast/T1_brain_pveseg.nii.gz ] ; then
 
     python $BB_BIN_DIR/bb_structural_pipeline/rename_pve.py T1.nii.gz T1_fast/T1_brain_pve_0.nii.gz T1_fast/T1_brain_pve_1.nii.gz T1_fast/T1_brain_pve_2.nii.gz
+
 
     $FSLDIR/bin/fslmaths T1_fast/T1_brain_pve_0.nii.gz -thr 0.5 -bin T1_fast/T1_brain_WM_mask.nii.gz
     $FSLDIR/bin/fslmaths T1_fast/T1_brain_pve_1.nii.gz -thr 0.5 -bin T1_fast/T1_brain_GM_mask.nii.gz
@@ -218,7 +220,6 @@ cd ..
 $BB_BIN_DIR/bb_structural_pipeline/bb_QC_COG ../$1
 $BB_BIN_DIR/bb_structural_pipeline/bb_QC_CNR_eyes ../$1
 $BB_BIN_DIR/bb_structural_pipeline/bb_QC_CNR_corners_complete ../$1
-
 
 
 
