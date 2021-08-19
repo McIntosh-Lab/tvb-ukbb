@@ -64,12 +64,13 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
         + subject,
     )
 
-    # TODO: Embed the checking of the fieldmap inside the independent steps -- Every step should check if the previous one has ended.
     rfMRI_nums = [
-        k.split("_")[-1]
-        for k in fileConfiguration.keys()
-        if "rfMRI" in k and "oldpath" not in k and "SBRef" not in k
+         k.split("_")[-1]
+         for k in fileConfiguration.keys()
+         if "rfMRI" in k and "oldpath" not in k and "SBRef" not in k
     ]
+
+    # print(st)
 
     # print(f"rfMRI_nums:{rfMRI_nums}")
     # job for preparing fieldmap files
@@ -90,39 +91,42 @@ def bb_pipeline_func(subject, jobHold, fileConfiguration):
 
     if len(rfMRI_nums) > 0:
         for i in range(len(rfMRI_nums)):
-
             # if it's the first rfMRI file start upon completion of fieldmap
             # otherwise use clean job ID from previous rfMRI iteration
+
             if i == 0:
                 jobPREPARE_R = LT.runCommand(
-                    logger,
-                    #'${FSLDIR}/bin/fsl_sub -T 15   -N "bb_prepare_rfMRI_'
-                    '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD}   -N "bb_prepare_rfMRI_'
-                    + f"{i}_{subname}"
-                    + '"  -l '
-                    + logDir
-                    + " -j "
-                    + jobGEFIELDMAP
-                    + " $BB_BIN_DIR/bb_functional_pipeline/bb_prepare_rfMRI "
-                    + subject
-                    + f" {rfMRI_nums[i]}",
-                )
-
+                     logger,
+                     #'${FSLDIR}/bin/fsl_sub -T 15   -N "bb_prepare_rfMRI_'
+                     '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD}   -N "bb_prepare_rfMRI_'
+                     + f"{i}_{subname}"
+                     + '"  -l '
+                     + logDir
+                     + " -j "
+                     + jobGEFIELDMAP
+                     + " $BB_BIN_DIR/bb_functional_pipeline/bb_prepare_rfMRI "
+                     + subject
+                     + f" {rfMRI_nums[i]}",
+                 )
             else:
                 jobPREPARE_R = LT.runCommand(
-                    logger,
-                    #'${FSLDIR}/bin/fsl_sub -T 15   -N "bb_prepare_rfMRI_'
-                    '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD}   -N "bb_prepare_rfMRI_'
-                    + f"{i}_{subname}"
-                    + '"  -l '
-                    + logDir
-                    + " -j "
-                    + jobCLEAN_LAST_rfMRI
-                    + " $BB_BIN_DIR/bb_functional_pipeline/bb_prepare_rfMRI "
-                    + subject
-                    + f" {rfMRI_nums[i]}",
-                )
+                     logger,
+                     #'${FSLDIR}/bin/fsl_sub -T 15   -N "bb_prepare_rfMRI_'
+                     '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD}   -N "bb_prepare_rfMRI_'
+                     + f"{i}_{subname}"
+                     + '"  -l '
+                     + logDir
+                     + " -j "
+                     + jobCLEAN_LAST_rfMRI
+                     + " $BB_BIN_DIR/bb_functional_pipeline/bb_prepare_rfMRI "
+                     + subject
+                     + f" {rfMRI_nums[i]}",
+                 )
+            # TODO: Embed the checking of the fieldmap inside the independent steps -- Every step should check if the previous one has ended.
+            #print(f"FILE CONFIG IN FUNC: {fileConfiguration}")
+            #if ("rfMRI" in fileConfiguration) and (fileConfiguration["rfMRI"] != ""):
 
+            
             jobFEAT_R = LT.runCommand(
                 logger,
                 #'${FSLDIR}/bin/fsl_sub -T 1200 -N "bb_feat_rfMRI_ns_'
