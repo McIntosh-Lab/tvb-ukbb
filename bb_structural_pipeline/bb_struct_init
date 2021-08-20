@@ -106,54 +106,6 @@ ${FSLDIR}/bin/flirt -interp nearestneighbour -in ${FAST_PRIORS_PREFIX}_image_seg
 #Run FAST with age-specific priors on bias-corrected T1 brain
 ${FSLDIR}/bin/fast -N -A T1_fast/priors_csf T1_fast/priors_gm T1_fast/priors_wm -o T1_fast/T1_brain T1_unbiased_brain
 
-cd ..
-
-#Warping for T2
-if [ `${FSLDIR}/bin/imtest T2/T2` = 0 ] ; then
-  echo "WARNING: No T2 in $1"
-else
-
-    cd T2
-
-    if [ `${FSLDIR}/bin/imtest T2_orig` = 0 ] ; then
-      ${FSLDIR}/bin/immv T2 T2_orig
-    fi
-
-    cp T2_orig.nii.gz T2_orig_ud.nii.gz
-
-    #Take T2 to T1 and also the brain mask; T1 is already reoriented to standard so increase search space for T2 registration
-    ${FSLDIR}/bin/flirt -in T2_orig_ud -ref ../T1/T1_orig_ud -out T2_tmp -omat T2_tmp.mat -searchrx -180 180 -searchry -180 180 -searchrz -180 180 -dof 6
-    ${FSLDIR}/bin/convert_xfm -omat T2_tmp2.mat -concat ../T1/transforms/T1_orig_ud_to_T1.mat  T2_tmp.mat
-    ${FSLDIR}/bin/flirt -in T2_orig_ud -ref ../T1/T1_brain -refweight ../T1/T1_brain_mask -nosearch -init T2_tmp2.mat -omat T2_orig_ud_to_T2.mat -dof 6 -applyxfm -out T2 
-    cp ../T1/T1_brain_mask.nii.gz T2_brain_mask.nii.gz
-    ${FSLDIR}/bin/fslmaths T2 -mul T2_brain_mask T2_brain
-
-    #Generate the linear matrix from T2 to MNI (Needed for defacing)
-    ${FSLDIR}/bin/convert_xfm -omat T2_orig_ud_to_MNI_linear.mat -concat ../T1/transforms/T1_to_MNI_linear.mat T2_orig_ud_to_T2.mat
-    cp ../T1/transforms/T1_to_MNI_linear.mat T2_to_MNI_linear.mat 
-
-    #Generate the non-linearly warped T2 in MNI (Needed for post-freesurfer processing)
-    ${FSLDIR}/bin/convertwarp --ref=$FSLDIR/data/standard/MNI152_T1_1mm --premat=T2_orig_ud_to_T2.mat -w ../T1/transforms/T1_to_MNI_warp --out=T2_orig_to_MNI_warp
-    ${FSLDIR}/bin/applywarp --rel  -i T2_orig -r $FSLDIR/data/standard/MNI152_T1_1mm -w T2_orig_to_MNI_warp -o T2_brain_to_MNI --interp=spline
-    ${FSLDIR}/bin/fslmaths T2_brain_to_MNI -mul $templ/MNI152_T1_1mm_brain_mask T2_brain_to_MNI
-
-    #Clean and reorganize
-    rm *_tmp*
-    mkdir transforms
-    mv *.mat transforms
-    mv *warp*.* transforms
-    
-    #Run fast for initial bias correction
-    mkdir T2_fast
-    ${FSLDIR}/bin/fast -t 2 -n 3 -H 0.1 -I 4 -l 20.0 --nopve -B -o T2_fast/T2_fast T2_brain
-
-    cd ..
-
-fi
-
-cd T1
-
-
 #Binarize PVE masks
 if [ -f T1_fast/T1_brain_pveseg.nii.gz ] ; then
     $FSLDIR/bin/fslmaths T1_fast/T1_brain_pve_0.nii.gz -thr 0.5 -bin T1_fast/T1_brain_WM_mask.nii.gz
@@ -202,6 +154,49 @@ $BB_BIN_DIR/bb_structural_pipeline/bb_QC_COG ../$1
 $BB_BIN_DIR/bb_structural_pipeline/bb_QC_CNR_eyes ../$1
 $BB_BIN_DIR/bb_structural_pipeline/bb_QC_CNR_corners_complete ../$1
 
+
+#Process T2 if it exists
+if [ `${FSLDIR}/bin/imtest T2/T2` = 0 ] ; then
+  echo "WARNING: No T2 in $1"
+else
+
+    cd T2
+
+    if [ `${FSLDIR}/bin/imtest T2_orig` = 0 ] ; then
+      ${FSLDIR}/bin/immv T2 T2_orig
+    fi
+
+    cp T2_orig.nii.gz T2_orig_ud.nii.gz
+
+    #Take T2 to T1 and also the brain mask; T1 is already reoriented to standard so increase search space for T2 registration
+    ${FSLDIR}/bin/flirt -in T2_orig_ud -ref ../T1/T1_orig_ud -out T2_tmp -omat T2_tmp.mat -searchrx -180 180 -searchry -180 180 -searchrz -180 180 -dof 6
+    ${FSLDIR}/bin/convert_xfm -omat T2_tmp2.mat -concat ../T1/transforms/T1_orig_ud_to_T1.mat  T2_tmp.mat
+    ${FSLDIR}/bin/flirt -in T2_orig_ud -ref ../T1/T1_brain -refweight ../T1/T1_brain_mask -nosearch -init T2_tmp2.mat -omat T2_orig_ud_to_T2.mat -dof 6 -applyxfm -out T2 
+    cp ../T1/T1_brain_mask.nii.gz T2_brain_mask.nii.gz
+    ${FSLDIR}/bin/fslmaths T2 -mul T2_brain_mask T2_brain
+
+    #Generate the linear matrix from T2 to MNI (Needed for defacing)
+    ${FSLDIR}/bin/convert_xfm -omat T2_orig_ud_to_MNI_linear.mat -concat ../T1/transforms/T1_to_MNI_linear.mat T2_orig_ud_to_T2.mat
+    cp ../T1/transforms/T1_to_MNI_linear.mat T2_to_MNI_linear.mat 
+
+    #Generate the non-linearly warped T2 in MNI (Needed for post-freesurfer processing)
+    ${FSLDIR}/bin/convertwarp --ref=$FSLDIR/data/standard/MNI152_T1_1mm --premat=T2_orig_ud_to_T2.mat -w ../T1/transforms/T1_to_MNI_warp --out=T2_orig_to_MNI_warp
+    ${FSLDIR}/bin/applywarp --rel  -i T2_orig -r $FSLDIR/data/standard/MNI152_T1_1mm -w T2_orig_to_MNI_warp -o T2_brain_to_MNI --interp=spline
+    ${FSLDIR}/bin/fslmaths T2_brain_to_MNI -mul $templ/MNI152_T1_1mm_brain_mask T2_brain_to_MNI
+
+    #Clean and reorganize
+    rm *_tmp*
+    mkdir transforms
+    mv *.mat transforms
+    mv *warp*.* transforms
+    
+    #Run fast for initial bias correction
+    mkdir T2_fast
+    ${FSLDIR}/bin/fast -t 2 -n 3 -H 0.1 -I 4 -l 20.0 --nopve -B -o T2_fast/T2_fast T2_brain
+
+    cd ..
+
+fi
 
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
 
