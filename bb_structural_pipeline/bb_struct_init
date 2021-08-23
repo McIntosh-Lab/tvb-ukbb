@@ -96,6 +96,25 @@ else
     echo "WARNING: There was no bias field estimation. Bias field correction cannot be applied to T1."
 fi
 
+decile=""
+
+while read line; do
+    read a b <<< ${line}
+    if [[ $a = $1 ]]; then
+        decile=$b
+    fi
+done <$SUBJECT_AGE_LIST
+
+
+while read line; do
+    read a b c <<< ${line}
+    if [[ $a = $decile ]]; then
+        AGE_SPEC_TEMPLATE=$b
+        FAST_PRIORS_PREFIX=$c
+    fi
+done <$AGE_SPECIFIC_TEMPLATE_LIST
+
+
 #Generate additional registration to age-specific template (and its inverse) and apply to FAST priors
 ${FSLDIR}/bin/flirt -in T1_unbiased_brain -ref $AGE_SPEC_TEMPLATE -o transforms/T1_to_AgeSpecTemplate
 ${FSLDIR}/bin/convert_xfm -omat transforms/AgeSpecTemplate_to_T1_brain.mat -inverse transforms/T1_brain_to_AgeSpecTemplate.mat
