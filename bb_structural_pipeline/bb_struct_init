@@ -96,15 +96,17 @@ else
     echo "WARNING: There was no bias field estimation. Bias field correction cannot be applied to T1."
 fi
 
-decile=""
+subject_age=""
 
 while read line; do
     read a b <<< ${line}
     if [[ $a = $1 ]]; then
-        decile=$b
+        subject_age=$b
     fi
 done <$SUBJECT_AGE_LIST
 
+
+decile=`echo $((subject_age / 10))`
 
 while read line; do
     read a b c <<< ${line}
