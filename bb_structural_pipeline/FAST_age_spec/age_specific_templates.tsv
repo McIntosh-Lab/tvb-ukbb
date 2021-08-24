@@ -1,9 +1,9 @@
 age_decile	age_spec_template	fast_priors_prefix
-10	$templ/age-specific/ANTS10-14Years3T_brain	$templ/age-specific/AVG10-14Years3T_brain
-20	$templ/age-specific/ANTS20-24Years3T_brain	$templ/age-specific/AVG20-24Years3T_brain
-30	$templ/age-specific/ANTS30-34Years3T_brain	$templ/age-specific/AVG30-34Years3T_brain
-40	$templ/age-specific/ANTS40-44Years3T_brain	$templ/age-specific/AVG40-44Years3T_brain
-50	$templ/age-specific/ANTS50-54Years3T_brain	$templ/age-specific/AVG50-54Years3T_brain
-60	$templ/age-specific/ANTS60-64Years3T_brain	$templ/age-specific/AVG60-64Years3T_brain
-70	$templ/age-specific/ANTS70-74Years3T_brain	$templ/age-specific/AVG70-74Years3T_brain
-80	$templ/age-specific/ANTS80-84Years3T_brain	$templ/age-specific/AVG80-84Years3T_brain
+10	$templ/age-specific/avg152T1_brain	$templ/age-specific/avg152T1
+20	$templ/age-specific/avg152T1_brain	$templ/age-specific/avg152T1
+30	$templ/age-specific/avg152T1_brain	$templ/age-specific/avg152T1
+40	$templ/age-specific/ANTS40-44Years3T_brain	$templ/age-specific/AVG40-44Years3T_brain_image_seg
+50	$templ/age-specific/ANTS50-54Years3T_brain	$templ/age-specific/AVG50-54Years3T_brain_image_seg
+60	$templ/age-specific/ANTS60-64Years3T_brain	$templ/age-specific/AVG60-64Years3T_brain_image_seg
+70	$templ/age-specific/ANTS70-74Years3T_brain	$templ/age-specific/AVG70-74Years3T_brain_image_seg
+80	$templ/age-specific/ANTS80-84Years3T_brain	$templ/age-specific/AVG80-84Years3T_brain_image_seg
