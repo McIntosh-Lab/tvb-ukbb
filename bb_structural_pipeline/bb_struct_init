@@ -117,6 +117,8 @@ while read line; do
     fi
 done <$AGE_SPECIFIC_TEMPLATE_LIST
 
+AGE_SPEC_TEMPLATE=`eval echo ${AGE_SPEC_TEMPLATE}`
+FAST_PRIORS_PREFIX=`eval echo ${FAST_PRIORS_PREFIX}`
 
 #Generate additional registration to age-specific template (and its inverse) and apply to FAST priors
 ${FSLDIR}/bin/flirt -in T1_unbiased_brain -ref $AGE_SPEC_TEMPLATE -o transforms/T1_to_AgeSpecTemplate
