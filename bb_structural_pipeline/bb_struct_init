@@ -107,6 +107,7 @@ done <$SUBJECT_AGE_LIST
 
 
 decile=`echo $((subject_age / 10))`
+decile=`echo $((decile * 10))`
 
 while read line; do
     read a b c <<< ${line}
