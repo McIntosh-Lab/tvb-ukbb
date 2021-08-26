@@ -17,17 +17,15 @@ done
 # Set paths for executables
 SynB0_DIR=$BB_BIN_DIR/bb_diffusion_pipeline/tvb_SynB0
 export PATH=$PATH:$SynB0_DIR/data_processing:$SynB0_DIR/src
-#export PATH=$PATH:/Applications/Convert3DGUI.app/Contents/bin/ # << why did I add this?
 
 # Set up ANTS << move to init_vars?
-export ANTSPATH="/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Compiler/gcc9/ants/2.3.5/bin"
-#export PATH=$PATH:$ANTSPATH:/Applications/ANTS/Scripts # these look like they're in ants /bin folder on CC already
+#export ANTSPATH="/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Compiler/gcc9/ants/2.3.5/bin"
 
 # Set up pytorch
-source /extra/pytorch/bin/activate # do I need to create a virtual environment on CC to activate this?
+#source /extra/pytorch/bin/activate # do I need to create a virtual environment on CC to activate this?
 
 # Prepare input
-${SynB0_DIR}/data_processing/SynB0_prepare_input.sh ${direc}/dMRI/dMRI/DWI_B0.nii.gz ${direc}/T1/T1_unbiased.nii.gz.nii.gz ${direc}/T1/T1_unbiased_brain.nii.gz ${SynB0_DIR}/atlases/mni_icbm152_t1_tal_nlin_asym_09c.nii.gz ${SynB0_DIR}/atlases/mni_icbm152_t1_tal_nlin_asym_09c_2_5.nii.gz $SynB0_OUTPUTS
+${SynB0_DIR}/data_processing/SynB0_prepare_input.sh ${direc}/dMRI/dMRI/DWI_B0.nii.gz ${direc}/T1/T1_unbiased.nii.gz ${direc}/T1/T1_unbiased_brain.nii.gz ${SynB0_DIR}/atlases/mni_icbm152_t1_tal_nlin_asym_09c.nii.gz ${SynB0_DIR}/atlases/mni_icbm152_t1_tal_nlin_asym_09c_2_5.nii.gz $SynB0_OUTPUTS
 
 # Run inference
 NUM_FOLDS=5
@@ -38,22 +36,22 @@ done
 
 # Take mean
 echo Taking ensemble average
-fslmerge -t $SynB0_OUTPUTS/b0_u_lin_atlas_2_5_merged.nii.gz $SynB0_OUTPUTS/b0_u_lin_atlas_2_5_FOLD_*.nii.gz
-fslmaths $SynB0_OUTPUTS/b0_u_lin_atlas_2_5_merged.nii.gz -Tmean $SynB0_OUTPUTS/b0_u_lin_atlas_2_5.nii.gz
+${FSLDIR}/bin/fslmerge -t $SynB0_OUTPUTS/b0_u_lin_atlas_2_5_merged.nii.gz $SynB0_OUTPUTS/b0_u_lin_atlas_2_5_FOLD_*.nii.gz
+${FSLDIR}/bin/fslmaths $SynB0_OUTPUTS/b0_u_lin_atlas_2_5_merged.nii.gz -Tmean $SynB0_OUTPUTS/b0_u_lin_atlas_2_5.nii.gz
 
 # Apply inverse xform to undistorted b0
 echo Applying inverse xform to undistorted b0
-antsApplyTransforms -d 3 -i $SynB0_OUTPUTS/b0_u_lin_atlas_2_5.nii.gz -r $SynB0_OUTPUTS/b0.nii.gz -n BSpline -t [$SynB0_OUTPUTS/epi_reg_d_ANTS.txt,1] -t [$SynB0_OUTPUTS/ANTS0GenericAffine.mat,1] -o $SynB0_OUTPUTS/b0_u.nii.gz
+${ANTSPATH}/antsApplyTransforms -d 3 -i $SynB0_OUTPUTS/b0_u_lin_atlas_2_5.nii.gz -r ${direc}/dMRI/dMRI/DWI_B0.nii.gz -n BSpline -t [$SynB0_OUTPUTS/epi_reg_d_ANTS.txt,1] -t [$SynB0_OUTPUTS/ANTS0GenericAffine.mat,1] -o $SynB0_OUTPUTS/b0_u.nii.gz
 
 # Smooth image
 echo Applying slight smoothing to distorted b0
-fslmaths ${direc}/dMRI/dMRI/DWI_B0.nii.gz -s 1.15 $SynB0_OUTPUTS/DWI_B0_d_smooth.nii.gz
+${FSLDIR}/bin/fslmaths ${direc}/dMRI/dMRI/DWI_B0.nii.gz -s 1.15 $SynB0_OUTPUTS/b0_d_smooth.nii.gz
 
 if [[ $SynB0_TOPUP -eq 1 ]]; then
     # Merge results and run through topup
     echo Running topup
-    fslmerge -t $SynB0_OUTPUTS/DWI_B0_all.nii.gz $SynB0_OUTPUTS/DWI_B0_d_smooth.nii.gz $SynB0_OUTPUTS/DWI_B0_u.nii.gz
-    topup -v --imain=$SynB0_OUTPUTS/DWI_B0_all.nii.gz --datain=${direc}/dMRI/dMRI/acqparams.txt --config=b02b0.cnf --iout=$SynB0_OUTPUTS/DWI_B0_all_topup.nii.gz --out=$SynB0_OUTPUTS/topup --subsamp=1,1,1,1,1,1,1,1,1 --miter=10,10,10,10,10,20,20,30,30 --lambda=0.00033,0.000067,0.0000067,0.000001,0.00000033,0.000000033,0.0000000033,0.000000000033,0.00000000000067 --scale=0
+    ${FSLDIR}/bin/fslmerge -t $SynB0_OUTPUTS/b0_all.nii.gz $SynB0_OUTPUTS/b0_d_smooth.nii.gz $SynB0_OUTPUTS/b0_u.nii.gz
+    ${FSLDIR}/bin/topup -v --imain=$SynB0_OUTPUTS/b0_all.nii.gz --datain=${direc}/dMRI/dMRI/acqparams.txt --config=b02b0.cnf --iout=$SynB0_OUTPUTS/DWI_B0_all_topup.nii.gz --out=$SynB0_OUTPUTS/topup --subsamp=1,1,1,1,1,1,1,1,1 --miter=10,10,10,10,10,20,20,30,30 --lambda=0.00033,0.000067,0.0000067,0.000001,0.00000033,0.000000033,0.0000000033,0.000000000033,0.00000000000067 --scale=0
 fi
 
 

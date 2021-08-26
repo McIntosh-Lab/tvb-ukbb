@@ -11,8 +11,12 @@ echo T1 path: $T1_PATH
 echo T1 N3 path: $T1_N3_PATH
 echo T1 normalized path: $T1_NORM_PATH
 
-# Create temporary job directory
-JOB_PATH=$(mktemp -d)
+# Define temporary job directory
+T1_DIR="$(dirname "${T1_PATH}")"
+SUBJ_DIR="$(dirname "${T1_DIR}")"
+JOB_PATH=${SUBJ_DIR}/dMRI/dMRI/SynB0/tmp
+#JOB_PATH= $(mktemp -d)
+mkdir $JOB_PATH
 echo -------
 echo Job directory path: $JOB_PATH
 
@@ -50,6 +54,6 @@ echo $MRI_CONVERT_CMD
 eval $MRI_CONVERT_CMD
 
 # Delete job directory
-echo -------
-echo Removing job directory...
-rm -rf $JOB_PATH
+#echo -------
+#echo Removing job directory...
+#rm -rf $JOB_PATH
