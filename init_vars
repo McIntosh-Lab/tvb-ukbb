@@ -94,7 +94,7 @@ export PATH="$BB_BIN_DIR/bb_pipeline_tools/:$BB_BIN_DIR/bb_general_tools/:$PATH"
 
 
 #SET PATH FOR MCR
-export LD_LIBRARY_PATH="$MCROOT/$MCRV/runtime/glnxa64:$MCROOT/$MCRV/bin/glnxa64:$MCROOT/$MCRV/sys/os/glnxa64:$MCROOT/$MCRV/sys/opengl/lib/glnxa64:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="/usr/lib/x86_64-linux-gnu:$MCROOT/$MCRV/runtime/glnxa64:$MCROOT/$MCRV/bin/glnxa64:$MCROOT/$MCRV/sys/os/glnxa64:$MCROOT/$MCRV/sys/opengl/lib/glnxa64:$LD_LIBRARY_PATH"
 
 export MATLAB_COMPILER_RUNTIME="$MCROOT/$MCRV"
 
