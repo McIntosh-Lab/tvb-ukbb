@@ -570,7 +570,9 @@ def manage_DWI(listFiles):
 
             if os.path.isfile(fileName):
                 fpath, fname = os.path.split(fileName)
-                move_file(fileName, "unclassified/" + fname)
+                # quick way to prevent dwi files from being copied into unclassified
+                if not ("dwi" in fileName and "dwi" in fileConfig):
+                    move_file(fileName, "unclassified/" + fname)
 
 
 def manage_SWI(listFiles):
@@ -710,7 +712,9 @@ def bb_file_manager(subject):
     patterns_actions = [
         [["*.[^log]"], capitalize_and_clean],
         [["dicom", "DICOM"], move_to, "delete/"],
-        [["*T1*.nii.gz"], manage_struct, "T1"],
+
+        [["*T1*.nii.gz", "*MPRAGE*.nii.gz", "*IR-FSPGR*.nii.gz"], manage_struct, "T1"],
+
         [["*T2**.nii.gz"], manage_struct, "T2"],
         [
             [

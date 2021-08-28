@@ -56,11 +56,18 @@ pkgs_dirs:
 
 **GENERAL INSTALL INSTRUCTIONS**
 
+Clean installation:
 1) Download the [latest release .zip from the repository here](https://github.com/McIntosh-Lab-RRI/tvb-ukbb/releases/latest) (read the instructions on the release page)
 2) Unzip the .zip file to where you'd like the pipeline to be installed; e.g. unzipping it in `/home/<username>` will yield `/home/<username>/tvb-pipeline`
 3) `cd` into `tvb-pipeline` and run `chmod +x install_ukbb.sh`
 4) Run `./install_ukbb.sh`. This may take a while and **you will have to enter your GitHub username and password midway through** as the repository is currently invite-only.
 5) Once the installer finishes, `cd` into `tvb-ukbb` and edit file `init_vars`. Lines specified with `#TO BE MODIFIED BY USER` are the only lines you should need to change.
+
+Reinstallation:
+1) Before pulling a new version of the pipeline from github or cloning the repository, install git-lfs (https://git-lfs.github.com) and run `git lfs install`  
+2) `cd` into `tvb-pipeline` and run `chmod +x install_ukbb.sh`
+3) Run `./reinstall_ukbb.sh`.
+4) Once the installer finishes, `cd` into `tvb-ukbb` and edit file `init_vars`. Lines specified with `#TO BE MODIFIED BY USER` are the only lines you should need to change.
 
 Note: at present, changes may need to be made to the code handling Grid Engine/SGE queuing depending on your system. Currently we use queues `all.q`, `bigmem_16.q`, and `bigmem_64.q`; they are set to their respective environment variables by default in `init_vars` and can be modified as necessary.
 

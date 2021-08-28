@@ -96,6 +96,9 @@ else
     echo "WARNING: There was no bias field estimation. Bias field correction cannot be applied to T1."
 fi
 
+
+
+
 subject_age=""
 
 while read line; do
@@ -117,8 +120,10 @@ while read line; do
     fi
 done <$AGE_SPECIFIC_TEMPLATE_LIST
 
+
 AGE_SPEC_TEMPLATE=`eval echo ${AGE_SPEC_TEMPLATE}`
 FAST_PRIORS_PREFIX=`eval echo ${FAST_PRIORS_PREFIX}`
+
 
 #Generate additional registration to age-specific template (and its inverse) and apply to FAST priors
 ${FSLDIR}/bin/flirt -in T1_unbiased_brain -ref $AGE_SPEC_TEMPLATE -o transforms/T1_brain_to_AgeSpecTemplate -omat transforms/T1_to_AgeSpecTemplate.mat
@@ -127,61 +132,29 @@ ${FSLDIR}/bin/flirt -interp nearestneighbour -in ${FAST_PRIORS_PREFIX}_csf -ref 
 ${FSLDIR}/bin/flirt -interp nearestneighbour -in ${FAST_PRIORS_PREFIX}_gm -ref T1_unbiased_brain -out T1_fast/priors_gm -init transforms/AgeSpecTemplate_to_T1.mat -applyxfm
 ${FSLDIR}/bin/flirt -interp nearestneighbour -in ${FAST_PRIORS_PREFIX}_wm -ref T1_unbiased_brain -out T1_fast/priors_wm -init transforms/AgeSpecTemplate_to_T1.mat -applyxfm
 
+
 #Run FAST with age-specific priors on bias-corrected T1 brain
 ${FSLDIR}/bin/fast -N -A T1_fast/priors_csf T1_fast/priors_gm T1_fast/priors_wm -o T1_fast/T1_brain T1_unbiased_brain
 
-#Binarize PVE masks
-if [ -f T1_fast/T1_brain_pveseg.nii.gz ] ; then
-    $FSLDIR/bin/fslmaths T1_fast/T1_brain_pve_0.nii.gz -thr 0.5 -bin T1_fast/T1_brain_WM_mask.nii.gz
-    $FSLDIR/bin/fslmaths T1_fast/T1_brain_pve_1.nii.gz -thr 0.5 -bin T1_fast/T1_brain_GM_mask.nii.gz
-    $FSLDIR/bin/fslmaths T1_fast/T1_brain_pve_2.nii.gz -thr 0.5 -bin T1_fast/T1_brain_CSF_mask.nii.gz
-fi
-
-#remove cerebellum and brainstem from GM and WM mask
-${FSLDIR}/bin/fslmaths T1_fast/T1_brain_GM_mask -sub transforms/cerebellum_to_T1 -sub transforms/brainstem_to_T1 -bin T1_fast/T1_brain_GM_mask_noCerebBS
-${FSLDIR}/bin/fslmaths T1_fast/T1_brain_WM_mask -sub transforms/cerebellum_to_T1 -sub transforms/brainstem_to_T1 -bin T1_fast/T1_brain_WM_mask_noCerebBS
 
 
-#Run First
-mkdir T1_first
 
-#Creates a link inside T1_first to ./T1_unbiased_brain.nii.gz (In the present working directory)
-ln -s ../T1_unbiased_brain.nii.gz T1_first/T1_unbiased_brain.nii.gz
-${FSLDIR}/bin/run_first_all -i T1_first/T1_unbiased_brain -b -o T1_first/T1_first
-
-#add FIRST subcortical segmentation to GM segmentation without brainstem
-${FSLDIR}/bin/fslmaths T1_first/T1_first_all_fast_firstseg -uthr 15 T1_first/subcort_upperthresh_seg
-${FSLDIR}/bin/fslmaths T1_first/T1_first_all_fast_firstseg -thr 17 T1_first/subcort_lowerthresh_seg
-${FSLDIR}/bin/fslmaths T1_first/subcort_upperthresh_seg -add T1_first/subcort_lowerthresh_seg -bin T1_first/subcort_GM
-${FSLDIR}/bin/fslmaths T1_fast/T1_brain_GM_mask_noCerebBS -add T1_first/subcort_GM -bin cort_subcort_GM
-
-#create GM-WM interface for dMRI tractography seeds
-${FSLDIR}/bin/fslmaths T1_fast/T1_brain_GM_mask_noCerebBS -kernel sphere 1 -dilM T1_fast/T1_brain_GM_mask_noCerebBS_dil
-${FSLDIR}/bin/fslmaths T1_fast/T1_brain_GM_mask_noCerebBS_dil -add T1_fast/T1_brain_WM_mask_noCerebBS -thr 2 -bin interface
-
-#label GM with ROIs
-${AFNIDIR}/3dROIMaker -inset cort_subcort_GM.nii.gz -thresh 0.1 -inflate 1 -prefix labelled -refset transforms/parcel_to_T1.nii.gz -nifti -neigh_upto_vert
-
-#for some reason both labelled_GM and labelled_GMI are inflated; fix it here
-${FSLDIR}/bin/fslmaths labelled_GM -mas cort_subcort_GM.nii.gz labelled_GM
-
-#Run Siena
-$BB_BIN_DIR/bb_structural_pipeline/bb_sienax `pwd`/..
-
-#Run VBM
-$BB_BIN_DIR/bb_structural_pipeline/bb_vbm `pwd`/..
 
 cd ..
 
-#Generate noise-related QC metrics
-$BB_BIN_DIR/bb_structural_pipeline/bb_QC_COG ../$1
-$BB_BIN_DIR/bb_structural_pipeline/bb_QC_CNR_eyes ../$1
-$BB_BIN_DIR/bb_structural_pipeline/bb_QC_CNR_corners_complete ../$1
-
-
-#Process T2 if it exists
+#Warping for T2
 if [ `${FSLDIR}/bin/imtest T2/T2` = 0 ] ; then
   echo "WARNING: No T2 in $1"
+
+  #use initial FAST outputs for rest of structural pipeline
+  cp T1/T1_fast/T1_fast_mixeltype.nii.gz T1/T1_fast/T1_brain_mixeltype.nii.gz
+  cp T1/T1_fast/T1_fast_pve_0.nii.gz T1/T1_fast/T1_brain_pve_0.nii.gz
+  cp T1/T1_fast/T1_fast_pve_1.nii.gz T1/T1_fast/T1_brain_pve_1.nii.gz
+  cp T1/T1_fast/T1_fast_pve_2.nii.gz T1/T1_fast/T1_brain_pve_2.nii.gz
+  cp T1/T1_fast/T1_fast_pveseg.nii.gz T1/T1_fast/T1_brain_pveseg.nii.gz
+  cp T1/T1_fast/T1_fast_seg.nii.gz T1/T1_fast/T1_brain_seg.nii.gz
+
+
 else
 
     cd T2
@@ -220,7 +193,81 @@ else
 
     cd ..
 
+    #Run multichannel FAST
+    ${FSLDIR}/bin/fast -S 2 -n 3 -H 0.1 -I 1 -l 20.0 -o T1/T1_fast/T1_brain T1/T1_unbiased_brain T2/T2_fast/T2_fast_restore.nii.gz
+
 fi
+
+cd T1
+
+
+
+
+#Binarize PVE masks
+if [ -f T1_fast/T1_brain_pveseg.nii.gz ] ; then
+
+    python $BB_BIN_DIR/bb_structural_pipeline/rename_pve.py T1.nii.gz T1_fast/T1_brain_pve_0.nii.gz T1_fast/T1_brain_pve_1.nii.gz T1_fast/T1_brain_pve_2.nii.gz
+
+
+    $FSLDIR/bin/fslmaths T1_fast/T1_brain_pve_0.nii.gz -thr 0.5 -bin T1_fast/T1_brain_WM_mask.nii.gz
+    $FSLDIR/bin/fslmaths T1_fast/T1_brain_pve_1.nii.gz -thr 0.5 -bin T1_fast/T1_brain_GM_mask.nii.gz
+    $FSLDIR/bin/fslmaths T1_fast/T1_brain_pve_2.nii.gz -thr 0.5 -bin T1_fast/T1_brain_CSF_mask.nii.gz
+fi
+
+#remove cerebellum and brainstem from GM and WM mask
+${FSLDIR}/bin/fslmaths T1_fast/T1_brain_GM_mask -sub transforms/cerebellum_to_T1 -sub transforms/brainstem_to_T1 -bin T1_fast/T1_brain_GM_mask_noCerebBS
+${FSLDIR}/bin/fslmaths T1_fast/T1_brain_WM_mask -sub transforms/cerebellum_to_T1 -sub transforms/brainstem_to_T1 -bin T1_fast/T1_brain_WM_mask_noCerebBS
+
+
+#Run First
+mkdir T1_first
+
+#Creates a link inside T1_first to ./T1_unbiased_brain.nii.gz (In the present working directory)
+ln -s ../T1_unbiased_brain.nii.gz T1_first/T1_unbiased_brain.nii.gz
+${FSLDIR}/bin/run_first_all -i T1_first/T1_unbiased_brain -b -o T1_first/T1_first
+
+#add FIRST subcortical segmentation to GM segmentation without brainstem
+${FSLDIR}/bin/fslmaths T1_first/T1_first_all_fast_firstseg -uthr 15 T1_first/subcort_upperthresh_seg
+${FSLDIR}/bin/fslmaths T1_first/T1_first_all_fast_firstseg -thr 17 T1_first/subcort_lowerthresh_seg
+${FSLDIR}/bin/fslmaths T1_first/subcort_upperthresh_seg -add T1_first/subcort_lowerthresh_seg -bin T1_first/subcort_GM
+${FSLDIR}/bin/fslmaths T1_fast/T1_brain_GM_mask_noCerebBS -add T1_first/subcort_GM -bin cort_subcort_GM
+
+#create GM-WM interface for dMRI tractography seeds
+${FSLDIR}/bin/fslmaths T1_fast/T1_brain_GM_mask_noCerebBS -kernel sphere 1 -dilM T1_fast/T1_brain_GM_mask_noCerebBS_dil
+${FSLDIR}/bin/fslmaths T1_fast/T1_brain_GM_mask_noCerebBS_dil -add T1_fast/T1_brain_WM_mask_noCerebBS -thr 2 -bin interface
+
+
+#check interface, re-do with extra dilation if empty
+maskMAX=$(fslstats interface -R | awk '{print int($2)}')
+if [ $maskMAX -lt 1 ]
+then
+     echo "interface mask empty, dilating GM mask by 2 and re-doing interface"
+     ${FSLDIR}/bin/fslmaths T1_fast/T1_brain_GM_mask_noCerebBS -kernel sphere 2 -dilM T1_fast/T1_brain_GM_mask_noCerebBS_dil2
+     ${FSLDIR}/bin/fslmaths T1_fast/T1_brain_GM_mask_noCerebBS_dil2 -add T1_fast/T1_brain_WM_mask_noCerebBS -thr 2 -bin interface
+fi
+
+
+#label GM with ROIs
+${AFNIDIR}/3dROIMaker -inset cort_subcort_GM.nii.gz -thresh 0.1 -inflate 1 -prefix labelled -refset transforms/parcel_to_T1.nii.gz -nifti -neigh_upto_vert
+
+#for some reason both labelled_GM and labelled_GMI are inflated; fix it here
+${FSLDIR}/bin/fslmaths labelled_GM -mas cort_subcort_GM.nii.gz labelled_GM
+
+#Run Siena
+$BB_BIN_DIR/bb_structural_pipeline/bb_sienax `pwd`/..
+
+#Run VBM
+$BB_BIN_DIR/bb_structural_pipeline/bb_vbm `pwd`/..
+
+cd ..
+
+#Generate noise-related QC metrics
+$BB_BIN_DIR/bb_structural_pipeline/bb_QC_COG ../$1
+$BB_BIN_DIR/bb_structural_pipeline/bb_QC_CNR_eyes ../$1
+$BB_BIN_DIR/bb_structural_pipeline/bb_QC_CNR_corners_complete ../$1
+
+
+
 
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
 

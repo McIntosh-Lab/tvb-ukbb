@@ -55,7 +55,7 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     jobEDDY = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 75  -N "bb_eddy_'
-        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -R 16000  -N "bb_eddy_'
+        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -R 16000 -N "bb_eddy_'
         + subname
         + '" -j '
         + jobPREPARE
@@ -125,27 +125,27 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     jobPREBEDPOSTX = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 5   -N "bb_pre_bedpostx_gpu_'
-        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD}   -N "bb_pre_bedpostx_gpu_'
+        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD}   -N "bb_pre_bedpostx_'
         + subname
         + '" -j '
         + jobTBSS
         + "  -l "
         + logDir
-        + " $BB_BIN_DIR/bb_diffusion_pipeline/bb_bedpostx/bb_pre_bedpostx_gpu "
+        + " $BB_BIN_DIR/bb_diffusion_pipeline/bb_bedpostx/bb_pre_bedpostx "
         + baseDir
         + "/dMRI",
     )
     jobBEDPOSTX = LT.runCommand(
         logger,
         #'${FSLDIR}/bin/fsl_sub -T 190 -N "bb_bedpostx_gpu_'
-        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -R 16000 -N "bb_bedpostx_gpu_'
+        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MORE_MEM} -R 16000 -N "bb_bedpostx_'
         + subname
         + '" -j '
         + jobPREBEDPOSTX
         # + "  -q $FSLGECUDAQ -l "
         + "  -l "
         + logDir
-        + " $BB_BIN_DIR/bb_diffusion_pipeline/bb_bedpostx/bb_bedpostx_gpu "
+        + " $BB_BIN_DIR/bb_diffusion_pipeline/bb_bedpostx/bb_bedpostx "
         + baseDir
         + "/dMRI",
     )
@@ -186,18 +186,30 @@ def bb_pipeline_diff(subject, jobHold, fileConfiguration):
     )
     jobPROBTRACKX = LT.runCommand(
         logger,
-        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_MAX_MEM} -N "bb_probtrackx_'
+        'qsub -V -cwd -terse -q ${QUEUE_MORE_MEM} -N "bb_probtrackx_'
+        + subname
+        + '" -hold_jid '
+        + jobPREPROBTRACKX
+        + " -l h_vmem=16G -b y -t 1-10 '"
+        + baseDir
+        + "/dMRI/probtrackx/probtrackx_commands_$SGE_TASK_ID.txt'",
+    )
+    jobPROBTRACKX = jobPROBTRACKX.split(".")[0]
+    jobPOSTPROBTRACKX = LT.runCommand(
+        logger,
+        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_post_probtrackx_'
         + subname
         + '" -j '
-        + jobPREPROBTRACKX
+        + jobPROBTRACKX
         + " -l "
         + logDir
-        + " $BB_BIN_DIR/bb_diffusion_pipeline/bb_probtrackx2/bb_probtrackx2 "
-        + baseDir
-        + "/dMRI",
+        + " $BB_BIN_DIR/bb_diffusion_pipeline/bb_probtrackx2/bb_post_probtrackx2 "
+        + subject,
     )
     print("SUBMITTED DIFFUSION")
-    return jobPROBTRACKX
+
+    return jobPOSTPROBTRACKX
+
 
 
 if __name__ == "__main__":
