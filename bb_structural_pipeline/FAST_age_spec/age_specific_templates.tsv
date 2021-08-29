@@ -7,3 +7,4 @@ age_decile	age_spec_template	fast_priors_prefix
 60	$templ/age-specific/ANTS60-64Years3T_brain	$templ/age-specific/AVG60-64Years3T_brain_image_seg
 70	$templ/age-specific/ANTS70-74Years3T_brain	$templ/age-specific/AVG70-74Years3T_brain_image_seg
 80	$templ/age-specific/ANTS80-84Years3T_brain	$templ/age-specific/AVG80-84Years3T_brain_image_seg
+90	$templ/age-specific/ANTS80-84Years3T_brain	$templ/age-specific/AVG80-84Years3T_brain_image_seg
