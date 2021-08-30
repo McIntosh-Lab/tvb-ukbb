@@ -13,7 +13,7 @@ import os
 
 def rename_pve(brain,pve0,pve1,pve2):
 
-	proper_pve_order = [pve2, pve1, pve0] #darkest to lightest
+	proper_pve_order = [pve2, pve1, pve0] #darkest to lightest. lowest intensity should be pve2, then pve1, then pve0
 
 	#create temp files
 	pve0temp=pve0[:-7]+"temp"+".nii.gz"
@@ -46,20 +46,14 @@ def rename_pve(brain,pve0,pve1,pve2):
 	print(pve0_mean)
 	print(pve1_mean)
 	print(pve2_mean)
+
 	
 	pve_value_list = [pve0_mean,pve1_mean,pve2_mean]
-	print(pve_value_list)
-
 	idx=np.argsort(pve_value_list)
-	print(idx)
-
-
 	pve_filename_list = [pve0temp,pve1temp,pve2temp]
 
-	print(pve_filename_list)
+
 	for i in range(3):
-		print(pve_filename_list[idx[i]])
-		print(proper_pve_order[i])
 		os.rename(pve_filename_list[idx[i]], proper_pve_order[i])
 
 
