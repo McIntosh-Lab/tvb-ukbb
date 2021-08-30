@@ -294,7 +294,7 @@ export FSLDIR=/opt/HCPpipelines-4.1.3/fsl
 
 	#FC SC PDF
 
-		python $BB_BIN_DIR/tvb_bb_QC/SC_FC.py $dirSubject
+		python $BB_BIN_DIR/tvb_bb_QC/SC_FC.py $dirSubject $sub
 
 
 
