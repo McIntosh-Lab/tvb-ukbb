@@ -71,6 +71,7 @@ cat > $MELODIC_html << EOF
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+    <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
   </div>
 </header>
 
@@ -83,6 +84,7 @@ cat > $MELODIC_html << EOF
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
     <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+    <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
 </div>
 </div>
 
@@ -154,8 +156,8 @@ EOF
 #printing components
 for t in ${array[@]}; do
   rfMRI_ver=`basename $t`
-  #deal with multiple fix4melview
-  file=$(find $t -maxdepth 1 -name "fix4melview_*.txt" -print0)
+  #TODO: deal with multiple fix4melview
+  file=$(find $t -maxdepth 1 -name "fix4melview_*.txt") #TODO: multiple fix4melviews will be separated by spaces. needs to be handled 
 
 
     num=`tail -n2 $file| head -n1`
@@ -167,6 +169,16 @@ for t in ${array[@]}; do
   noise=${noise%"]"}
   IFS=', ' read -r -a noise_array <<< "$noise"
 
+
+  declare -a unknown_array=()
+
+  while read line; do
+    IC_num="${line%%,*}"
+
+    if [[ "$line" == *"Unknown"* ]]; then
+      unknown_array+=("$IC_num")
+    fi
+  done < $file
 
 cat <<EOF >> $MELODIC_html
 
@@ -206,6 +218,26 @@ EOF
     SIG_or_NOISE="SIGNAL"
   fi
 done
+
+
+
+cat <<EOF >> $MELODIC_html
+    </optgroup>
+    <optgroup label="Unknown">
+EOF
+
+
+
+for ((n=1;n<=$num;n++)); do
+  if [[ " ${unknown_array[@]} " =~ " $n " ]]; then
+cat <<EOF >> $MELODIC_html
+      <option value="$n" id="$n">UNKNOWN: IC_$n</option>
+EOF
+  else
+    SIG_or_NOISE="UNKNOWN"
+  fi
+done
+
 
 
 
@@ -255,7 +287,7 @@ for t in ${array[@]}; do
   echo $folder
 
 
-    file=$(find $t -maxdepth 1 -name "fix4melview_*.txt" -print0)
+    file=$(find $t -maxdepth 1 -name "fix4melview_*.txt") #TODO: multiple fix4melviews will be separated by spaces. needs to be handled
 
 
     num=`tail -n2 $file| head -n1`
@@ -284,10 +316,10 @@ for t in ${array[@]}; do
       SIG_or_NOISE="NOISE"
       # whatever you want to do when array contains value
     else
-      SIG_or_NOISE="SIGNAL"
+      SIG_or_NOISE="SIGNAL OR UNKNOWN"
     fi
 
-      IC_html=$report_dir/IC_${n}.html
+    IC_html=$report_dir/IC_${n}.html
     IC_MM_html=$report_dir/IC_${n}_MM.html
 
     IC_MMfit_png=$report_dir/IC_${n}_MMfit.png
