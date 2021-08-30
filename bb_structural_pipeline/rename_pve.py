@@ -46,14 +46,20 @@ def rename_pve(brain,pve0,pve1,pve2):
 	print(pve0_mean)
 	print(pve1_mean)
 	print(pve2_mean)
-
 	
 	pve_value_list = [pve0_mean,pve1_mean,pve2_mean]
+	print(pve_value_list)
+
 	idx=np.argsort(pve_value_list)
+	print(idx)
+
+
 	pve_filename_list = [pve0temp,pve1temp,pve2temp]
 
-
+	print(pve_filename_list)
 	for i in range(3):
+		print(pve_filename_list[idx[i]])
+		print(proper_pve_order[i])
 		os.rename(pve_filename_list[idx[i]], proper_pve_order[i])
 
 
