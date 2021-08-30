@@ -19,7 +19,7 @@ font = {"size": 100}
 matplotlib.rc("font", **font)
 
 
-def SC_FC(subj):
+def SC_FC(subj,subjName):
     """Function that generates SC, FC, TL, TS plots for QC html report
     for a subject.
 
@@ -30,6 +30,9 @@ def SC_FC(subj):
     ----------
     subj : string
         Full path to subject's directory.
+
+    subjName : 
+        Subject name.
     """
 
 
@@ -40,7 +43,6 @@ def SC_FC(subj):
     if not os.path.exists(subj + "/QC/SC_FC/"):
         os.makedirs(subj + "/QC/SC_FC/")
 
-    subjName = subj[subj.rfind("/") + 1 :]
 
 
 
@@ -270,8 +272,11 @@ if __name__ == "__main__":
     subj : 
         Full path to subject's directory.
 
+    subjName : 
+        Subject name.
+
     """
     # try:
-    SC_FC(sys.argv[1])
+    SC_FC(sys.argv[1],sys.argv[2])
 
     
