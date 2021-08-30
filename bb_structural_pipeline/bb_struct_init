@@ -205,7 +205,11 @@ cd T1
 
 #Binarize PVE masks
 if [ -f T1_fast/T1_brain_pveseg.nii.gz ] ; then
+    if [ -f T1_fast/T1_fast_pve_0.nii.gz ] ; then
+    
+      python $BB_BIN_DIR/bb_structural_pipeline/rename_pve.py T1.nii.gz T1_fast/T1_fast_pve_0.nii.gz T1_fast/T1_fast_pve_1.nii.gz T1_fast/T1_fast_pve_2.nii.gz
 
+    fi
     python $BB_BIN_DIR/bb_structural_pipeline/rename_pve.py T1.nii.gz T1_fast/T1_brain_pve_0.nii.gz T1_fast/T1_brain_pve_1.nii.gz T1_fast/T1_brain_pve_2.nii.gz
 
 

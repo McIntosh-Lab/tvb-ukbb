@@ -13,7 +13,7 @@ import os
 
 def rename_pve(brain,pve0,pve1,pve2):
 
-	proper_pve_order = [pve2, pve1, pve0] #darkest to lightest. lowest intensity should be pve2, then pve1, then pve0
+	proper_pve_order = [pve0, pve1, pve2] #darkest to lightest. lowest intensity should be pve0, then pve1, then pve2
 
 	#create temp files
 	pve0temp=pve0[:-7]+"temp"+".nii.gz"
