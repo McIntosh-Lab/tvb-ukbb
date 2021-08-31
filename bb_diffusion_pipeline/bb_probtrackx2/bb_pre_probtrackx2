@@ -20,7 +20,10 @@ ln -s ${subjdir}/dMRI/bedpostx.bedpostX/merged* ${subjdir}/dMRI/probtrackx
 # apply previously generated inverse warp to get inflated parcellation, interface and exclude masks in DTI space
 ${FSLDIR}/bin/applywarp -i $subjdir/T1/labelled_GMI -r $subjdir/dMRI/dMRI/data_B0 -o $subjdir/dMRI/dMRI/parcellation --premat=$subjdir/dMRI/dMRI/transforms/T1_to_DTI.mat --interp=nn
 ${FSLDIR}/bin/applywarp -i $subjdir/T1/interface -r $subjdir/dMRI/dMRI/data_B0 -o $subjdir/dMRI/dMRI/interface --premat=$subjdir/dMRI/dMRI/transforms/T1_to_DTI.mat --interp=nn
-${FSLDIR}/bin/applywarp -i $subjdir/T1/T1_fast/T1_brain_GM_mask -r $subjdir/dMRI/dMRI/data_B0 -o $subjdir/dMRI/probtrackx/exclude --premat=$subjdir/dMRI/dMRI/transforms/T1_to_DTI.mat --interp=nn
+${FSLDIR}/bin/fslmaths $subjdir/T1/T1_fast/T1_brain_GM_mask -add $subjdir/T1/transforms/cerebellum_to_T1 -add $subjdir/T1/transforms/brainstem_to_T1 -bin $subjdir/T1/T1_brain_GM_wCerebBS
+${FSLDIR}/bin/applywarp -i $subjdir/T1/T1_fast/T1_brain_GM_wCerebBS -r $subjdir/dMRI/dMRI/data_B0 -o $subjdir/dMRI/probtrackx/exclude --premat=$subjdir/dMRI/dMRI/transforms/T1_to_DTI.mat --interp=nn
+
+
 
 # label the interface with inflated parcellation
 ${AFNIDIR}/3dROIMaker -inset ${subjdir}/dMRI/dMRI/interface.nii.gz -thresh 0.1 -prefix ${subjdir}/dMRI/probtrackx/labelledWM -refset ${subjdir}/dMRI/dMRI/parcellation.nii.gz -nifti -neigh_upto_vert
