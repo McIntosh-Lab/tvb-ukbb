@@ -44,7 +44,7 @@ export QUEUE_MAX_MEM="bigmem_64.q"                                              
 
 #SETUP AFNI
 # export AFNIDIR=/opt/afni                                                        #TO BE MODIFIED BY USER
-export AFNIDIR="/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Compiler/gcc9/afni/20.3.05/"
+export AFNIDIR="/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Compiler/gcc9/afni/20.3.05"
 
 #SETUP FREESURFER 
 # export FREESURFER_HOME=/cvmfs/soft.computecanada.ca/easybuild/software/2020/Core/freesurfer/5.3.0/bin/freesurfer                                          #TO BE MODIFIED BY USER
@@ -52,6 +52,9 @@ export AFNIDIR="/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Compil
 # if usin on Compute Canada, load module first
 source $EBROOTFREESURFER/FreeSurferEnv.sh
 # source $FREESURFER_HOME/SetUpFreeSurfer.sh  > /dev/null
+
+#SETUP ANTS
+export ANTSPATH="/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Compiler/gcc9/ants/2.3.5/bin"
 
 export SOFTDIR="/opt/tvb-pipeline"						#TO BE MODIFIED BY USER (DEFAULT FOR SINGULARITY)
 
@@ -84,10 +87,12 @@ export templ="$BB_BIN_DIR/templates"
 export PYTHONPATH="$SOFTDIR/software/env/bin/python"
 
 export FSL_FIXDIR="$BB_BIN_DIR/bb_functional_pipeline/bb_fix_dir"
-export PARC_IMG="$templ/parcellations/TVB_SchaeferTian/TVB_SchaeferTian_316.nii.gz"                      #TO BE MODIFIED BY USER
-export PARC_LUT="$templ/parcellations/TVB_SchaeferTian/TVB_SchaeferTian_316_LUT.txt"                     #TO BE MODIFIED BY USER
-#export numROI="316"                                                              #TO BE MODIFIED BY USER
+export PARC_IMG="$templ/parcellations/TVB_SchaeferTian/TVB_SchaeferTian_436.nii.gz"                      #TO BE MODIFIED BY USER
+export PARC_LUT="$templ/parcellations/TVB_SchaeferTian/TVB_SchaeferTian_436_LUT.txt"                     #TO BE MODIFIED BY USER
+export numROI="436"                                                              #TO BE MODIFIED BY USER
 export TRAINING_FILE="ADNI3_Training.RData"                                            #TO BE MODIFIED BY USER
+export SynB0="y"                                            #TO BE MODIFIED BY USER
+export PE_direction="0 1 0"                                            #TO BE MODIFIED BY USER 
 
 #INCLUDE 3 MAIN BIOBANK DIRECTORIES IN PATH
 export PATH="$BB_BIN_DIR/bb_pipeline_tools/:$BB_BIN_DIR/bb_general_tools/:$PATH"
