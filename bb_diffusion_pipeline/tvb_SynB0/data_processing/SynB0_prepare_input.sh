@@ -22,8 +22,7 @@ echo Making results directory...
 mkdir -p $RESULTS_PATH
 
 # Create temporary job directory
-JOB_PATH=${RESULTS_PATH}/tmp
-#JOB_PATH= $(mktemp -d)
+JOB_PATH=${RESULTS_PATH}/prep
 mkdir -p $JOB_PATH
 echo -------
 echo Job directory path: $JOB_PATH
@@ -122,8 +121,3 @@ cp $T1_NORM_LIN_ATLAS_2_5_PATH $RESULTS_PATH
 cp $T1_NORM_NONLIN_ATLAS_2_5_PATH $RESULTS_PATH
 cp $B0_D_LIN_ATLAS_2_5_PATH $RESULTS_PATH
 cp $B0_D_NONLIN_ATLAS_2_5_PATH $RESULTS_PATH
-
-# Delete job directory
-#echo -------
-#echo Removing job directory...
-#rm -rf $JOB_PATH
