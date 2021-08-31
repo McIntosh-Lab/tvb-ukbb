@@ -29,13 +29,7 @@
 
 # UKBB ROOT DIR LOCATION
 export BBDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && cd ..; pwd )"
-
-#SETUP FSL  
-export FSLDIR=/opt/HCPpipelines-4.1.3/fsl                                       #TO BE MODIFIED BY USER
-. $FSLDIR/etc/fslconf/fsl.sh
-export FSLCONFDIR="${FSLDIR}/config"
-export FSLOUTPUTTYPE="NIFTI_GZ"
-export FSLGECUDAQ=cuda.q                                                        #TO BE MODIFIED BY USER
+                                                       #TO BE MODIFIED BY USER
 
 #TODO implement this in the files
 export QUEUE_STANDARD="all.q"                                                   #TO BE MODIFIED BY USER
@@ -48,6 +42,13 @@ export AFNIDIR=/opt/afni                                                        
 #SETUP FREESURFER 
 export FREESURFER_HOME=/opt/freesurfer                                          #TO BE MODIFIED BY USER
 source $FREESURFER_HOME/SetUpFreeSurfer.sh  > /dev/null
+
+#SETUP FSL  
+export FSLDIR=/opt/HCPpipelines-4.1.3/fsl                                       #TO BE MODIFIED BY USER
+. $FSLDIR/etc/fslconf/fsl.sh
+export FSLCONFDIR="${FSLDIR}/config"
+export FSLOUTPUTTYPE="NIFTI_GZ"
+export FSLGECUDAQ=cuda.q 
 
 # SET UP MATLAB
 export MCROOT="$BBDIR/software/MCR_2017b_glnxa64"
@@ -77,10 +78,11 @@ export templ="$BB_BIN_DIR/templates"
 export PYTHONPATH="$BBDIR/software/env/bin/python"
 
 export FSL_FIXDIR="$BB_BIN_DIR/bb_functional_pipeline/bb_fix_dir"
-export PARC_IMG="$templ/parcellations/TVB_SchaeferTian/TVB_SchaeferTian_316.nii.gz"                      #TO BE MODIFIED BY USER
-export PARC_LUT="$templ/parcellations/TVB_SchaeferTian/TVB_SchaeferTian_316_LUT.txt"                     #TO BE MODIFIED BY USER
-export numROI="316"                                                              #TO BE MODIFIED BY USER
-export TRAINING_FILE="ADNI3_Training.RData"                                            #TO BE MODIFIED BY USER
+export PARC_IMG="$templ/parcellations/RM96/RM96_inMNI.nii.gz"                      #TO BE MODIFIED BY USER
+export PARC_LUT="$templ/parcellations/RM96/RM96_LUT.txt"                     #TO BE MODIFIED BY USER
+export numROI="96"                                                              #TO BE MODIFIED BY USER
+export SLICE_TIMING_FILE="$BB_BIN_DIR/bb_data/slice_timing_odd_even.txt"
+export TRAINING_FILE="tvbbaby_SickKids.RData"                                            #TO BE MODIFIED BY USER
 
 #INCLUDE 3 MAIN BIOBANK DIRECTORIES IN PATH
 export PATH="$BB_BIN_DIR/bb_pipeline_tools/:$BB_BIN_DIR/bb_general_tools/:$PATH"

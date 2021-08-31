@@ -25,7 +25,7 @@
 
 nameDir="$PWD/$1"
 
-cp $BB_BIN_DIR/bb_data/design_ICA_nonSmoothed.fsf $1/fMRI/rfMRI.fsf
+cp $BB_BIN_DIR/bb_data/design_ICA.fsf $1/fMRI/rfMRI.fsf
 
 for elem in `cat $1/fMRI/rfMRI.fsf | grep -oP '_--_\K.*?(?=_-_)' | sort | uniq` ; do
     val=`echo ${!elem} | sed 's|/|\\\/|g'`
@@ -61,5 +61,7 @@ echo "set fmri(npts) $fmriNumVol"  >> $1/fMRI/rfMRI.fsf
 echo "set fmri(dwell) $fmriDwell" >> $1/fMRI/rfMRI.fsf
 echo "set fmri(te) $fmriTE" >> $1/fMRI/rfMRI.fsf
 
-
+echo "set fmri(st) 3" >> $1/fMRI/rfMRI.fsf #slice time correction, use txt file (3) - slice order
+echo "set fmri(st_file) $SLICE_TIMING_FILE" >> $1/fMRI/rfMRI.fsf #slice time correction, specify txt file
+echo "set fmri(smooth) 5" >> $1/fMRI/rfMRI.fsf #spatial smoothing FWHM (mm)5
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
