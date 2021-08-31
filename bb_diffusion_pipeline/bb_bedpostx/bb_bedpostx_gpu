@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Script name: bb_bedpostx
+# Script name: bb_bedpostx_gpu
 #
 # Description: Script to run bedpostx with the special needs for UK Biobank.
 #

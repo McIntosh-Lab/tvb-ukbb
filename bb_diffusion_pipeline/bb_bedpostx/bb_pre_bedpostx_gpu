@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Script name: bb_pre_bedpostx
+# Script name: bb_pre_bedpostx_gpu
 #
 # Description: Script to prepare the dMRI data for bedpostx.
 #
@@ -27,7 +27,7 @@ subjdir=`fsl_abspath $1`
 subjdir=`echo $subjdir | sed 's/\/$/$/g'`
 
 echo "---------------------------------------------"
-#echo "------------ BedpostX Version -----------"
+#echo "------------ BedpostX GPU Version -----------"
 echo "------------------ BedpostX -----------------"
 echo "---------------------------------------------"
 echo subjectdir is $subjdir
