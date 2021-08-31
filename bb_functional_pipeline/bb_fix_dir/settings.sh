@@ -188,19 +188,19 @@ fi
 if [ -z "${FSL_FIX_CIFTIRW}" ]; then
 	FSL_FIX_CIFTIRW='/opt/fmrib/matlab_ciftireadwrite/';
 fi
-if [ -z "${FSL_FIX_WBC}" ]; then
-	FSL_FIX_WBC="$(which wb_command 2>/dev/null)"
-	if [ -z "${FSL_FIX_WBC}" ]; then
-		# Set this to the location of the HCP Workbench folder for your platform
-		WBENCH="/opt/fmrib/workbench/"
-		if [ "${FSL_FIX_OS}" = "Darwin" ]; then
-			FSL_FIX_WBC="${WBENCH}/bin_macosx64/wb_command"
-		elif [ "${FSL_FIX_OS}" = "Linux" ]; then
-			FSL_FIX_WBC="${WBENCH}/bin_linux64/wb_command"
-		fi
-	fi
-fi
-export FSL_FIX_CIFTIRW FSL_FIX_WBC
+# if [ -z "${FSL_FIX_WBC}" ]; then
+# 	FSL_FIX_WBC="$(which wb_command 2>/dev/null)"
+# 	if [ -z "${FSL_FIX_WBC}" ]; then
+# 		# Set this to the location of the HCP Workbench folder for your platform
+# 		WBENCH="/opt/fmrib/workbench/"
+# 		if [ "${FSL_FIX_OS}" = "Darwin" ]; then
+# 			FSL_FIX_WBC="${WBENCH}/bin_macosx64/wb_command"
+# 		elif [ "${FSL_FIX_OS}" = "Linux" ]; then
+# 			FSL_FIX_WBC="${WBENCH}/bin_linux64/wb_command"
+# 		fi
+# 	fi
+# fi
+# export FSL_FIX_CIFTIRW FSL_FIX_WBC
 
 # Set this to the location of the FSL MATLAB scripts
 if [ -z "${FSLDIR}" ]; then

@@ -97,9 +97,11 @@ def main(cli_args=None):
     jobSTEP2 = "-1"
     jobSTEP3 = "-1"
     jobSTEP4 = "-1"
+    jobSTEP5 = "-1"
 
-    jobSTEP1 = bb_pipeline_struct(subject, runTopup, fileConfig)
-
+    # jobSTEP1 = bb_pipeline_struct(subject, runTopup, fileConfig)
+    bb_pipeline_struct(subject, runTopup, fileConfig)
+    #handle cases: when jobstep1 would typically trigger the following
     if isinstance(jobSTEP1, int):
         if jobSTEP1 == -1:
             print(
@@ -113,23 +115,31 @@ def main(cli_args=None):
     # jobSTEP1 = int(jobSTEP1)
 
     # if runTopup:
-    # TODO: modify jobSTEP2 references to take a list of job IDs
-    jobSTEP2 = bb_pipeline_func(subject, jobSTEP1, fileConfig)
-    jobSTEP3 = bb_pipeline_diff(subject, jobSTEP2, fileConfig)
+    # jobSTEP2 = bb_pipeline_func(subject, fileConfig)
+    # jobSTEP3 = bb_pipeline_diff(subject, fileConfig)
 
-    jobSTEP4 = bb_IDP(
-        subject, str(jobSTEP1) + "," + str(jobSTEP2) + "," + str(jobSTEP3), fileConfig
+    # jobSTEP4 = bb_IDP(
+    #     subject, fileConfig
+    # )
+
+    # jobSTEP5 = tvb_bb_QC(
+    #     subject,
+    #     fileConfig
+    # )
+    bb_pipeline_func(subject, fileConfig)
+    bb_pipeline_diff(subject, fileConfig)
+
+    bb_IDP(
+        subject, fileConfig
     )
 
-    jobSTEP5 = tvb_bb_QC(
+    tvb_bb_QC(
         subject,
-        str(jobSTEP1) + "," + str(jobSTEP2) + "," + str(jobSTEP3) + "," + str(jobSTEP4),
-        fileConfig,
+        fileConfig
     )
 
     LT.finishLogging(logger)
-    #print(f"IDP PID: {jobSTEP4}")
-    return jobSTEP5
+    # return jobSTEP5
 
 
 if __name__ == "__main__":

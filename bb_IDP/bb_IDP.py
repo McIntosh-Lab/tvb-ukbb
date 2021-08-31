@@ -30,7 +30,7 @@ sys.path.insert(1, os.path.dirname(__file__) + "/..")
 import bb_pipeline_tools.bb_logging_tool as LT
 
 
-def bb_IDP(subject, jobHold, fileConfiguration):
+def bb_IDP(subject, fileConfiguration):
 
     logger = LT.initLogging(__file__, subject)
     logDir = logger.logDir
@@ -38,19 +38,15 @@ def bb_IDP(subject, jobHold, fileConfiguration):
 
     subname = subject.replace("/", "_")
 
+    print("Running IDP pipeline...")
     jobIDP = LT.runCommand(
         logger,
-        #'${FSLDIR}/bin/fsl_sub -T 30 -N "bb_IDP_'
-        '${FSLDIR}/bin/fsl_sub -q ${QUEUE_STANDARD} -N "bb_IDP_'
-        + subname
-        + '" -j '
-        + jobHold
-        + "  -l "
-        + logDir
-        + " $BB_BIN_DIR/bb_IDP/bb_IDP "
+        " $BB_BIN_DIR/bb_IDP/bb_IDP "
         + subject,
+        "bb_IDP_"
+        + subname
     )
-    print("SUBMITTED IDP")
+    print("IDP pipeline complete.")
     return jobIDP
 
 
@@ -72,4 +68,4 @@ if __name__ == "__main__":
         print(f"{json_path} could not be loaded. Exiting")
         sys.exit(1)
     # call pipeline
-    bb_IDP(subject, "-1", fileConfig)
+    bb_IDP(subject, fileConfig)

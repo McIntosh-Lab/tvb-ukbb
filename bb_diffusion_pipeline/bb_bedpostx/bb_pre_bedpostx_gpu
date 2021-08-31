@@ -1,0 +1,100 @@
+#!/bin/sh
+#
+# Script name: bb_pre_bedpostx_gpu
+#
+# Description: Script to prepare the dMRI data for bedpostx.
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
+
+subjdir=`fsl_abspath $1`
+subjdir=`echo $subjdir | sed 's/\/$/$/g'`
+
+echo "---------------------------------------------"
+#echo "------------ BedpostX GPU Version -----------"
+echo "------------------ BedpostX -----------------"
+echo "---------------------------------------------"
+echo subjectdir is $subjdir
+
+echo Making bedpostx directory structure
+mkdir -p ${subjdir}/bedpostx
+#check that all required files exist and copy to bedpostx directory
+
+if [ ! -d ${subjdir} ]; then
+    echo "subject directory $1 not found"
+    exit 1
+fi
+
+if [ ! -e ${subjdir}/dMRI/bvecs ]; then
+    echo "${subjdir}/dMRI/bvecs not found"
+    touch $subjdir/pre_bedpostx_error.txt 
+    exit 1
+fi
+cp ${subjdir}/dMRI/bvecs ${subjdir}/bedpostx
+
+if [ ! -e ${subjdir}/dMRI/bvals ]; then
+    echo "${subjdir}/dMRI/bvals not found"
+    touch $subjdir/pre_bedpostx_error.txt 
+    exit 1
+fi
+cp ${subjdir}/dMRI/bvals ${subjdir}/bedpostx
+
+if [ `${FSLDIR}/bin/imtest ${subjdir}/dMRI/data` -eq 0 ]; then
+    echo "${subjdir}/dMRI/data.nii.gz not found"
+    touch $subjdir/pre_bedpostx_error.txt 
+    exit 1
+fi
+cp ${subjdir}/dMRI/data.nii.gz ${subjdir}/bedpostx
+
+if [ `${FSLDIR}/bin/imtest ${subjdir}/dMRI/nodif_brain_mask` -eq 0 ]; then
+    echo "${subjdir}/dMRI/nodif_brain_mask not found"
+    touch $subjdir/pre_bedpostx_error.txt
+    exit 1
+fi
+cp ${subjdir}/dMRI/nodif_brain_mask.nii.gz ${subjdir}/bedpostx
+
+if [ -e ${subjdir}/bedpostx.bedpostX/xfms/eye.mat ]; then
+    echo "${subjdir} has already been processed: ${subjdir}/dMRI.bedpostX." 
+    echo "Delete or rename ${subjdir}/dMRI.bedpostX before repeating the process."
+    touch $subjdir/pre_bedpostx_error.txt
+    exit 1
+fi
+
+
+#mkdir -p ${subjdir}.bedpostX/
+#mkdir -p ${subjdir}/bedpostX.bedpostX/diff_parts  
+#mkdir -p ${subjdir}.bedpostX/logs
+#mkdir -p ${subjdir}.bedpostX/logs/logs_gpu # not use gpu zwang
+#mkdir -p ${subjdir}.bedpostX/xfms
+
+#echo Copying files to bedpost directory
+#cp ${subjdir}/bvecs ${subjdir}/bvals ${subjdir}.bedpostX
+##${FSLDIR}/bin/imcp ${subjdir}/nodif_brain_mask ${subjdir}.bedpostX
+#if [ `${FSLDIR}/bin/imtest ${subjdir}/nodif` = 1 ] ; then
+#    ${FSLDIR}/bin/fslmaths ${subjdir}/nodif -mas ${subjdir}/nodif_brain_mask ${subjdir}.bedpostX/nodif_brain
+#fi
+
+##$FSLDIR/bin/split_parts_gpu ${subjdir}/data_ud ${subjdir}/nodif_brain_mask NULL 0 1 ${subjdir}.bedpostX
+##${FSLDIR}/bin/split_parts_gpu ${subjdir}/data ${subjdir}/nodif_brain_mask ${subjdir}/bvals ${subjdir}/bvecs NULL 0 1 ${subjdir}.bedpostX
+
+#nvox=`${FSLDIR}/bin/fslstats $subjdir/bedpostx/nodif_brain_mask -V  | cut -d ' ' -f1 `
+
+#echo $nvox > $subjdir/bedpostx.bedpostX/nvox.txt
+
+. $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 

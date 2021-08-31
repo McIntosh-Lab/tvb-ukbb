@@ -44,6 +44,7 @@ cp $direc/dMRI/raw/dwi.bvec $direc/dMRI/dMRI/bvecs
 # extract B0 (assumes B0 is first volume)
 ${FSLDIR}/bin/fslroi $direc/dMRI/dMRI/DWI $direc/dMRI/dMRI/DWI_B0 0 1
 
+
 # register T1 to DTI for preliminary DTI mask for eddy
 mkdir -p ${direc}/dMRI/dMRI/transforms
 ${BB_BIN_DIR}/bb_structural_pipeline/bb_epi_reg --epi=$direc/dMRI/dMRI/DWI_B0 --t1=$direc/T1/T1 --t1brain=$direc/T1/T1_brain --out=$direc/dMRI/dMRI/transforms/rawDTI_to_T1 --wmseg=$direc/T1/T1_fast/T1_brain_WM_mask
@@ -73,12 +74,18 @@ topupValue="0"`echo "scale=4;("$dtiDwell" * ("$EPIfactor" -1.0)) / 1000.0 "| bc`
 
 cat /dev/null > $direc/dMRI/dMRI/acqparams.txt 
 
-#camCAN encoding is A>>P
-printf "0 -1 0 $topupValue\n" >>$direc/dMRI/dMRI/acqparams.txt
 
 
-## set acqparams.txt by zwang
-# exact params may not matter much if not doing TOPUP, or if two blips for TOPUP have the same Total Readout Time
-#printf "0 1 0 0.095" > $direc/dMRI/dMRI/acqparams.txt
+printf "$PE_direction $topupValue\n" >>$direc/dMRI/dMRI/acqparams.txt
+
+# if performing SynB0 estimation for unwarping
+if [ "$SynB0" == "y" ]; then
+    printf "$PE_direction 0.0000\n" >>$direc/dMRI/dMRI/acqparams.txt
+    
+    mkdir ${direc}/dMRI/dMRI/SynB0 #SynB0 output directory
+
+    $BB_BIN_DIR/bb_diffusion_pipeline/tvb_SynB0/tvb_SynB0_pipeline.sh $1
+fi
+
 
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer
