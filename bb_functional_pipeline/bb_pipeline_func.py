@@ -134,6 +134,8 @@ def bb_pipeline_func(subject, fileConfiguration):
             + subname
         )
         print("Done.")
+
+
         print("rfMRI subpipe complete.")
 
         jobsToWaitFor = jobCLEAN
