@@ -1,6 +1,7 @@
 #!/bin/env python
 #
 
+import sys
 import numpy as np
 
 def replace_nans(matrix_file):
@@ -9,19 +10,18 @@ def replace_nans(matrix_file):
 	np.savetxt(matrix_file, mat)
 
 if __name__ == "__main__":
-    """Function that generates SC, FC, TL, TS plots for QC html report
-    for a subject.
+    """Function that generates replaces nans and neginfs in a file with zeroes.
 
     
     Usage
     ----------
-    python  SC_FC.py  subj
+    python  replace_nans.py  file_path
     
 
     Arguments
     ----------
-    subj : 
-        Full path to subject's directory.
+    file_path : 
+        Full path to file in which nans should be replaced.
 
     """
     # try:
