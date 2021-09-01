@@ -66,6 +66,7 @@ def bb_pipeline_func(subject, fileConfiguration):
     )
     print("bb_postprocess_struct completed")
 
+
     # TODO: Embed the checking of the fieldmap inside the independent steps -- Every step should check if the previous one has ended.
     if ("rfMRI" in fileConfiguration) and (fileConfiguration["rfMRI"] != ""):
         print("rfMRI files found. Running rfMRI subpipe")
