@@ -25,7 +25,7 @@
 
 nameDir="$PWD/$1"
 
-cp $BB_BIN_DIR/bb_data/design_TASK.fsf $1/fMRI/tfMRI_$2.fsf
+cp $BB_BIN_DIR/bb_data/Cam-CAN_design_TASK.fsf $1/fMRI/tfMRI_$2.fsf
 
 for elem in `cat $1/fMRI/tfMRI_$2.fsf | grep -oP '_--_\K.*?(?=_-_)' | sort | uniq` ; do
     val=`echo ${!elem} | sed 's|/|\\\/|g'`
@@ -57,5 +57,6 @@ echo "set fmri(npts) $fmriNumVol"  >> $1/fMRI/tfMRI_$2.fsf
 echo "set fmri(dwell) $fmriDwell" >> $1/fMRI/tfMRI_$2.fsf
 echo "set fmri(te) $fmriTE" >> $1/fMRI/tfMRI_$2.fsf
 echo "set fmri(st) 2" >> $1/fMRI/tfMRI_$2.fsf #slice time correction, descending
+echo "set fmri(smooth) 8" >> $1/fMRI/tfMRI_$2.fsf #spatial smoothing FWHM (mm)
 
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
