@@ -81,6 +81,17 @@ def bb_pipeline_func(subject, fileConfiguration):
         "bb_postprocess_struct_"
         + subname
     )
+    print("bb_postprocess_struct completed.")
+
+    print("Running tvb_prepare_gradEchoFieldMap...")
+    jobGEFIELDMAP = LT.runCommand(
+        logger,
+        "$BB_BIN_DIR/bb_functional_pipeline/tvb_prepare_gradEchoFieldMap "
+        + subject,
+        "tvb_prepare_gradEchoFieldMap_"
+        + subname
+    )
+    print("tvb_prepare_gradEchoFieldMap completed.")
     # if ("rfMRI" in fileConfiguration) and (fileConfiguration["rfMRI"] != ""):
 
     jobCLEAN_LAST_rfMRI = "-1"
