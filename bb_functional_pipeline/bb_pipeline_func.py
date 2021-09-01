@@ -81,7 +81,6 @@ def bb_pipeline_func(subject, fileConfiguration):
         "bb_postprocess_struct_"
         + subname
     )
-<<<<<<< HEAD
     # if ("rfMRI" in fileConfiguration) and (fileConfiguration["rfMRI"] != ""):
 
     jobCLEAN_LAST_rfMRI = "-1"
