@@ -94,7 +94,7 @@ def bb_pipeline_func(subject, fileConfiguration):
             print(f"Running rfMRI_{i} prep...")
             jobPREPARE_R = LT.runCommand(
                 logger,
-                + "$BB_BIN_DIR/bb_functional_pipeline/bb_prepare_rfMRI "
+                "$BB_BIN_DIR/bb_functional_pipeline/bb_prepare_rfMRI "
                 + subject
                 + f" {rfMRI_nums[i]}",
                 f"bb_prepare_rfMRI_{i}_"
@@ -109,7 +109,7 @@ def bb_pipeline_func(subject, fileConfiguration):
             print("Running FEAT...")
             jobFEAT_R = LT.runCommand(
                 logger,
-                + "feat "
+                "feat "
                 + baseDir
                 #
                 # + f"/fMRI/rfMRI_{i}.fsf " + subject,
@@ -122,7 +122,7 @@ def bb_pipeline_func(subject, fileConfiguration):
             print(f"Running rfMRI_{i} FIX...")
             jobFIX = LT.runCommand(
                 logger,
-                + "$BB_BIN_DIR/bb_functional_pipeline/bb_fix "
+                "$BB_BIN_DIR/bb_functional_pipeline/bb_fix "
                 + subject
                 + f" {rfMRI_nums[i]}",
                 f"bb_fix_{i}_"
@@ -134,7 +134,7 @@ def bb_pipeline_func(subject, fileConfiguration):
             ### compute FC using parcellation
             jobFC = LT.runCommand(
                 logger,
-                + "$BB_BIN_DIR/bb_functional_pipeline/bb_FC "
+                "$BB_BIN_DIR/bb_functional_pipeline/bb_FC "
                 + subject
                 + f" {rfMRI_nums[i]}",
                 f"bb_FC_{i}_"
@@ -156,7 +156,7 @@ def bb_pipeline_func(subject, fileConfiguration):
             # )
             jobCLEAN = LT.runCommand(
                 logger,
-                + "$BB_BIN_DIR/bb_functional_pipeline/bb_clean_fix_logs "
+                "$BB_BIN_DIR/bb_functional_pipeline/bb_clean_fix_logs "
                 + subject
                 + f" {rfMRI_nums[i]}",
                 f"bb_rfMRI_{i}_clean_"
@@ -194,7 +194,7 @@ def bb_pipeline_func(subject, fileConfiguration):
             print(f"Running tfMRI_{i} prep...")
             jobPREPARE_T = LT.runCommand(
                 logger,
-                + " $BB_BIN_DIR/bb_functional_pipeline/bb_prepare_tfMRI "
+                " $BB_BIN_DIR/bb_functional_pipeline/bb_prepare_tfMRI "
                 + subject
                 + f" {tfMRI_nums[i]}",
                 f"bb_prepare_tfMRI_{i}_"
@@ -205,7 +205,7 @@ def bb_pipeline_func(subject, fileConfiguration):
             print(f"Running FEAT on tfMRI_{i}...")
             jobFEAT_T = LT.runCommand(
                 logger,
-                + " feat  "
+                " feat  "
                 + baseDir
                 + f"/fMRI/tfMRI_{i}.fsf",
                 f"bb_feat_tfMRI_{i}_"

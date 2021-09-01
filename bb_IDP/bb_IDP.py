@@ -41,7 +41,7 @@ def bb_IDP(subject, fileConfiguration):
     print("Running IDP pipeline...")
     jobIDP = LT.runCommand(
         logger,
-        " $BB_BIN_DIR/bb_IDP/bb_IDP "
+        "$BB_BIN_DIR/bb_IDP/bb_IDP "
         + subject,
         "bb_IDP_"
         + subname
