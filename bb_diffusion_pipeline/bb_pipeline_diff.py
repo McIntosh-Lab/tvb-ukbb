@@ -158,15 +158,15 @@ def bb_pipeline_diff(subject, fileConfiguration):
     # + jobTBSS,
     # )
 
-    print("Running pre_probtrackx...")
+    print("Running tvb_probtrackx...")
     jobPREPROBTRACKX = LT.runCommand(
         logger,
-        "$BB_BIN_DIR/bb_diffusion_pipeline/bb_probtrackx2/bb_pre_probtrackx2 "
+        "$BB_BIN_DIR/bb_diffusion_pipeline/tvb_probtrackx2/tvb_probtrackx2 "
         + baseDir,
-        "bb_pre_probtrackx_"
+        "tvb_probtrackx_"
         + subname
     )
-    print("pre_probtrackx completed.")
+    print("tvb_probtrackx completed.")
 
     # commenting out CPU version of probtrackx for now
     # jobPROBTRACKX = LT.runCommand(
@@ -178,12 +178,12 @@ def bb_pipeline_diff(subject, fileConfiguration):
     # )
     # jobPROBTRACKX = jobPROBTRACKX.split(".")[0]
 
-    print("Running post_probtrackx...")
+    print("Running tvb_post_probtrackx...")
     jobPOSTPROBTRACKX = LT.runCommand(
         logger,
-        "$BB_BIN_DIR/bb_diffusion_pipeline/bb_probtrackx2/bb_post_probtrackx2 "
+        "$BB_BIN_DIR/bb_diffusion_pipeline/tvb_probtrackx2/tvb_post_probtrackx2 "
         + subject,
-        "bb_post_probtrackx_"
+        "tvb_post_probtrackx_"
         + subname
     )
     print("post_probrackx completed.")
