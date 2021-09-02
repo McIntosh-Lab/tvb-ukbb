@@ -74,18 +74,7 @@ topupValue="0"`echo "scale=4;("$dtiDwell" * ("$EPIfactor" -1.0)) / 1000.0 "| bc`
 
 cat /dev/null > $direc/dMRI/dMRI/acqparams.txt 
 
-
-
 printf "$PE_direction $topupValue\n" >>$direc/dMRI/dMRI/acqparams.txt
-
-# if performing SynB0 estimation for unwarping
-if [ "$SynB0" == "y" ]; then
-    printf "$PE_direction 0.0000\n" >>$direc/dMRI/dMRI/acqparams.txt
-    
-    mkdir ${direc}/dMRI/dMRI/SynB0 #SynB0 output directory
-
-    $BB_BIN_DIR/bb_diffusion_pipeline/tvb_SynB0/tvb_SynB0_pipeline.sh $1
-fi
 
 
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer
