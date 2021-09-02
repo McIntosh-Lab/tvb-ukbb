@@ -50,6 +50,17 @@ def bb_pipeline_diff(subject, fileConfiguration):
     )
     print("pre_eddy completed.")
 
+    if os.environ["SynB0"] == "y":
+        print("Running SynB0 unwarping...")
+        LT.runCommand(
+            logger,
+            "$BB_BIN_DIR/bb_diffusion_pipeline/tvb_SynB0/tvb_SynB0_pipeline.sh "
+            + subject,
+            "tvb_bb_SynB0_pipeline_"
+            + subname
+        )
+        print("SynB0 unwarping done.")
+
     print("Running eddy..")
     jobEDDY = LT.runCommand(
         logger,

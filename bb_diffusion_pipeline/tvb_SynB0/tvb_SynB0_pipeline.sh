@@ -3,6 +3,10 @@
 direc=$PWD/$1
 SynB0_OUTPUTS=${direc}/dMRI/dMRI/SynB0
 
+printf "$PE_direction 0.0000\n" >>$direc/dMRI/dMRI/acqparams.txt
+    
+mkdir ${direc}/dMRI/dMRI/SynB0 #SynB0 output directory
+
 SynB0_TOPUP=1
 
 for arg in "$@"
