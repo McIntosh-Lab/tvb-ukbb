@@ -252,7 +252,7 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dxs_under" "../../dMRI/dMRI/dti_FA.nii.gz" "dxs_over1" "../../dMRI/probtrackx/exclude.nii.gz" "NA32" "dMRI/probtrackx/labelledWM_GM.nii.gz" 1
 
 
-export FSLDIR=/opt/HCPpipelines-4.1.3/fsl
+#export FSLDIR=/opt/HCPpipelines-4.1.3/fsl
 
 ### EDDY QUAD ###
 	echo ""
