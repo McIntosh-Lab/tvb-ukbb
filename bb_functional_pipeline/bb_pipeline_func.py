@@ -107,9 +107,9 @@ def bb_pipeline_func(subject, fileConfiguration):
         ### compute FC using parcellation
         jobFC = LT.runCommand(
             logger,
-            "$BB_BIN_DIR/bb_functional_pipeline/bb_FC "
+            "$BB_BIN_DIR/bb_functional_pipeline/tvb_FC "
             + subject,
-            "bb_FC_"
+            "tvb_FC_"
             + subname
         )
         print("FC completed.")
