@@ -5,4 +5,5 @@ __pycache__/
 .nfs*
 bb_python/python_installation/gradunwarp_FMRIB/
 *.DS_Store
+*subject_ages.tsv
 
