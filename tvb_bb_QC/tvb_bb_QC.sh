@@ -193,6 +193,20 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 		#$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dre_under" "../../dMRI/dMRI/transforms/DTI_to_T1.nii.gz" "dre_over1" "../../T1/T1.nii.gz" "NA26" "NA26_link" 0
 
 
+### DWI SynB0 WARPING ###
+
+
+	echo ""
+	echo "STARTING DWI SynB0 WARPING -------"
+
+	#T1 registration edges
+		$BB_BIN_DIR/tvb_bb_QC/edges.sh -l 10 /dMRI/dMRI/DWI_B0.nii.gz /dMRI/dMRI/SynB0/DWI_B0_all_topup.nii.gz $dirSubject  DWI_warping 
+
+		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "wa_under" "../../dMRI/dMRI/SynB0/DWI_B0_all_topup.nii.gz" "wa_over1" "../../dMRI/dMRI/DWI_B0.nii.gz" "NA13" "NA13_link" 0
+		#$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "re_under" "${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz" "re_over1" "../../T1/T1_brain_to_MNI.nii.gz" "NA13" "NA13_link" 0
+
+
+
 
 ### DTI TRACTOGRAPHY ###
 	echo ""

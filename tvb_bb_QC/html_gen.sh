@@ -520,6 +520,9 @@ cat > $subjdir$html_output_dir"/DTI.html" << EOF
     <optgroup label="Registration">
       <option value="dre">Registration</option>
     </optgroup>
+    <optgroup label="Warping">
+      <option value="wa">Warping</option>
+    </optgroup>
     <optgroup label="Tractography">
       <option value="dxc">Exclude</option>
       <option value="dfs">Light-blue Seeds</option>
@@ -642,6 +645,16 @@ NOTE: Image sizes and therefore maintaining zooms between different analyses can
   <img src="../images/DTI_registration/order2_${sub}_DTI_registration_axial_appended.png" id="o2_a" style="display: none">
   <img src="../images/DTI_registration/order2_${sub}_DTI_registration_coronal_appended.png" id="o2_c" style="display: none">
   <img src="../images/DTI_registration/order2_${sub}_DTI_registration_saggital_appended.png" id="o2_s" style="display: none">
+
+
+  <img src="../images/DWI_warping/order1_${sub}_DWI_warping_axial_appended.png" id="wa1_a" style="display: none">
+  <img src="../images/DWI_warping/order1_${sub}_DWI_warping_coronal_appended.png" id="wa1_c" style="display: none">
+  <img src="../images/DWI_warping/order1_${sub}_DWI_warping_saggital_appended.png" id="wa1_s" style="display: none">
+
+  <img src="../images/DWI_warping/order2_${sub}_DWI_warping_axial_appended.png" id="wa2_a" style="display: none">
+  <img src="../images/DWI_warping/order2_${sub}_DWI_warping_coronal_appended.png" id="wa2_c" style="display: none">
+  <img src="../images/DWI_warping/order2_${sub}_DWI_warping_saggital_appended.png" id="wa2_s" style="display: none">
+
 
 
   <img src="../images/DTI_tractography_seeds/${sub}_DTI_tractography_seeds_axial.png"  id="dfs_a" style="display: none">
