@@ -39,9 +39,9 @@ def IDP_html_gen(subj):
     IDP_dir = subj + "/IDP_files/"
 
     #save IDPois to txt files for future reference
-    priority_output = pd.read_csv(r"" + IDP_dir + "priority_IDPs.txt", delimiter = "\t")
-    non_priority_output = pd.read_csv(r"" + IDP_dir + "non_priority_IDPs.txt", delimiter = "\t")
-    new_IDP_output = pd.read_csv(r"" + IDP_dir + "tvb_new_IDPs.txt", delimiter = "\t")
+    priority_output = pd.read_csv(r"" + IDP_dir + "priority_IDPs.tsv", delimiter = "\t")
+    non_priority_output = pd.read_csv(r"" + IDP_dir + "non_priority_IDPs.tsv", delimiter = "\t")
+    new_IDP_output = pd.read_csv(r"" + IDP_dir + "tvb_new_IDPs.tsv", delimiter = "\t")
 
 
 

@@ -206,7 +206,7 @@ def IDP_postprocessing(subj, IDP_list_path, IDPoi_list_path, thresholds_txt):
     non_priority_output['value'] = non_priority_output['value'].apply(lambda x: "{:e}".format(float(x)))
 
 
-    new_IDP_output = pd.read_csv(r"" + IDP_dir + "tvb_new_IDPs.txt", delimiter = "\t")
+    new_IDP_output = pd.read_csv(r"" + IDP_dir + "tvb_new_IDPs.tsv", delimiter = "\t")
     #new_IDP_output=new_IDP_output[["num","short","category","num_in_cat","long","unit","dtype","description","value"]]
 
     #prior, non prior, new tvb IDP compiled output
@@ -271,28 +271,28 @@ def IDP_postprocessing(subj, IDP_list_path, IDPoi_list_path, thresholds_txt):
 
         #save IDPois to txt files for future reference
         priority_output.to_csv(
-            r"" + IDP_dir + "priority_IDPs.txt",
+            r"" + IDP_dir + "priority_IDPs.tsv",
             header=priority_output.columns.values,
             index=None,
             sep="\t",
             mode="w",
         )
         non_priority_output.to_csv(
-            r"" + IDP_dir + "non_priority_IDPs.txt",
+            r"" + IDP_dir + "non_priority_IDPs.tsv",
             header=non_priority_output.columns.values,
             index=None,
             sep="\t",
             mode="w",
         )
         compiled_IDPs.to_csv(
-            r"" + IDP_dir + "significant_IDPs.txt",
+            r"" + IDP_dir + "significant_IDPs.tsv",
             header=compiled_IDPs.columns.values,
             index=None,
             sep="\t",
             mode="w",
         )
         new_IDP_output.to_csv(
-            r"" + IDP_dir + "tvb_new_IDPs.txt",
+            r"" + IDP_dir + "tvb_new_IDPs.tsv",
             header=compiled_IDPs.columns.values,
             index=None,
             sep="\t",

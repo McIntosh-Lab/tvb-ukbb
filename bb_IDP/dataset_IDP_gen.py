@@ -22,7 +22,7 @@ def dataset_IDP_gen(BB_BIN_DIR,dataset,tvb_new_IDPs,ukbb_IDP_list):
         ukbb_IDP_list_data.append(row)
 
     
-    outputfilename=os.path.join(BB_BIN_DIR, "bb_IDP", dataset+"_IDPs.txt")
+    outputfilename=os.path.join(BB_BIN_DIR, "bb_IDP", dataset+"_IDPs.tsv")
     with open(outputfilename, mode='w') as outputfile:
         writer = csv.writer(outputfile, delimiter='\t')
 
