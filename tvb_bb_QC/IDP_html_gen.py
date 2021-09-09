@@ -292,23 +292,23 @@ def IDP_html_gen(subj):
     <br>
     <a href="../../IDP_files/" class="w3-bar-item w3-button">High-Priority IDPs: """
         + str(IDP_dir)
-        + "priority_IDPs.txt"
+        + "priority_IDPs.csv"
         + """</a>
     <br>
     <a href="../../IDP_files/" class="w3-bar-item w3-button">New TVB IDPs: """
         + str(IDP_dir)
-        + "tvb_new_IDPs.txt"
+        + "tvb_new_IDPs.csv"
         + """</a>
     <br>
     <a href="../../IDP_files/" class="w3-bar-item w3-button">Lower-priority IDPs: """
         + str(IDP_dir)
-        + "non_priority_IDPs.txt"
+        + "non_priority_IDPs.csv"
         + """</a>
     <br>
 
     <a href="../../IDP_files/" class="w3-bar-item w3-button">Combination of the above IDPs: """
         + str(IDP_dir)
-        + "significant_IDPs.txt"
+        + "significant_IDPs.csv"
         + """</a>
 
         <br>
