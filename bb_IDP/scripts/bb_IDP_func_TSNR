@@ -32,12 +32,59 @@ basefMRI="fMRI/"
 #    basefMRI="$basefMRI/unusable"
 #fi
 
-baserfMRI="$basefMRI/rfMRI.ica/"
-basetfMRI="$basefMRI/tfMRI.feat/"
+#baserfMRI="$basefMRI/rfMRI.ica/"
+#basetfMRI="$basefMRI/tfMRI.feat/"
+
 
 result=""
 
-for i in $baserfMRI/filtered_func_data $baserfMRI/filtered_func_data_clean $basetfMRI/filtered_func_data ; do
+#find .ica folders
+array=()
+while IFS=  read -r -d $'\0'; do
+    array+=("$REPLY")
+done < <(find $basefMRI -maxdepth 1 -type d -name "*.ica" -print0)
+
+#for each .ica folder
+for t in ${array[@]}; do
+  rfMRI_ver=`basename $t`
+  rfMRI_dir="$basefMRI$rfMRI_ver"
+  for i in $rfMRI_dir/filtered_func_data $rfMRI_dir/filtered_func_data_clean ; do
+    if [ -f ${i}.nii.gz ] ; then
+      nameFil=`basename basetfMRI`
+      fslmaths $i -Tstd /tmp/${nameFil}_SNR_$1
+      fslmaths $i -Tmean -div /tmp/${nameFil}_SNR_$1 /tmp/${nameFil}_SNR_$1
+      TheSNR=`fslstats /tmp/${nameFil}_SNR_$1 -l 0.1 -p 50`
+      TheSNRrecip=`echo "10 k 1 $TheSNR / p" | dc -`
+      result="$result $TheSNRrecip"
+      
+    else
+      result="$result NaN"
+    fi
+  done
+  #we only want to get fmriNumVol oncce
+  if [ -f ${i}.nii.gz ] ; then
+    fmriNumVol=`${FSLDIR}/bin/fslval fMRI/$rfMRI_ver.nii.gz dim4`
+    result="$result $fmriNumVol" 
+    imrm /tmp/${nameFil}_SNR_$1
+  else
+    result="$result NaN"
+
+  fi
+done
+
+
+#find .feat folders
+array=()
+while IFS=  read -r -d $'\0'; do
+    array+=("$REPLY")
+done < <(find $basefMRI -maxdepth 1 -type d -name "*.feat" -print0)
+
+
+#for each .feat folder
+for t in ${array[@]}; do
+  tfMRI_ver=`basename $t`
+  tfMRI_dir="$basefMRI$tfMRI_ver"
+  i=$tfMRI_dir/filtered_func_data
   if [ -f ${i}.nii.gz ] ; then
     nameFil=`basename basetfMRI`
     fslmaths $i -Tstd /tmp/${nameFil}_SNR_$1
@@ -45,13 +92,14 @@ for i in $baserfMRI/filtered_func_data $baserfMRI/filtered_func_data_clean $base
     TheSNR=`fslstats /tmp/${nameFil}_SNR_$1 -l 0.1 -p 50`
     TheSNRrecip=`echo "10 k 1 $TheSNR / p" | dc -`
     result="$result $TheSNRrecip"
-    fmriNumVol=`${FSLDIR}/bin/fslval $1/fMRI/rfMRI.nii.gz dim4
+    fmriNumVol=`${FSLDIR}/bin/fslval fMRI/$tfMRI_ver.nii.gz dim4`
     result="$result $fmriNumVol" 
     imrm /tmp/${nameFil}_SNR_$1
   else
-    result="$result NaN"
+    result="$result NaN NaN"
   fi
 done
+
 
 
 mkdir -p IDP_files
