@@ -16,7 +16,7 @@ def ukbb_IDP_list_gen(BB_BIN_DIR,PARC_LUT):
 
     """
     #grab PARC_LUTs and generate IDP information for each ROI
-    ROI_data = list(csv.reader(open(PARC_LUT),delimiter=' ',))
+    ROI_data = list(csv.reader(open(PARC_LUT),delimiter='\t',))
     i=1
     for row in ROI_data:
         row[1]="T1_GM_parcellation_"+row[1]+"_vol"

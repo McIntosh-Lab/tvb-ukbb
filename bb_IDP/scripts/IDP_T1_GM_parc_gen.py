@@ -30,7 +30,7 @@ def IDP_T1_GM_parc_gen(PARC_LUT,IDP_file,parcel_to_T1,pve_1):
 
 	ROI_num_list = []
 	for line in lines:
-		ROI_num_list.append(int(line.split(" ")[0]))
+		ROI_num_list.append(int(line.split("\t")[0]))
 
 
 	for x in ROI_num_list:

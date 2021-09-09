@@ -12,10 +12,8 @@ def dataset_IDP_gen(BB_BIN_DIR,dataset,tvb_new_IDPs,ukbb_IDP_list):
     ----------
     BB_BIN_DIR: path to tvb pipeline tvb-ukbb
 
-    PARC_LUT: path to LUT.txt
 
     """
-    #grab PARC_LUTs and generate IDP information for each ROI
     tvb_new_IDPs_data = list(csv.reader(open(tvb_new_IDPs),delimiter='\t'))
     ukbb_IDP_list_data = list(csv.reader(open(ukbb_IDP_list),delimiter='\t'))
 

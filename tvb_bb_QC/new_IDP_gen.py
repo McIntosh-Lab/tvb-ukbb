@@ -464,6 +464,11 @@ def homotopic(subj,LUT_txt):
     except:
         print("ERROR: LUT file not found")
 
+    counter = 0
+    while counter <  np.shape(LUT)[0]:
+        LUT[counter]=LUT[counter].split("\t")
+        counter +=1
+
     index_pair_list = []
     counter = 0
     while counter <  np.shape(LUT)[0]:
