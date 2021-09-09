@@ -87,21 +87,13 @@ export templ="$BB_BIN_DIR/templates"
 export PYTHONPATH="$SOFTDIR/software/env/bin/python"
 
 export FSL_FIXDIR="$BB_BIN_DIR/bb_functional_pipeline/bb_fix_dir"
-<<<<<<< HEAD
 export PARC_IMG="$templ/parcellations/TVB_SchaeferTian/TVB_SchaeferTian_436.nii.gz"                      #TO BE MODIFIED BY USER
 export PARC_LUT="$templ/parcellations/TVB_SchaeferTian/TVB_SchaeferTian_436_LUT.txt"                     #TO BE MODIFIED BY USER
 export numROI="436"                                                              #TO BE MODIFIED BY USER
-=======
-
-export SUBJECT_AGE_LIST="$BB_BIN_DIR/bb_structural_pipeline/FAST_age_spec/subject_ages.tsv"                      #TO BE MODIFIED BY USER
-export AGE_SPECIFIC_TEMPLATE_LIST="$BB_BIN_DIR/bb_structural_pipeline/FAST_age_spec/age_specific_templates.tsv"                      #TO BE MODIFIED BY USER
-export PARC_IMG="$templ/parcellations/TVB_SchaeferTian/TVB_SchaeferTian_420.nii.gz"                      #TO BE MODIFIED BY USER
-export PARC_LUT="$templ/parcellations/TVB_SchaeferTian/TVB_SchaeferTian_420_LUT.txt"                     #TO BE MODIFIED BY USER
-#export numROI="316"                                                              #TO BE MODIFIED BY USER
->>>>>>> e2e9e42... use finer parcellation, turn off 3dROIMaker tables, fix PE encoding for Cam-CAN dMRI
 export TRAINING_FILE="ADNI3_Training.RData"                                            #TO BE MODIFIED BY USER
 export SynB0="y"                                            #TO BE MODIFIED BY USER
 export PE_direction="0 -1 0"                                            #TO BE MODIFIED BY USER 
+#export numROI="316"                                                              					#TO BE MODIFIED BY USER
 
 #INCLUDE 3 MAIN BIOBANK DIRECTORIES IN PATH
 export PATH="$BB_BIN_DIR/bb_pipeline_tools/:$BB_BIN_DIR/bb_general_tools/:$PATH"
