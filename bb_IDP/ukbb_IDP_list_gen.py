@@ -31,7 +31,7 @@ def ukbb_IDP_list_gen(BB_BIN_DIR,PARC_LUT):
 
     #reading and cleaning each line of IDP list
     IDP_list = []
-    IDP_list_path=os.path.join(BB_BIN_DIR,"bb_IDP","ukbb_IDP_list.txt")
+    IDP_list_path=os.path.join(BB_BIN_DIR,"bb_IDP","ukbb_IDP_list.tsv")
 
 
     data = list(csv.reader(open(IDP_list_path),delimiter='\t',))
