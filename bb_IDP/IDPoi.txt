@@ -10,9 +10,6 @@ rfMRI_align_to_T1
 tfMRI_align_to_T1
 rfMRI_head_motion
 tfMRI_head_motion
-rfMRI_TSNR
-rfMRI_cleaned_TSNR
-tfMRI_TSNR
 dMRI_eddy_outlier
 T1_FIRST_left_thalamus
 T1_FIRST_right_thalamus
@@ -30,6 +27,14 @@ T1_FIRST_left_accumbens
 T1_FIRST_right_accumbens
 T1_FIRST_brain_stem+4th_ventricle
 T2_FLAIR_WMH_volume
+QC_rfMRI_0.ica_tSMR
+QC_rfMRI_0.ica_cleaned_tSMR
+QC_rfMRI_0.ica_num_vol
+QC_rfMRI_1.ica_tSMR
+QC_rfMRI_1.ica_cleaned_tSMR
+QC_rfMRI_1.ica_num_vol
+QC_tfMRI_0.feat_tSMR
+QC_tfMRI_0.feat_num_vol
 LOW_PRIORITY
 tfMRI_median_shapes
 tfMRI_p90_shapes

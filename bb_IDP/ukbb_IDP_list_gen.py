@@ -73,6 +73,9 @@ def ukbb_IDP_list_gen(BB_BIN_DIR,PARC_LUT):
         for index in sorted(indexes_to_insert, reverse=True):
             data.insert(start,ROI_data[index])
 
+
+
+
     #
     x=1
     for row in data[1:]:
