@@ -40,7 +40,7 @@ if [ -f ${func_file}.nii.gz ] ; then
   result="$TheSNRrecip"
   imrm /tmp/${fMRI_ver}_SNR_$subjname
 else
-  result="$NaN"
+  result="NaN"
 fi
 
 echo $result
