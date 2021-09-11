@@ -17,6 +17,7 @@ import glob
 import scipy
 from numpy import inf
 import scipy.stats
+import subprocess
 # increasing font size for plots
 font = {"size": 100}
 matplotlib.rc("font", **font)
@@ -527,6 +528,61 @@ def homotopic(subj,LUT_txt):
 
 
 
+
+def fmri_SNR_numvol(subj):
+    
+
+    try:
+        num_in_cat=1
+        for file in os.listdir(subj + "/fMRI/"):
+            if file.endswith(".ica"):
+                SNR_result = subprocess.run(['tvb_SNR_IDP_gen.sh', subj, file, os.path.join(subj, "fMRI", file, "filtered_func_data")], stdout=subprocess.PIPE)
+                SNR_result = SNR_result.stdout
+
+                clean_SNR_result = subprocess.run(['tvb_SNR_IDP_gen.sh', subj, file, os.path.join(subj, "fMRI", file, "filtered_func_data_clean")], stdout=subprocess.PIPE)
+                clean_SNR_result = clean_SNR_result.stdout
+
+                numvol_result = subprocess.run(['tvb_numvol_IDP_gen.sh', os.path.join(subj, "fMRI", file[:-3]+"nii.gz")], stdout=subprocess.PIPE)
+                numvol_result = numvol_result.stdout
+
+                print("---------")
+                print(file + "_SNR_num_vol")
+                print("---------")
+                print (SNR_result)
+                print (clean_SNR_result)
+                print (numvol_result)
+
+                write_to_IDP_file(subj, file+"_TSNR", "bb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_inverse_tSMR", "ratio", "float", "Inverted temporal signal-to-noise ratio in the pre-processed "+file+" - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
+                num_in_cat +=1
+
+                write_to_IDP_file(subj, file+"_cleaned_TSNR", "bb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_cleaned_inverse_tSMR", "ratio", "float", "Inverted temporal signal-to-noise ratio in the artefact-cleaned pre-processed "+file+" - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(clean_SNR_result))
+                num_in_cat +=1
+
+                write_to_IDP_file(subj, file+"_num_vol", "bb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_num_vol", "volumes", "int", "Number of volumes in "+file+" scan", str(numvol_result))
+                num_in_cat +=1
+
+                
+            if file.endswith(".feat"):
+                SNR_result = subprocess.run(['tvb_SNR_IDP_gen.sh', subj, file, os.path.join(subj, "fMRI", file, "filtered_func_data")], stdout=subprocess.PIPE)
+                SNR_result = SNR_result.stdout
+
+                numvol_result = subprocess.run(['tvb_numvol_IDP_gen.sh', os.path.join(subj, "fMRI", file[:-3]+"nii.gz")], stdout=subprocess.PIPE)
+                numvol_result = numvol_result.stdout
+
+                print("---------")
+                print(file + "_SNR_num_vol")
+                print("---------")
+                print (SNR_result)
+                print (numvol_result)
+
+                write_to_IDP_file(subj, file+"_TSNR", "bb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_inverse_tSMR", "ratio", "float", "Inverted temporal signal-to-noise ratio in the pre-processed "+file+" - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
+                num_in_cat +=1
+                
+                write_to_IDP_file(subj, file+"_num_vol", "bb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_num_vol", "volumes", "int", "Number of volumes in "+file+" scan", str(numvol_result))
+                num_in_cat +=1
+
+
+
 def write_to_IDP_file(subj,short,category,num_in_cat,long_var,unit,dtype,description,value):
     
     global IDP_num_counter
@@ -542,6 +598,7 @@ def write_to_IDP_file(subj,short,category,num_in_cat,long_var,unit,dtype,descrip
             line = '\t'.join([str(IDP_num_counter),short,category,num_in_cat,long_var,unit,dtype,description,value])
             fp.write(line)
     IDP_num_counter += 1
+
 
 
 
@@ -599,7 +656,7 @@ def new_IDP_gen(subj,LUT_txt):      #,fix4melviewtxt
     MCFLIRT_displacement(subj)       
 
     homotopic(subj,LUT_txt)
-    
+    fmri_SNR_numvol(subj)
 
 
 
