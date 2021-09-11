@@ -148,7 +148,7 @@ def IDP_html_gen(subj):
 
 <option value="Low-priority IDPs" id="Low-priority IDPs">Low-priority IDPs</option>
 
-<option value="All IDPs" id="All IDPs">All IDPs</option>
+<option value="All IDPs" id="All IDPs">All Significant IDPs</option>
 
 
   </select></label>

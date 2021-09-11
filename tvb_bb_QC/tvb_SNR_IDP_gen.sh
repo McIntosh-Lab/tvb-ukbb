@@ -27,6 +27,7 @@ subjname=`basename $1`
 fMRI_ver=$2
 
 func_file=$3
+#currently the only var that takes full file path
 
 result=""
 
