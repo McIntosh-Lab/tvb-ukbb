@@ -552,13 +552,13 @@ def fmri_SNR_numvol(subj):
                 print (clean_SNR_result)
                 print (numvol_result)
 
-                write_to_IDP_file(subj, file+"_TSNR", "bb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_inverse_tSMR", "ratio", "float", "Inverted temporal signal-to-noise ratio in the pre-processed "+file+" - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
+                write_to_IDP_file(subj, file+"_TSNR", "tvb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_inverse_tSNR", "ratio", "float", "Inverted temporal signal-to-noise ratio in the pre-processed "+file+" - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
                 num_in_cat +=1
 
-                write_to_IDP_file(subj, file+"_cleaned_TSNR", "bb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_cleaned_inverse_tSMR", "ratio", "float", "Inverted temporal signal-to-noise ratio in the artefact-cleaned pre-processed "+file+" - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(clean_SNR_result))
+                write_to_IDP_file(subj, file+"_cleaned_TSNR", "tvb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_cleaned_inverse_tSNR", "ratio", "float", "Inverted temporal signal-to-noise ratio in the artefact-cleaned pre-processed "+file+" - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(clean_SNR_result))
                 num_in_cat +=1
 
-                write_to_IDP_file(subj, file+"_num_vol", "bb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_num_vol", "volumes", "int", "Number of volumes in "+file+" scan", str(numvol_result))
+                write_to_IDP_file(subj, file+"_num_vol", "tvb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_num_vol", "volumes", "int", "Number of volumes in "+file+" scan", str(numvol_result))
                 num_in_cat +=1
 
                 
@@ -575,12 +575,62 @@ def fmri_SNR_numvol(subj):
                 print (SNR_result)
                 print (numvol_result)
 
-                write_to_IDP_file(subj, file+"_TSNR", "bb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_inverse_tSMR", "ratio", "float", "Inverted temporal signal-to-noise ratio in the pre-processed "+file+" - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
+                write_to_IDP_file(subj, file+"_TSNR", "tvb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_inverse_tSNR", "ratio", "float", "Inverted temporal signal-to-noise ratio in the pre-processed "+file+" - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
                 num_in_cat +=1
                 
-                write_to_IDP_file(subj, file+"_num_vol", "bb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_num_vol", "volumes", "int", "Number of volumes in "+file+" scan", str(numvol_result))
+                write_to_IDP_file(subj, file+"_num_vol", "tvb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_num_vol", "volumes", "int", "Number of volumes in "+file+" scan", str(numvol_result))
                 num_in_cat +=1
+    except:
+        print("ERROR: fmri SNR or numvol error")
 
+
+def susceptibility_SNR(subj):
+    try:
+        num_in_cat=1
+
+        susceptibility_mask_gen = subprocess.run(['tvb_susceptibility_mask_gen.sh', subj], stdout=subprocess.PIPE)
+        print( "susceptibility mask gen stdout: " + susceptibility_mask_gen.stdout)
+
+        suscept_parc_list=["IDP_files/non_suscept_parc_to_T1","IDP_files/suscept_parc_to_T1"]
+        parclist_dict={"IDP_files/non_suscept_parc_to_T1":"non-susceptible","IDP_files/suscept_parc_to_T1":"susceptible"}
+        for susceptibility_parc in susceptibility_parc_list:    
+            for file in os.listdir(subj + "/fMRI/"):
+                if file.endswith(".ica"):
+                    SNR_result = subprocess.run(['tvb_susceptibility_SNR_IDP_gen.sh', subj, os.path.join(subj, "fMRI", file, "filtered_func_data"), susceptibility_parc], stdout=subprocess.PIPE)
+                    SNR_result = SNR_result.stdout
+
+                    clean_SNR_result = subprocess.run(['tvb_susceptibility_SNR_IDP_gen.sh', subj, os.path.join(subj, "fMRI", file, "filtered_func_data_clean"), susceptibility_parc], stdout=subprocess.PIPE)
+                    clean_SNR_result = clean_SNR_result.stdout
+
+
+                    print("---------")
+                    print(file + "_" + susceptibility_parc + "_SNR_num_vol")
+                    print("---------")
+                    print (SNR_result)
+                    print (clean_SNR_result)
+
+                    write_to_IDP_file(subj, file+"_"+parclist_dict[susceptibility_parc]+"_TSNR", "tvb_IDP_func_susceptibility_SNR", str(num_in_cat), "QC_"+file+"_"+parclist_dict[susceptibility_parc]+"_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the pre-processed "+file+" "+parclist_dict[susceptibility_parc]+" regions - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
+                    num_in_cat +=1
+
+                    write_to_IDP_file(subj, file+"_"+parclist_dict[susceptibility_parc]+"_cleaned_TSNR", "tvb_IDP_func_susceptibility_SNR", str(num_in_cat), "QC_"+file+"_"+parclist_dict[susceptibility_parc]+"_cleaned_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the artefact-cleaned pre-processed "+file+" "+parclist_dict[susceptibility_parc]+" regions - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(clean_SNR_result))
+                    num_in_cat +=1
+
+                    
+                if file.endswith(".feat"):
+                    SNR_result = subprocess.run(['tvb_susceptibility_SNR_IDP_gen.sh', subj, os.path.join(subj, "fMRI", file, "filtered_func_data"), susceptibility_parc], stdout=subprocess.PIPE)
+                    SNR_result = SNR_result.stdout
+
+           
+                    print("---------")
+                    print(file + "_" + susceptibility_parc + "_SNR_num_vol")
+                    print("---------")
+                    print (SNR_result)
+
+                    write_to_IDP_file(subj, file+"_"+parclist_dict[susceptibility_parc]+"_TSNR", "tvb_IDP_func_susceptibility_SNR", str(num_in_cat), "QC_"+file+"_"+parclist_dict[susceptibility_parc]+"_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the pre-processed  "+file+" "+parclist_dict[susceptibility_parc]+" regions  - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
+                    num_in_cat +=1
+                
+    except:
+        print("ERROR: susceptibility SNR error")
 
 
 def write_to_IDP_file(subj,short,category,num_in_cat,long_var,unit,dtype,description,value):
@@ -657,7 +707,7 @@ def new_IDP_gen(subj,LUT_txt):      #,fix4melviewtxt
 
     homotopic(subj,LUT_txt)
     fmri_SNR_numvol(subj)
-
+    susceptibility_SNR(subj)
 
 
 
