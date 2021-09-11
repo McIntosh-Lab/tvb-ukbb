@@ -31,7 +31,8 @@ func_file=$3
 
 result=""
 
-if [ -f ${func_file} ] ; then
+
+if [ -f ${func_file}.nii.gz ] ; then
   fslmaths $func_file -Tstd /tmp/${fMRI_ver}_SNR_$subjname
   fslmaths $func_file -Tmean -div /tmp/${fMRI_ver}_SNR_$subjname /tmp/${fMRI_ver}_SNR_$subjname
   TheSNR=`fslstats /tmp/${fMRI_ver}_SNR_$subjname -l 0.1 -p 50`
