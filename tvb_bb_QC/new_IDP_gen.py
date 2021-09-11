@@ -611,10 +611,10 @@ def susceptibility_SNR(subj, BB_BIN_DIR):
                     print (SNR_result)
                     print (clean_SNR_result)
 
-                    write_to_IDP_file(subj, file+"_"+parclist_dict[susceptibility_parc]+"_TSNR", "tvb_IDP_func_susceptibility_SNR", str(num_in_cat), "QC_"+file+"_"+parclist_dict[susceptibility_parc]+"_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the pre-processed "+file+" "+parclist_dict[susceptibility_parc]+" regions - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
+                    write_to_IDP_file(subj, file+"_"+parclist_dict[susceptibility_parc]+"_TSNR", "tvb_IDP_func_susceptibility_SNR", str(num_in_cat), "QC_"+file+"_"+parclist_dict[susceptibility_parc]+"_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the pre-processed "+file+" "+parclist_dict[susceptibility_parc]+" regions - median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
                     num_in_cat +=1
 
-                    write_to_IDP_file(subj, file+"_"+parclist_dict[susceptibility_parc]+"_cleaned_TSNR", "tvb_IDP_func_susceptibility_SNR", str(num_in_cat), "QC_"+file+"_"+parclist_dict[susceptibility_parc]+"_cleaned_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the artefact-cleaned pre-processed "+file+" "+parclist_dict[susceptibility_parc]+" regions - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(clean_SNR_result))
+                    write_to_IDP_file(subj, file+"_"+parclist_dict[susceptibility_parc]+"_cleaned_TSNR", "tvb_IDP_func_susceptibility_SNR", str(num_in_cat), "QC_"+file+"_"+parclist_dict[susceptibility_parc]+"_cleaned_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the artefact-cleaned pre-processed "+file+" "+parclist_dict[susceptibility_parc]+" regions - median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(clean_SNR_result))
                     num_in_cat +=1
 
                     
@@ -628,7 +628,7 @@ def susceptibility_SNR(subj, BB_BIN_DIR):
                     print("---------")
                     print (SNR_result)
 
-                    write_to_IDP_file(subj, file+"_"+parclist_dict[susceptibility_parc]+"_TSNR", "tvb_IDP_func_susceptibility_SNR", str(num_in_cat), "QC_"+file+"_"+parclist_dict[susceptibility_parc]+"_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the pre-processed  "+file+" "+parclist_dict[susceptibility_parc]+" regions  - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
+                    write_to_IDP_file(subj, file+"_"+parclist_dict[susceptibility_parc]+"_TSNR", "tvb_IDP_func_susceptibility_SNR", str(num_in_cat), "QC_"+file+"_"+parclist_dict[susceptibility_parc]+"_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the pre-processed  "+file+" "+parclist_dict[susceptibility_parc]+" regions  - median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
                     num_in_cat +=1
                 
     except:
