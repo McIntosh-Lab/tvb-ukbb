@@ -11,28 +11,45 @@ origDir=`pwd`
 scriptName=`basename "$0"`
 subjname=$1
 func_file=$2
-#relative
-parc=$3
+#relative^
+
+standard_bin_susc_parc=$3
 #relative path from subj^
-fMRI_ver=
-feat_or_ica=
 
-cd $subjname
+fMRI_ver=`basename "$4"`
+#basename unneeded ^
 
-if [ feat_or_ica = "ica" ] ; then
-${FSLDIR}/bin/applywarp --rel --interp=nn --in=$bin_suscept_rois --ref=fMRI/rfMRI_0.ica/filtered_func_data -w fMRI/$fMRI_ver/reg/standard2example_func_warp -o "IDP_files/suscept_parc_to_func"
-else
-${FSLDIR}/bin/applywarp --rel --interp=nn --in=$inv_bin_suscept_rois --ref=fMRI/rfMRI_0.ica/filtered_func_data -w fMRI/$fMRI_ver/reg/standard2example_func_warp -o "IDP_files/non_suscept_parc_to_func"
-fi
+feat_or_ica=$5
+
+
 
 
 func_file_name=`basename $func_file`
-parc_file_name=`basename $parc`
-outputfile="IDP_files/${func_file_name}_${parc_file_name}"
-echo $func_file
-echo $parc
-echo $outputfile
-fslmaths $func_file -mas $parc $outputfile
+parc_file_name=`basename $standard_bin_susc_parc`
+
+
+cd $subjname
+
+if [ feat_or_ica == "ica" ] ; then
+	${FSLDIR}/bin/applywarp --rel --interp=nn --in=$standard_bin_susc_parc --ref=$func_file -w fMRI/$fMRI_ver/reg/standard2example_func_warp -o IDP_files/susc_parc_to_func_space_${func_file_name}_${parc_file_name}_$fMRI_ver
+else
+	${FSLDIR}/bin/invwarp --ref=$func_file -w fMRI/$fMRI_ver/reg/example_func2highres_warp -o fMRI/$fMRI_ver/reg/highres2example_func_warp
+	#use --rel?
+	#what is the example_func2highres (withou the warp suffix)?
+
+	${FSLDIR}/bin/applywarp --rel --interp=nn --in=$standard_bin_susc_parc --ref=T1/T1 -w T1/transforms/T1_to_MNI_warp_coef_inv -o IDP_files/susc_parc_to_T1_space
+
+
+	${FSLDIR}/bin/applywarp --rel --interp=nn --in=IDP_files/susc_parc_to_T1_space --ref=$func_file -w fMRI/$fMRI_ver/reg/highres2example_func_warp -o IDP_files/susc_parc_to_func_space_${func_file_name}_${parc_file_name}_$fMRI_ver
+fi
+
+
+rm fMRI/$fMRI_ver/reg/highres2example_func_warp
+rm IDP_files/susc_parc_to_T1_space
+
+outputfile="IDP_files/${func_file_name}_${parc_file_name}_${fMRI_ver}"
+
+fslmaths $func_file -mas IDP_files/susc_parc_to_func_space_${func_file_name}_${parc_file_name}_$fMRI_ver $outputfile
 
 
 if [ -f ${outputfile} ] ; then

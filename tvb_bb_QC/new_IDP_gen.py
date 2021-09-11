@@ -598,10 +598,10 @@ def susceptibility_SNR(subj, BB_BIN_DIR):
     for susceptibility_parc in susceptibility_parc_list:    
         for file in os.listdir(subj + "/fMRI/"):
             if file.endswith(".ica"):
-                SNR_result = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_susceptibility_SNR_IDP_gen.sh'), subj, os.path.join("fMRI", file, "filtered_func_data"), susceptibility_parc],  stdout=subprocess.PIPE)
+                SNR_result = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_susceptibility_SNR_IDP_gen.sh'), subj, os.path.join("fMRI", file, "filtered_func_data"), susceptibility_parc, file, "ica"],  stdout=subprocess.PIPE)
                 SNR_result = SNR_result.stdout
 
-                clean_SNR_result = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_susceptibility_SNR_IDP_gen.sh'), subj, os.path.join("fMRI", file, "filtered_func_data_clean"), susceptibility_parc],  stdout=subprocess.PIPE)
+                clean_SNR_result = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_susceptibility_SNR_IDP_gen.sh'), subj, os.path.join("fMRI", file, "filtered_func_data_clean"), susceptibility_parc, file, "ica"],  stdout=subprocess.PIPE)
                 clean_SNR_result = clean_SNR_result.stdout
 
 
@@ -619,7 +619,7 @@ def susceptibility_SNR(subj, BB_BIN_DIR):
 
                 
             if file.endswith(".feat"):
-                SNR_result = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_susceptibility_SNR_IDP_gen.sh'), subj, os.path.join("fMRI", file, "filtered_func_data"), susceptibility_parc],  stdout=subprocess.PIPE)
+                SNR_result = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_susceptibility_SNR_IDP_gen.sh'), subj, os.path.join("fMRI", file, "filtered_func_data"), susceptibility_parc, file, "feat"],  stdout=subprocess.PIPE)
                 SNR_result = SNR_result.stdout
 
        
