@@ -638,7 +638,7 @@ def susceptibility_SNR(subj, BB_BIN_DIR):
 def write_to_IDP_file(subj,short,category,num_in_cat,long_var,unit,dtype,description,value):
     
     global IDP_num_counter
-    file = os.path.join(subj + "/IDP_files/", "tvb_new_IDPs.txt")
+    file = os.path.join(subj + "/IDP_files/", "tvb_new_IDPs.tsv")
 
 
     with open(file, 'a') as fp:
@@ -687,7 +687,7 @@ def new_IDP_gen(subj,LUT_txt,BB_BIN_DIR):      #,fix4melviewtxt
     # IDP_homotopic_file = os.path.join(subj + "/IDP_files/", "tvb_IDP_homotopic.txt")
     # new_IDP_list_file = os.path.join(subj + "/IDP_files/", "tvb_new_IDPs.txt")
 
-    new_IDP_file = os.path.join(subj + "/IDP_files/", "tvb_new_IDPs.txt")
+    new_IDP_file = os.path.join(subj + "/IDP_files/", "tvb_new_IDPs.tsv")
 
 
     # IDP_output_files = [IDP_FC_file,IDP_SC_file,IDP_MELODIC_file,IDP_MCFLIRT_file,IDP_homotopic_file]
