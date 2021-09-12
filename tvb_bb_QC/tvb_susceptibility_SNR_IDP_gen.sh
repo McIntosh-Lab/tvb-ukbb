@@ -9,7 +9,7 @@
 
 origDir=`pwd`
 scriptName=`basename "$0"`
-subjname=$1
+subjname=`basename $1`
 func_file=$2
 #relative^
 
