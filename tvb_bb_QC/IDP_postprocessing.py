@@ -255,7 +255,7 @@ def IDP_postprocessing(subj, IDP_list_path, IDPoi_list_path, thresholds_txt):
                     failed_IDP+="\t"+row["short"]+":"+str(row["value"]) 
                     IDPs_with_thresholds.at[index,"flag"]=IDP_failed
 
-    	if not passed_QC_flag:
+        if not passed_QC_flag:
             failed_IDP=subj+failed_IDP
             f = open(os.path.join(os.path.dirname(subj),"IDP_flags.txt"), "a")
             f.write(failed_IDP+"\n")
@@ -264,14 +264,13 @@ def IDP_postprocessing(subj, IDP_list_path, IDPoi_list_path, thresholds_txt):
         #print(IDPs_with_thresholds)
 
         #return values back to scientific notation
-		IDPs_with_thresholds['num'] = IDPs_with_thresholds['num'].astype(np.int64)
-		new_IDP_output['value'] = new_IDP_output['value'].apply(lambda x: "{:e}".format(float(x)))
-		IDPs_with_thresholds['value'] = IDPs_with_thresholds['value'].apply(lambda x: "{:e}".format(float(x)))
-
+        IDPs_with_thresholds['num'] = IDPs_with_thresholds['num'].astype(np.int64)
+        new_IDP_output['value'] = new_IDP_output['value'].apply(lambda x: "{:e}".format(float(x)))
+        IDPs_with_thresholds['value'] = IDPs_with_thresholds['value'].apply(lambda x: "{:e}".format(float(x)))
 
 
         #merging with threshold information
-    	priority_output = priority_output.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
+        priority_output = priority_output.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
         non_priority_output = non_priority_output.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
         compiled_IDPs = compiled_IDPs.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
         new_IDP_output = new_IDP_output.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
