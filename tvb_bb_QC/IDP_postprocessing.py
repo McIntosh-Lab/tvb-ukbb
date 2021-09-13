@@ -264,7 +264,12 @@ def IDP_postprocessing(subj, IDP_list_path, IDPoi_list_path, thresholds_txt):
         #print(IDPs_with_thresholds)
 
         #return values back to scientific notation
+        priority_output['num'] = priority_output['num'].astype(np.int64)
+        non_priority_output['num'] = non_priority_output['num'].astype(np.int64)
+        compiled_IDPs['num'] = compiled_IDPs['num'].astype(np.int64)
         IDPs_with_thresholds['num'] = IDPs_with_thresholds['num'].astype(np.int64)
+        new_IDP_output['num'] = new_IDP_output['num'].astype(np.int64)
+        
         new_IDP_output['value'] = new_IDP_output['value'].apply(lambda x: "{:e}".format(float(x)))
         IDPs_with_thresholds['value'] = IDPs_with_thresholds['value'].apply(lambda x: "{:e}".format(float(x)))
 
