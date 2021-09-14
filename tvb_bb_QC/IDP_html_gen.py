@@ -44,7 +44,7 @@ def IDP_html_gen(subj):
     new_IDP_output = pd.read_csv(r"" + IDP_dir + "tvb_new_IDPs.tsv", delimiter = "\t")
 
 
-
+    subjname=os.path.basename(subj)
 
     #write IDP.html with IDP information
     f = open(QC_dir + "IDP.html", "a")
@@ -79,7 +79,7 @@ def IDP_html_gen(subj):
           <h1 class="w3-hide-medium w3-hide-small w3-xxxlarge">IDP IMAGE REPORT</h1>
           <h5 class="w3-hide-large" style="white-space:nowrap">IDP IMAGE REPORT</h5>
           
-          <h3 class="w3-hide-medium w3-hide-small">sub-CC520055</h3>
+          <h3 class="w3-hide-medium w3-hide-small">"""+subjname+"""</h3>
           
         </div>
      

@@ -36,8 +36,8 @@ def IDP_T1_GM_parc_gen(PARC_LUT,IDP_file,parcel_to_T1,pve_1):
 	for x in ROI_num_list:
 	  
 		num_voxels_in_ROI = np.count_nonzero(parcel_data==x)
-	  	
-	  	bb_IDP_T1_GM_parcellation="NaN"
+	
+		bb_IDP_T1_GM_parcellation="NaN"
 
 		if num_voxels_in_ROI != 0:
 
