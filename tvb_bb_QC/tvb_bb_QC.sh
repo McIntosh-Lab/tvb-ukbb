@@ -190,7 +190,7 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 
 
 	#DTI extraction masked
-		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/dMRI/nodif_brain_mask.nii.gz -b 56.84072334711457 -c 49.90029844128787 /dMRI/dMRI/data_B0.nii.gz $dirSubject DTI_extraction_masked
+		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/dMRI/nodif_brain_mask.nii.gz -b 63.181322641480094 -c 96.6772743958694 -d "--displayRange -6169.30322265625 23297.35455078125 --clippingRange -6169.30322265625 23297.35455078125" /dMRI/dMRI/data_B0.nii.gz $dirSubject DTI_extraction_masked
 
 		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dex_under" "../../dMRI/dMRI/data_B0.nii.gz" "dex_over1" "../../dMRI/dMRI/nodif_brain_mask.nii.gz" "NA24" "NA24_link" 0
 
