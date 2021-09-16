@@ -23,15 +23,20 @@
 origDir=`pwd`
 scriptName=`basename "$0"`
 direc=$1
+subjname=`basename $1`
+fMRI_ver=$2
 
-cd $direc
+result=""
+
+cd $subjname
+
 
 basefMRI="fMRI/"
 #if [ -d $basefMRI/unusable ] ; then
 #    basefMRI="$basefMRI/unusable"
 #fi
 
-basetfMRI="$basefMRI/tfMRI.feat/"
+basetfMRI="$basefMRI/$fMRI_ver/"
 
 #Setting the string of NaN in case there is a problem.
 numVars="16"
@@ -71,9 +76,9 @@ if [ -f $basetfMRI/filtered_func_data.nii.gz ] ; then
   cd ../..
 fi
 
-mkdir -p IDP_files
+# mkdir -p IDP_files
 
-echo $result > IDP_files/$scriptName.txt
+# echo $result > IDP_files/$scriptName.txt
 echo $result
 
 cd $origDir

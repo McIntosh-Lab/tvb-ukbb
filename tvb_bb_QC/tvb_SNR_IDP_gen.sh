@@ -36,8 +36,8 @@ if [ -f ${func_file}.nii.gz ] ; then
   fslmaths $func_file -Tstd /tmp/${fMRI_ver}_SNR_$subjname
   fslmaths $func_file -Tmean -div /tmp/${fMRI_ver}_SNR_$subjname /tmp/${fMRI_ver}_SNR_$subjname
   TheSNR=`fslstats /tmp/${fMRI_ver}_SNR_$subjname -l 0.1 -p 50`
-  TheSNRrecip=`echo "10 k 1 $TheSNR / p" | dc -`
-  result="$TheSNRrecip"
+  #TheSNRrecip=`echo "10 k 1 $TheSNR / p" | dc -`
+  result="$TheSNR"
   imrm /tmp/${fMRI_ver}_SNR_$subjname
 else
   result="NaN"
