@@ -46,8 +46,8 @@ cd $subjname
 result=""
 
 # for i in $baserfMRI/mc/prefiltered_func_data_mcf_rel_mean.rms $basetfMRImc/prefiltered_func_data_mcf_rel_mean.rms ; do
-if [ -f ${$func_file} ] ; then
-	result="`cat ${func_file}`"
+if [ -f ${func_file} ] ; then
+	result=`cat ${func_file}`
 else
 	result="NaN"
 fi
