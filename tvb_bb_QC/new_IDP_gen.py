@@ -774,12 +774,12 @@ def new_IDP_gen(subj,LUT_txt,BB_BIN_DIR):      #,fix4melviewtxt
     subjName = subj[subj.rfind("/") + 1 :]
 
 
-    IDP_FC_file = os.path.join(subj + "/IDP_files/", "tvb_IDP_FC_dist.txt")
-    IDP_SC_file = os.path.join(subj + "/IDP_files/", "tvb_IDP_SC_dist.txt")
-    IDP_MELODIC_file = os.path.join(subj + "/IDP_files/", "tvb_IDP_MELODIC_SNR.txt")
-    IDP_MCFLIRT_file = os.path.join(subj + "/IDP_files/", "tvb_IDP_MCFLIRT_disp.txt")
-    IDP_homotopic_file = os.path.join(subj + "/IDP_files/", "tvb_IDP_homotopic.txt")
-    new_IDP_list_file = os.path.join(subj + "/IDP_files/", "tvb_new_IDPs.txt")
+    # IDP_FC_file = os.path.join(subj + "/IDP_files/", "tvb_IDP_FC_dist.txt")
+    # IDP_SC_file = os.path.join(subj + "/IDP_files/", "tvb_IDP_SC_dist.txt")
+    # IDP_MELODIC_file = os.path.join(subj + "/IDP_files/", "tvb_IDP_MELODIC_SNR.txt")
+    # IDP_MCFLIRT_file = os.path.join(subj + "/IDP_files/", "tvb_IDP_MCFLIRT_disp.txt")
+    # IDP_homotopic_file = os.path.join(subj + "/IDP_files/", "tvb_IDP_homotopic.txt")
+    # new_IDP_list_file = os.path.join(subj + "/IDP_files/", "tvb_new_IDPs.txt")
 
     new_IDP_file = os.path.join(subj + "/IDP_files/", "tvb_new_IDPs.tsv")
 
@@ -799,14 +799,14 @@ def new_IDP_gen(subj,LUT_txt,BB_BIN_DIR):      #,fix4melviewtxt
 
     fix4melviewtxt=""
 
-    # FC_distribution(subj)
-    # SC_distribution(subj)
-    # MELODIC_SNR(subj,fix4melviewtxt)
-    # MCFLIRT_displacement(subj)       
+    FC_distribution(subj)
+    SC_distribution(subj)
+    MELODIC_SNR(subj,fix4melviewtxt)
+    MCFLIRT_displacement(subj)       
 
-    # homotopic(subj,LUT_txt)
-    # fmri_SNR_numvol(subj, BB_BIN_DIR)
-    # susceptibility_SNR(subj, BB_BIN_DIR)
+    homotopic(subj,LUT_txt)
+    fmri_SNR_numvol(subj, BB_BIN_DIR)
+    susceptibility_SNR(subj, BB_BIN_DIR)
     func_head_motion(subj, BB_BIN_DIR)
     func_task_activation(subj, BB_BIN_DIR)
 
