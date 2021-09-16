@@ -24,9 +24,9 @@ ylimit=10
 zlimit=10
 brightness_var=49.152368365123955
 contrast_var=49.90029860765409
-displayopts=""
 
-while getopts ":o:a:p:s:h:i:j:k:x:y:z:b:c:d:" opt; do
+
+while getopts ":o:a:p:s:h:i:j:k:x:y:z:b:c:" opt; do
   case $opt in
     o)		#overlay file
       overlay=$OPTARG
@@ -73,9 +73,6 @@ while getopts ":o:a:p:s:h:i:j:k:x:y:z:b:c:d:" opt; do
       ;;
     c)
     contrast_var=$OPTARG
-      ;;
-    d)
-    displayopts=$OPTARG
       ;;
     x)
     xlimit=$OPTARG
@@ -200,7 +197,7 @@ subject_folder=$2
 
 	for ((i=0; i<3; i++)); do
 
-		${FSLDIR}/bin/fsleyes render --outfile $output_folder/$sub"_$3_"${axisNames[$i]}.png  --crop 30 --size 6400 2400 --scene lightbox --displaySpace $subject_folder$underlay --zaxis $i --sliceSpacing ${sliceSpacing[$i]} --zrange ${zrange[2*$i]} ${zrange[2*$i+1]} --ncols 6 --nrows 3 --hideCursor --bgColour 0.0 0.0 0.0 --fgColour 1.0 1.0 1.0 --cursorColour 0.0 1.0 0.0 --colourBarLocation top --colourBarLabelSide top-left --colourBarSize 100.0 --labelSize 12 --performance 3 $subject_folder$underlay --name "underlay" --overlayType volume --alpha 100.0 --brightness $brightness_var --contrast $contrast_var --cmap greyscale --negativeCmap greyscale $displayopts --gamma 0.0 --cmapResolution 256 --interpolation none --numSteps 100 --blendFactor 0.1 --smoothing 0 --resolution 100 --numInnerSteps 10 --clipMode intersection --volume 0 $overlay_args
+		${FSLDIR}/bin/fsleyes render --outfile $output_folder/$sub"_$3_"${axisNames[$i]}.png  --crop 30 --size 6400 2400 --scene lightbox --displaySpace $subject_folder$underlay --zaxis $i --sliceSpacing ${sliceSpacing[$i]} --zrange ${zrange[2*$i]} ${zrange[2*$i+1]} --ncols 6 --nrows 3 --hideCursor --bgColour 0.0 0.0 0.0 --fgColour 1.0 1.0 1.0 --cursorColour 0.0 1.0 0.0 --colourBarLocation top --colourBarLabelSide top-left --colourBarSize 100.0 --labelSize 12 --performance 3 $subject_folder$underlay --name "underlay" --overlayType volume --alpha 100.0 --brightness $brightness_var --contrast $contrast_var --cmap greyscale --negativeCmap greyscale --gamma 0.0 --cmapResolution 256 --interpolation none --numSteps 100 --blendFactor 0.1 --smoothing 0 --resolution 100 --numInnerSteps 10 --clipMode intersection --volume 0 $overlay_args
 
 	
 
