@@ -17,7 +17,7 @@ def dataset_IDP_gen(BB_BIN_DIR,dataset,tvb_new_IDPs,ukbb_IDP_list):
     tvb_new_IDPs_data = list(csv.reader(open(tvb_new_IDPs),delimiter='\t'))
     ukbb_IDP_list_data = list(csv.reader(open(ukbb_IDP_list),delimiter='\t'))
 
-    for row in tvb_new_IDPs_data:
+    for row in tvb_new_IDPs_data[1:]:
         row = row[:-3]
         ukbb_IDP_list_data.append(row)
 

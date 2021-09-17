@@ -36,8 +36,13 @@ def generate_full_IDPoi_data(df, IDP_dir):
 
 
     flag = False
-    #output df
-    output = []
+    #output df placeholder
+    output = pd.DataFrame(
+        
+        columns=[
+            "num","short","category","num_in_cat","long","unit","dtype","description","value"
+        ],
+    )
 
     #for each IDP category, access its corresponding IDP value file
     for category in df["category"].unique():    
