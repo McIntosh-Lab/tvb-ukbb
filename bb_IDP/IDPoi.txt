@@ -4,10 +4,6 @@ T1_nl_align_to_std_diff
 T1_nl_align_to_std_warp
 T1_inverse_SNR
 T1_inverse_CNR
-T2_FLAIR_align_to_T1
-dMRI_align_to_T1
-rfMRI_align_to_T1
-tfMRI_align_to_T1
 dMRI_eddy_outlier
 T1_FIRST_left_thalamus
 T1_FIRST_right_thalamus
