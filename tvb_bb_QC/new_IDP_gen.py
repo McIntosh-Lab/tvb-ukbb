@@ -729,6 +729,49 @@ def func_task_activation(subj, BB_BIN_DIR):
         print("ERROR: func_task_activation error")
 
 
+def all_align_to_T1(subj, BB_BIN_DIR):
+    # try:
+    num_in_cat=1
+
+    baseT2=os.path.join(subj,"T2_FLAIR/T2_FLAIR_brain")
+    baseField=os.path.join(subj,"fieldmap/fieldmap_iout_to_T1")
+    basedMRI=os.path.join(subj,"dMRI/dMRI/data_B0")
+    baseSWI=os.path.join(subj,"SWI/SWI_TOTAL_MAG_to_T1")
+
+    baseDict={baseT2:"T2_FLAIR", baseField:"fieldmap", basedMRI:"dMRI", baseSWI:"SWI"}
+
+    for file in [baseT2, baseField, basedMRI, baseSWI]:
+        align_to_T1 = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_IDP_all_align_to_T1.sh'), subj, file],  stdout=subprocess.PIPE)
+        align_to_T1 = align_to_T1.stdout.decode('utf-8').strip()
+
+        print("---------")
+        print(file + "_all_align_to_T1")
+        print("---------")
+        print (align_to_T1)
+
+        write_to_IDP_file(subj, file+"_align_to_T1", "tvb_IDP_all_align_to_T1", str(num_in_cat), "QC_"+file+"-to-T1_linear_alignment_discrepancy", "AU", "float", "Discrepancy between the "+baseDict[file]+" brain image (linearly-aligned to the T1) and the T1 brain image", str(align_to_T1))
+        num_in_cat +=1
+
+    for file in os.listdir(subj + "/fMRI/"):
+        if file.endswith(".ica") or file.endswith(".feat"):
+            align_to_T1 = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_IDP_all_align_to_T1.sh'), subj, os.path.join(subj,"fMRI",file,"reg","example_func2highres")],  stdout=subprocess.PIPE)
+            align_to_T1 = align_to_T1.stdout.decode('utf-8').strip()
+
+            print("---------")
+            print(file + "_all_align_to_T1")
+            print("---------")
+            print (align_to_T1)
+
+            write_to_IDP_file(subj, file+"_align_to_T1", "tvb_IDP_all_align_to_T1", str(num_in_cat), "QC_"+file+"-to-T1_linear_alignment_discrepancy", "AU", "float", "Discrepancy between the "+file+" brain image (linearly-aligned to the T1) and the T1 brain image", str(align_to_T1))
+            num_in_cat +=1
+
+
+                
+    # except:
+    #     print("ERROR: all_align_to_T1 error")
+
+
+
 def write_to_IDP_file(subj,short,category,num_in_cat,long_var,unit,dtype,description,value):
     
     global IDP_num_counter
@@ -799,15 +842,16 @@ def new_IDP_gen(subj,LUT_txt,BB_BIN_DIR):      #,fix4melviewtxt
 
     fix4melviewtxt=""
 
-    FC_distribution(subj)
-    SC_distribution(subj)
-    MELODIC_SNR(subj,fix4melviewtxt)
-    MCFLIRT_displacement(subj)       
+    # FC_distribution(subj)
+    # SC_distribution(subj)
+    # MELODIC_SNR(subj,fix4melviewtxt)
+    # MCFLIRT_displacement(subj)       
 
-    homotopic(subj,LUT_txt)
-    fmri_SNR_numvol(subj, BB_BIN_DIR)
-    susceptibility_SNR(subj, BB_BIN_DIR)
-    func_head_motion(subj, BB_BIN_DIR)
+    # homotopic(subj,LUT_txt)
+    # fmri_SNR_numvol(subj, BB_BIN_DIR)
+    # susceptibility_SNR(subj, BB_BIN_DIR)
+    # func_head_motion(subj, BB_BIN_DIR)
+    all_align_to_T1(subj, BB_BIN_DIR)
     #func_task_activation(subj, BB_BIN_DIR) #not implemented in our pipeline
 
 
