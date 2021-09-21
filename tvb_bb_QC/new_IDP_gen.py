@@ -749,7 +749,7 @@ def all_align_to_T1(subj, BB_BIN_DIR):
             print("---------")
             print (align_to_T1)
 
-            write_to_IDP_file(subj, file+"_align_to_T1", "tvb_IDP_all_align_to_T1", str(num_in_cat), "QC_"+file+"-to-T1_linear_alignment_discrepancy", "AU", "float", "Discrepancy between the "+baseDict[file]+" brain image (linearly-aligned to the T1) and the T1 brain image", str(align_to_T1))
+            write_to_IDP_file(subj, baseDict[file]+"_align_to_T1", "tvb_IDP_all_align_to_T1", str(num_in_cat), "QC_"+baseDict[file]+"-to-T1_linear_alignment_discrepancy", "AU", "float", "Discrepancy between the "+baseDict[file]+" brain image (linearly-aligned to the T1) and the T1 brain image", str(align_to_T1))
             num_in_cat +=1
 
         for file in os.listdir(subj + "/fMRI/"):
