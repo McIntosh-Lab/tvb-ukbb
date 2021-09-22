@@ -71,7 +71,7 @@ def main():
     f=open(LUT_file, 'r')
     roi_int=[]
     for line in f:
-        roi_int.append(int(line.split(' ')[0]))
+        roi_int.append(int(line.split('\t')[0]))
     f.close()
     #roi_int= list(range(2,43)) + list(range(51,54)) + list(range(61,65))+list(range(102,143)) + list(range(151,154)) + list(range(161,165))
     #exclude_intra_ls =[None]*len(roi_int)

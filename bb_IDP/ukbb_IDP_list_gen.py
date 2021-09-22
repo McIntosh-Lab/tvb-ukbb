@@ -16,7 +16,7 @@ def ukbb_IDP_list_gen(BB_BIN_DIR,PARC_LUT):
 
     """
     #grab PARC_LUTs and generate IDP information for each ROI
-    ROI_data = list(csv.reader(open(PARC_LUT),delimiter=' ',))
+    ROI_data = list(csv.reader(open(PARC_LUT),delimiter='\t',))
     i=1
     for row in ROI_data:
         row[1]="T1_GM_parcellation_"+row[1]+"_vol"
@@ -31,7 +31,7 @@ def ukbb_IDP_list_gen(BB_BIN_DIR,PARC_LUT):
 
     #reading and cleaning each line of IDP list
     IDP_list = []
-    IDP_list_path=os.path.join(BB_BIN_DIR,"bb_IDP","ukbb_IDP_list.txt")
+    IDP_list_path=os.path.join(BB_BIN_DIR,"bb_IDP","ukbb_IDP_list.tsv")
 
 
     data = list(csv.reader(open(IDP_list_path),delimiter='\t',))
@@ -72,6 +72,9 @@ def ukbb_IDP_list_gen(BB_BIN_DIR,PARC_LUT):
         indexes_to_insert = range(len(ROI_data))
         for index in sorted(indexes_to_insert, reverse=True):
             data.insert(start,ROI_data[index])
+
+
+
 
     #
     x=1

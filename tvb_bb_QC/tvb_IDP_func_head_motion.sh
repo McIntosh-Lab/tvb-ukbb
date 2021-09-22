@@ -20,33 +20,42 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 origDir=`pwd`
 scriptName=`basename "$0"`
-direc=$1
+subjname=`basename $1`
+func_file=$2
+#relative^
 
-cd $direc
+result=""
 
-basefMRI="fMRI/"
+
+
+
+cd $subjname
+
+
+# basefMRI="fMRI/"
 #if [ -d $basefMRI/unusable ] ; then
 #    basefMRI="$basefMRI/unusable"
 #fi
 
-baserfMRI="$basefMRI/rfMRI.ica/"
-basetfMRI="$basefMRI/tfMRI.feat/"
+# baserfMRI="$basefMRI/rfMRI.ica/"
+# basetfMRI="$basefMRI/tfMRI.feat/"
 
 result=""
 
-for i in $baserfMRI/mc/prefiltered_func_data_mcf_rel_mean.rms $basetfMRI/mc/prefiltered_func_data_mcf_rel_mean.rms ; do
-  if [ -f ${i} ] ; then
-    result="$result `cat ${i}`"
-  else
-    result="$result NaN"
-  fi
-done
+# for i in $baserfMRI/mc/prefiltered_func_data_mcf_rel_mean.rms $basetfMRImc/prefiltered_func_data_mcf_rel_mean.rms ; do
+if [ -f ${func_file} ] ; then
+	result=`cat ${func_file}`
+else
+	result="NaN"
+fi
+# done
 
-mkdir -p IDP_files
+# mkdir -p IDP_files
 
-echo $result > IDP_files/$scriptName.txt
+# echo $result > IDP_files/$scriptName.txt
 echo $result
 
 cd $origDir

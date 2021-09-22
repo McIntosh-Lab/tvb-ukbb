@@ -39,12 +39,12 @@ def IDP_html_gen(subj):
     IDP_dir = subj + "/IDP_files/"
 
     #save IDPois to txt files for future reference
-    priority_output = pd.read_csv(r"" + IDP_dir + "priority_IDPs.txt", delimiter = "\t")
-    non_priority_output = pd.read_csv(r"" + IDP_dir + "non_priority_IDPs.txt", delimiter = "\t")
-    new_IDP_output = pd.read_csv(r"" + IDP_dir + "tvb_new_IDPs.txt", delimiter = "\t")
+    priority_output = pd.read_csv(r"" + IDP_dir + "priority_IDPs.tsv", delimiter = "\t")
+    non_priority_output = pd.read_csv(r"" + IDP_dir + "non_priority_IDPs.tsv", delimiter = "\t")
+    new_IDP_output = pd.read_csv(r"" + IDP_dir + "tvb_new_IDPs.tsv", delimiter = "\t")
 
 
-
+    subjname=os.path.basename(subj)
 
     #write IDP.html with IDP information
     f = open(QC_dir + "IDP.html", "a")
@@ -79,7 +79,7 @@ def IDP_html_gen(subj):
           <h1 class="w3-hide-medium w3-hide-small w3-xxxlarge">IDP IMAGE REPORT</h1>
           <h5 class="w3-hide-large" style="white-space:nowrap">IDP IMAGE REPORT</h5>
           
-          <h3 class="w3-hide-medium w3-hide-small">sub-CC520055</h3>
+          <h3 class="w3-hide-medium w3-hide-small">"""+subjname+"""</h3>
           
         </div>
      
@@ -148,7 +148,7 @@ def IDP_html_gen(subj):
 
 <option value="Low-priority IDPs" id="Low-priority IDPs">Low-priority IDPs</option>
 
-<option value="All IDPs" id="All IDPs">All IDPs</option>
+<option value="All IDPs" id="All IDPs">All Significant IDPs</option>
 
 
   </select></label>
@@ -292,23 +292,23 @@ def IDP_html_gen(subj):
     <br>
     <a href="../../IDP_files/" class="w3-bar-item w3-button">High-Priority IDPs: """
         + str(IDP_dir)
-        + "priority_IDPs.txt"
+        + "priority_IDPs.tsv"
         + """</a>
     <br>
     <a href="../../IDP_files/" class="w3-bar-item w3-button">New TVB IDPs: """
         + str(IDP_dir)
-        + "tvb_new_IDPs.txt"
+        + "tvb_new_IDPs.tsv"
         + """</a>
     <br>
     <a href="../../IDP_files/" class="w3-bar-item w3-button">Lower-priority IDPs: """
         + str(IDP_dir)
-        + "non_priority_IDPs.txt"
+        + "non_priority_IDPs.tsv"
         + """</a>
     <br>
 
     <a href="../../IDP_files/" class="w3-bar-item w3-button">Combination of the above IDPs: """
         + str(IDP_dir)
-        + "significant_IDPs.txt"
+        + "significant_IDPs.tsv"
         + """</a>
 
         <br>

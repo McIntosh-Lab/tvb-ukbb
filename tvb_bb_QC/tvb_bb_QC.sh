@@ -167,13 +167,13 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 	echo "STARTING DTI EXTRACTION -------"
 
 	#DTI extraction unmasked
-		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh /dMRI/dMRI/data_B0.nii.gz $dirSubject  DTI_extraction_unmasked
+		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -b 62.718401747457314 -c 96.08735171986915 /dMRI/dMRI/data_B0.nii.gz $dirSubject DTI_extraction_unmasked
 
 		#$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "uw_under" "../../dMRI/dMRI/data_B0.nii.gz" "NA22" "NA22_link" "NA23" "NA23_link" 0
 
 
 	#DTI extraction masked
-		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/dMRI/nodif_brain_mask.nii.gz /dMRI/dMRI/data_B0.nii.gz $dirSubject DTI_extraction_masked
+		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/dMRI/nodif_brain_mask.nii.gz -b 62.718401747457314 -c 96.08735171986915 /dMRI/dMRI/data_B0.nii.gz $dirSubject DTI_extraction_masked
 
 		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dex_under" "../../dMRI/dMRI/data_B0.nii.gz" "dex_over1" "../../dMRI/dMRI/nodif_brain_mask.nii.gz" "NA24" "NA24_link" 0
 
@@ -200,11 +200,10 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 	echo "STARTING DWI SynB0 WARPING -------"
 
 	#T1 registration edges
-		$BB_BIN_DIR/tvb_bb_QC/edges.sh -l 10 /dMRI/dMRI/DWI_B0.nii.gz /dMRI/dMRI/SynB0/DWI_B0_all_topup.nii.gz $dirSubject  DWI_warping 
+		$BB_BIN_DIR/tvb_bb_QC/edges.sh -l 10 /dMRI/dMRI/DWI_B0.nii.gz /dMRI/dMRI/SynB0/b0_all.nii.gz $dirSubject  DWI_warping 
 
-		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "wa_under" "../../dMRI/dMRI/SynB0/DWI_B0_all_topup.nii.gz" "wa_over1" "../../dMRI/dMRI/DWI_B0.nii.gz" "NA13" "NA13_link" 0
+		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "wa_under" "../../dMRI/dMRI/SynB0/b0_all.nii.gz" "wa_over1" "../../dMRI/dMRI/DWI_B0.nii.gz" "NA13" "NA13_link" 0
 		#$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "re_under" "${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz" "re_over1" "../../T1/T1_brain_to_MNI.nii.gz" "NA13" "NA13_link" 0
-
 
 
 
@@ -297,9 +296,9 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 
 ### IDP REPORT GEN ###
 	
-	python $BB_BIN_DIR/tvb_bb_QC/new_IDP_gen.py $dirSubject $PARC_LUT
+	python $BB_BIN_DIR/tvb_bb_QC/new_IDP_gen.py $dirSubject $PARC_LUT $BB_BIN_DIR
 	#python $BB_BIN_DIR/tvb_bb_QC/IDP_postprocessing.py $dirSubject $PARC_LUT $BB_BIN_DIR/bb_IDP/thresholds.txt
-	python $BB_BIN_DIR/tvb_bb_QC/IDP_postprocessing.py $dirSubject $BB_BIN_DIR/bb_IDP/ukbb_IDP_list.txt $BB_BIN_DIR/bb_IDP/IDPoi.txt $BB_BIN_DIR/bb_IDP/thresholds.txt
+	python $BB_BIN_DIR/tvb_bb_QC/IDP_postprocessing.py $dirSubject $BB_BIN_DIR/bb_IDP/ukbb_IDP_list.tsv $BB_BIN_DIR/bb_IDP/IDPoi.txt $BB_BIN_DIR/bb_IDP/thresholds.tsv
 	#TODO: only give $BB_BIN_DIR as arg for above and resolve relative pathing in script
 	
 	python $BB_BIN_DIR/tvb_bb_QC/IDP_html_gen.py $dirSubject

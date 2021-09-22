@@ -36,8 +36,13 @@ def generate_full_IDPoi_data(df, IDP_dir):
 
 
     flag = False
-    #output df
-    output = []
+    #output df placeholder
+    output = pd.DataFrame(
+        
+        columns=[
+            "num","short","category","num_in_cat","long","unit","dtype","description","value"
+        ],
+    )
 
     #for each IDP category, access its corresponding IDP value file
     for category in df["category"].unique():    
@@ -206,7 +211,7 @@ def IDP_postprocessing(subj, IDP_list_path, IDPoi_list_path, thresholds_txt):
     non_priority_output['value'] = non_priority_output['value'].apply(lambda x: "{:e}".format(float(x)))
 
 
-    new_IDP_output = pd.read_csv(r"" + IDP_dir + "tvb_new_IDPs.txt", delimiter = "\t")
+    new_IDP_output = pd.read_csv(r"" + IDP_dir + "tvb_new_IDPs.tsv", delimiter = "\t")
     #new_IDP_output=new_IDP_output[["num","short","category","num_in_cat","long","unit","dtype","description","value"]]
 
     #prior, non prior, new tvb IDP compiled output
@@ -263,6 +268,17 @@ def IDP_postprocessing(subj, IDP_list_path, IDPoi_list_path, thresholds_txt):
 
         #print(IDPs_with_thresholds)
 
+        #return values back to scientific notation
+        priority_output['num'] = priority_output['num'].astype(np.int64)
+        non_priority_output['num'] = non_priority_output['num'].astype(np.int64)
+        compiled_IDPs['num'] = compiled_IDPs['num'].astype(np.int64)
+        IDPs_with_thresholds['num'] = IDPs_with_thresholds['num'].astype(np.int64)
+        new_IDP_output['num'] = new_IDP_output['num'].astype(np.int64)
+        
+        new_IDP_output['value'] = new_IDP_output['value'].apply(lambda x: "{:e}".format(float(x)))
+        IDPs_with_thresholds['value'] = IDPs_with_thresholds['value'].apply(lambda x: "{:e}".format(float(x)))
+
+
         #merging with threshold information
         priority_output = priority_output.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
         non_priority_output = non_priority_output.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
@@ -271,28 +287,28 @@ def IDP_postprocessing(subj, IDP_list_path, IDPoi_list_path, thresholds_txt):
 
         #save IDPois to txt files for future reference
         priority_output.to_csv(
-            r"" + IDP_dir + "priority_IDPs.txt",
+            r"" + IDP_dir + "priority_IDPs.tsv",
             header=priority_output.columns.values,
             index=None,
             sep="\t",
             mode="w",
         )
         non_priority_output.to_csv(
-            r"" + IDP_dir + "non_priority_IDPs.txt",
+            r"" + IDP_dir + "non_priority_IDPs.tsv",
             header=non_priority_output.columns.values,
             index=None,
             sep="\t",
             mode="w",
         )
         compiled_IDPs.to_csv(
-            r"" + IDP_dir + "significant_IDPs.txt",
+            r"" + IDP_dir + "significant_IDPs.tsv",
             header=compiled_IDPs.columns.values,
             index=None,
             sep="\t",
             mode="w",
         )
         new_IDP_output.to_csv(
-            r"" + IDP_dir + "tvb_new_IDPs.txt",
+            r"" + IDP_dir + "tvb_new_IDPs.tsv",
             header=compiled_IDPs.columns.values,
             index=None,
             sep="\t",

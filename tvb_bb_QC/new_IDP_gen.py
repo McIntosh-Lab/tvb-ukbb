@@ -17,6 +17,7 @@ import glob
 import scipy
 from numpy import inf
 import scipy.stats
+import subprocess
 # increasing font size for plots
 font = {"size": 100}
 matplotlib.rc("font", **font)
@@ -464,6 +465,13 @@ def homotopic(subj,LUT_txt):
     except:
         print("ERROR: LUT file not found")
 
+    counter = 0
+    temp_list=[]
+    while counter <  np.shape(LUT)[0]:
+        temp_list.append(LUT[counter].split("\t"))
+        counter +=1
+    LUT=temp_list
+
     index_pair_list = []
     counter = 0
     while counter <  np.shape(LUT)[0]:
@@ -503,8 +511,10 @@ def homotopic(subj,LUT_txt):
                     print("ERROR: fc, ts file not found")
 
                 homotopic_sum = 0
+
                 for pair in index_pair_list:
                     homotopic_sum += FC[pair[0]][pair[1]]
+
                 homotopic_mean = homotopic_sum/len(index_pair_list)
 
 
@@ -522,10 +532,250 @@ def homotopic(subj,LUT_txt):
 
 
 
+
+def fmri_SNR_numvol(subj, BB_BIN_DIR):
+    try:
+        num_in_cat=1
+        for file in os.listdir(subj + "/fMRI/"):
+            if file.endswith(".ica"):
+                SNR_result = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_SNR_IDP_gen.sh'), subj, file, os.path.join(subj, "fMRI", file, "filtered_func_data")],  stdout=subprocess.PIPE)
+                SNR_result = SNR_result.stdout.decode('utf-8').strip()
+
+                clean_SNR_result = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_SNR_IDP_gen.sh'), subj, file, os.path.join(subj, "fMRI", file, "filtered_func_data_clean")],  stdout=subprocess.PIPE)
+                clean_SNR_result = clean_SNR_result.stdout.decode('utf-8').strip()
+
+                numvol_result = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_numvol_IDP_gen.sh'), os.path.join(subj, "fMRI", file[:-3]+"nii.gz")],  stdout=subprocess.PIPE)
+                numvol_result = numvol_result.stdout.decode('utf-8').strip()
+
+                print("---------")
+                print(file + "_SNR_num_vol")
+                print("---------")
+                print (SNR_result)
+                print (clean_SNR_result)
+                print (numvol_result)
+
+                write_to_IDP_file(subj, file+"_TSNR", "tvb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the pre-processed "+file+" - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
+                num_in_cat +=1
+
+                write_to_IDP_file(subj, file+"_cleaned_TSNR", "tvb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_cleaned_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the artefact-cleaned pre-processed "+file+" - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(clean_SNR_result))
+                num_in_cat +=1
+
+                write_to_IDP_file(subj, file+"_num_vol", "tvb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_num_vol", "volumes", "int", "Number of volumes in "+file+" scan", str(numvol_result))
+                num_in_cat +=1
+
+                
+            if file.endswith(".feat"):
+                SNR_result = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_SNR_IDP_gen.sh'), subj, file, os.path.join(subj, "fMRI", file, "filtered_func_data")],  stdout=subprocess.PIPE)
+                SNR_result = SNR_result.stdout.decode('utf-8').strip()
+
+                numvol_result = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_numvol_IDP_gen.sh'), os.path.join(subj, "fMRI", file[:-4]+"nii.gz")],  stdout=subprocess.PIPE)
+                numvol_result = numvol_result.stdout.decode('utf-8').strip()
+
+                print("---------")
+                print(file + "_SNR_num_vol")
+                print("---------")
+                print (SNR_result)
+                print (numvol_result)
+
+                write_to_IDP_file(subj, file+"_TSNR", "tvb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the pre-processed "+file+" - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
+                num_in_cat +=1
+                
+                write_to_IDP_file(subj, file+"_num_vol", "tvb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_num_vol", "volumes", "int", "Number of volumes in "+file+" scan", str(numvol_result))
+                num_in_cat +=1
+    except:
+        print("ERROR: fmri SNR or numvol error")
+
+
+def susceptibility_SNR(subj, BB_BIN_DIR):
+    try:
+        num_in_cat=1
+        susceptibility_mask_gen = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_susceptibility_mask_gen.sh'), subj], stdout=subprocess.PIPE)
+        susceptibility_parc_list=susceptibility_mask_gen.stdout.decode('utf-8').strip().splitlines()
+        non_susc_mask=susceptibility_parc_list[0]
+        susc_mask=susceptibility_parc_list[1]
+
+        parclist_dict={non_susc_mask:"non-susceptible",susc_mask:"susceptible"}
+        for susceptibility_parc in susceptibility_parc_list:    
+            for file in os.listdir(subj + "/fMRI/"):
+                if file.endswith(".ica"):
+                    SNR_result = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_susceptibility_SNR_IDP_gen.sh'), subj, os.path.join("fMRI", file, "filtered_func_data"), susceptibility_parc, file, "ica", parclist_dict[susceptibility_parc]],  stdout=subprocess.PIPE)
+                    SNR_result = SNR_result.stdout.decode('utf-8').strip()
+
+                    clean_SNR_result = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_susceptibility_SNR_IDP_gen.sh'), subj, os.path.join("fMRI", file, "filtered_func_data_clean"), susceptibility_parc, file, "ica", parclist_dict[susceptibility_parc]],  stdout=subprocess.PIPE)
+                    clean_SNR_result = clean_SNR_result.stdout.decode('utf-8').strip()
+
+
+                    print("---------")
+                    print(file + "_" + susceptibility_parc + "_susceptibility_SNR")
+                    print("---------")
+                    print (SNR_result)
+                    print (clean_SNR_result)
+
+                    write_to_IDP_file(subj, file+"_"+parclist_dict[susceptibility_parc]+"_TSNR", "tvb_IDP_func_susceptibility_SNR", str(num_in_cat), "QC_"+file+"_"+parclist_dict[susceptibility_parc]+"_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the pre-processed "+file+" "+parclist_dict[susceptibility_parc]+" regions - median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
+                    num_in_cat +=1
+
+                    write_to_IDP_file(subj, file+"_"+parclist_dict[susceptibility_parc]+"_cleaned_TSNR", "tvb_IDP_func_susceptibility_SNR", str(num_in_cat), "QC_"+file+"_"+parclist_dict[susceptibility_parc]+"_cleaned_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the artefact-cleaned pre-processed "+file+" "+parclist_dict[susceptibility_parc]+" regions - median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(clean_SNR_result))
+                    num_in_cat +=1
+
+                    
+                if file.endswith(".feat"):
+                    SNR_result = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_susceptibility_SNR_IDP_gen.sh'), subj, os.path.join("fMRI", file, "filtered_func_data"), susceptibility_parc, file, "feat", parclist_dict[susceptibility_parc]],  stdout=subprocess.PIPE)
+                    SNR_result = SNR_result.stdout.decode('utf-8').strip()
+
+           
+                    print("---------")
+                    print(file + "_" + susceptibility_parc + "_susceptibility_SNR")
+                    print("---------")
+                    print (SNR_result)
+
+                    write_to_IDP_file(subj, file+"_"+parclist_dict[susceptibility_parc]+"_TSNR", "tvb_IDP_func_susceptibility_SNR", str(num_in_cat), "QC_"+file+"_"+parclist_dict[susceptibility_parc]+"_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the pre-processed  "+file+" "+parclist_dict[susceptibility_parc]+" regions  - median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
+                    num_in_cat +=1
+                
+    except:
+       print("ERROR: susceptibility SNR error")
+
+
+
+
+def func_head_motion(subj, BB_BIN_DIR):
+    try:
+        num_in_cat=1
+        for file in os.listdir(subj + "/fMRI/"):
+            if file.endswith(".ica") or file.endswith(".feat"):
+                head_motion = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_IDP_func_head_motion.sh'), subj, os.path.join(subj, "fMRI", file, "mc/prefiltered_func_data_mcf_rel_mean.rms")],  stdout=subprocess.PIPE)
+                head_motion = head_motion.stdout.decode('utf-8').strip()
+
+                print("---------")
+                print(file + "_func_head_motion")
+                print("---------")
+                print (head_motion)
+
+                write_to_IDP_file(subj, file+"_head_motion", "tvb_IDP_func_head_motion", str(num_in_cat), "IDP_"+file+"_head_motion", "mm", "float", "Mean "+file+" head motion, averaged across space and timepoints", str(head_motion))
+                num_in_cat +=1
+
+                
+    except:
+        print("ERROR: func_head_motion error")
+
+
+
+
+def func_task_activation(subj, BB_BIN_DIR):
+    try:
+        num_in_cat=1
+        for file in os.listdir(subj + "/fMRI/"):
+            if file.endswith(".feat"):
+                task_activation = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_IDP_func_task_activation.sh'), subj, file],  stdout=subprocess.PIPE)
+                task_activation = task_activation.stdout.decode('utf-8').strip()
+                task_activation = task_activation.split(" ")
+                print("---------")
+                print(file + "_func_task_activation")
+                print("---------")
+                print (task_activation)
+
+
+                write_to_IDP_file(subj, file+"_median_shapes", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_median_BOLD_shapes", "%", "float", "Median BOLD effect (in group-defined mask) for shapes activation (in task fMRI data)", str(task_activation[0]))
+                num_in_cat +=1
+
+                write_to_IDP_file(subj, file+"_p90_shapes", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_90th-percentile_BOLD_shapes", "%", "float", "90th percentile of the BOLD effect (in group-defined mask) for shapes activation (in task fMRI data) ", str(task_activation[1]))
+                num_in_cat +=1
+
+                write_to_IDP_file(subj, file+"_median_zstat_shapes", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_median_zstat_shapes", "Z", "float", "Median z-statistic (in group-defined mask) for shapes activation (in task fMRI data)", str(task_activation[2]))
+                num_in_cat +=1
+
+                write_to_IDP_file(subj, file+"_p90_zstat_shapes", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_90th-percentile_zstat_shapes", "Z", "float", "90th percentile of the z-statistic (in group-defined mask) for shapes activation (in task fMRI data)", str(task_activation[3]))
+                num_in_cat +=1
+
+                write_to_IDP_file(subj, file+"_median_faces", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_median_BOLD_faces", "%", "float", "Median BOLD effect (in group-defined mask) for faces activation (in task fMRI data)", str(task_activation[4]))
+                num_in_cat +=1
+
+                write_to_IDP_file(subj, file+"_p90_faces", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_90th-percentile_BOLD_faces", "%", "float", "90th percentile of the BOLD effect (in group-defined mask) for faces activation (in task fMRI data)", str(task_activation[5]))
+                num_in_cat +=1
+
+                write_to_IDP_file(subj, file+"_median_zstat_faces", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_median_zstat_faces", "Z", "float", "Median z-statistic (in group-defined mask) for faces activation (in task fMRI data)", str(task_activation[6]))
+                num_in_cat +=1
+
+                write_to_IDP_file(subj, file+"_p90_zstat_faces", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_90th-percentile_zstat_faces", "Z", "float", "90th percentile of the z-statistic (in group-defined mask) for faces activation (in task fMRI data)", str(task_activation[7]))
+                num_in_cat +=1
+
+                write_to_IDP_file(subj, file+"_median_faces-shapes", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_median_BOLD_faces-shapes", "%", "float", "Median BOLD effect (in group-defined mask) for faces-shapes contrast (in task fMRI data)", str(task_activation[8]))
+                num_in_cat +=1
+
+                write_to_IDP_file(subj, file+"_p90_faces-shapes", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_90th-percentile_BOLD_faces-shapes", "%", "float", "90th percentile of the BOLD effect (in group-defined mask) for faces-shapes contrast (in task fMRI data)", str(task_activation[9]))
+                num_in_cat +=1
+
+                write_to_IDP_file(subj, file+"_median_zstat_faces-shapes", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_median_zstat_faces-shapes", "Z", "float", "Median z-statistic (in group-defined mask) for faces-shapes contrast (in task fMRI data)", str(task_activation[10]))
+                num_in_cat +=1
+
+                write_to_IDP_file(subj, file+"_p90_zstat_faces-shapes", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_90th-percentile_zstat_faces-shapes", "Z", "float", "90th percentile of the z-statistic (in group-defined mask) for faces-shapes contrast (in task fMRI data)", str(task_activation[11]))
+                num_in_cat +=1
+
+                write_to_IDP_file(subj, file+"_median_faces-shapes_amygdala", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_median_BOLD_faces-shapes_amygdala", "%", "float", "Median BOLD effect (in group-defined amygdala activation mask) for faces-shapes contrast (in task fMRI data)", str(task_activation[12]))
+                num_in_cat +=1
+
+                write_to_IDP_file(subj, file+"_p90_faces-shapes_amygdala", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_90th-percentile_BOLD_faces-shapes_amygdala", "%", "float", "90th percentile of the BOLD effect (in group-defined amygdala activation mask) for faces-shapes contrast (in task fMRI data)", str(task_activation[13]))
+                num_in_cat +=1
+
+                write_to_IDP_file(subj, file+"_median_zstat_faces-shapes_amygdala", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_median_zstat_faces-shapes_amygdala", "Z", "float", "Median z-statistic (in group-defined amygdala activation mask) for faces-shapes contrast (in task fMRI data)", str(task_activation[14]))
+                num_in_cat +=1
+
+                write_to_IDP_file(subj, file+"_p90_zstat_faces-shapes_amygdala", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_90th-percentile_zstat_faces-shapes_amygdala", "Z", "float", "90th percentile of the z-statistic (in group-defined amygdala activation mask) for faces-shapes contrast (in task fMRI data)", str(task_activation[15]))
+                num_in_cat +=1
+
+
+
+                
+    except:
+        print("ERROR: func_task_activation error")
+
+
+def all_align_to_T1(subj, BB_BIN_DIR):
+    try:
+        num_in_cat=1
+
+        baseT2=os.path.join(subj,"T2_FLAIR/T2_FLAIR_brain")
+        baseField=os.path.join(subj,"fieldmap/fieldmap_iout_to_T1")
+        basedMRI=os.path.join(subj,"dMRI/dMRI/data_B0")
+        baseSWI=os.path.join(subj,"SWI/SWI_TOTAL_MAG_to_T1")
+
+        baseDict={baseT2:"T2_FLAIR", baseField:"fieldmap", basedMRI:"dMRI", baseSWI:"SWI"}
+
+        for file in [baseT2, baseField, basedMRI, baseSWI]:
+            align_to_T1 = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_IDP_all_align_to_T1.sh'), subj, file],  stdout=subprocess.PIPE)
+            align_to_T1 = align_to_T1.stdout.decode('utf-8').strip()
+
+            print("---------")
+            print(file + "_all_align_to_T1")
+            print("---------")
+            print (align_to_T1)
+
+            write_to_IDP_file(subj, baseDict[file]+"_align_to_T1", "tvb_IDP_all_align_to_T1", str(num_in_cat), "QC_"+baseDict[file]+"-to-T1_linear_alignment_discrepancy", "AU", "float", "Discrepancy between the "+baseDict[file]+" brain image (linearly-aligned to the T1) and the T1 brain image", str(align_to_T1))
+            num_in_cat +=1
+
+        for file in os.listdir(subj + "/fMRI/"):
+            if file.endswith(".ica") or file.endswith(".feat"):
+                align_to_T1 = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_IDP_all_align_to_T1.sh'), subj, os.path.join(subj,"fMRI",file,"reg","example_func2highres")],  stdout=subprocess.PIPE)
+                align_to_T1 = align_to_T1.stdout.decode('utf-8').strip()
+
+                print("---------")
+                print(file + "_all_align_to_T1")
+                print("---------")
+                print (align_to_T1)
+
+                write_to_IDP_file(subj, file+"_align_to_T1", "tvb_IDP_all_align_to_T1", str(num_in_cat), "QC_"+file+"-to-T1_linear_alignment_discrepancy", "AU", "float", "Discrepancy between the "+file+" brain image (linearly-aligned to the T1) and the T1 brain image", str(align_to_T1))
+                num_in_cat +=1
+
+
+                
+    except:
+        print("ERROR: all_align_to_T1 error")
+
+
+
 def write_to_IDP_file(subj,short,category,num_in_cat,long_var,unit,dtype,description,value):
     
     global IDP_num_counter
-    file = os.path.join(subj + "/IDP_files/", "tvb_new_IDPs.txt")
+    file = os.path.join(subj + "/IDP_files/", "tvb_new_IDPs.tsv")
 
 
     with open(file, 'a') as fp:
@@ -540,7 +790,8 @@ def write_to_IDP_file(subj,short,category,num_in_cat,long_var,unit,dtype,descrip
 
 
 
-def new_IDP_gen(subj,LUT_txt):      #,fix4melviewtxt
+
+def new_IDP_gen(subj,LUT_txt,BB_BIN_DIR):      #,fix4melviewtxt
     """Function that generates new IDPs for a subject.
 
     TODO: more error handling here and in function def to deal with 
@@ -554,6 +805,9 @@ def new_IDP_gen(subj,LUT_txt):      #,fix4melviewtxt
 
 
     #remove trailing forward slashes in subject paths
+    
+
+
     if subj.endswith("/"):
         subj = subj[:-1]
 
@@ -570,7 +824,7 @@ def new_IDP_gen(subj,LUT_txt):      #,fix4melviewtxt
     # IDP_homotopic_file = os.path.join(subj + "/IDP_files/", "tvb_IDP_homotopic.txt")
     # new_IDP_list_file = os.path.join(subj + "/IDP_files/", "tvb_new_IDPs.txt")
 
-    new_IDP_file = os.path.join(subj + "/IDP_files/", "tvb_new_IDPs.txt")
+    new_IDP_file = os.path.join(subj + "/IDP_files/", "tvb_new_IDPs.tsv")
 
 
     # IDP_output_files = [IDP_FC_file,IDP_SC_file,IDP_MELODIC_file,IDP_MCFLIRT_file,IDP_homotopic_file]
@@ -594,8 +848,11 @@ def new_IDP_gen(subj,LUT_txt):      #,fix4melviewtxt
     MCFLIRT_displacement(subj)       
 
     homotopic(subj,LUT_txt)
-    
-
+    fmri_SNR_numvol(subj, BB_BIN_DIR)
+    susceptibility_SNR(subj, BB_BIN_DIR)
+    func_head_motion(subj, BB_BIN_DIR)
+    all_align_to_T1(subj, BB_BIN_DIR)
+    #func_task_activation(subj, BB_BIN_DIR) #not implemented in our pipeline
 
 
 
@@ -629,6 +886,6 @@ if __name__ == "__main__":
 
     #TODO: use argparse https://stackoverflow.com/questions/32761999/how-to-pass-an-entire-list-as-command-line-argument-in-python/32763023
     # try:
-    new_IDP_gen(sys.argv[1],sys.argv[2]) #,sys.argv[3])
+    new_IDP_gen(sys.argv[1],sys.argv[2],sys.argv[3]) #,sys.argv[3])
 
     

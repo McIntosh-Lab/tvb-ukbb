@@ -12,19 +12,17 @@ def dataset_IDP_gen(BB_BIN_DIR,dataset,tvb_new_IDPs,ukbb_IDP_list):
     ----------
     BB_BIN_DIR: path to tvb pipeline tvb-ukbb
 
-    PARC_LUT: path to LUT.txt
 
     """
-    #grab PARC_LUTs and generate IDP information for each ROI
     tvb_new_IDPs_data = list(csv.reader(open(tvb_new_IDPs),delimiter='\t'))
     ukbb_IDP_list_data = list(csv.reader(open(ukbb_IDP_list),delimiter='\t'))
 
-    for row in tvb_new_IDPs_data:
+    for row in tvb_new_IDPs_data[1:]:
         row = row[:-3]
         ukbb_IDP_list_data.append(row)
 
     
-    outputfilename=os.path.join(BB_BIN_DIR, "bb_IDP", dataset+"_IDPs.txt")
+    outputfilename=os.path.join(BB_BIN_DIR, "bb_IDP", dataset+"_IDPs.tsv")
     with open(outputfilename, mode='w') as outputfile:
         writer = csv.writer(outputfile, delimiter='\t')
 

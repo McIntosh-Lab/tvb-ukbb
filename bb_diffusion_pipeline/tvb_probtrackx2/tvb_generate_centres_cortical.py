@@ -10,7 +10,7 @@ np.set_printoptions(threshold=sys.maxsize)
 
 def generate_centres_cortical(subjdir, PARC_LUT):
 	datafile = open(PARC_LUT, 'r')
-	datareader = csv.reader(datafile, delimiter = " ")
+	datareader = csv.reader(datafile, delimiter = "\t")
 	ROI_list = []
 
 	for row in datareader:
