@@ -13,9 +13,9 @@ direc=$1
 
 cd $direc
 
-bin_suscept_parc_img=`basename $SUSCEPT_PARC_IMG`
+bin_suscept_parc_img=`basename $PARC_IMG`
 bin_suscept_parc_img="IDP_files/binmask_$bin_suscept_parc_img"
-fslmaths $SUSCEPT_PARC_IMG -bin $bin_suscept_parc_img
+fslmaths $PARC_IMG -bin $bin_suscept_parc_img
 
 bin_suscept_rois=`basename $SUSCEPT_ROIS`
 bin_suscept_rois="IDP_files/binmask_$bin_suscept_rois"
