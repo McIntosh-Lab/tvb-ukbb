@@ -245,7 +245,7 @@ set fmri(regstandard_yn) 1
 set fmri(alternateReference_yn) 1
 
 # Standard image
-set fmri(regstandard) "/opt/HCPpipelines-4.1.3/fsl/data/standard/MNI152_T1_2mm_brain"
+set fmri(regstandard) "_--_FSLDIR_-_/data/standard/MNI152_T1_2mm_brain"
 
 # Search space for registration to standard space
 # 0   : No search
