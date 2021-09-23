@@ -93,7 +93,7 @@ export numROI="436"                                                             
 export TRAINING_FILE="ADNI3_Training.RData"                                            #TO BE MODIFIED BY USER
 export SynB0="y"                                            #TO BE MODIFIED BY USER
 export PE_direction="0 -1 0"                                            #TO BE MODIFIED BY USER 
-
+export SUSCEPT_ROIS="$templ/parcellations/TVB_SchaeferTian/SusceptibilityROIs_SchaeferTian_420.nii.gz"                     		#TO BE MODIFIED BY USER
 #export numROI="316"                                                              					#TO BE MODIFIED BY USER
 
 #INCLUDE 3 MAIN BIOBANK DIRECTORIES IN PATH
