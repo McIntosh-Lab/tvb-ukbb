@@ -32,7 +32,7 @@ cd $subjname
 
 if [ feat_or_ica == "ica" ] ; then
 
-	${FSLDIR}/bin/applywarp --rel --interp=nn --in=$standard_bin_susc_parc --ref=$func_file -w fMRI/$fMRI_ver/reg/standard2example_func_warp -o IDP_files/susc_parc_to_func_space_${func_file_name}_${susc_or_nonsusc}_$fMRI_ver_no_ext
+	${FSLDIR}/bin/applywarp --rel --interp=nn --in=$standard_bin_susc_parc --ref=fMRI/$fMRI_ver/example_func -w fMRI/$fMRI_ver/reg/standard2example_func_warp -o IDP_files/susc_parc_to_func_space_${func_file_name}_${susc_or_nonsusc}_$fMRI_ver_no_ext
 else
 	${FSLDIR}/bin/invwarp --ref=$func_file -w fMRI/$fMRI_ver/reg/example_func2highres_warp -o fMRI/$fMRI_ver/reg/highres2example_func_warp
 	#use --rel?
