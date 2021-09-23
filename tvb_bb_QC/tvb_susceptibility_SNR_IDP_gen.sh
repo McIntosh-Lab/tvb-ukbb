@@ -30,19 +30,9 @@ fMRI_ver_no_ext=${fMRI_ver%.*}
 
 cd $subjname
 
-if [ feat_or_ica == "ica" ] ; then
 
-	${FSLDIR}/bin/applywarp --rel --interp=nn --in=$standard_bin_susc_parc --ref=fMRI/$fMRI_ver/example_func -w fMRI/$fMRI_ver/reg/standard2example_func_warp -o IDP_files/susc_parc_to_func_space_${func_file_name}_${susc_or_nonsusc}_$fMRI_ver_no_ext
-else
-	${FSLDIR}/bin/invwarp --ref=$func_file -w fMRI/$fMRI_ver/reg/example_func2highres_warp -o fMRI/$fMRI_ver/reg/highres2example_func_warp
-	#use --rel?
-	#what is the example_func2highres (withou the warp suffix)?
+${FSLDIR}/bin/applywarp --rel --interp=nn --in=$standard_bin_susc_parc --ref=fMRI/$fMRI_ver/example_func -w fMRI/$fMRI_ver/reg/standard2example_func_warp -o IDP_files/susc_parc_to_func_space_${func_file_name}_${susc_or_nonsusc}_$fMRI_ver_no_ext
 
-	${FSLDIR}/bin/applywarp --rel --interp=nn --in=$standard_bin_susc_parc --ref=T1/T1 -w T1/transforms/T1_to_MNI_warp_coef_inv -o IDP_files/susc_parc_to_T1_space
-
-
-	${FSLDIR}/bin/applywarp --rel --interp=nn --in=IDP_files/susc_parc_to_T1_space --ref=$func_file -w fMRI/$fMRI_ver/reg/highres2example_func_warp -o IDP_files/susc_parc_to_func_space_${func_file_name}_${susc_or_nonsusc}_$fMRI_ver_no_ext
-fi
 
 
 rm fMRI/$fMRI_ver/reg/highres2example_func_warp.nii.gz
