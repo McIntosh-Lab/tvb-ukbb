@@ -30,6 +30,12 @@ fMRI_ver_no_ext=${fMRI_ver%.*}
 
 cd $subjname
 
+if [ -f fMRI/${fMRI_ver}/reg/standard2example_func_warp.nii.gz ] ; then
+	:
+else
+	${FSLDIR}/bin/invwarp --ref=$func_file -w fMRI/$fMRI_ver/reg/example_func2standard_warp -o fMRI/$fMRI_ver/reg/standard2example_func_warp
+fi
+
 
 ${FSLDIR}/bin/applywarp --rel --interp=nn --in=$standard_bin_susc_parc --ref=fMRI/$fMRI_ver/example_func -w fMRI/$fMRI_ver/reg/standard2example_func_warp -o IDP_files/susc_parc_to_func_space_${func_file_name}_${susc_or_nonsusc}_$fMRI_ver_no_ext
 
