@@ -41,7 +41,7 @@ ${FSLDIR}/bin/applywarp --rel --interp=nn --in=$standard_bin_susc_parc --ref=fMR
 
 
 
-rm fMRI/$fMRI_ver/reg/highres2example_func_warp.nii.gz
+# rm fMRI/$fMRI_ver/reg/highres2example_func_warp.nii.gz
 rm IDP_files/susc_parc_to_T1_space.nii.gz
 
 outputfile="IDP_files/${func_file_name}_${susc_or_nonsusc}_${fMRI_ver_no_ext}"
