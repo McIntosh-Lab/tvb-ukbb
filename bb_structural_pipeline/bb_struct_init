@@ -242,7 +242,7 @@ if [ `${FSLDIR}/bin/imtest T2_FLAIR/T2_FLAIR_orig` = 0 ] ; then
   fi
 
   #label GM with ROIs
-  ${AFNIDIR}/3dROIMaker -inset T1/cort_subcort_GM.nii.gz -thresh 0.1 -inflate 1 -prefix T1/labelled -refset T1/transforms/parcel_to_T1.nii.gz -nifti -neigh_upto_vert
+  ${AFNIDIR}/3dROIMaker -inset T1/cort_subcort_GM.nii.gz -thresh 0.1 -inflate 1 -prefix T1/labelled -refset T1/transforms/parcel_to_T1.nii.gz -nifti -neigh_upto_vert -dump_no_labtab
 
   #for some reason both labelled_GM and labelled_GMI are inflated; fix it here
   ${FSLDIR}/bin/fslmaths T1/labelled_GM -mas T1/cort_subcort_GM.nii.gz T1/labelled_GM
@@ -292,7 +292,7 @@ then
 fi
 
 #label GM with ROIs
-${AFNIDIR}/3dROIMaker -inset $1/T1/cort_subcort_GM.nii.gz -thresh 0.1 -inflate 1 -prefix $1/T1/labelled -refset $1/T1/transforms/parcel_to_T1.nii.gz -nifti -neigh_upto_vert
+${AFNIDIR}/3dROIMaker -inset $1/T1/cort_subcort_GM.nii.gz -thresh 0.1 -inflate 1 -prefix $1/T1/labelled -refset $1/T1/transforms/parcel_to_T1.nii.gz -nifti -neigh_upto_vert -dump_no_labtab
 
 #for some reason both labelled_GM and labelled_GMI are inflated; fix it here
 ${FSLDIR}/bin/fslmaths $1/T1/labelled_GM -mas $1/T1/cort_subcort_GM.nii.gz $1/T1/labelled_GM
