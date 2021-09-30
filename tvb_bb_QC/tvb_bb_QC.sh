@@ -217,9 +217,9 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 	echo "STARTING DWI SynB0 WARPING -------"
 
 	#T1 registration edges
-		$BB_BIN_DIR/tvb_bb_QC/edges.sh -l 10 /dMRI/dMRI/DWI_B0.nii.gz /dMRI/dMRI/SynB0/b0_all.nii.gz $dirSubject  DWI_warping 
+		$BB_BIN_DIR/tvb_bb_QC/edges.sh -l 10 /dMRI/dMRI/DWI_B0.nii.gz /dMRI/dMRI/SynB0/b0_u.nii.gz $dirSubject  DWI_warping 
 
-		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "wa_under" "../../dMRI/dMRI/SynB0/b0_all.nii.gz" "wa_over1" "../../dMRI/dMRI/DWI_B0.nii.gz" "NA13" "NA13_link" 0
+		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "wa_under" "../../dMRI/dMRI/SynB0/b0_u.nii.gz" "wa_over1" "../../dMRI/dMRI/DWI_B0.nii.gz" "NA13" "NA13_link" 0
 		#$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "re_under" "${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz" "re_over1" "../../T1/T1_brain_to_MNI.nii.gz" "NA13" "NA13_link" 0
 
 
