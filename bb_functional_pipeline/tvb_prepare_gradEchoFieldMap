@@ -20,6 +20,29 @@ modes=("rest" "movie" "smt")
 
 deltaTE=2.46
 
+fmap_erode_size=1
+
+
+subject_age=""
+
+while read line; do
+    read a b <<< ${line}
+    if [[ $a = $subjName ]]; then
+        subject_age=$b
+    fi
+done <$SUBJECT_AGE_LIST
+
+subject_age=`echo "${subject_age%%.*}"`
+decile=`echo $((subject_age / 10))`
+decile=`echo $((decile * 10))`
+
+if [ $decile -ge 50 ]; then
+
+    fmap_erode_size=2
+
+fi 
+
+
 for mode in ${modes[@]}; do
 
     #TODO: put these in init_vars
@@ -31,7 +54,7 @@ for mode in ${modes[@]}; do
 
     # extract magnitude image and erode
     $FSLDIR/bin/bet $gradEcho_fmap_mag1 ${gradEchoDir}/fmap_${mode}_mag_brain
-    $FSLDIR/bin/fslmaths ${gradEchoDir}/fmap_${mode}_mag_brain -ero ${gradEchoDir}/fmap_${mode}_mag_brain_ero
+    $FSLDIR/bin/fslmaths ${gradEchoDir}/fmap_${mode}_mag_brain -kernel box $fmap_erode_size -ero ${gradEchoDir}/fmap_${mode}_mag_brain_ero
 
     # concatenate two magnitude images
     fslmerge -t ${gradEchoDir}/fmap_${mode}_mag $gradEcho_fmap_mag1 $gradEcho_fmap_mag2
