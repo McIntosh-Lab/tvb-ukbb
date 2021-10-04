@@ -32,7 +32,7 @@ while read line; do
     fi
 done <$SUBJECT_AGE_LIST
 
-subject_age=`echo "${subject_age%%.*}"`
+subject_age=`echo "${subject_age%%.*}" | sed 's/\r$//'`
 decile=`echo $((subject_age / 10))`
 decile=`echo $((decile * 10))`
 
