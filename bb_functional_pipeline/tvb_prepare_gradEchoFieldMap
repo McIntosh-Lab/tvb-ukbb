@@ -20,7 +20,7 @@ modes=("rest" "movie" "smt")
 
 deltaTE=2.46
 
-fmap_erode_size=3x3x3
+fmap_erode_size=3
 
 
 subject_age=""
@@ -38,7 +38,7 @@ decile=`echo $((decile * 10))`
 
 if [ $decile -ge 50 ]; then
 
-    fmap_erode_size=5x5x5
+    fmap_erode_size=5
 
 fi 
 
