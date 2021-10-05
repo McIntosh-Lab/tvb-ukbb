@@ -20,7 +20,7 @@ modes=("rest" "movie" "smt")
 
 deltaTE=2.46
 
-fmap_erode_size=1
+fmap_erode_size=3x3x3
 
 
 subject_age=""
@@ -38,7 +38,7 @@ decile=`echo $((decile * 10))`
 
 if [ $decile -ge 50 ]; then
 
-    fmap_erode_size=2
+    fmap_erode_size=5x5x5
 
 fi 
 
@@ -54,7 +54,7 @@ for mode in ${modes[@]}; do
 
     # extract magnitude image and erode
     $FSLDIR/bin/bet $gradEcho_fmap_mag1 ${gradEchoDir}/fmap_${mode}_mag_brain
-    $FSLDIR/bin/fslmaths ${gradEchoDir}/fmap_${mode}_mag_brain -kernel box $fmap_erode_size -ero ${gradEchoDir}/fmap_${mode}_mag_brain_ero
+    $FSLDIR/bin/fslmaths ${gradEchoDir}/fmap_${mode}_mag_brain -kernel boxv $fmap_erode_size -ero ${gradEchoDir}/fmap_${mode}_mag_brain_ero
 
     # concatenate two magnitude images
     fslmerge -t ${gradEchoDir}/fmap_${mode}_mag $gradEcho_fmap_mag1 $gradEcho_fmap_mag2
