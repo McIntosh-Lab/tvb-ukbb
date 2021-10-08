@@ -228,7 +228,10 @@ def IDP_postprocessing(subj, IDP_list_path, IDPoi_list_path, thresholds_txt):
         failed_IDP=""
 
         thresholds = pd.read_csv(thresholds_txt, sep="\t")
-
+    
+    except:
+        print("Error: Threshold file missing")
+    try:
         IDPs_with_thresholds = compiled_IDPs.merge(thresholds, how="left", on="short")
         IDPs_with_thresholds["flag"] = "" 
         passed_QC_flag=True
@@ -265,7 +268,9 @@ def IDP_postprocessing(subj, IDP_list_path, IDPoi_list_path, thresholds_txt):
             f = open(os.path.join(os.path.dirname(subj),"IDP_flags.txt"), "a")
             f.write(failed_IDP+"\n")
             f.close()
-
+    except:
+        print("Error: Couldn't check IDPs with thresholds")
+    try:
         #print(IDPs_with_thresholds)
 
         #return values back to scientific notation
@@ -277,14 +282,21 @@ def IDP_postprocessing(subj, IDP_list_path, IDPoi_list_path, thresholds_txt):
         
         new_IDP_output['value'] = new_IDP_output['value'].apply(lambda x: "{:e}".format(float(x)))
         IDPs_with_thresholds['value'] = IDPs_with_thresholds['value'].apply(lambda x: "{:e}".format(float(x)))
+    
+    except:
+        print("Error: Error merging threshold with IDPs")
 
-
+    try:
         #merging with threshold information
         priority_output = priority_output.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
         non_priority_output = non_priority_output.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
         compiled_IDPs = compiled_IDPs.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
         new_IDP_output = new_IDP_output.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
 
+    except:
+        print("Error: Error merging threshold with IDPs")
+    
+    try:
         #save IDPois to txt files for future reference
         priority_output.to_csv(
             r"" + IDP_dir + "priority_IDPs.tsv",
@@ -316,7 +328,7 @@ def IDP_postprocessing(subj, IDP_list_path, IDPoi_list_path, thresholds_txt):
         )
         
     except:
-        print("Error: Missing thresholds file or improper formatting")
+        print("Error: Cannot save new IDP tsvs")
     #need to save each txt priority txt again with merge to include flags and the threshold
     #need to gen colour based of flag and presence of threshold
 

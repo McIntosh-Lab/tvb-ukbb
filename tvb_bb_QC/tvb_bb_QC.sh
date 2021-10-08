@@ -184,13 +184,13 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 	echo "STARTING DTI EXTRACTION -------"
 
 	#DTI extraction unmasked
-		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -b 62.718401747457314 -c 96.08735171986915 /dMRI/dMRI/data_B0.nii.gz $dirSubject DTI_extraction_unmasked
+		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh /dMRI/dMRI/data_B0.nii.gz $dirSubject DTI_extraction_unmasked
 
 		#$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "uw_under" "../../dMRI/dMRI/data_B0.nii.gz" "NA22" "NA22_link" "NA23" "NA23_link" 0
 
 
 	#DTI extraction masked
-		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/dMRI/nodif_brain_mask.nii.gz -b 62.718401747457314 -c 96.08735171986915 /dMRI/dMRI/data_B0.nii.gz $dirSubject DTI_extraction_masked
+		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/dMRI/nodif_brain_mask.nii.gz /dMRI/dMRI/data_B0.nii.gz $dirSubject DTI_extraction_masked
 
 		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dex_under" "../../dMRI/dMRI/data_B0.nii.gz" "dex_over1" "../../dMRI/dMRI/nodif_brain_mask.nii.gz" "NA24" "NA24_link" 0
 
