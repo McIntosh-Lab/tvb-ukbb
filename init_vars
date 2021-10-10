@@ -96,6 +96,9 @@ export SynB0="y"                                            #TO BE MODIFIED BY U
 export PE_direction="0 -1 0"                                            #TO BE MODIFIED BY USER 
 #export numROI="316"                                                              					#TO BE MODIFIED BY USER
 
+# set to 1 for single shell diffusion data and 2 for multi-shell
+export DIFF_SHELL_TYPE="1"
+
 #INCLUDE 3 MAIN BIOBANK DIRECTORIES IN PATH
 export PATH="$BB_BIN_DIR/bb_pipeline_tools/:$BB_BIN_DIR/bb_general_tools/:$PATH"
 
