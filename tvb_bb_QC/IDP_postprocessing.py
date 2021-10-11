@@ -275,8 +275,8 @@ def IDP_postprocessing(subj, IDP_list_path, IDPoi_list_path, thresholds_txt):
         IDPs_with_thresholds['num'] = IDPs_with_thresholds['num'].astype(np.int64)
         new_IDP_output['num'] = new_IDP_output['num'].astype(np.int64)
         
-        new_IDP_output['value'] = new_IDP_output['value'].apply(lambda x: "{:e}".format(float(x)))
-        IDPs_with_thresholds['value'] = IDPs_with_thresholds['value'].apply(lambda x: "{:e}".format(float(x)))
+        # new_IDP_output['value'] = new_IDP_output['value'].apply(lambda x: "{:e}".format(float(x)))
+        # IDPs_with_thresholds['value'] = IDPs_with_thresholds['value'].apply(lambda x: "{:e}".format(float(x)))
 
 
         #merging with threshold information
