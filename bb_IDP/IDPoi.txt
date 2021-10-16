@@ -21,4 +21,6 @@ T1_FIRST_left_accumbens
 T1_FIRST_right_accumbens
 T1_FIRST_brain_stem+4th_ventricle
 T2_FLAIR_WMH_volume
+fMRI_0.ica_fieldmap_align_to_T1
+fMRI_1.ica_fieldmap_align_to_T1
 LOW_PRIORITY

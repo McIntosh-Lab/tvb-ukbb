@@ -734,13 +734,12 @@ def all_align_to_T1(subj, BB_BIN_DIR):
         num_in_cat=1
 
         baseT2=os.path.join(subj,"T2_FLAIR/T2_FLAIR_brain")
-        baseField=os.path.join(subj,"fieldmap/fieldmap_out_to_T1")
         basedMRI=os.path.join(subj,"dMRI/dMRI/data_B0")
         baseSWI=os.path.join(subj,"SWI/SWI_TOTAL_MAG_to_T1")
 
-        baseDict={baseT2:"T2_FLAIR", baseField:"fieldmap", basedMRI:"dMRI", baseSWI:"SWI"}
+        baseDict={baseT2:"T2_FLAIR", basedMRI:"dMRI", baseSWI:"SWI"}
 
-        for file in [baseT2, baseField, basedMRI, baseSWI]:
+        for file in [baseT2, basedMRI, baseSWI]:
             align_to_T1 = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_IDP_all_align_to_T1.sh'), subj, file],  stdout=subprocess.PIPE)
             align_to_T1 = align_to_T1.stdout.decode('utf-8').strip()
 
@@ -754,6 +753,8 @@ def all_align_to_T1(subj, BB_BIN_DIR):
 
         for file in os.listdir(subj + "/fMRI/"):
             if file.endswith(".ica") or file.endswith(".feat"):
+
+
                 align_to_T1 = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_IDP_all_align_to_T1.sh'), subj, os.path.join(subj,"fMRI",file,"reg","example_func2highres")],  stdout=subprocess.PIPE)
                 align_to_T1 = align_to_T1.stdout.decode('utf-8').strip()
 
@@ -764,6 +765,22 @@ def all_align_to_T1(subj, BB_BIN_DIR):
 
                 write_to_IDP_file(subj, file+"_align_to_T1", "tvb_IDP_all_align_to_T1", str(num_in_cat), "QC_"+file+"-to-T1_linear_alignment_discrepancy", "AU", "float", "Discrepancy between the "+file+" brain image (linearly-aligned to the T1) and the T1 brain image", str(align_to_T1))
                 num_in_cat +=1
+
+
+
+                field_align_to_T1 = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_IDP_all_align_to_T1.sh'), subj, os.path.join(subj,"fMRI",file,"reg","unwarp","FM_UD_fmap_mag_brain2str")],  stdout=subprocess.PIPE)
+                field_align_to_T1 = field_align_to_T1.stdout.decode('utf-8').strip()
+
+                print("---------")
+                print(file +"_fieldmap_all_align_to_T1")
+                print("---------")
+                print (field_align_to_T1)
+
+                write_to_IDP_file(subj, file+"_fieldmap_align_to_T1", "tvb_IDP_all_align_to_T1", str(num_in_cat), "QC_"+file+"-fieldmap-to-T1_linear_alignment_discrepancy", "AU", "float", "Discrepancy between the "+file+" field map brain image (linearly-aligned to the T1) and the T1 brain image", str(field_align_to_T1))
+                num_in_cat +=1
+
+
+
 
 
                 
