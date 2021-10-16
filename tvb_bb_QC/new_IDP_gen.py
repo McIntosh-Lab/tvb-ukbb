@@ -734,7 +734,7 @@ def all_align_to_T1(subj, BB_BIN_DIR):
         num_in_cat=1
 
         baseT2=os.path.join(subj,"T2_FLAIR/T2_FLAIR_brain")
-        baseField=os.path.join(subj,"fieldmap/fieldmap_iout_to_T1")
+        baseField=os.path.join(subj,"fieldmap/fieldmap_out_to_T1")
         basedMRI=os.path.join(subj,"dMRI/dMRI/data_B0")
         baseSWI=os.path.join(subj,"SWI/SWI_TOTAL_MAG_to_T1")
 
@@ -745,7 +745,7 @@ def all_align_to_T1(subj, BB_BIN_DIR):
             align_to_T1 = align_to_T1.stdout.decode('utf-8').strip()
 
             print("---------")
-            print(file + "_all_align_to_T1")
+            print(baseDict[file] + "_all_align_to_T1")
             print("---------")
             print (align_to_T1)
 
