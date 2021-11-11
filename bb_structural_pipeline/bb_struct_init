@@ -137,8 +137,15 @@ ${FSLDIR}/bin/fast -N -A ${FAST_PRIORS_PREFIX}_csf ${FAST_PRIORS_PREFIX}_gm ${FA
 
 
 #Register the above generated T1 brain from AgeSpecTemplate space to T1 space
-${FSLDIR}/bin/flirt -interp nearestneighbour -in T1_fast/T1_brain_to_AgeSpecTemplate -ref T1_unbiased_brain -out T1_fast/T1_brain -init transforms/AgeSpecTemplate_to_T1.mat -applyxfm
+${FSLDIR}/bin/flirt -interp nearestneighbour -in T1_fast/T1_brain_to_AgeSpecTemplate_mixeltype -ref T1_unbiased_brain -out T1_fast/T1_brain -init transforms/AgeSpecTemplate_to_T1.mat -applyxfm
+${FSLDIR}/bin/flirt -interp nearestneighbour -in T1_fast/T1_brain_to_AgeSpecTemplate_pve_0 -ref T1_unbiased_brain -out T1_fast/T1_brain -init transforms/AgeSpecTemplate_to_T1.mat -applyxfm
+${FSLDIR}/bin/flirt -interp nearestneighbour -in T1_fast/T1_brain_to_AgeSpecTemplate_pve_1 -ref T1_unbiased_brain -out T1_fast/T1_brain -init transforms/AgeSpecTemplate_to_T1.mat -applyxfm
+${FSLDIR}/bin/flirt -interp nearestneighbour -in T1_fast/T1_brain_to_AgeSpecTemplate_pve_2 -ref T1_unbiased_brain -out T1_fast/T1_brain -init transforms/AgeSpecTemplate_to_T1.mat -applyxfm
+${FSLDIR}/bin/flirt -interp nearestneighbour -in T1_fast/T1_brain_to_AgeSpecTemplate_pveseg -ref T1_unbiased_brain -out T1_fast/T1_brain -init transforms/AgeSpecTemplate_to_T1.mat -applyxfm
+${FSLDIR}/bin/flirt -interp nearestneighbour -in T1_fast/T1_brain_to_AgeSpecTemplate_seg -ref T1_unbiased_brain -out T1_fast/T1_brain -init transforms/AgeSpecTemplate_to_T1.mat -applyxfm
 
+
+#FLIRT all of them
 
 
 # ${FSLDIR}/bin/flirt -interp nearestneighbour -in ${FAST_PRIORS_PREFIX}_csf -ref T1_unbiased_brain -out T1_fast/priors_csf -init transforms/AgeSpecTemplate_to_T1.mat -applyxfm
