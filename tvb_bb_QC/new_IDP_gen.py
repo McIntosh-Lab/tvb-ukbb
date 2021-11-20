@@ -788,6 +788,31 @@ def all_align_to_T1(subj, BB_BIN_DIR):
         print("ERROR: all_align_to_T1 error")
 
 
+def fieldmap_func_align(subj, BB_BIN_DIR):
+    try:
+        num_in_cat=1
+
+        for file in os.listdir(subj + "/fMRI/"):
+            if file.endswith(".ica") or file.endswith(".feat"):
+
+
+                fieldmap_func_align = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/fieldmap_func_align.sh'), os.path.join(subj,"fMRI",file)],  stdout=subprocess.PIPE)
+                fieldmap_func_align = fieldmap_func_align.stdout.decode('utf-8').strip()
+
+                print("---------")
+                print(file +"_fieldmap_func_align")
+                print("---------")
+                print (fieldmap_func_align)
+
+                write_to_IDP_file(subj, file+"_fieldmap_func_align", "tvb_IDP_fieldmap_func_align", str(num_in_cat), "QC_"+file+"-fieldmap-to-func_linear_alignment_discrepancy", "AU", "float", "Discrepancy between the "+file+" field map brain image and the "+file+" func image", str(fieldmap_func_align))
+                num_in_cat +=1
+
+                
+    except:
+        print("ERROR: fieldmap_func_align error")
+
+
+
 
 def write_to_IDP_file(subj,short,category,num_in_cat,long_var,unit,dtype,description,value):
     
