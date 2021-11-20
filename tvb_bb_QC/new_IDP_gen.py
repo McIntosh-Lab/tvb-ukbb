@@ -894,6 +894,7 @@ def new_IDP_gen(subj,LUT_txt,BB_BIN_DIR):      #,fix4melviewtxt
     susceptibility_SNR(subj, BB_BIN_DIR)
     func_head_motion(subj, BB_BIN_DIR)
     all_align_to_T1(subj, BB_BIN_DIR)
+    fieldmap_func_align(subj, BB_BIN_DIR)
     #func_task_activation(subj, BB_BIN_DIR) #not implemented in our pipeline
 
 
