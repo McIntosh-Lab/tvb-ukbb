@@ -223,103 +223,107 @@ def IDP_postprocessing(subj, IDP_list_path, IDPoi_list_path, thresholds_txt):
     compiled_IDPs = pd.concat([compiled_IDPs,non_priority_output])
  
 
-    # try:
+    try:
     #need ot handle missing value as a failure as well
     #filling in threshold values
-    
-    failed_IDP=""
-
-
-    thresholds = pd.read_csv(thresholds_txt, sep="\t")
-
-    IDPs_with_thresholds = compiled_IDPs.merge(thresholds, how="left", on="short")
-    IDPs_with_thresholds["flag"] = "" 
-    passed_QC_flag=True
-
-    for index, row in IDPs_with_thresholds.iterrows():
-        IDP_failed = True
-
-        current_range=row["accepted_ranges"]
-        if str(current_range) == "nan" or str(current_range) == "NaN":
-            IDPs_with_thresholds.at[index,"flag"]="N/A"
-        #only add flag colours for IDPs which are in the thresholds txt
-        else:
-            #iterate through ranges
-            for x in current_range.split(";"):
-                x=literal_eval(x)
-                if x[0]=="-inf":
-                    if row["value"] <= x[1]:
-                        IDP_failed=False
-                        
-                elif x[1]=="inf":
-                    if row["value"] >= x[0]:
-                        IDP_failed=False
-            
-                else:
-                    if float(row["value"]) >= float(x[0]) and float(row["value"]) <= float(x[1]):
-                        IDP_failed=False
-            if IDP_failed:
-                passed_QC_flag=False
-                failed_IDP+="\t"+row["short"]+":"+str(row["value"]) 
-                IDPs_with_thresholds.at[index,"flag"]=IDP_failed
-
-    if not passed_QC_flag:
-        failed_IDP=subj+failed_IDP
-        f = open(os.path.join(os.path.dirname(subj),"IDP_flags.txt"), "a")
-        f.write(failed_IDP+"\n")
-        f.close()
-
-    #print(IDPs_with_thresholds)
-
-    #return values back to scientific notation
-    priority_output['num'] = priority_output['num'].astype(np.int64)
-    non_priority_output['num'] = non_priority_output['num'].astype(np.int64)
-    compiled_IDPs['num'] = compiled_IDPs['num'].astype(np.int64)
-    IDPs_with_thresholds['num'] = IDPs_with_thresholds['num'].astype(np.int64)
-    new_IDP_output['num'] = new_IDP_output['num'].astype(np.int64)
-    
-    # new_IDP_output['value'] = new_IDP_output['value'].apply(lambda x: "{:e}".format(float(x)))
-    # IDPs_with_thresholds['value'] = IDPs_with_thresholds['value'].apply(lambda x: "{:e}".format(float(x)))
-
-
-    #merging with threshold information
-    priority_output = priority_output.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
-    non_priority_output = non_priority_output.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
-    compiled_IDPs = compiled_IDPs.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
-    new_IDP_output = new_IDP_output.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
-
-    #save IDPois to txt files for future reference
-    priority_output.to_csv(
-        r"" + IDP_dir + "priority_IDPs.tsv",
-        header=priority_output.columns.values,
-        index=None,
-        sep="\t",
-        mode="w",
-    )
-    non_priority_output.to_csv(
-        r"" + IDP_dir + "non_priority_IDPs.tsv",
-        header=non_priority_output.columns.values,
-        index=None,
-        sep="\t",
-        mode="w",
-    )
-    compiled_IDPs.to_csv(
-        r"" + IDP_dir + "significant_IDPs.tsv",
-        header=compiled_IDPs.columns.values,
-        index=None,
-        sep="\t",
-        mode="w",
-    )
-    new_IDP_output.to_csv(
-        r"" + IDP_dir + "tvb_new_IDPs.tsv",
-        header=compiled_IDPs.columns.values,
-        index=None,
-        sep="\t",
-        mode="w",
-    )
         
-    # except:
-    #     print("Error: Missing thresholds file or improper formatting")
+        failed_IDP=""
+
+
+        thresholds = pd.read_csv(thresholds_txt, sep="\t")
+
+        IDPs_with_thresholds = compiled_IDPs.merge(thresholds, how="left", on="short")
+        IDPs_with_thresholds["flag"] = "" 
+        passed_QC_flag=True
+
+        for index, row in IDPs_with_thresholds.iterrows():
+            IDP_failed = True
+
+            current_range=row["accepted_ranges"]
+            if str(current_range) == "nan" or str(current_range) == "NaN":
+                IDPs_with_thresholds.at[index,"flag"]="N/A"
+            #only add flag colours for IDPs which are in the thresholds txt
+            else:
+                #iterate through ranges
+                for x in current_range.split(";"):
+                    x=literal_eval(x)
+                    if x[0]=="-inf":
+                        if row["value"] <= x[1]:
+                            IDP_failed=False
+                            
+                    elif x[1]=="inf":
+                        if row["value"] >= x[0]:
+                            IDP_failed=False
+                
+                    else:
+                        if float(row["value"]) >= float(x[0]) and float(row["value"]) <= float(x[1]):
+                            IDP_failed=False
+                if IDP_failed:
+                    passed_QC_flag=False
+                    failed_IDP+="\t"+row["short"]+":"+str(row["value"]) 
+                    IDPs_with_thresholds.at[index,"flag"]=IDP_failed
+
+        if not passed_QC_flag:
+            failed_IDP=subj+failed_IDP
+            f = open(os.path.join(os.path.dirname(subj),"IDP_flags.txt"), "a")
+            f.write(failed_IDP+"\n")
+            f.close()
+
+        #print(IDPs_with_thresholds)
+
+        #return values back to scientific notation
+        priority_output['num'] = priority_output['num'].astype(np.int64)
+        non_priority_output['num'] = non_priority_output['num'].astype(np.int64)
+        compiled_IDPs['num'] = compiled_IDPs['num'].astype(np.int64)
+        IDPs_with_thresholds['num'] = IDPs_with_thresholds['num'].astype(np.int64)
+        new_IDP_output['num'] = new_IDP_output['num'].astype(np.int64)
+        
+        # new_IDP_output['value'] = new_IDP_output['value'].apply(lambda x: "{:e}".format(float(x)))
+        # IDPs_with_thresholds['value'] = IDPs_with_thresholds['value'].apply(lambda x: "{:e}".format(float(x)))
+
+
+        #merging with threshold information
+        priority_output = priority_output.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
+        non_priority_output = non_priority_output.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
+        compiled_IDPs = compiled_IDPs.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
+        
+
+        
+        new_IDP_output = new_IDP_output.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
+
+
+        #save IDPois to txt files for future reference
+        priority_output.to_csv(
+            r"" + IDP_dir + "priority_IDPs.tsv",
+            header=priority_output.columns.values,
+            index=None,
+            sep="\t",
+            mode="w",
+        )
+        non_priority_output.to_csv(
+            r"" + IDP_dir + "non_priority_IDPs.tsv",
+            header=non_priority_output.columns.values,
+            index=None,
+            sep="\t",
+            mode="w",
+        )
+        compiled_IDPs.to_csv(
+            r"" + IDP_dir + "significant_IDPs.tsv",
+            header=compiled_IDPs.columns.values,
+            index=None,
+            sep="\t",
+            mode="w",
+        )
+        new_IDP_output.to_csv(
+            r"" + IDP_dir + "tvb_new_IDPs.tsv",
+            header=compiled_IDPs.columns.values,
+            index=None,
+            sep="\t",
+            mode="w",
+        )
+        
+    except:
+        print("Error: Missing thresholds file or improper formatting")
     #need to save each txt priority txt again with merge to include flags and the threshold
     #need to gen colour based of flag and presence of threshold
 

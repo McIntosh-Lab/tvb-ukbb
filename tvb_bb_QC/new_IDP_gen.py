@@ -175,7 +175,11 @@ def SC_distribution(subj):
 
 
     SC_num_nan=counter
-    SC_nan_lines=nanlines[:-2]
+
+    if nanlines == "":
+        SC_nan_lines = "none"
+    else:
+        SC_nan_lines=nanlines[:-2]
 
 
     SC[SC == -inf] = "nan"
