@@ -226,7 +226,7 @@ def IDP_postprocessing(subj, IDP_list_path, IDPoi_list_path, thresholds_txt):
     try:
     #need ot handle missing value as a failure as well
     #filling in threshold values
-        
+            
         failed_IDP=""
 
         thresholds = pd.read_csv(thresholds_txt, sep="\t")
@@ -286,10 +286,11 @@ def IDP_postprocessing(subj, IDP_list_path, IDPoi_list_path, thresholds_txt):
         non_priority_output = non_priority_output.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
         compiled_IDPs = compiled_IDPs.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
         
-
-        
-        new_IDP_output = new_IDP_output.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
-
+        try:
+            IDPs_with_thresholds["value"] = IDPs_with_thresholds.value.astype(float)
+            new_IDP_output = new_IDP_output.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
+        except:
+            print("ERROR: merge issue between new IDP and thresholded IDPs")
 
         #save IDPois to txt files for future reference
         priority_output.to_csv(
