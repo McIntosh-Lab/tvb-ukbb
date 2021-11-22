@@ -826,12 +826,12 @@ def write_to_IDP_file(subj,short,category,num_in_cat,long_var,unit,dtype,descrip
 
     with open(file, 'a') as fp:
         fp.write("\n")
-        try:
-            line = '\t'.join([str(IDP_num_counter),short,category,num_in_cat,long_var,unit,dtype,description,"{:e}".format(float(value))])
-            fp.write(line)
-        except:
-            line = '\t'.join([str(IDP_num_counter),short,category,num_in_cat,long_var,unit,dtype,description,value])
-            fp.write(line)
+        # try:
+        #     line = '\t'.join([str(IDP_num_counter),short,category,num_in_cat,long_var,unit,dtype,description,"{:e}".format(float(value))])
+        #     fp.write(line)
+        # except:
+        line = '\t'.join([str(IDP_num_counter),short,category,num_in_cat,long_var,unit,dtype,description,value])
+        fp.write(line)
     IDP_num_counter += 1
 
 

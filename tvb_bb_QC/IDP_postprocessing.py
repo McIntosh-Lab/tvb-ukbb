@@ -13,6 +13,12 @@ import os
 from ast import literal_eval 
 
 
+def formatter(x):
+    try:
+        return "{:e}".format(float(x))
+    except:
+        return x
+
 def generate_full_IDPoi_data(df, IDP_dir):
     """Function that adds IDP values to an existing IDP dataframe, using the 
     relevant IDP txt from the subject's IDP directory. Each IDP txt file
@@ -206,12 +212,6 @@ def IDP_postprocessing(subj, IDP_list_path, IDPoi_list_path, thresholds_txt):
         
 
 
-    #scientific notation for values
-    try:
-        priority_output['value'] = priority_output['value'].apply(lambda x: "{:e}".format(float(x)))
-        non_priority_output['value'] = non_priority_output['value'].apply(lambda x: "{:e}".format(float(x)))
-    except:
-        pass
 
     new_IDP_output = pd.read_csv(r"" + IDP_dir + "tvb_new_IDPs.tsv", delimiter = "\t")
     #new_IDP_output=new_IDP_output[["num","short","category","num_in_cat","long","unit","dtype","description","value"]]
@@ -224,9 +224,9 @@ def IDP_postprocessing(subj, IDP_list_path, IDPoi_list_path, thresholds_txt):
  
 
     try:
-    #need ot handle missing value as a failure as well
-    #filling in threshold values
-            
+        #need ot handle missing value as a failure as well
+        #filling in threshold values
+                
         failed_IDP=""
 
 
@@ -281,18 +281,34 @@ def IDP_postprocessing(subj, IDP_list_path, IDPoi_list_path, thresholds_txt):
         # new_IDP_output['value'] = new_IDP_output['value'].apply(lambda x: "{:e}".format(float(x)))
         # IDPs_with_thresholds['value'] = IDPs_with_thresholds['value'].apply(lambda x: "{:e}".format(float(x)))
 
-
-        #merging with threshold information
-        priority_output = priority_output.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
-        non_priority_output = non_priority_output.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
-        compiled_IDPs = compiled_IDPs.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
-        
         try:
-            IDPs_with_thresholds["value"] = IDPs_with_thresholds.value.astype(float)
-            new_IDP_output = new_IDP_output.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
-        except:
-            print("ERROR: merge issue between new IDP and thresholded IDPs")
+            #merging with threshold information
+            priority_output['value']=priority_output['value'].astype(str)
+            non_priority_output['value']=non_priority_output['value'].astype(str)
+            compiled_IDPs['value']=compiled_IDPs['value'].astype(str)
+            new_IDP_output['value']=new_IDP_output['value'].astype(str)
+            IDPs_with_thresholds['value']=IDPs_with_thresholds['value'].astype(str)
 
+            priority_output = priority_output.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
+            non_priority_output = non_priority_output.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
+            compiled_IDPs = compiled_IDPs.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
+            
+            # try:
+                # IDPs_with_thresholds["value"] = IDPs_with_thresholds.value.astype(float)
+            new_IDP_output = new_IDP_output.merge(IDPs_with_thresholds, how="left", on=["num","short","category","num_in_cat","long","unit","dtype","description","value"])
+            # except:
+            #     print("ERROR: merge issue between new IDP and thresholded IDPs")
+
+
+
+            #scientific notation for values
+            priority_output['value'] = priority_output['value'].apply(formatter)
+            non_priority_output['value'] = non_priority_output['value'].apply(formatter)
+            new_IDP_output['value'] = new_IDP_output['value'].apply(formatter)
+            compiled_IDPs['value'] = compiled_IDPs['value'].apply(formatter)
+        except:
+            print("ERROR: merging or formatting error")
+            
         #save IDPois to txt files for future reference
         priority_output.to_csv(
             r"" + IDP_dir + "priority_IDPs.tsv",
@@ -324,9 +340,13 @@ def IDP_postprocessing(subj, IDP_list_path, IDPoi_list_path, thresholds_txt):
         )
         
     except:
-        print("Error: Missing thresholds file or improper formatting")
+        print("Error: thresholds or merging error")
     #need to save each txt priority txt again with merge to include flags and the threshold
     #need to gen colour based of flag and presence of threshold
+
+
+
+
 
 if __name__ == "__main__":
     """Function that adds IDP values to an existing IDP dataframe, using the 
