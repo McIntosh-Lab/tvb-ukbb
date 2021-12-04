@@ -69,7 +69,7 @@ cat > $MELODIC_html << EOF
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
-    <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
+    <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
   </div>
@@ -82,7 +82,7 @@ cat > $MELODIC_html << EOF
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
-    <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
+    <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
 </div>

@@ -112,7 +112,8 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 	#T1 registration edges
 		$BB_BIN_DIR/tvb_bb_QC/edges.sh -s ${FSLDIR}/data/standard -l 10 /MNI152_T1_1mm.nii.gz /T1/T1_brain_to_MNI.nii.gz $dirSubject  T1_registration 
 
-		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "re_under" "../../T1/T1_brain_to_MNI.nii.gz" "re_over1" "${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz" "NA12" "NA12_link" 0
+		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "re_under_1" "../../T1/T1_brain_to_MNI.nii.gz" "re_over1_1" "${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz" "NA12" "NA12_link" 0
+		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "re_under_2" "${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz" "re_over1_2" "../../T1/T1_brain_to_MNI.nii.gz" "NA34" "NA34_link" 0
 		#$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "re_under" "${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz" "re_over1" "../../T1/T1_brain_to_MNI.nii.gz" "NA13" "NA13_link" 0
 
 
@@ -122,8 +123,10 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 	if [ -e "$dirSubject/T2_FLAIR/T2_FLAIR_brain_to_MNI.nii.gz" ]; then	#maybe -r if readable?
 		$BB_BIN_DIR/tvb_bb_QC/edges.sh -s ${FSLDIR}/data/standard -l 10 /MNI152_T1_1mm.nii.gz /T2_FLAIR/T2_FLAIR_brain_to_MNI.nii.gz $dirSubject  T2_registration
 	
-		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "Tre_under" "../../T2_FLAIR/T2_FLAIR_brain_to_MNI.nii.gz" "Tre_over1" "${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz" "NA14" "NA14_link" 0
-		#$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "uw_under" "${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz" "uw_over1" "../../T2_FLAIR/T2_FLAIR_brain_to_MNI.nii.gz" "NA15" "NA15_link" 0
+
+		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "Tre_under_1" "../../T2_FLAIR/T2_FLAIR_brain_to_MNI.nii.gz" "Tre_over1_1" "${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz" "NA14" "NA14_link" 0
+		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "Tre_under_2" "${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz" "Tre_over1_2" "../../T2_FLAIR/T2_FLAIR_brain_to_MNI.nii.gz" "NA15" "NA15_link" 0
+		#$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "uw_under" "${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz" "uw_over1" "../../T2/T2_brain_to_MNI.nii.gz" "NA15" "NA15_link" 0
 
 	fi
 
@@ -206,7 +209,8 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 		#edges
 		$BB_BIN_DIR/tvb_bb_QC/edges.sh -l 10 /dMRI/dMRI/transforms/DTI_to_T1.nii.gz /T1/T1.nii.gz $dirSubject  DTI_registration
 
-		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dre_under" "../../T1/T1.nii.gz" "dre_over1" "../../dMRI/dMRI/transforms/DTI_to_T1.nii.gz" "NA25" "NA25_link" 0
+		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dre_under_1" "../../T1/T1.nii.gz" "dre_over1_1" "../../dMRI/dMRI/transforms/DTI_to_T1.nii.gz" "NA25" "NA25_link" 0
+		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dre_under_2" "../../dMRI/dMRI/transforms/DTI_to_T1.nii.gz" "dre_over1_2" "../../T1/T1.nii.gz" "NA26" "NA26_link" 0
 		#$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dre_under" "../../dMRI/dMRI/transforms/DTI_to_T1.nii.gz" "dre_over1" "../../T1/T1.nii.gz" "NA26" "NA26_link" 0
 
 
@@ -219,7 +223,8 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 	#T1 registration edges
 		$BB_BIN_DIR/tvb_bb_QC/edges.sh -l 10 /dMRI/dMRI/DWI_B0.nii.gz /dMRI/dMRI/SynB0/b0_u.nii.gz $dirSubject  DWI_warping 
 
-		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "wa_under" "../../dMRI/dMRI/SynB0/b0_u.nii.gz" "wa_over1" "../../dMRI/dMRI/DWI_B0.nii.gz" "NA13" "NA13_link" 0
+		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "wa_under_1" "../../dMRI/dMRI/SynB0/b0_u.nii.gz" "wa_over1_1" "../../dMRI/dMRI/DWI_B0.nii.gz" "NA13" "NA13_link" 0
+		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "wa_under_2" "../../dMRI/dMRI/DWI_B0.nii.gz" "wa_over1_2" "../../dMRI/dMRI/SynB0/b0_u.nii.gz" "NA33" "NA33_link" 0
 		#$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "re_under" "${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz" "re_over1" "../../T1/T1_brain_to_MNI.nii.gz" "NA13" "NA13_link" 0
 
 
@@ -248,7 +253,7 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 
 		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/probtrackx/labelledWM_GM.nii.gz -p blue-lightblue -a 100.0  /dMRI/dMRI/dti_FA.nii.gz $dirSubject  DTI_tractography_seeds
 
-		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dfs_under" "../../dMRI/dMRI/dti_FA.nii.gz" "dfs_over1" "../../fMRI/dMRI/probtrackx/labelledWM_GM.nii.gz" "NA30" "NA30_link" 0
+		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dfs_under" "../../dMRI/dMRI/dti_FA.nii.gz" "dfs_over1" "../../dMRI/probtrackx/labelledWM_GM.nii.gz" "NA30" "NA30_link" 0
 
 	#DTI tractography seed only random big
 
@@ -262,7 +267,7 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 
 		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/probtrackx/exclude.nii.gz -p red-yellow -a 25.0 -s /dMRI/probtrackx/labelledWM_GM.nii.gz -h blue-lightblue -i 100.0 /dMRI/dMRI/dti_FA.nii.gz $dirSubject  DTI_tractography_exclude_seeds
 
-		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dxs_under" "../../dMRI/dMRI/dti_FA.nii.gz" "dxs_over1" "../../dMRI/probtrackx/exclude.nii.gz" "NA32" "dMRI/probtrackx/labelledWM_GM.nii.gz" 1
+		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dxs_under" "../../dMRI/dMRI/dti_FA.nii.gz" "dxs_over1" "../../dMRI/probtrackx/exclude.nii.gz" "dxs_over2" "dMRI/probtrackx/labelledWM_GM.nii.gz" 1
 
 
 #export FSLDIR=/opt/HCPpipelines-4.1.3/fsl

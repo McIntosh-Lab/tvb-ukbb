@@ -55,9 +55,31 @@ function update_links(){
 
 		var ana = document.getElementById("Analysis").value;
 	if (!ana.endsWith(".pdf")){
-		var underlay=ana.concat("_","under");
-		var overlay1=ana.concat("_","over1");
-		var overlay2=ana.concat("_","over2");
+
+		var underlay=1;
+		var overlay1=1;
+		var overlay2=1;
+
+		if ((ana == "re")||(ana == "dre")||(ana == "Tre")||(ana == "wa")){
+			if(document.getElementById("Order 1").checked == "true"){
+				underlay=ana.concat("_","under_1");
+				overlay1=ana.concat("_","over1_1");
+				overlay2=ana.concat("_","over2_1");	
+
+			}
+			else{
+				underlay=ana.concat("_","under_2");
+				overlay1=ana.concat("_","over1_2");
+				overlay2=ana.concat("_","over2_2");	
+			}
+		}
+		else{
+			underlay=ana.concat("_","under");
+			overlay1=ana.concat("_","over1");
+			overlay2=ana.concat("_","over2");
+			
+		}
+		
 		
 		try{document.getElementById("underlay").href = image_gen_links_dict[underlay];
 				document.getElementById("underlay").innerHTML = document.getElementById("underlay").href;

@@ -87,7 +87,7 @@ cat > $subjdir$html_output_dir"/report.html" << EOF
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
-    <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
+    <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
   </div>
@@ -100,7 +100,7 @@ cat > $subjdir$html_output_dir"/report.html" << EOF
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
-    <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
+    <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
 </div>
@@ -184,7 +184,7 @@ cat > $subjdir$html_output_dir"/anat.html" << EOF
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
-    <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
+    <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
   </div>
@@ -197,7 +197,7 @@ cat > $subjdir$html_output_dir"/anat.html" << EOF
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
-    <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
+    <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
 </div>
@@ -248,7 +248,7 @@ cat > $subjdir$html_output_dir"/anat.html" << EOF
   <select name="Orientation" id="Orientation" onchange="updateTitle();updateImage();update_links();" onkeydown="IgnoreAlpha(event);">
     <option value="a">Axial</option>
     <option value="c">Coronal</option>
-    <option value="s">Saggital</option>
+    <option value="s">sagittal</option>
   </select></label>
 &nbsp&nbsp&nbsp&nbsp
 
@@ -312,14 +312,14 @@ NOTE: Image sizes and therefore maintaining zooms between different analyses can
   
   <img src="../images/T1_extraction_unmasked/${sub}_T1_extraction_unmasked_axial.png" id="under_a" style="display: none">
   <img src="../images/T1_extraction_unmasked/${sub}_T1_extraction_unmasked_coronal.png" id="under_c" style="display: none">
-  <img src="../images/T1_extraction_unmasked/${sub}_T1_extraction_unmasked_saggital.png" id="under_s" style="display: none">
+  <img src="../images/T1_extraction_unmasked/${sub}_T1_extraction_unmasked_sagittal.png" id="under_s" style="display: none">
 
 
   <!-- UNMASKED UNDERLAY SUBCORT -->
 
   <img src="../images/T1_segmentation_unmasked_subcort/${sub}_T1_segmentation_unmasked_subcort_axial_appended.png" id="under_sub_a" style="display: none">
   <img src="../images/T1_segmentation_unmasked_subcort/${sub}_T1_segmentation_unmasked_subcort_coronal_appended.png" id="under_sub_c" style="display: none">
-  <img src="../images/T1_segmentation_unmasked_subcort/${sub}_T1_segmentation_unmasked_subcort_saggital_appended.png" id="under_sub_s" style="display: none">
+  <img src="../images/T1_segmentation_unmasked_subcort/${sub}_T1_segmentation_unmasked_subcort_sagittal_appended.png" id="under_sub_s" style="display: none">
 
 
   <img src="../images/T2_FLAIR_BIANCA_unmasked/${sub}_T2_FLAIR_BIANCA_unmasked_axial.png" id="under_T2_a" style="display: none">
@@ -332,50 +332,50 @@ NOTE: Image sizes and therefore maintaining zooms between different analyses can
   
   <img src="../images/T1_extraction_masked/${sub}_T1_extraction_masked_axial.png" id="ex_a" style="display: none">
   <img src="../images/T1_extraction_masked/${sub}_T1_extraction_masked_coronal.png" id="ex_c" style="display: none">
-  <img src="../images/T1_extraction_masked/${sub}_T1_extraction_masked_saggital.png" id="ex_s" style="display: none">
+  <img src="../images/T1_extraction_masked/${sub}_T1_extraction_masked_sagittal.png" id="ex_s" style="display: none">
 
   
   <img src="../images/T1_registration/order1_${sub}_T1_registration_axial_appended.png" id="o1_a" style="display: none">
   <img src="../images/T1_registration/order1_${sub}_T1_registration_coronal_appended.png" id="o1_c" style="display: none">
-  <img src="../images/T1_registration/order1_${sub}_T1_registration_saggital_appended.png" id="o1_s" style="display: none">
+  <img src="../images/T1_registration/order1_${sub}_T1_registration_sagittal_appended.png" id="o1_s" style="display: none">
   
 
   <img src="../images/T1_registration/order2_${sub}_T1_registration_axial_appended.png" id="o2_a" style="display: none">
   <img src="../images/T1_registration/order2_${sub}_T1_registration_coronal_appended.png" id="o2_c" style="display: none">
-  <img src="../images/T1_registration/order2_${sub}_T1_registration_saggital_appended.png" id="o2_s" style="display: none">
+  <img src="../images/T1_registration/order2_${sub}_T1_registration_sagittal_appended.png" id="o2_s" style="display: none">
 
 
   <img src="../images/T1_segmentation_unlabelled_subcort_GM/${sub}_T1_segmentation_unlabelled_subcort_GM_axial_appended.png" id="us_a" style="display: none">
   <img src="../images/T1_segmentation_unlabelled_subcort_GM/${sub}_T1_segmentation_unlabelled_subcort_GM_coronal_appended.png" id="us_c" style="display: none">
-  <img src="../images/T1_segmentation_unlabelled_subcort_GM/${sub}_T1_segmentation_unlabelled_subcort_GM_saggital_appended.png" id="us_s" style="display: none">
+  <img src="../images/T1_segmentation_unlabelled_subcort_GM/${sub}_T1_segmentation_unlabelled_subcort_GM_sagittal_appended.png" id="us_s" style="display: none">
 
 
   <img src="../images/T1_segmentation_labelled_subcort_GM/${sub}_T1_segmentation_labelled_subcort_GM_axial_appended.png" id="ls_a" style="display: none">
   <img src="../images/T1_segmentation_labelled_subcort_GM/${sub}_T1_segmentation_labelled_subcort_GM_coronal_appended.png" id="ls_c" style="display: none">
-  <img src="../images/T1_segmentation_labelled_subcort_GM/${sub}_T1_segmentation_labelled_subcort_GM_saggital_appended.png" id="ls_s" style="display: none">
+  <img src="../images/T1_segmentation_labelled_subcort_GM/${sub}_T1_segmentation_labelled_subcort_GM_sagittal_appended.png" id="ls_s" style="display: none">
 
 
   <img src="../images/T1_segmentation_unlabelled_WM/${sub}_T1_segmentation_unlabelled_WM_axial.png" id="uw_a" style="display: none">
   <img src="../images/T1_segmentation_unlabelled_WM/${sub}_T1_segmentation_unlabelled_WM_coronal.png" id="uw_c" style="display: none">
-  <img src="../images/T1_segmentation_unlabelled_WM/${sub}_T1_segmentation_unlabelled_WM_saggital.png" id="uw_s" style="display: none">
+  <img src="../images/T1_segmentation_unlabelled_WM/${sub}_T1_segmentation_unlabelled_WM_sagittal.png" id="uw_s" style="display: none">
 
 
   <img src="../images/T1_segmentation_unlabelled_GM/${sub}_T1_segmentation_unlabelled_GM_axial.png" id="ug_a" style="display: none">
   <img src="../images/T1_segmentation_unlabelled_GM/${sub}_T1_segmentation_unlabelled_GM_coronal.png" id="ug_c" style="display: none">
-  <img src="../images/T1_segmentation_unlabelled_GM/${sub}_T1_segmentation_unlabelled_GM_saggital.png" id="ug_s" style="display: none">
+  <img src="../images/T1_segmentation_unlabelled_GM/${sub}_T1_segmentation_unlabelled_GM_sagittal.png" id="ug_s" style="display: none">
 
 
   <img src="../images/T1_segmentation_labelled_cortex/${sub}_T1_segmentation_labelled_cortex_axial.png" id="lc_a" style="display: none">
   <img src="../images/T1_segmentation_labelled_cortex/${sub}_T1_segmentation_labelled_cortex_coronal.png" id="lc_c" style="display: none">
-  <img src="../images/T1_segmentation_labelled_cortex/${sub}_T1_segmentation_labelled_cortex_saggital.png" id="lc_s" style="display: none">
+  <img src="../images/T1_segmentation_labelled_cortex/${sub}_T1_segmentation_labelled_cortex_sagittal.png" id="lc_s" style="display: none">
 
   <img src="../images/T2_registration/order1_${sub}_T2_registration_axial_appended.png" id="Tre1_a" style="display: none">
   <img src="../images/T2_registration/order1_${sub}_T2_registration_coronal_appended.png" id="Tre1_c" style="display: none">
-  <img src="../images/T2_registration/order1_${sub}_T2_registration_saggital_appended.png" id="Tre1_s" style="display: none">
+  <img src="../images/T2_registration/order1_${sub}_T2_registration_sagittal_appended.png" id="Tre1_s" style="display: none">
 
   <img src="../images/T2_registration/order2_${sub}_T2_registration_axial_appended.png" id="Tre2_a" style="display: none">
   <img src="../images/T2_registration/order2_${sub}_T2_registration_coronal_appended.png" id="Tre2_c" style="display: none">
-  <img src="../images/T2_registration/order2_${sub}_T2_registration_saggital_appended.png" id="Tre2_s" style="display: none">
+  <img src="../images/T2_registration/order2_${sub}_T2_registration_sagittal_appended.png" id="Tre2_s" style="display: none">
 
   <img src="../images/T2_FLAIR_BIANCA_masked/${sub}_T2_FLAIR_BIANCA_masked_axial.png" id="Tbi_a" style="display: none">
   <img src="../images/T2_FLAIR_BIANCA_masked/${sub}_T2_FLAIR_BIANCA_masked_coronal.png" id="Tbi_c" style="display: none">
@@ -413,11 +413,11 @@ EOF
 
 
 
-cat > $subjdir$html_output_dir"/DTI.html" << EOF
+cat > $subjdir$html_output_dir"/dMRI.html" << EOF
 
 <!DOCTYPE html>
 <html lang="en">
-<title>DTI IMAGE REPORT</title>
+<title>dMRI IMAGE REPORT</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/w3.css">
@@ -436,8 +436,8 @@ cat > $subjdir$html_output_dir"/DTI.html" << EOF
   
     <div class="w3-display-middle w3-padding-large w3-border w3-wide w3-text-light-grey w3-center" style="background-color:rgba(0, 0, 0, 0.75);">
 
-      <h1 class="w3-hide-medium w3-hide-small w3-xxxlarge">DTI IMAGE REPORT</h1>
-      <h5 class="w3-hide-large" style="white-space:nowrap">DTI IMAGE REPORT</h5>
+      <h1 class="w3-hide-medium w3-hide-small w3-xxxlarge">dMRI IMAGE REPORT</h1>
+      <h5 class="w3-hide-large" style="white-space:nowrap">dMRI IMAGE REPORT</h5>
       
       <h3 class="w3-hide-medium w3-hide-small">$sub_upper</h3>
       
@@ -467,7 +467,7 @@ cat > $subjdir$html_output_dir"/DTI.html" << EOF
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
-    <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
+    <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
   </div>
@@ -480,7 +480,7 @@ cat > $subjdir$html_output_dir"/DTI.html" << EOF
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
-    <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
+    <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
 </div>
@@ -495,7 +495,7 @@ cat > $subjdir$html_output_dir"/DTI.html" << EOF
 
 
   <br>______<br><br>
-  <h1> $sub_upper DTI 
+  <h1> $sub_upper dMRI 
   <br>
   <div id="analysis_title" style="display: inline; font-size: 28px">DW</div></h1>
   ______<br><br>
@@ -545,7 +545,7 @@ cat > $subjdir$html_output_dir"/DTI.html" << EOF
   <select name="Orientation" id="Orientation" onchange="updateTitle();updateImage();update_links();" onkeydown="IgnoreAlpha(event);">
     <option value="a">Axial</option>
     <option value="c">Coronal</option>
-    <option value="s">Saggital</option>
+    <option value="s">sagittal</option>
   </select></label>
 &nbsp&nbsp&nbsp&nbsp
 
@@ -607,7 +607,7 @@ NOTE: Image sizes and therefore maintaining zooms between different analyses can
 
   <img src="../images/DTI_extraction_unmasked/${sub}_DTI_extraction_unmasked_axial.png"  id="under_a" style="display: none">
   <img src="../images/DTI_extraction_unmasked/${sub}_DTI_extraction_unmasked_coronal.png" id="under_c" style="display: none">
-  <img src="../images/DTI_extraction_unmasked/${sub}_DTI_extraction_unmasked_saggital.png" id="under_s" style="display: none">
+  <img src="../images/DTI_extraction_unmasked/${sub}_DTI_extraction_unmasked_sagittal.png" id="under_s" style="display: none">
 
 
   <!-- UNMASKED UNDERLAY TRACT -->
@@ -615,12 +615,12 @@ NOTE: Image sizes and therefore maintaining zooms between different analyses can
 
   <img src="../images/DTI_tractography_FA/${sub}_DTI_tractography_FA_axial.png" id="under_sub_a" style="display: none">
   <img src="../images/DTI_tractography_FA/${sub}_DTI_tractography_FA_coronal.png" id="under_sub_c" style="display: none">
-  <img src="../images/DTI_tractography_FA/${sub}_DTI_tractography_FA_saggital.png" id="under_sub_s" style="display: none">
+  <img src="../images/DTI_tractography_FA/${sub}_DTI_tractography_FA_sagittal.png" id="under_sub_s" style="display: none">
 
   <!-- UNMASKED FA UNDERLAY ORIENTATION -->
   <img src="../images/DTI_orientation_range_FA/${sub}_DTI_orientation_range_FA_axial_appended.png" id="under_dorf_a" style="display: none">
   <img src="../images/DTI_orientation_range_FA/${sub}_DTI_orientation_range_FA_coronal_appended.png" id="under_dorf_c" style="display: none">
-  <img src="../images/DTI_orientation_range_FA/${sub}_DTI_orientation_range_FA_saggital_appended.png" id="under_dorf_s" style="display: none">
+  <img src="../images/DTI_orientation_range_FA/${sub}_DTI_orientation_range_FA_sagittal_appended.png" id="under_dorf_s" style="display: none">
 
 
 <!-------------- OVERLAYS -------------->
@@ -634,52 +634,52 @@ NOTE: Image sizes and therefore maintaining zooms between different analyses can
 
   <img src="../images/DTI_extraction_masked/${sub}_DTI_extraction_masked_axial.png" id="dex_a" style="display: none">
   <img src="../images/DTI_extraction_masked/${sub}_DTI_extraction_masked_coronal.png" id="dex_c" style="display: none">
-  <img src="../images/DTI_extraction_masked/${sub}_DTI_extraction_masked_saggital.png" id="dex_s" style="display: none">
+  <img src="../images/DTI_extraction_masked/${sub}_DTI_extraction_masked_sagittal.png" id="dex_s" style="display: none">
   
 
 
   <img src="../images/DTI_orientation_with_FA/${sub}_DTI_orientation_with_FA_axial_appended.png" id="dorf_a" style="display: none">
   <img src="../images/DTI_orientation_with_FA/${sub}_DTI_orientation_with_FA_coronal_appended.png" id="dorf_c" style="display: none">
-  <img src="../images/DTI_orientation_with_FA/${sub}_DTI_orientation_with_FA_saggital_appended.png" id="dorf_s" style="display: none">
+  <img src="../images/DTI_orientation_with_FA/${sub}_DTI_orientation_with_FA_sagittal_appended.png" id="dorf_s" style="display: none">
 
 
 
 
   <img src="../images/DTI_registration/order1_${sub}_DTI_registration_axial_appended.png" id="o1_a" style="display: none">
   <img src="../images/DTI_registration/order1_${sub}_DTI_registration_coronal_appended.png" id="o1_c" style="display: none">
-  <img src="../images/DTI_registration/order1_${sub}_DTI_registration_saggital_appended.png" id="o1_s" style="display: none">
+  <img src="../images/DTI_registration/order1_${sub}_DTI_registration_sagittal_appended.png" id="o1_s" style="display: none">
 
   <img src="../images/DTI_registration/order2_${sub}_DTI_registration_axial_appended.png" id="o2_a" style="display: none">
   <img src="../images/DTI_registration/order2_${sub}_DTI_registration_coronal_appended.png" id="o2_c" style="display: none">
-  <img src="../images/DTI_registration/order2_${sub}_DTI_registration_saggital_appended.png" id="o2_s" style="display: none">
+  <img src="../images/DTI_registration/order2_${sub}_DTI_registration_sagittal_appended.png" id="o2_s" style="display: none">
 
 
   <img src="../images/DWI_warping/order1_${sub}_DWI_warping_axial_appended.png" id="wa1_a" style="display: none">
   <img src="../images/DWI_warping/order1_${sub}_DWI_warping_coronal_appended.png" id="wa1_c" style="display: none">
-  <img src="../images/DWI_warping/order1_${sub}_DWI_warping_saggital_appended.png" id="wa1_s" style="display: none">
+  <img src="../images/DWI_warping/order1_${sub}_DWI_warping_sagittal_appended.png" id="wa1_s" style="display: none">
 
   <img src="../images/DWI_warping/order2_${sub}_DWI_warping_axial_appended.png" id="wa2_a" style="display: none">
   <img src="../images/DWI_warping/order2_${sub}_DWI_warping_coronal_appended.png" id="wa2_c" style="display: none">
-  <img src="../images/DWI_warping/order2_${sub}_DWI_warping_saggital_appended.png" id="wa2_s" style="display: none">
+  <img src="../images/DWI_warping/order2_${sub}_DWI_warping_sagittal_appended.png" id="wa2_s" style="display: none">
 
 
 
   <img src="../images/DTI_tractography_seeds/${sub}_DTI_tractography_seeds_axial.png"  id="dfs_a" style="display: none">
   <img src="../images/DTI_tractography_seeds/${sub}_DTI_tractography_seeds_coronal.png" id="dfs_c" style="display: none">
-  <img src="../images/DTI_tractography_seeds/${sub}_DTI_tractography_seeds_saggital.png" id="dfs_s" style="display: none">
+  <img src="../images/DTI_tractography_seeds/${sub}_DTI_tractography_seeds_sagittal.png" id="dfs_s" style="display: none">
 
   <img src="../images/DTI_tractography_seeds_rb/${sub}_DTI_tractography_seeds_rb_axial.png"  id="dfsrb_a" style="display: none">
   <img src="../images/DTI_tractography_seeds_rb/${sub}_DTI_tractography_seeds_rb_coronal.png" id="dfsrb_c" style="display: none">
-  <img src="../images/DTI_tractography_seeds_rb/${sub}_DTI_tractography_seeds_rb_saggital.png" id="dfsrb_s" style="display: none">
+  <img src="../images/DTI_tractography_seeds_rb/${sub}_DTI_tractography_seeds_rb_sagittal.png" id="dfsrb_s" style="display: none">
 
   <img src="../images/DTI_tractography_exclude/${sub}_DTI_tractography_exclude_axial.png" id="dxc_a" style="display: none">
   <img src="../images/DTI_tractography_exclude/${sub}_DTI_tractography_exclude_coronal.png" id="dxc_c" style="display: none">
-  <img src="../images/DTI_tractography_exclude/${sub}_DTI_tractography_exclude_saggital.png" id="dxc_s" style="display: none">
+  <img src="../images/DTI_tractography_exclude/${sub}_DTI_tractography_exclude_sagittal.png" id="dxc_s" style="display: none">
   
 
   <img src="../images/DTI_tractography_exclude_seeds/${sub}_DTI_tractography_exclude_seeds_axial.png" id="dxs_a" style="display: none">
   <img src="../images/DTI_tractography_exclude_seeds/${sub}_DTI_tractography_exclude_seeds_coronal.png" id="dxs_c" style="display: none">
-  <img src="../images/DTI_tractography_exclude_seeds/${sub}_DTI_tractography_exclude_seeds_saggital.png" id="dxs_s" style="display: none">
+  <img src="../images/DTI_tractography_exclude_seeds/${sub}_DTI_tractography_exclude_seeds_sagittal.png" id="dxs_s" style="display: none">
 
 
 <br><br><br><br>________<br><br><br>
@@ -782,7 +782,7 @@ cat > $subjdir$html_output_dir"/fMRI.html" << EOF
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
-    <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
+    <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
   </div>
@@ -795,7 +795,7 @@ cat > $subjdir$html_output_dir"/fMRI.html" << EOF
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
-    <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
+    <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
 </div>
@@ -925,7 +925,7 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
-    <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
+    <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
   </div>
@@ -938,7 +938,7 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
     <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
-    <a href="DTI.html" class="w3-bar-item w3-button">DTI</a>
+    <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
 </div>
