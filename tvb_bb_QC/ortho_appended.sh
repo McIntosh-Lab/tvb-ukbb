@@ -106,7 +106,7 @@ underlay=$1
 
 
 declare -a axisNames 
-axisNames[0]=saggital
+axisNames[0]=sagittal
 axisNames[1]=coronal
 axisNames[2]=axial
 
