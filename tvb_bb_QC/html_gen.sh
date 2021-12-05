@@ -598,22 +598,22 @@ NOTE: Image sizes and therefore maintaining zooms between different analyses can
   <!-- UNMASKED UNDERLAY -->
   
 
-  <img src="../images/DTI_extraction_unmasked/${sub}_DTI_extraction_unmasked_axial.png"  id="under_a" style="display: none">
-  <img src="../images/DTI_extraction_unmasked/${sub}_DTI_extraction_unmasked_coronal.png" id="under_c" style="display: none">
-  <img src="../images/DTI_extraction_unmasked/${sub}_DTI_extraction_unmasked_sagittal.png" id="under_s" style="display: none">
+  <img src="../images/dMRI_extraction_unmasked/${sub}_dMRI_extraction_unmasked_axial.png"  id="under_a" style="display: none">
+  <img src="../images/dMRI_extraction_unmasked/${sub}_dMRI_extraction_unmasked_coronal.png" id="under_c" style="display: none">
+  <img src="../images/dMRI_extraction_unmasked/${sub}_dMRI_extraction_unmasked_sagittal.png" id="under_s" style="display: none">
 
 
   <!-- UNMASKED UNDERLAY TRACT -->
 
 
-  <img src="../images/DTI_tractography_FA/${sub}_DTI_tractography_FA_axial.png" id="under_sub_a" style="display: none">
-  <img src="../images/DTI_tractography_FA/${sub}_DTI_tractography_FA_coronal.png" id="under_sub_c" style="display: none">
-  <img src="../images/DTI_tractography_FA/${sub}_DTI_tractography_FA_sagittal.png" id="under_sub_s" style="display: none">
+  <img src="../images/dMRI_tractography_FA/${sub}_dMRI_tractography_FA_axial.png" id="under_sub_a" style="display: none">
+  <img src="../images/dMRI_tractography_FA/${sub}_dMRI_tractography_FA_coronal.png" id="under_sub_c" style="display: none">
+  <img src="../images/dMRI_tractography_FA/${sub}_dMRI_tractography_FA_sagittal.png" id="under_sub_s" style="display: none">
 
   <!-- UNMASKED FA UNDERLAY ORIENTATION -->
-  <img src="../images/DTI_orientation_range_FA/${sub}_DTI_orientation_range_FA_axial_appended.png" id="under_dorf_a" style="display: none">
-  <img src="../images/DTI_orientation_range_FA/${sub}_DTI_orientation_range_FA_coronal_appended.png" id="under_dorf_c" style="display: none">
-  <img src="../images/DTI_orientation_range_FA/${sub}_DTI_orientation_range_FA_sagittal_appended.png" id="under_dorf_s" style="display: none">
+  <img src="../images/dMRI_orientation_range_FA/${sub}_dMRI_orientation_range_FA_axial_appended.png" id="under_dorf_a" style="display: none">
+  <img src="../images/dMRI_orientation_range_FA/${sub}_dMRI_orientation_range_FA_coronal_appended.png" id="under_dorf_c" style="display: none">
+  <img src="../images/dMRI_orientation_range_FA/${sub}_dMRI_orientation_range_FA_sagittal_appended.png" id="under_dorf_s" style="display: none">
 
 
 <!-------------- OVERLAYS -------------->
@@ -625,26 +625,26 @@ NOTE: Image sizes and therefore maintaining zooms between different analyses can
   <img src="../eddyQUAD/data.qc/cnr0001.nii.gz.png" id="cnr_1000" style="display: none">
   <img src="../eddyQUAD/data.qc/cnr0002.nii.gz.png" id="cnr_2000" style="display: none">
 
-  <img src="../images/DTI_extraction_masked/${sub}_DTI_extraction_masked_axial.png" id="dex_a" style="display: none">
-  <img src="../images/DTI_extraction_masked/${sub}_DTI_extraction_masked_coronal.png" id="dex_c" style="display: none">
-  <img src="../images/DTI_extraction_masked/${sub}_DTI_extraction_masked_sagittal.png" id="dex_s" style="display: none">
+  <img src="../images/dMRI_extraction_masked/${sub}_dMRI_extraction_masked_axial.png" id="dex_a" style="display: none">
+  <img src="../images/dMRI_extraction_masked/${sub}_dMRI_extraction_masked_coronal.png" id="dex_c" style="display: none">
+  <img src="../images/dMRI_extraction_masked/${sub}_dMRI_extraction_masked_sagittal.png" id="dex_s" style="display: none">
   
 
 
-  <img src="../images/DTI_orientation_with_FA/${sub}_DTI_orientation_with_FA_axial_appended.png" id="dorf_a" style="display: none">
-  <img src="../images/DTI_orientation_with_FA/${sub}_DTI_orientation_with_FA_coronal_appended.png" id="dorf_c" style="display: none">
-  <img src="../images/DTI_orientation_with_FA/${sub}_DTI_orientation_with_FA_sagittal_appended.png" id="dorf_s" style="display: none">
+  <img src="../images/dMRI_orientation_with_FA/${sub}_dMRI_orientation_with_FA_axial_appended.png" id="dorf_a" style="display: none">
+  <img src="../images/dMRI_orientation_with_FA/${sub}_dMRI_orientation_with_FA_coronal_appended.png" id="dorf_c" style="display: none">
+  <img src="../images/dMRI_orientation_with_FA/${sub}_dMRI_orientation_with_FA_sagittal_appended.png" id="dorf_s" style="display: none">
 
 
 
 
-  <img src="../images/DTI_registration/order1_${sub}_DTI_registration_axial_appended.png" id="o1_a" style="display: none">
-  <img src="../images/DTI_registration/order1_${sub}_DTI_registration_coronal_appended.png" id="o1_c" style="display: none">
-  <img src="../images/DTI_registration/order1_${sub}_DTI_registration_sagittal_appended.png" id="o1_s" style="display: none">
+  <img src="../images/dMRI_registration/order1_${sub}_dMRI_registration_axial_appended.png" id="o1_a" style="display: none">
+  <img src="../images/dMRI_registration/order1_${sub}_dMRI_registration_coronal_appended.png" id="o1_c" style="display: none">
+  <img src="../images/dMRI_registration/order1_${sub}_dMRI_registration_sagittal_appended.png" id="o1_s" style="display: none">
 
-  <img src="../images/DTI_registration/order2_${sub}_DTI_registration_axial_appended.png" id="o2_a" style="display: none">
-  <img src="../images/DTI_registration/order2_${sub}_DTI_registration_coronal_appended.png" id="o2_c" style="display: none">
-  <img src="../images/DTI_registration/order2_${sub}_DTI_registration_sagittal_appended.png" id="o2_s" style="display: none">
+  <img src="../images/dMRI_registration/order2_${sub}_dMRI_registration_axial_appended.png" id="o2_a" style="display: none">
+  <img src="../images/dMRI_registration/order2_${sub}_dMRI_registration_coronal_appended.png" id="o2_c" style="display: none">
+  <img src="../images/dMRI_registration/order2_${sub}_dMRI_registration_sagittal_appended.png" id="o2_s" style="display: none">
 
 
   <img src="../images/DWI_warping/order1_${sub}_DWI_warping_axial_appended.png" id="wa1_a" style="display: none">
@@ -657,22 +657,22 @@ NOTE: Image sizes and therefore maintaining zooms between different analyses can
 
 
 
-  <img src="../images/DTI_tractography_seeds/${sub}_DTI_tractography_seeds_axial.png"  id="dfs_a" style="display: none">
-  <img src="../images/DTI_tractography_seeds/${sub}_DTI_tractography_seeds_coronal.png" id="dfs_c" style="display: none">
-  <img src="../images/DTI_tractography_seeds/${sub}_DTI_tractography_seeds_sagittal.png" id="dfs_s" style="display: none">
+  <img src="../images/dMRI_tractography_seeds/${sub}_dMRI_tractography_seeds_axial.png"  id="dfs_a" style="display: none">
+  <img src="../images/dMRI_tractography_seeds/${sub}_dMRI_tractography_seeds_coronal.png" id="dfs_c" style="display: none">
+  <img src="../images/dMRI_tractography_seeds/${sub}_dMRI_tractography_seeds_sagittal.png" id="dfs_s" style="display: none">
 
-  <img src="../images/DTI_tractography_seeds_rb/${sub}_DTI_tractography_seeds_rb_axial.png"  id="dfsrb_a" style="display: none">
-  <img src="../images/DTI_tractography_seeds_rb/${sub}_DTI_tractography_seeds_rb_coronal.png" id="dfsrb_c" style="display: none">
-  <img src="../images/DTI_tractography_seeds_rb/${sub}_DTI_tractography_seeds_rb_sagittal.png" id="dfsrb_s" style="display: none">
+  <img src="../images/dMRI_tractography_seeds_rb/${sub}_dMRI_tractography_seeds_rb_axial.png"  id="dfsrb_a" style="display: none">
+  <img src="../images/dMRI_tractography_seeds_rb/${sub}_dMRI_tractography_seeds_rb_coronal.png" id="dfsrb_c" style="display: none">
+  <img src="../images/dMRI_tractography_seeds_rb/${sub}_dMRI_tractography_seeds_rb_sagittal.png" id="dfsrb_s" style="display: none">
 
-  <img src="../images/DTI_tractography_exclude/${sub}_DTI_tractography_exclude_axial.png" id="dxc_a" style="display: none">
-  <img src="../images/DTI_tractography_exclude/${sub}_DTI_tractography_exclude_coronal.png" id="dxc_c" style="display: none">
-  <img src="../images/DTI_tractography_exclude/${sub}_DTI_tractography_exclude_sagittal.png" id="dxc_s" style="display: none">
+  <img src="../images/dMRI_tractography_exclude/${sub}_dMRI_tractography_exclude_axial.png" id="dxc_a" style="display: none">
+  <img src="../images/dMRI_tractography_exclude/${sub}_dMRI_tractography_exclude_coronal.png" id="dxc_c" style="display: none">
+  <img src="../images/dMRI_tractography_exclude/${sub}_dMRI_tractography_exclude_sagittal.png" id="dxc_s" style="display: none">
   
 
-  <img src="../images/DTI_tractography_exclude_seeds/${sub}_DTI_tractography_exclude_seeds_axial.png" id="dxs_a" style="display: none">
-  <img src="../images/DTI_tractography_exclude_seeds/${sub}_DTI_tractography_exclude_seeds_coronal.png" id="dxs_c" style="display: none">
-  <img src="../images/DTI_tractography_exclude_seeds/${sub}_DTI_tractography_exclude_seeds_sagittal.png" id="dxs_s" style="display: none">
+  <img src="../images/dMRI_tractography_exclude_seeds/${sub}_dMRI_tractography_exclude_seeds_axial.png" id="dxs_a" style="display: none">
+  <img src="../images/dMRI_tractography_exclude_seeds/${sub}_dMRI_tractography_exclude_seeds_coronal.png" id="dxs_c" style="display: none">
+  <img src="../images/dMRI_tractography_exclude_seeds/${sub}_dMRI_tractography_exclude_seeds_sagittal.png" id="dxs_s" style="display: none">
 
 
 <br><br><br><br>________<br><br><br>
@@ -973,17 +973,17 @@ EOF
 
 
 #for each .feat file
-for t in ${farray[@]}; do
-  tfMRI_ver=`basename $t`
-  tfMRI_ver=${tfMRI_ver%.*}
-cat <<EOF >> $subjdir$html_output_dir"/SCFC.html"
+# for t in ${farray[@]}; do
+#   tfMRI_ver=`basename $t`
+#   tfMRI_ver=${tfMRI_ver%.*}
+# cat <<EOF >> $subjdir$html_output_dir"/SCFC.html"
 
-    <optgroup label="$tfMRI_ver">
-      <option value="group_$tfMRI_ver" id="$tfMRI_ver">$tfMRI_ver Graphs</option>
-    </optgroup>
+#     <optgroup label="$tfMRI_ver">
+#       <option value="group_$tfMRI_ver" id="$tfMRI_ver">$tfMRI_ver Graphs</option>
+#     </optgroup>
 
-EOF
-done
+# EOF
+# done
 
 
 
@@ -1035,23 +1035,23 @@ EOF
 
 
 #for each .feat file
-for t in ${farray[@]}; do
-  tfMRI_dir=`basename $t`
-  tfMRI_ver=`basename $t`
-  tfMRI_ver=${tfMRI_ver%.*}
+# for t in ${farray[@]}; do
+#   tfMRI_dir=`basename $t`
+#   tfMRI_ver=`basename $t`
+#   tfMRI_ver=${tfMRI_ver%.*}
 
-cat <<EOF >> $subjdir$html_output_dir"/SCFC.html"
+# cat <<EOF >> $subjdir$html_output_dir"/SCFC.html"
 
-  <div class="group_$tfMRI_ver" style="display: none;">
-      <a href="../../fMRI/$tfMRI_dir/report_prestats.html">tfMRI SC FC</a>
-      <br>
-      <img src="../../fMRI/$tfMRI_dir/mc/disp.png" class="$tfMRI_ver" style="width:100%" >
-      <img src="../../fMRI/$tfMRI_dir/mc/rot.png" class="$tfMRI_ver" style="width:100%" >
-      <img src="../../fMRI/$tfMRI_dir/mc/trans.png" class="$tfMRI_ver" style="width:100%" >
+#   <div class="group_$tfMRI_ver" style="display: none;">
+#       <a href="../../fMRI/$tfMRI_dir/report_prestats.html">tfMRI SC FC</a>
+#       <br>
+#       <img src="../../fMRI/$tfMRI_dir/mc/disp.png" class="$tfMRI_ver" style="width:100%" >
+#       <img src="../../fMRI/$tfMRI_dir/mc/rot.png" class="$tfMRI_ver" style="width:100%" >
+#       <img src="../../fMRI/$tfMRI_dir/mc/trans.png" class="$tfMRI_ver" style="width:100%" >
 
-</div>
-EOF
-done
+# </div>
+# EOF
+# done
 
 
 

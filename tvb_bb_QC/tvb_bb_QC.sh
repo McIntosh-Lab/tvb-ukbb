@@ -131,28 +131,28 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 
 
 
-### DTI ORIENTATION ###
+### dMRI ORIENTATION ###
 	
 	echo ""
-	echo "STARTING DTI ORIENTATION -------"
+	echo "STARTING dMRI ORIENTATION -------"
 
-	#DTI orientation
+	#dMRI orientation
 
-		#$BB_BIN_DIR/tvb_bb_QC/ortho_appended.sh -t linevector -x 19 -y 32 -z 19 -X 950.0 -Y 850.0 -Z 800.0 /dMRI/dMRI/dti_V1.nii.gz $dirSubject DTI_orientation 
+		#$BB_BIN_DIR/tvb_bb_QC/ortho_appended.sh -t linevector -x 19 -y 32 -z 19 -X 950.0 -Y 850.0 -Z 800.0 /dMRI/dMRI/dti_V1.nii.gz $dirSubject dMRI_orientation 
 
 
 	
-	#DTI orientation with FA
+	#dMRI orientation with FA
 
-		$BB_BIN_DIR/tvb_bb_QC/ortho_appended.sh -o /dMRI/dMRI/dti_V1.nii.gz -j linevector -x 19 -y 32 -z 19 -X 950.0 -Y 850.0 -Z 800.0 /dMRI/dMRI/dti_FA.nii.gz $dirSubject DTI_orientation_with_FA 
+		$BB_BIN_DIR/tvb_bb_QC/ortho_appended.sh -o /dMRI/dMRI/dti_V1.nii.gz -j linevector -x 19 -y 32 -z 19 -X 950.0 -Y 850.0 -Z 800.0 /dMRI/dMRI/dti_FA.nii.gz $dirSubject dMRI_orientation_with_FA 
 
 		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dorf_under" "../../dMRI/dMRI/dti_FA.nii.gz" "dorf_over1" "../../dMRI/dMRI/dti_V1.nii.gz" "NA19" "NA19_link" 0
   
 
 
-	#DTI orientation-ranged FA
+	#dMRI orientation-ranged FA
 		
-		$BB_BIN_DIR/tvb_bb_QC/ortho_appended.sh -x 19 -y 32 -z 19 -X 950.0 -Y 850.0 -Z 800.0 /dMRI/dMRI/dti_FA.nii.gz $dirSubject DTI_orientation_range_FA 
+		$BB_BIN_DIR/tvb_bb_QC/ortho_appended.sh -x 19 -y 32 -z 19 -X 950.0 -Y 850.0 -Z 800.0 /dMRI/dMRI/dti_FA.nii.gz $dirSubject dMRI_orientation_range_FA 
 
 		#$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "uw_under" "../../dMRI/dMRI/dti_FA.nii.gz" "NA20" "NA20_link" "NA21" "NA21_link" 0
 
@@ -162,34 +162,34 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 
 
 
-### DTI EXTRACTION ###
+### dMRI EXTRACTION ###
 	
 
 	echo ""
-	echo "STARTING DTI EXTRACTION -------"
+	echo "STARTING dMRI EXTRACTION -------"
 
-	#DTI extraction unmasked
-		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -b 62.718401747457314 -c 96.08735171986915 /dMRI/dMRI/data_B0.nii.gz $dirSubject DTI_extraction_unmasked
+	#dMRI extraction unmasked
+		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -b 62.718401747457314 -c 96.08735171986915 /dMRI/dMRI/data_B0.nii.gz $dirSubject dMRI_extraction_unmasked
 
 		#$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "uw_under" "../../dMRI/dMRI/data_B0.nii.gz" "NA22" "NA22_link" "NA23" "NA23_link" 0
 
 
-	#DTI extraction masked
-		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/dMRI/nodif_brain_mask.nii.gz -b 62.718401747457314 -c 96.08735171986915 /dMRI/dMRI/data_B0.nii.gz $dirSubject DTI_extraction_masked
+	#dMRI extraction masked
+		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/dMRI/nodif_brain_mask.nii.gz -b 62.718401747457314 -c 96.08735171986915 /dMRI/dMRI/data_B0.nii.gz $dirSubject dMRI_extraction_masked
 
 		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dex_under" "../../dMRI/dMRI/data_B0.nii.gz" "dex_over1" "../../dMRI/dMRI/nodif_brain_mask.nii.gz" "NA24" "NA24_link" 0
 
 
 
 
-### DTI REGISTRATION ###
+### dMRI REGISTRATION ###
 	echo ""
-	echo "STARTING DTI REGISTRATION -------"
+	echo "STARTING dMRI REGISTRATION -------"
 
-	#DTI registration
+	#dMRI registration
 
 		#edges
-		$BB_BIN_DIR/tvb_bb_QC/edges.sh -l 10 /dMRI/dMRI/transforms/DTI_to_T1.nii.gz /T1/T1.nii.gz $dirSubject  DTI_registration
+		$BB_BIN_DIR/tvb_bb_QC/edges.sh -l 10 /dMRI/dMRI/transforms/DTI_to_T1.nii.gz /T1/T1.nii.gz $dirSubject  dMRI_registration
 
 		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dre_under_1" "../../T1/T1.nii.gz" "dre_over1_1" "../../dMRI/dMRI/transforms/DTI_to_T1.nii.gz" "NA25" "NA25_link" 0
 		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dre_under_2" "../../dMRI/dMRI/transforms/DTI_to_T1.nii.gz" "dre_over1_2" "../../T1/T1.nii.gz" "NA26" "NA26_link" 0
@@ -211,35 +211,35 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 
 
 
-### DTI TRACTOGRAPHY ###
+### dMRI TRACTOGRAPHY ###
 	echo ""
-	echo "STARTING DTI TRACTOGRAPHY -------"
+	echo "STARTING dMRI TRACTOGRAPHY -------"
 
 
 
-	#DTI tractography without excude
+	#dMRI tractography without excude
 
-		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh /dMRI/dMRI/dti_FA.nii.gz $dirSubject  DTI_tractography_FA
+		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh /dMRI/dMRI/dti_FA.nii.gz $dirSubject  dMRI_tractography_FA
 
 		#$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "uw_under" "../../dMRI/dMRI/dti_FA.nii.gz" "NA27" "NA27_link" "NA28" "NA28_link" 0
 
 
-	#DTI tractography exclude without seed
+	#dMRI tractography exclude without seed
 
-		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/probtrackx/exclude.nii.gz -p red-yellow -a 25.0 /dMRI/dMRI/dti_FA.nii.gz $dirSubject  DTI_tractography_exclude
+		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/probtrackx/exclude.nii.gz -p red-yellow -a 25.0 /dMRI/dMRI/dti_FA.nii.gz $dirSubject  dMRI_tractography_exclude
 
 		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dxc_under" "../../dMRI/dMRI/dti_FA.nii.gz" "dxc_over1" "../../dMRI/probtrackx/exclude.nii.gz" "NA29" "NA29_link" 0
 
 
-	#DTI tractography seed only
+	#dMRI tractography seed only
 
-		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/probtrackx/labelledWM_GM.nii.gz -p blue-lightblue -a 100.0  /dMRI/dMRI/dti_FA.nii.gz $dirSubject  DTI_tractography_seeds
+		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/probtrackx/labelledWM_GM.nii.gz -p blue-lightblue -a 100.0  /dMRI/dMRI/dti_FA.nii.gz $dirSubject  dMRI_tractography_seeds
 
 		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dfs_under" "../../dMRI/dMRI/dti_FA.nii.gz" "dfs_over1" "../../dMRI/probtrackx/labelledWM_GM.nii.gz" "NA30" "NA30_link" 0
 
-	#DTI tractography seed only random big
+	#dMRI tractography seed only random big
 
-		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/probtrackx/labelledWM_GM.nii.gz -a 100.0 -p random_big -j label /dMRI/dMRI/dti_FA.nii.gz $dirSubject  DTI_tractography_seeds_rb
+		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/probtrackx/labelledWM_GM.nii.gz -a 100.0 -p random_big -j label /dMRI/dMRI/dti_FA.nii.gz $dirSubject  dMRI_tractography_seeds_rb
 
 		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dfsrb_under" "../../dMRI/dMRI/dti_FA.nii.gz" "dfsrb_over1" "../../dMRI/probtrackx/labelledWM_GM.nii.gz" "NA31" "NA31_link" 0
 
@@ -247,7 +247,7 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 
 	#exclude with seed masks
 
-		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/probtrackx/exclude.nii.gz -p red-yellow -a 25.0 -s /dMRI/probtrackx/labelledWM_GM.nii.gz -h blue-lightblue -i 100.0 /dMRI/dMRI/dti_FA.nii.gz $dirSubject  DTI_tractography_exclude_seeds
+		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/probtrackx/exclude.nii.gz -p red-yellow -a 25.0 -s /dMRI/probtrackx/labelledWM_GM.nii.gz -h blue-lightblue -i 100.0 /dMRI/dMRI/dti_FA.nii.gz $dirSubject  dMRI_tractography_exclude_seeds
 
 		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dxs_under" "../../dMRI/dMRI/dti_FA.nii.gz" "dxs_over1" "../../dMRI/probtrackx/exclude.nii.gz" "dxs_over2" "dMRI/probtrackx/labelledWM_GM.nii.gz" 1
 
