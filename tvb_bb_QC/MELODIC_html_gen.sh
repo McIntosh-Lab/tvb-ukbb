@@ -259,9 +259,10 @@ cat <<EOF >> $MELODIC_html
   <label for="Analysis" style="white-space:nowrap;">Analysis <i>(z/c)</i>:
   <select name="Analysis" id="Analysis" onchange="updateTitle();updateImage();" onkeydown="IgnoreAlpha(event);">
     
-      <option value="ev" id="ev">Eigenspectrum Analysis</option>
+      
       <option value="ic" id="ic">IC</option>
       <option value="mm" id="mm">IC Mixture Model Fit</option>
+      <option value="ev" id="ev">Eigenspectrum Analysis</option>
   </select></label>
   &nbsp&nbsp&nbsp&nbsp
 
