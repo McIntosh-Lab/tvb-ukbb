@@ -329,11 +329,6 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 
 
 
-### IDP REPORT GEN ###
-
-	python $BB_BIN_DIR/tvb_bb_QC/IDP_html_gen.py $dirSubject $BB_BIN_DIR/bb_IDP/list.txt $BB_BIN_DIR/bb_IDP/IDPoi.txt
-
-
 ### HTML REPORT GEN ###
 
 	$BB_BIN_DIR/tvb_bb_QC/html_gen.sh  $dirSubject $sub
