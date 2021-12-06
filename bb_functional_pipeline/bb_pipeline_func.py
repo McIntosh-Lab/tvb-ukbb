@@ -66,6 +66,7 @@ def bb_pipeline_func(subject, fileConfiguration):
     )
     print("bb_postprocess_struct completed")
 
+
     # TODO: Embed the checking of the fieldmap inside the independent steps -- Every step should check if the previous one has ended.
     if ("rfMRI" in fileConfiguration) and (fileConfiguration["rfMRI"] != ""):
         print("rfMRI files found. Running rfMRI subpipe")
@@ -106,9 +107,9 @@ def bb_pipeline_func(subject, fileConfiguration):
         ### compute FC using parcellation
         jobFC = LT.runCommand(
             logger,
-            "$BB_BIN_DIR/bb_functional_pipeline/bb_FC "
+            "$BB_BIN_DIR/bb_functional_pipeline/tvb_FC "
             + subject,
-            "bb_FC_"
+            "tvb_FC_"
             + subname
         )
         print("FC completed.")
@@ -134,6 +135,8 @@ def bb_pipeline_func(subject, fileConfiguration):
             + subname
         )
         print("Done.")
+
+
         print("rfMRI subpipe complete.")
 
         jobsToWaitFor = jobCLEAN

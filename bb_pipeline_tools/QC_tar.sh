@@ -5,7 +5,7 @@
 # Description: Script to generate QC tars for portability 
 #
 # Usage: 
-#         While in subjects folder:  QC_zipper.sh subject_name 
+#         While in subjects folder:  QC_tar.sh subject_name 
 #
 ## Author: Justin Wang
 
@@ -79,7 +79,7 @@ done
 
 
 
-tar -cf $origDir/${sub}_QC.tar $sub/QC $sub/logs$fMRI_files
+tar -cf $origDir/${sub}_QC.tar $sub/QC $sub/logs$fMRI_files $sub/IDP_files/*.txt $sub/IDP_files/*.tsv
 #may need --ignore-failed-read option for non existent files/folders
 
 

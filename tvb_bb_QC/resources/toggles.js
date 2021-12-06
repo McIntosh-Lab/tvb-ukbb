@@ -191,7 +191,7 @@ c 3rd ori or b=2000  (if not hidden)
     var ori = document.getElementById("Orientation").value;
     var bval = document.getElementById("b-value").value;
 
-    if ((ana == "re")||(ana == "dre")||(ana == "Tre")){
+    if ((ana == "re")||(ana == "dre")||(ana == "Tre")||(ana == "wa")){
       document.getElementById("reg_opts").style.display="inline";
       document.getElementById("non_reg_opts").style.display="none";
       document.getElementById("EDDY_opts").style.display="none";
@@ -202,6 +202,14 @@ c 3rd ori or b=2000  (if not hidden)
         }
         else{
           ana = "Tre2"
+        }
+      }
+      else if (ana == "wa"){
+        if (ord1 == true){
+          ana = "wa1"
+        }
+        else{
+          ana = "wa2"
         }
       }
       else{
