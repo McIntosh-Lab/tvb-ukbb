@@ -61,7 +61,7 @@ function update_links(){
 		var overlay2=1;
 
 		if ((ana == "re")||(ana == "dre")||(ana == "Tre")||(ana == "wa")){
-			if(document.getElementById("Order 1").checked == "true"){
+			if(document.getElementById("Order 1").checked == true){
 				underlay=ana.concat("_","under_1");
 				overlay1=ana.concat("_","over1_1");
 				overlay2=ana.concat("_","over2_1");	
