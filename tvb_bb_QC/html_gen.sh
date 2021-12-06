@@ -247,7 +247,7 @@ cat > $subjdir$html_output_dir"/anat.html" << EOF
   <select name="Orientation" id="Orientation" onchange="updateTitle();updateImage();update_links();" onkeydown="IgnoreAlpha(event);">
     <option value="a">Axial</option>
     <option value="c">Coronal</option>
-    <option value="s">sagittal</option>
+    <option value="s">Sagittal</option>
   </select></label>
 &nbsp&nbsp&nbsp&nbsp
 
@@ -323,6 +323,7 @@ NOTE: Image sizes and therefore maintaining zooms between different analyses can
 
 
 
+
 <!-------------- OVERLAYS -------------->
 
   
@@ -372,6 +373,7 @@ NOTE: Image sizes and therefore maintaining zooms between different analyses can
   <img src="../images/T2_registration/order2_${sub}_T2_registration_axial_appended.png" id="Tre2_a" style="display: none">
   <img src="../images/T2_registration/order2_${sub}_T2_registration_coronal_appended.png" id="Tre2_c" style="display: none">
   <img src="../images/T2_registration/order2_${sub}_T2_registration_sagittal_appended.png" id="Tre2_s" style="display: none">
+
 
 
 
@@ -538,7 +540,7 @@ cat > $subjdir$html_output_dir"/dMRI.html" << EOF
   <select name="Orientation" id="Orientation" onchange="updateTitle();updateImage();update_links();" onkeydown="IgnoreAlpha(event);">
     <option value="a">Axial</option>
     <option value="c">Coronal</option>
-    <option value="s">sagittal</option>
+    <option value="s">Sagittal</option>
   </select></label>
 &nbsp&nbsp&nbsp&nbsp
 
