@@ -14,8 +14,8 @@ import os
 
 
 
-
 def IDP_html_gen(subj):
+
     """Function that generates the IDP page of the QC report for a
     subject. 
 
@@ -38,6 +38,7 @@ def IDP_html_gen(subj):
     QC_dir = subj + "/QC/html/"
     IDP_dir = subj + "/IDP_files/"
 
+
     #save IDPois to txt files for future reference
     priority_output = pd.read_csv(r"" + IDP_dir + "priority_IDPs.tsv", delimiter = "\t")
     non_priority_output = pd.read_csv(r"" + IDP_dir + "non_priority_IDPs.tsv", delimiter = "\t")
@@ -46,11 +47,13 @@ def IDP_html_gen(subj):
 
     subjname=os.path.basename(subj)
 
+
     #write IDP.html with IDP information
     f = open(QC_dir + "IDP.html", "a")
 
     message = (
         """
+
 
     <!DOCTYPE html>
     <html lang="en">
@@ -131,11 +134,13 @@ def IDP_html_gen(subj):
     <div class="w3-content w3-padding-large w3-margin-top" id="portfolio" style="color:white; text-align: center; >
 
 
+
 	  <!-- Images (Portfolio) -->
 
 	<br><br><a name="fMRI_REPORTS">______</a><br><br>
 	  <h1> IDP REPORTS </h1>
 	  ______<br><br><br>
+
 	
         <label for="IDPs" style="white-space:nowrap;">IDPs <i>(q/e)</i>:
   <select name="IDPs" id="IDPs" onchange="updateTitle();updateImage();" onkeydown="IgnoreAlpha(event);">
@@ -167,10 +172,12 @@ def IDP_html_gen(subj):
           <th>Unit</th>
         </tr>
 
+
 	"""
     )
 
     f.write(message)
+
 
     #write priority df
     #background-color:darkred or darkgreen depending on value
@@ -187,6 +194,7 @@ def IDP_html_gen(subj):
         message = (
             """
 			<tr style="display: none; """+ color+"""" name="High-priority IDPs">
+
 			  <td>"""
             + str(row["short"])
             + """</td>
@@ -194,7 +202,9 @@ def IDP_html_gen(subj):
             + str(row["category"])
             + """</td>
 			  <td>"""
+
             + str("{:e}".format(float(row["value"])))
+
             + """</td>
 			  <td>"""
             + str(row["unit"])
@@ -204,6 +214,7 @@ def IDP_html_gen(subj):
 			"""
         )
         f.write(message)
+
 
 
     #write new df in the same table
@@ -258,6 +269,7 @@ def IDP_html_gen(subj):
         message = (
             """
 			<tr style="display: none; """+ color+"""" name="Low-priority IDPs">
+
 			  <td>"""
             + str(row["short"])
             + """</td>
@@ -265,7 +277,9 @@ def IDP_html_gen(subj):
             + str(row["category"])
             + """</td>
 			  <td>"""
+
             + str("{:e}".format(float(row["value"])))
+
             + """</td>
 			  <td>"""
             + str(row["unit"])
@@ -275,6 +289,7 @@ def IDP_html_gen(subj):
 			"""
         )
         f.write(message)
+
 
 
 
@@ -315,6 +330,7 @@ def IDP_html_gen(subj):
         <br>
         </div>
 
+
 	<!-- End page content -->
 	</div>
 
@@ -329,19 +345,25 @@ def IDP_html_gen(subj):
 	</html>
 
 	 """
+
      )
+
     f.write(message)
 
     f.close()
 
 
 if __name__ == "__main__":
+
     """Generates IDP.html of the QC report using IDP txts. 
+
 
     
     Usage
     ----------
+
     python  IDP_html_gen.py  subj  
+
     
 
     Arguments
@@ -349,6 +371,8 @@ if __name__ == "__main__":
     subj : 
         Full path to subject's directory.
 
+
     """
     # try:
     IDP_html_gen(sys.argv[1])
+
