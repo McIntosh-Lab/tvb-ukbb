@@ -39,10 +39,6 @@ def SC_FC(subj,subjName):
     """
 
 
-    #remove trailing forward slashes in subject paths
-    if subj.endswith("/"):
-        subj = subj[:-1]
-
 
     #remove trailing forward slashes in subject paths
     if subj.endswith("/"):
@@ -81,77 +77,7 @@ def SC_FC(subj,subjName):
                     print("ERROR: fc, ts file not found")
 
 
-            except:
-                print("ERROR: fc, ts file not found")
-
-
-            #generate plots for FC and TS
-            try:
-                file_name_no_period = file.replace(".", "_")
-
-                #set range of -0.5 and 1 for FC values
-                FC_matrix = copy.deepcopy(FC)
-                for i in range(FC.shape[0]):
-                    for j in range(FC.shape[1]):
-                        if FC[i][j] < -0.5:
-                            FC_matrix[i][j] = -0.5
-                        if FC[i][j] > 1:
-                            FC_matrix[i][j] = 1
-
-                #save matrix for FC
-                f, ax = plt.subplots(1, 1, figsize=(50, 50))
-                ax.set_title(file_name_no_period + " FC (linear scale)")
-                im = ax.imshow(FC_matrix, cmap="jet")
-                f.colorbar(im, ax=ax)
-
-                plt.tight_layout()
-                saveNm = (
-                    subj
-                    + "/QC/SC_FC/"
-                    + subjName
-                    + "_"
-                    + file_name_no_period
-                    + "_FC.png"
-                )
-                f.savefig(saveNm)
-
-
-                #save carpet plot for TS
-                f, ax = plt.subplots(1, 1, figsize=(50, 30))
-                ax.set_xlabel("volume")
-                ax.set_ylabel("ROI")
-                ax.set_title(file_name_no_period + " ROI timeseries carpet plot")
-                im = ax.imshow(norm_ts.transpose(), cmap="gray", aspect="auto")
-
-                plt.tight_layout()
-                saveNm = (
-                    subj
-                    + "/QC/SC_FC/"
-                    + subjName
-                    + "_"
-                    + file_name_no_period
-                    + "_carpet.png"
-                )
-                f.savefig(saveNm)
-
-
-                #save histogram for FC
-                f, ax = plt.subplots(1, 1, figsize=(50, 30))
-                ax.set_title(file_name_no_period + " FC histogram (linear scale)")
-
-                f = plt.hist(FC.ravel(), bins=100)
-                saveNm = (
-                    subj
-                    + "/QC/SC_FC/"
-                    + subjName
-                    + "_"
-                    + file_name_no_period
-                    + "_FC_hist.png"
-                )
-                plt.savefig(saveNm)
-
-            except:
-                print("ERROR: can't generate graph for " + file)
+            
 
 
                 #generate plots for FC and TS
