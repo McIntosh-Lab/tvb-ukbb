@@ -234,7 +234,7 @@ def SC_distribution(subj):
     num_in_cat+=1
     write_to_IDP_file(subj, "SC_nan_lines", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_nan_lines", "proportion out of 1", "float", "Structural connectivity - line numbers of rows with all NaNs", str(SC_nan_lines))
     num_in_cat+=1
-    write_to_IDP_file(subj, "SC_num_nan", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_number_of_nan_lines", "proportion out of 1", "float", "Structural connectivity - number of all NaN rows", str(SC_num_nan))
+    write_to_IDP_file(subj, "SC_num_nan", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_number_of_nan_lines", "line number", "float", "Structural connectivity - number of all NaN rows", str(SC_num_nan))
     num_in_cat+=1
 
 
