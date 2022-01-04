@@ -101,15 +101,15 @@ def bb_pipeline_diff(subject, fileConfiguration):
     )
     print("DTIFIT completed.")
 
-    print("Running TBSS...")
-    jobTBSS = LT.runCommand(
-        logger,
-        "$BB_BIN_DIR/bb_diffusion_pipeline/bb_tbss/bb_tbss_general "
-        + subject,
-        "bb_tbss_"
-        + subname
-    )
-    print("TBSS completed.")
+#    print("Running TBSS...")
+#    jobTBSS = LT.runCommand(
+#        logger,
+#        "$BB_BIN_DIR/bb_diffusion_pipeline/bb_tbss/bb_tbss_general "
+#        + subject,
+#        "bb_tbss_"
+#        + subname
+#    )
+#    print("TBSS completed.")
     # jobNODDI = LT.runCommand(
     # logger,
     ##'${FSLDIR}/bin/fsl_sub -T 100 -N "bb_NODDI_'

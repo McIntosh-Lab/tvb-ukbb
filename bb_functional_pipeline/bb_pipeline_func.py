@@ -93,26 +93,26 @@ def bb_pipeline_func(subject, fileConfiguration):
         )
         print("FEAT completed.")
 
-        print("Running FIX...")
-        jobFIX = LT.runCommand(
-            logger,
-            "$BB_BIN_DIR/bb_functional_pipeline/bb_fix "
-            + subject,
-            "bb_fix_"
-            + subname
-        )
-        print("FIX completed.")
+#        print("Running FIX...")
+#        jobFIX = LT.runCommand(
+#            logger,
+#            "$BB_BIN_DIR/bb_functional_pipeline/bb_fix "
+#            + subject,
+#            "bb_fix_"
+#            + subname
+#        )
+#        print("FIX completed.")
 
-        print("Running FC...")
-        ### compute FC using parcellation
-        jobFC = LT.runCommand(
-            logger,
-            "$BB_BIN_DIR/bb_functional_pipeline/tvb_FC "
-            + subject,
-            "tvb_FC_"
-            + subname
-        )
-        print("FC completed.")
+#        print("Running FC...")
+#        ### compute FC using parcellation
+#        jobFC = LT.runCommand(
+#            logger,
+#            "$BB_BIN_DIR/bb_functional_pipeline/tvb_FC "
+#            + subject,
+#            "tvb_FC_"
+#            + subname
+#        )
+#        print("FC completed.")
         ### don't generate group-ICA RSNs
         # jobDR = LT.runCommand(
         # logger,
@@ -126,21 +126,21 @@ def bb_pipeline_func(subject, fileConfiguration):
         # + "$BB_BIN_DIR/bb_functional_pipeline/bb_ICA_dual_regression "
         # + subject,
         # )
-        print("Cleaning up rfMRI files...")
-        jobCLEAN = LT.runCommand(
-            logger,
-            "$BB_BIN_DIR/bb_functional_pipeline/bb_clean_fix_logs "
-            + subject,
-            "bb_rfMRI_clean_"
-            + subname
-        )
-        print("Done.")
+#        print("Cleaning up rfMRI files...")
+#        jobCLEAN = LT.runCommand(
+#            logger,
+#            "$BB_BIN_DIR/bb_functional_pipeline/bb_clean_fix_logs "
+#            + subject,
+#            "bb_rfMRI_clean_"
+#            + subname
+#        )
+#        print("Done.")
 
 
         print("rfMRI subpipe complete.")
 
-        jobsToWaitFor = jobCLEAN
-
+        #jobsToWaitFor = jobCLEAN
+        jobsToWaitFor = jobFEAT_R
     else:
         logger.error(
             "There is no rFMRI info. Thus, the Resting State part will not be run"
