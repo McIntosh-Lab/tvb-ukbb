@@ -112,6 +112,7 @@ subject_age=`echo "${subject_age%%.*}" | sed 's/\r$//'`
 
 if [[ $subject_age = "NaN" ]]; then
   decile=`echo $1 | head -c 7 | tail -c 1`
+  decile=`echo $((decile * 10))`
 else
   decile=`echo $((subject_age / 10))`
   decile=`echo $((decile * 10))`
