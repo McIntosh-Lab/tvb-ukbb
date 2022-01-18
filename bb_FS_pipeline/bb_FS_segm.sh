@@ -2,9 +2,6 @@
 
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
 
-export PATH="$FREESURFER_HOME/bin:$PATH"
-source $FREESURFER_HOME/SetUpFreeSurfer.sh
-
 if [ "$2" == "" ] ; then 
     export SUBJECTS_DIR=`pwd`/$1/
 else

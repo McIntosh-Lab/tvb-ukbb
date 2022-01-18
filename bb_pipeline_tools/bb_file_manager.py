@@ -27,7 +27,8 @@ import glob
 import json
 import copy
 import nibabel as nib
-import bb_logging_tool as LT
+
+# import bb_logging_tool as LT
 
 import sys
 from shutil import copyfile
@@ -38,6 +39,8 @@ sys.path.insert(1, os.path.dirname(__file__) + "/..")
 # print("FILE: " + os.path.dirname(__file__))
 
 import bb_general_tools.bb_path as bb_path
+import bb_pipeline_tools.bb_logging_tool as LT
+
 from subprocess import check_output
 
 # TODO: Create an image class to avoid reading the json file on each check?
@@ -712,9 +715,7 @@ def bb_file_manager(subject):
     patterns_actions = [
         [["*.[^log]"], capitalize_and_clean],
         [["dicom", "DICOM"], move_to, "delete/"],
-
         [["*T1*.nii.gz", "*MPRAGE*.nii.gz", "*IR-FSPGR*.nii.gz"], manage_struct, "T1"],
-
         [["*T2**.nii.gz"], manage_struct, "T2"],
         [
             [

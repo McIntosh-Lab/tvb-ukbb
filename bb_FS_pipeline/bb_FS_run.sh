@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_header 
 
@@ -17,12 +17,19 @@ else
 
     optFLAIR=""
 
+    # https://surfer.nmr.mgh.harvard.edu/fswiki/recon-all#UsingT2orFLAIRdatatoimprovepialsurfaces
     if [ -f $1/T2_FLAIR/T2_FLAIR_unbiased.nii.gz ] ; then
         optFLAIR=" -FLAIR $1/T2_FLAIR/T2_FLAIR_unbiased.nii.gz -FLAIRpial"    
+    # disable for now
+    # elif [ -f $1/T2/T2_brain_to_MNI.nii.gz ] ; then
+    #     optFLAIR=" -T2 $1/T2/T2_brain_to_MNI.nii.gz -T2pial"    
     fi 
 
-    recon-all -all -s FS_$1 -i $1/T1/T1_unbiased.nii.gz $optFLAIR
-
+    echo "RUNNING"
+    # recon-all -all -s FS_$1 -i $1/T1/T1_unbiased.nii.gz $optFLAIR -log $1/logs
+    mkdir -p ${1}/fs
+    recon-all -all -s FS_${1} -sd ${PWD}/${1}/fs -i ${1}/T1/T1_unbiased.nii.gz ${optFLAIR}
+    echo "recon-all done."
 fi
 
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
