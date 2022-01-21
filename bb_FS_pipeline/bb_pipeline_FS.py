@@ -9,6 +9,7 @@
  """
 
 import os, sys, argparse
+
 sys.path.insert(1, os.path.dirname(__file__) + "/..")
 import bb_pipeline_tools.bb_logging_tool as LT
 import bb_pipeline_tools.bb_file_manager as FM
@@ -44,24 +45,18 @@ def bb_pipeline_FS(subject, jobHold, fileConfiguration):
     else:
         jobFS01 = LT.runCommand(
             logger,
-            " $BB_BIN_DIR/bb_FS_pipeline/bb_FS_run.sh  "
-            + subject,
-            "bb_FS_run_"
-            + subname
+            "$BB_BIN_DIR/bb_FS_pipeline/bb_FS_run.sh  " + subject,
+            "bb_FS_run_" + subname,
         )
         jobFS02 = LT.runCommand(
             logger,
-            + " $BB_BIN_DIR/bb_FS_pipeline/bb_FS_segm.sh "
-            + subject,
-            "bb_FS_segm_"
-            + subname
+            "$BB_BIN_DIR/bb_FS_pipeline/bb_FS_segm.sh " + subject,
+            "bb_FS_segm_" + subname,
         )
         jobFS03 = LT.runCommand(
             logger,
-            + " $BB_BIN_DIR/bb_FS_pipeline/bb_FS_get_IDPs.py "
-            + subject,
-            "bb_FS_IDPs_"
-            + subname
+            "$BB_BIN_DIR/bb_FS_pipeline/bb_FS_get_IDPs.py " + subject,
+            "bb_FS_IDPs_" + subname,
         )
 
         LT.finishLogging(logger)
@@ -83,7 +78,7 @@ def main():
 
     fileConfig = FM.bb_file_manager(subject)
 
-    jobSTEP1 = bb_pipeline_FS(subject, "-1", fileConfig)
+    bb_pipeline_FS(subject, "-1", fileConfig)
 
     print("SUBMITTED FS")
     print(jobSTEP1)
