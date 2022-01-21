@@ -6,89 +6,11 @@ The `TVB - UK Biobank Pipeline` project is a multi-modal MRI processing pipeline
 The TVB implementation includes the addition of a user-provided parcellation for 1) computing ROI-based timeseries and functional connectivity (Pearson correlations) using resting-state fMRI; and 2) connectome construction using diffusion-weighted imaging tractography.
 
 
+Installation and Usage
+----------------------
 
-Dependencies
-------------
+Check out [the wiki](https://github.com/McIntosh-Lab/tvb-ukbb/wiki) to view [installation instructions](https://github.com/McIntosh-Lab/tvb-ukbb/wiki/General-HPC-Installation-and-Usage) and [usage instructions](https://github.com/McIntosh-Lab/tvb-ukbb/wiki/Basic-Usage) for the TVB-UKBB pipeline, as well as [an overview of the pipeline](https://github.com/McIntosh-Lab/tvb-ukbb/wiki/Pipeline-Overview) and information on [how to customize the pipeline for your datasets](https://github.com/McIntosh-Lab/tvb-ukbb/wiki/Customizing-the-Pipeline).
 
-The only external dependencies required for this pipeline are:
-* FSL
-* AFNI
-* Freesurfer
-* Anaconda/Miniconda
-* git (>=2)
-* gfortran (installation only)
-
-
-Installation
-------------
-
-**RRI USERS - PLEASE COMPLETE THIS STEP FIRST**
-
-Note: these instructions are specifically for `gateway`. This has not been tested on any other system so it is advised to install onto `gateway`.
-* Copy the following and paste it at the bottom of your .bashrc file in your home directory on `gateway`:
-```
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/nfrazier-logue/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/nfrazier-logue/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/nfrazier-logue/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/nfrazier-logue/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-```
-* Create a directory in your home directory called `conda_cache`.
-* Create a file in your home directory on gateway called `.condarc` and copy the following into it:
-```
-channels:
- - defaults
- - anaconda
- - conda-forge
-pkgs_dirs:
- - /home/<username>/conda_cache
-```
-  where `<username>` on the last line is your `gateway` username. Continue with the rest of the instructions below.
-
-**GENERAL INSTALL INSTRUCTIONS**
-
-Clean installation:
-1) Download the [latest release .zip from the repository here](https://github.com/McIntosh-Lab-RRI/tvb-ukbb/releases/latest) (read the instructions on the release page)
-2) Unzip the .zip file to where you'd like the pipeline to be installed; e.g. unzipping it in `/home/<username>` will yield `/home/<username>/tvb-pipeline`
-3) `cd` into `tvb-pipeline` and run `chmod +x install_ukbb.sh`
-4) Run `./install_ukbb.sh`. This may take a while and **you will have to enter your GitHub username and password midway through** as the repository is currently invite-only.
-5) Once the installer finishes, `cd` into `tvb-ukbb` and edit file `init_vars`. Lines specified with `#TO BE MODIFIED BY USER` are the only lines you should need to change.
-
-Reinstallation:
-1) Before pulling a new version of the pipeline from github or cloning the repository, install git-lfs (https://git-lfs.github.com) and run `git lfs install`  
-2) `cd` into `tvb-pipeline` and run `chmod +x install_ukbb.sh`
-3) Run `./reinstall_ukbb.sh`.
-4) Once the installer finishes, `cd` into `tvb-ukbb` and edit file `init_vars`. Lines specified with `#TO BE MODIFIED BY USER` are the only lines you should need to change.
-
-Note: at present, changes may need to be made to the code handling Grid Engine/SGE queuing depending on your system. Currently we use queues `all.q`, `bigmem_16.q`, and `bigmem_64.q`; they are set to their respective environment variables by default in `init_vars` and can be modified as necessary.
-
-Usage
------
-
-Following the installation example above,
-
-1) Source the file `init_vars` to activate the conda environment and define environment variables. For example, if your pipeline is located at `/home/username/tvb-pipeline/`, simply run
-
-`. /home/username/tvb-pipeline/tvb-ukbb/init_vars`
-
-and your environment will be loaded.
-
-2) `cd` to the directory containing your subject directory, e.g., `subjDir`.
-
-3) Run a subject with
-
-`python /home/username/tvb-pipeline/tvb-ukbb/bb_pipeline_tools/bb_pipeline.py subjDir`
-
-4) Monitor the progress of your subject by `cd`ing to `subjDir/logs`.
 
 
 Documentation
