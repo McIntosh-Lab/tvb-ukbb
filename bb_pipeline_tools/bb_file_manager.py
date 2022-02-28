@@ -417,27 +417,37 @@ def manage_fMRI(listFiles, flag):
 def manage_DWI(listFiles):
 
     # listFiles = robustSort(listFiles)
-    numFiles = len(listFiles)
     listFiles = [rename_no_coil_echo_info(x) for x in listFiles]
+
+    # ignore _ADC files from ADNI3
+    for fpath in listFiles:
+        if "_ADC" in fpath:
+            listFiles.remove(fpath)
 
     subListFilesD = {}
     imageFilesD = {}
 
+    numFiles = len(listFiles)
     if numFiles == 0:
         logger.error("There was no DWI data.  There will be no DWI processing.")
 
     else:
         errorFound = False
-        encodingDirections = ["PA", "AP"]
 
-        numNifti = 0
+        numAP = 0
 
+        # TODO: fix so that it finds number of AP/PA
+        # if AP/PA missing, move to "dwi"
+        # change regex in file manager to omit ADC
         for fl in listFiles:
-            if ".nii.gz" in fl:
-                numNifti += 1
+            if ".nii.gz" in fl and ("PA" in fl or "AP" in fl):
+                numAP += 1
 
-        if numNifti == 1:
+        if numAP <= 1:
             encodingDirections = ["dwi"]
+            logger.info("Single-direction DWI detected.")
+        else:
+            encodingDirections = ["AP", "PA"]
 
         # Code needed for the inconsistency in the file names in Diffusion over the different phases
         if listFiles[0].startswith("MB3"):
@@ -448,7 +458,7 @@ def manage_DWI(listFiles):
             subListFilesD["AP"] = [x for x in listFiles if x not in subListFilesD["PA"]]
             imageFilesD["AP"] = [x for x in subListFilesD["AP"] if bb_path.isImage(x)]
 
-        elif "dwi" in listFiles[0]:
+        elif "dwi" in listFiles[0] or "DWI" in listFiles[0]:
 
             subListFilesD["dwi"] = [x for x in listFiles if x.find("dwi") != -1]
             imageFilesD["dwi"] = [x for x in subListFilesD["dwi"] if bb_path.isImage(x)]
