@@ -434,18 +434,19 @@ def manage_DWI(listFiles):
     else:
         errorFound = False
 
+        # number of AP/PA directions detected
         numAP = 0
 
-        # TODO: fix so that it finds number of AP/PA
-        # if AP/PA missing, move to "dwi"
-        # change regex in file manager to omit ADC
+        # increment numAP if any AP/PA directions found
         for fl in listFiles:
             if ".nii.gz" in fl and ("PA" in fl or "AP" in fl):
                 numAP += 1
 
+        # use single-direction if only one direction found
         if numAP <= 1:
             encodingDirections = ["dwi"]
             logger.info("Single-direction DWI detected.")
+        # assume AP/PA otherwise
         else:
             encodingDirections = ["AP", "PA"]
 
@@ -485,7 +486,6 @@ def manage_DWI(listFiles):
                     dim.append(epi_img.get_header()["dim"][4])
 
                 numImageFiles = len(imageFiles)
-                # print("HEEERE")
 
                 if numImageFiles == 0:
                     raise Exception(
