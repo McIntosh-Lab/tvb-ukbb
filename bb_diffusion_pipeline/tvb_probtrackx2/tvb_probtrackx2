@@ -37,27 +37,63 @@ seeds=$subjdir/dMRI/probtrackx/seeds.txt
 
 DTI_mask=$subjdir/dMRI/bedpostx.bedpostX/nodif_brain_mask.nii.gz
 
-probtrackx2_gpu -V 2 --network --ompl --seed=${seeds} --loopcheck --onewaycondition --cthr=0.2 --nsteps=2000 --steplength=0.5 --nsamples=5000 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --avoid=${subjdir}/dMRI/probtrackx/exclude.nii.gz --forcedir --opd --samples=${subjdir}/dMRI/bedpostx.bedpostX/merged --mask=${DTI_mask} --dir=${output_dir}
 
-# set +e
-# 
-# for ((i = 1 ; i < 11 ; i++)); do
-# 	
-# 	batch=batch_$i
-# 	output_dir=$subjdir/dMRI/probtrackx/$batch/
-# 	mkdir $output_dir
-# 	
-# 
-# 	seeds=$subjdir/dMRI/probtrackx/seeds.txt
-# 	commands=$subjdir/dMRI/probtrackx/probtrackx_commands_$i.txt
-# 
-# 
-# 	#if [ $i -eq 0 ]; then
-# 
-# 
-# cat > $commands << EOF
-# ${FSLDIR}/bin/probtrackx2 --rseed=$i --network --ompl --seed=${seeds} --loopcheck --onewaycondition --cthr=0.2 --nsteps=2000 --steplength=0.5 --nsamples=500 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --avoid=$subjdir/dMRI/probtrackx/exclude.nii.gz --forcedir --opd --samples=$subjdir/dMRI/bedpostx.bedpostX/merged --mask=${DTI_mask} --dir=${output_dir}
-# EOF
+# option 1: separate seeds into batches and run probtrackx2_gpu on each batch sequentially
+if [ $PROBTRACKX_GPU == "gpu_batch" ]; then
+
+    set +e
+ 
+    for ((i = 1 ; i < 11 ; i++)); do
+ 	
+        batch=batch_$i
+        output_dir=$subjdir/dMRI/probtrackx/$batch/
+ 	mkdir $output_dir
+ 	
+ 
+ 	seeds=$subjdir/dMRI/probtrackx/seeds.txt
+ 	commands=$subjdir/dMRI/probtrackx/probtrackx_commands_$i.txt
+ 
+ 
+ 	#if [ $i -eq 0 ]; then
+ 
+        probtrackx2_gpu --rseed=$i --network --ompl --seed=${seeds} --loopcheck --onewaycondition --cthr=0.2 --nsteps=2000 --steplength=0.5 --nsamples=500 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --avoid=$subjdir/dMRI/probtrackx/exclude.nii.gz --forcedir --opd --samples=$subjdir/dMRI/bedpostx.bedpostX/merged --mask=${DTI_mask} --dir=${output_dir}
+
+    done
+
+    set -e
+
+# option 2: run CPU probtrackx2 in batched mode
+elif [ $PROBTRACKX_GPU == "false" ]; then
+
+    set +e
+ 
+    for ((i = 1 ; i < 11 ; i++)); do
+ 	
+        batch=batch_$i
+        output_dir=$subjdir/dMRI/probtrackx/$batch/
+ 	mkdir $output_dir
+ 	
+ 
+ 	seeds=$subjdir/dMRI/probtrackx/seeds.txt
+ 	commands=$subjdir/dMRI/probtrackx/probtrackx_commands_$i.txt
+ 
+ 
+ 	#if [ $i -eq 0 ]; then
+ 
+        probtrackx2_gpu --rseed=$i --network --ompl --seed=${seeds} --loopcheck --onewaycondition --cthr=0.2 --nsteps=2000 --steplength=0.5 --nsamples=500 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --avoid=$subjdir/dMRI/probtrackx/exclude.nii.gz --forcedir --opd --samples=$subjdir/dMRI/bedpostx.bedpostX/merged --mask=${DTI_mask} --dir=${output_dir}
+
+    done
+
+    set -e
+
+# default behaviour is to run non-batch probtrackx2_gpu 
+# tell users to put "true" for this to work but really anything than than
+# the above two keywords will trigger this just to be safe
+else
+
+    probtrackx2_gpu -V 2 --network --ompl --seed=${seeds} --loopcheck --onewaycondition --cthr=0.2 --nsteps=2000 --steplength=0.5 --nsamples=5000 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --avoid=${subjdir}/dMRI/probtrackx/exclude.nii.gz --forcedir --opd --samples=${subjdir}/dMRI/bedpostx.bedpostX/merged --mask=${DTI_mask} --dir=${output_dir}
+
+fi
 # 
 # # chmod +x $commands
 # 		
