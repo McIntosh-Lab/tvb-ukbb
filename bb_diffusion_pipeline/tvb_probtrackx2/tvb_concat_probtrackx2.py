@@ -2,7 +2,7 @@
 #
 # Script name: tvb_concat_probtrackx2.py
 #
-# Description: Script to generate dMRI/probtrackx data matrices. 
+# Description: Script to generate dMRI/probtrackx data matrices.
 #
 ## Author: Justin Wang
 
@@ -23,10 +23,8 @@ def tvb_concat_probtrackx2(subj, batch=True):
         handles opening/concatenation of batched probtrackx files
         if True, opens in main dir if False
     """
-   
 
-
-    #calculating and saving SC, fdt_network_matrix, waytotal from all 10 batches 
+    # calculating and saving SC, fdt_network_matrix, waytotal from all 10 batches
     m = 1
     fdt = ""
     way = ""
@@ -35,37 +33,34 @@ def tvb_concat_probtrackx2(subj, batch=True):
     if batch:
         for m in range(1, 11):
             batch_dir = subj + "/dMRI/probtrackx/batch_" + str(m)
-    
+
             if m == 1:
                 fdt = np.loadtxt(batch_dir + "/fdt_network_matrix")
                 way = np.loadtxt(batch_dir + "/waytotal")
             else:
                 fdt = np.add(fdt, np.loadtxt(batch_dir + "/fdt_network_matrix"))
                 way = np.add(way, np.loadtxt(batch_dir + "/waytotal"))
-    
+
     else:
         standard_dir = subj + "/dMRI/probtrackx"
 
         fdt = np.loadtxt(standard_dir + "/fdt_network_matrix")
         way = np.loadtxt(standard_dir + "/waytotal")
-        
 
-    ones=np.ones(fdt.shape)
-    way_matrix = np.multiply(way,ones)
+    ones = np.ones(fdt.shape)
+    way_matrix = np.multiply(way, ones)
     way_matrix = way_matrix.T
-    
+
     SC = np.divide(fdt, way_matrix)
 
-    #symmetrizing matrix
+    # symmetrizing matrix
     SC = (SC + SC.T) / 2
 
     np.savetxt(subj + "/dMRI/probtrackx/fdt_network_matrix", fdt)
     np.savetxt(subj + "/dMRI/probtrackx/waytotal", way)
     np.savetxt(subj + "/dMRI/sc.txt", SC)
 
-
-
-    #calculating and saving distance, fdt_network_matrix_lengths from all 10 batches
+    # calculating and saving distance, fdt_network_matrix_lengths from all 10 batches
     if batch:
         m = 1
         mat_lengths = ""
@@ -89,7 +84,7 @@ def tvb_concat_probtrackx2(subj, batch=True):
         tract_lengths = np.divide(mtx, mat_sum)
         np.savetxt(subj + "/dMRI/probtrackx/fdt_network_matrix_lengths", tract_lengths)
 
-        #symmetrizing matrix
+        # symmetrizing matrix
         tract_lengths = (tract_lengths + tract_lengths.T) / 2
         np.savetxt(subj + "/dMRI/distance.txt", tract_lengths)
     else:
@@ -103,7 +98,7 @@ def tvb_concat_probtrackx2(subj, batch=True):
         tract_lengths = np.divide(mtx, mat_sum)
         np.savetxt(subj + "/dMRI/probtrackx/fdt_network_matrix_lengths", tract_lengths)
 
-        #symmetrizing matrix
+        # symmetrizing matrix
         tract_lengths = (tract_lengths + tract_lengths.T) / 2
         np.savetxt(subj + "/dMRI/distance.txt", tract_lengths)
 
@@ -125,8 +120,7 @@ if __name__ == "__main__":
 
     """
     # try:
-    if len(sys.argv) > 2 and sys.argv[2] == "GPU":
-        tvb_concat_probtrackx2(sys.argv[1], batch=False)
+    if len(sys.argv) > 2 and (sys.argv[2] == "gpu_batch" or sys.argv[2] == "false"):
+        tvb_concat_probtrackx2(sys.argv[1], batch=True)
     else:
-        tvb_concat_probtrackx2(sys.argv[1])
-
+        tvb_concat_probtrackx2(sys.argv[1], batch=False)

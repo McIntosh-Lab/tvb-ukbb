@@ -795,3 +795,9 @@ def bb_file_manager(subject):
     fileConfigFormatted = formatFileConfig()
 
     return fileConfig
+
+
+if __name__ == "__main__":
+    # run bb_file_manager on subject
+    subject = sys.argv[1]
+    bb_file_manager(subject)

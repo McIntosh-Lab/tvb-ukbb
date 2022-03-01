@@ -42,6 +42,13 @@ export QUEUE_STANDARD="all.q"                                                   
 export QUEUE_MORE_MEM="bigmem_16.q"                                             #TO BE MODIFIED BY USER
 export QUEUE_MAX_MEM="bigmem_64.q"                                              #TO BE MODIFIED BY USER
 
+# option 1: true; use full-GPU probtrackx call. default.
+# option 2: gpu_batch; split GPU probtrackx into 10 smaller batches.
+#           for low-memory systems.
+# option 3: false: use CPU probtrackx split into 10 smaller batches.
+#           use for systems without CUDA GPU
+export PROBTRACKX_GPU="true"
+
 #SETUP AFNI
 # export AFNIDIR=/opt/afni                                                        #TO BE MODIFIED BY USER
 export AFNIDIR="/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Compiler/gcc9/afni/20.3.05"
