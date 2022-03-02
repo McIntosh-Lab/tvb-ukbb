@@ -5,6 +5,12 @@ The `TVB - UK Biobank Pipeline` project is a multi-modal MRI processing pipeline
 
 The TVB implementation includes the addition of a user-provided parcellation for 1) computing ROI-based timeseries and functional connectivity (Pearson correlations) using resting-state fMRI; and 2) connectome construction using diffusion-weighted imaging tractography.
 
+Paper
+-----
+
+This code supports the submitted paper "**A robust modular automated neuroimaging pipeline for model inputs to TheVirtualBrain**" by Noah Frazier-Logue, Justin Wang, Zheng Wang, Devin Sodums, Anisha Khosla, Alexandria Samson, Anthony R. McIntosh, and Kelly Shen.
+
+See here for the paper preprint: https://doi.org/10.1101/2022.02.24.481836
 
 Installation and Usage
 ----------------------
