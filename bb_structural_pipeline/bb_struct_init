@@ -100,7 +100,7 @@ fi
 
 
 subject_age=""
-
+decile=""
 while read line; do
     read a b <<< ${line}
     if [[ $a = $1 ]]; then
@@ -109,8 +109,15 @@ while read line; do
 done <$SUBJECT_AGE_LIST
 
 subject_age=`echo "${subject_age%%.*}" | sed 's/\r$//'`
-decile=`echo $((subject_age / 10))`
-decile=`echo $((decile * 10))`
+
+if [[ $subject_age = "NaN" ]]; then
+  decile=`echo $1 | head -c 7 | tail -c 1`
+  decile=`echo $((decile * 10))`
+else
+  decile=`echo $((subject_age / 10))`
+  decile=`echo $((decile * 10))`
+fi
+
 
 while read line; do
     read a b c <<< ${line}
