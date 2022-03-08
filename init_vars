@@ -100,8 +100,8 @@ export SUSCEPT_ROIS="$templ/parcellations/TVB_SchaeferTian/SusceptibilityROIs_Sc
 # export numROI="436"                                                              #TO BE MODIFIED BY USER
 export TRAINING_FILE="ADNI3_Training.RData"                                            #TO BE MODIFIED BY USER
 export SynB0="y"                                            #TO BE MODIFIED BY USER
-export PE_direction="0 -1 0"                                            #TO BE MODIFIED BY USER 
-#export numROI="316"                                                              					#TO BE MODIFIED BY USER
+export PE_direction="0 -1 0"                                            #TO BE MODIFIED BY USER
+export topupValue="0.1"					#TO BE MODIFIED BY USER
 
 # set to 1 for single shell diffusion data and 2 for multi-shell
 export DIFF_SHELL_TYPE="1"
