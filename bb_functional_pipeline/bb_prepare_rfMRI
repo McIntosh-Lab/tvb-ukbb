@@ -39,8 +39,7 @@ descrip=`${FSLDIR}/bin/fslval $1/fMRI/rfMRI.nii.gz descrip`
 descrip=(`echo $descrip | tr ';' ' '`)
 #fmriTE=${descrip[0]:3}
 fmriTE=30
-#fmriDwell=`${BB_BIN_DIR}/bb_pipeline_tools/bb_get_dwell_time $1/fMRI/rfMRI.nii.gz`
-fmriDwell=1
+fmriDwell=`${BB_BIN_DIR}/bb_pipeline_tools/bb_get_dwell_time $1/fMRI/rfMRI.nii.gz`
 
 ### no GDC for our data
 #$BB_BIN_DIR/bb_pipeline_tools/bb_GDC_half_voxel --workingdir=$1/fMRI/rfMRI_SBREF_GDC --in=$1/fMRI/rfMRI_SBREF.nii.gz --out=$1/fMRI/rfMRI_SBREF_ud.nii.gz --owarp=$1/fMRI/rfMRI_SBREF_ud_warp.nii.gz
@@ -64,6 +63,6 @@ echo "set fmri(dwell) $fmriDwell" >> $1/fMRI/rfMRI.fsf
 echo "set fmri(te) $fmriTE" >> $1/fMRI/rfMRI.fsf
 echo "set fmri(smooth) 4" >> $1/fMRI/rfMRI.fsf
 #echo "set fmri(ndelete) 4" >> $1/fMRI/rfMRI.fsf
-#echo  "set fmri(st) 3" >> $1/fMRI/rfMRI.fsf #slice timing correction, order
+#echo  "set fmri(st) 4" >> $1/fMRI/rfMRI.fsf #slice timing correction file (from json)
 #echo "set fmri(st_file) $SLICE_TIMING_FILE" >> $1/fMRI/rfMRI.fsf #slice timing correction file
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 

@@ -93,12 +93,12 @@ export PARC_LUT="$templ/parcellations/Schaefer2018/Schaefer2018_300Parcels_17Net
 export numROI="100"                                                              #TO BE MODIFIED BY USER
 export SLICE_TIMING_FILE="$BB_BIN_DIR/bb_data/slice_timing_odd_even.txt" #ADDED FOR SLICE TIMING CORRECTION
 export TRAINING_FILE="Calgary_Training.RData"                                            #TO BE MODIFIED BY USER
-export SynB0="n"                                            #TO BE MODIFIED BY USER
+export SynB0="y"                                            #TO BE MODIFIED BY USER
 export PE_direction="0 -1 0"                                            #TO BE MODIFIED BY USER 
 #export numROI="316"                                                              					#TO BE MODIFIED BY USER
 
 # set to 1 for single shell diffusion data and 2 for multi-shell
-export DIFF_SHELL_TYPE="1"
+export DIFF_SHELL_TYPE="2"
 
 #INCLUDE 3 MAIN BIOBANK DIRECTORIES IN PATH
 export PATH="$BB_BIN_DIR/bb_pipeline_tools/:$BB_BIN_DIR/bb_general_tools/:$PATH"
