@@ -13,31 +13,31 @@ bb_pipe_tools=$(dirname $0)
 
 while IFS= read -r subjname; do
 if [ -d $subjname ]
-	then
-        cd ${subjname}/rawdata						
-    	
+    then
+        cd ${subjname}/rawdata                        
+        
 
-    	nii_1=$(find . -name *${2})
-    	nii_2=$(find . -name *${3})
-    	newname=${subjname}_dwi.nii.gz
-  		fslmerge -t $newname $nii_1 $nii_2
+        nii_1=$(find . -name *${2})
+        nii_2=$(find . -name *${3})
+        newname=${subjname}_dwi.nii.gz
+        fslmerge -t $newname $nii_1 $nii_2
 
 
-		bval_1=$(find . -name *${4})
-		bval_2=$(find . -name *${5})
+        bval_1=$(find . -name *${4})
+        bval_2=$(find . -name *${5})
         bvec_1=$(find . -name *${6})
         bvec_2=$(find . -name *${7})
         ${bb_pipe_tools}/tvb_merge_bvecbval.py bval_1 bval_2 bvec_1 bvec_2 ${subjname}_dwi.bval ${subjname}_dwi.bvec
 
 
         dwi_json=$(find . -name *${8}) 
-		cp ${dwi_json} ${subjname}_dwi.json 
-		
+        cp ${dwi_json} ${subjname}_dwi.json 
+        
 
-		mkdir orig_dwi_files
-		mv -t orig_dwi_files $nii_1 $nii_2 $bval_1 $bval_2 $bvec_1 $bvec_2 $dwi_json
-		cd ../..
-        fi
+        mkdir orig_dwi_files
+        mv -t orig_dwi_files $nii_1 $nii_2 $bval_1 $bval_2 $bvec_1 $bvec_2 $dwi_json
+        cd ../..
+    fi
 done < "$1"
 
 echo ""
