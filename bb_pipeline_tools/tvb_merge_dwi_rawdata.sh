@@ -9,7 +9,7 @@
 # Author: Leanne Rokos
 
 
-bb_pipe_tools=$(dirname $0)
+bb_pipe_tools=`echo "$(cd "$(dirname "$0")"; pwd -P)"`
 
 while IFS= read -r subjname; do
 if [ -d $subjname ]
