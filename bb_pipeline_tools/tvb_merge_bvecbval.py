@@ -10,7 +10,7 @@
 import numpy as np
 import sys
 
-def merge_bvalbvec(bval_file_1 bval_file_2 bvec_file_1 bvec_file_2 bval_output_name bvec_output_name):
+def merge_bvalbvec(bval_file_1, bval_file_2, bvec_file_1, bvec_file_2, bval_output_name, bvec_output_name):
     bval1 = np.loadtxt(bval_file_1) 
     bval2 = np.loadtxt(bval_file_2) 
 
