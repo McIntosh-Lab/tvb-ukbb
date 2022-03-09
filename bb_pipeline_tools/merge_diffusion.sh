@@ -1,41 +1,42 @@
 #!/bin/bash
 #
-#  This script concatenates diffusion nii.gz, bvec and bval files for all subject_list.txt subs in the current working directory.
+#  This script concatenates diffusion nii.gz, bvec and bval files for all subject_list.txt subs in the current working directory. 
 #
-#  Usage:  <path>/<to>/merge_diffusion.sh  <path>/<to>/subject_list.txt
+#  Usage:  <path>/<to>/merge_diffusion.sh  <path>/<to>/subject_list.txt  <relative>/<path>/<to>/first.nii.gz  <relative>/<path>/<to>/second.nii.gz  <relative>/<path>/<to>/first.bval  <relative>/<path>/<to>/second.bval  <relative>/<path>/<to>/first.bvec  <relative>/<path>/<to>/second.bvec  <relative>/<path>/<to>/dwi.json 
 #
+#	User needs to be in the directory above each subject directory (i.e. running ls should show all subject directories).
+#
+# Author: Leanne Rokos
 
-tvb_dir="/<path>/<to>/tvb-ukbb"                   #TO BE MODIFIED BY USER
+
+bb_pipe_tools=dirname "$0"
 
 while IFS= read -r subjname; do
 if [ -d $subjname ]
 	then
-        cd $subjname                              #TO BE MODIFIED BY USER
-        	b1000=$(ls *acq-b1000_dwi.nii.gz) #TO BE MODIFIED BY USER
-        	b2000=$(ls *acq-b2000_dwi.nii.gz) #TO BE MODIFIED BY USER
-        	newname=${subjname}_dwi.nii.gz
+        cd $subjname						
+    	
+    	nii_1=$2 	
+    	nii_2=$3 	
+    	
+    	newname=${subjname}_dwi.nii.gz
 
-  		fslmerge -t $newname $b1000 $b2000
+  		fslmerge -t $newname $nii_1 $nii_2
 
-		bval1000=$(ls *acq-b1000_dwi.bval) #TO BE MODIFIED BY USER
-		bval2000=$(ls *acq-b2000_dwi.bval) #TO BE MODIFIED BY USER
+		bval_1=$4 
+		bval_2=$5 
 
-                bvec1000=$(ls *acq-b1000_dwi.bvec) #TO BE MODIFIED BY USER
-                bvec2000=$(ls *acq-b2000_dwi.bvec) #TO BE MODIFIED BY USER
+        bvec_1=$6 
+        bvec_2=$7
+        dwi_json=$8
 
-		mv $bval1000 1000.bval
-		mv $bval2000 2000.bval
-		mv $bvec1000 1000.bvec
-		mv $bvec2000 2000.bvec
-
-		${tvb_dir}/bb_pipeline_tools/merge_bvecbval.py $subjname
+		${bb_pipe_tools}/merge_bvecbval.py bval_1 bval_2 bvec_1 bvec_2 ${subjname}_dwi.bval ${subjname}_dwi.bvec
 
 
-		mv bval ${subjname}_dwi.bval
-                mv bvec ${subjname}_dwi.bvec
-		cp $(ls *acq-b1000_dwi.json) ${subjname}_dwi.json #TO BE MODIFIED BY USER
+		cp $(dwi_json) ${subjname}_dwi.json 
+
 		mkdir orig_dwi_files
-		mv -t orig_dwi_files 1000.bv* 2000.bv* $(ls *acq*)
+		mv -t orig_dwi_files $nii_1 $nii_2 $bval_1 $bval_2 $bvec_1 $bvec_2 $dwi_json
 		cd ..
         fi
 done < "$1"
