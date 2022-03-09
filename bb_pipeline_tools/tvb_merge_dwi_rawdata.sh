@@ -27,7 +27,7 @@ if [ -d $subjname ]
         bval_2=$(find . -name *${5})
         bvec_1=$(find . -name *${6})
         bvec_2=$(find . -name *${7})
-        python ${bb_pipe_tools}/tvb_merge_bvecbval.py bval_1 bval_2 bvec_1 bvec_2 ${subjname}_dwi.bval ${subjname}_dwi.bvec
+        python ${bb_pipe_tools}/tvb_merge_bvecbval.py $bval_1 $bval_2 $bvec_1 $bvec_2 ${subjname}_dwi.bval ${subjname}_dwi.bvec
 
 
         json_1=$(find . -name *${8}) 
