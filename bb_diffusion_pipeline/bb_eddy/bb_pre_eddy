@@ -68,7 +68,7 @@ echo $indx > $direc/dMRI/dMRI/eddy_index.txt
 
 
 # check if topupValue has been set in init_vars; if unset, compute it
-if [ -z ${topupValue+x}; then
+if [ -z ${topupValue+x} ]; then
 
 	# Creation of acqparam file, borrowed from TOPUP prep in bb_prepare_struct_field
 	EPIfactor=96 #aka Echo Train Length, number of lines
