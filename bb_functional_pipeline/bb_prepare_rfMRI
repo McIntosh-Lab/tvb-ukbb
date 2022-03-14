@@ -63,6 +63,6 @@ echo "set fmri(dwell) $fmriDwell" >> $1/fMRI/rfMRI.fsf
 echo "set fmri(te) $fmriTE" >> $1/fMRI/rfMRI.fsf
 echo "set fmri(smooth) 4" >> $1/fMRI/rfMRI.fsf
 #echo "set fmri(ndelete) 4" >> $1/fMRI/rfMRI.fsf
-#echo  "set fmri(st) 4" >> $1/fMRI/rfMRI.fsf #slice timing correction file (from json)
-#echo "set fmri(st_file) $SLICE_TIMING_FILE" >> $1/fMRI/rfMRI.fsf #slice timing correction file
+echo  "set fmri(st) 3" >> $1/fMRI/rfMRI.fsf #slice timing order file
+echo "set fmri(st_file) $SLICE_TIMING_FILE" >> $1/fMRI/rfMRI.fsf #slice timing order file
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
