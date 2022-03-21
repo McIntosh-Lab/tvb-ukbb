@@ -19,9 +19,7 @@ font = {"size": 100}
 matplotlib.rc("font", **font)
 
 
-
-def SC_FC(subj,subjName):
-
+def SC_FC(subj,subjName, PARC_NAME):
     """Function that generates SC, FC, TL, TS plots for QC html report
     for a subject.
 
@@ -62,8 +60,8 @@ def SC_FC(subj,subjName):
             if file.endswith(".ica"):
 
                 #import FC and TS data
-                fc_path = os.path.join(subj + "/fMRI/", file, "fc.txt")
-                ts_path = os.path.join(subj + "/fMRI/", file, "ts.txt")
+                fc_path = os.path.join(subj + "/fMRI/", file, "fc_"+PARC_NAME+".txt")
+                ts_path = os.path.join(subj + "/fMRI/", file, "ts_"+PARC_NAME+".txt")
 
                 FC = ""
                 norm_ts = ""
@@ -296,7 +294,7 @@ if __name__ == "__main__":
 
     """
     # try:
-    SC_FC(sys.argv[1],sys.argv[2])
+    SC_FC(sys.argv[1],sys.argv[2],sys.argv[3])
 
 
     
