@@ -49,9 +49,9 @@ done < <(find $subjdir/fMRI -maxdepth 1 -type d -name "*.ica" -print0)
 #for each .ica file
 for t in ${array[@]}; do
 	mkdir $subjdir/tvb_inputs/functional_inputs/`basename $t`
-	cp $t/fc.txt $t/ts.txt $subjdir/tvb_inputs/functional_inputs/`basename $t`
-	mv $subjdir/tvb_inputs/functional_inputs/`basename $t`/fc.txt $subjdir/tvb_inputs/functional_inputs/`basename $t`/`basename $t`_functional_connectivity.txt
-	mv $subjdir/tvb_inputs/functional_inputs/`basename $t`/ts.txt $subjdir/tvb_inputs/functional_inputs/`basename $t`/`basename $t`_time_series.txt
+	cp $t/fc_${PARC_NAME}.txt $t/ts_${PARC_NAME}.txt $subjdir/tvb_inputs/functional_inputs/`basename $t`
+	mv $subjdir/tvb_inputs/functional_inputs/`basename $t`/fc_${PARC_NAME}.txt $subjdir/tvb_inputs/functional_inputs/`basename $t`/`basename $t`_functional_connectivity.txt
+	mv $subjdir/tvb_inputs/functional_inputs/`basename $t`/ts_${PARC_NAME}.txt $subjdir/tvb_inputs/functional_inputs/`basename $t`/`basename $t`_time_series.txt
 
 	python $BB_BIN_DIR/bb_general_tools/replace_nans.py $subjdir/tvb_inputs/functional_inputs/`basename $t`/`basename $t`_functional_connectivity.txt
 
@@ -72,9 +72,10 @@ cd $subjdir/tvb_inputs && zip -r ./${subj}_tvb_structural_inputs.zip ./structura
 
 rm -rf $subjdir/tvb_inputs/structural_inputs
 
-cd $subjdir && zip -r ./${subj}_tvb_inputs.zip ./tvb_inputs && cd -
+mv ./tvb_inputs ./${subj}_${PARC_NAME}_tvb_inputs
+cd $subjdir && zip -r ./${subj}_${PARC_NAME}_tvb_inputs.zip ./${subj}_${PARC_NAME}_tvb_inputs && cd -
 
-rm -rf $subjdir/tvb_inputs
+rm -rf $subjdir/${subj}_${PARC_NAME}_tvb_inputs
 
 
 set -e

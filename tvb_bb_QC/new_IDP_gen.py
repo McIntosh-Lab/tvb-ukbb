@@ -24,7 +24,7 @@ matplotlib.rc("font", **font)
 
 IDP_num_counter = 1
 
-def FC_distribution(subj):
+def FC_distribution(subj, PARC_NAME):
 
     #import data and generate graphs for fMRI
     #for each ica folder in fMRI
@@ -34,8 +34,8 @@ def FC_distribution(subj):
             if file.endswith(".ica"):
 
                 #import FC and TS data
-                fc_path = os.path.join(subj + "/fMRI/", file, "fc.txt")
-                ts_path = os.path.join(subj + "/fMRI/", file, "ts.txt")
+                fc_path = os.path.join(subj + "/fMRI/", file, "fc_"+PARC_NAME+".txt")
+                ts_path = os.path.join(subj + "/fMRI/", file, "ts_"+PARC_NAME+".txt")
 
                 FC = ""
                 norm_ts = ""
@@ -140,7 +140,7 @@ def FC_distribution(subj):
 
 
 
-def SC_distribution(subj):
+def SC_distribution(subj, PARC_NAME):
 
     
     #import SC data
@@ -500,8 +500,8 @@ def homotopic(subj,LUT_txt):
             if file.endswith(".ica"):
 
                 #import FC and TS data
-                fc_path = os.path.join(subj + "/fMRI/", file, "fc.txt")
-                ts_path = os.path.join(subj + "/fMRI/", file, "ts.txt")
+                fc_path = os.path.join(subj + "/fMRI/", file, "fc_"+PARC_NAME+".txt")
+                ts_path = os.path.join(subj + "/fMRI/", file, "ts_"+PARC_NAME+".txt")
 
                 FC = ""
                 norm_ts = ""
@@ -837,7 +837,7 @@ def write_to_IDP_file(subj,short,category,num_in_cat,long_var,unit,dtype,descrip
 
 
 
-def new_IDP_gen(subj,LUT_txt,BB_BIN_DIR):      #,fix4melviewtxt
+def new_IDP_gen(subj,LUT_txt,BB_BIN_DIR,PARC_NAME):      #,fix4melviewtxt
     """Function that generates new IDPs for a subject.
 
     TODO: more error handling here and in function def to deal with 
@@ -888,8 +888,8 @@ def new_IDP_gen(subj,LUT_txt,BB_BIN_DIR):      #,fix4melviewtxt
 
     fix4melviewtxt=""
 
-    FC_distribution(subj)
-    SC_distribution(subj)
+    FC_distribution(subj, PARC_NAME)
+    SC_distribution(subj, PARC_NAME)
     MELODIC_SNR(subj,fix4melviewtxt)
     MCFLIRT_displacement(subj)       
 
@@ -933,6 +933,6 @@ if __name__ == "__main__":
 
     #TODO: use argparse https://stackoverflow.com/questions/32761999/how-to-pass-an-entire-list-as-command-line-argument-in-python/32763023
     # try:
-    new_IDP_gen(sys.argv[1],sys.argv[2],sys.argv[3]) #,sys.argv[3])
+    new_IDP_gen(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4]) #,sys.argv[3])
 
     
