@@ -31,7 +31,7 @@ ${AFNIDIR}/3dROIMaker -inset ${subjdir}/dMRI/dMRI/interface.nii.gz -thresh 0.1 -
 mv ${subjdir}/dMRI/probtrackx_${PARC_NAME}/labelledWM_GM.nii.gz ${subjdir}/dMRI/probtrackx_${PARC_NAME}/labelledWM_GM_${PARC_NAME}.nii.gz
 
 # get masks of ROIs and make a list of seeds
-${BB_BIN_DIR}/bb_diffusion_pipeline/tvb_probtrackx2/tvb_createDTImasks.py -i ${subjdir}/dMRI/dMRI/interface.nii.gz -LUT ${PARC_LUT} -ri ${subjdir}/dMRI/probtrackx/labelledWM_GM_${PARC_NAME}.nii.gz -od ${subjdir}/dMRI/probtrackx_${PARC_NAME}
+${BB_BIN_DIR}/bb_diffusion_pipeline/tvb_probtrackx2/tvb_createDTImasks.py -i ${subjdir}/dMRI/dMRI/interface.nii.gz -LUT ${PARC_LUT} -ri ${subjdir}/dMRI/probtrackx_${PARC_NAME}/labelledWM_GM_${PARC_NAME}.nii.gz -od ${subjdir}/dMRI/probtrackx_${PARC_NAME}
 
 
 output_dir=$subjdir/dMRI/probtrackx_${PARC_NAME}/
