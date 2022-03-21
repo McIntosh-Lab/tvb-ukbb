@@ -145,7 +145,7 @@ def SC_distribution(subj):
     
     #import SC data
     SC = ""
-    SC_path=subj + "/dMRI/sc.txt"
+    SC_path=subj + "/dMRI/sc_"+PARC_NAME+".txt"
     try:
         SC = np.loadtxt(SC_path)
     except:

@@ -8,7 +8,7 @@ import os
 np.set_printoptions(threshold=sys.maxsize)
 
 
-def generate_centres_cortical(subjdir, PARC_LUT):
+def generate_centres_cortical(subjdir, PARC_LUT, PARC_NAME):
 	datafile = open(PARC_LUT, 'r')
 	datareader = csv.reader(datafile, delimiter = "\t")
 	ROI_list = []
@@ -19,7 +19,7 @@ def generate_centres_cortical(subjdir, PARC_LUT):
 
 	ROI_list=sorted(ROI_list,key=lambda l:l[0])
 
-	label_image = os.path.join(subjdir,"T1/labelled_GM.nii.gz")
+	label_image = os.path.join(subjdir,"T1/labelled_GM_"+PARC_NAME+".nii.gz")
 	img = nib.load(label_image)
 	data = img.get_fdata()
 	#print(t1_data[np.nonzero(t1_data)])
@@ -84,7 +84,7 @@ if __name__ == "__main__":
 
     """
     # try:
-    generate_centres_cortical(sys.argv[1],sys.argv[2])
+    generate_centres_cortical(sys.argv[1],sys.argv[2],sys.argv[3])
 
 
 

@@ -15,7 +15,7 @@ subjdir=`echo ${subjdir} | sed 's/\/$/$/g'`
 echo subjectdir is $subjdir
 
 
-python $BB_BIN_DIR/bb_diffusion_pipeline/tvb_probtrackx2/tvb_concat_probtrackx2.py $subjdir $PROBTRACKX_GPU
+python $BB_BIN_DIR/bb_diffusion_pipeline/tvb_probtrackx2/tvb_concat_probtrackx2.py $subjdir $PROBTRACKX_GPU ${PARC_NAME}
 
 # move probtrackx logs to subject log directory
 # mv bb_probtrackx_${1}.e* $subjdir/logs/.
@@ -30,10 +30,10 @@ mkdir $subjdir/tvb_inputs/functional_inputs
 
 
 
-cp $subjdir/dMRI/sc.txt $subjdir/dMRI/distance.txt $subjdir/T2_FLAIR/lesions/volume.txt $subjdir/tvb_inputs
+cp $subjdir/dMRI/sc_${PARC_NAME}.txt $subjdir/dMRI/distance_${PARC_NAME}.txt $subjdir/T2_FLAIR/lesions/volume.txt $subjdir/tvb_inputs
 
-mv $subjdir/tvb_inputs/sc.txt $subjdir/tvb_inputs/structural_inputs/weights.txt
-mv $subjdir/tvb_inputs/distance.txt $subjdir/tvb_inputs/structural_inputs/tract_lengths.txt
+mv $subjdir/tvb_inputs/sc_${PARC_NAME}.txt $subjdir/tvb_inputs/structural_inputs/weights.txt
+mv $subjdir/tvb_inputs/distance_${PARC_NAME}.txt $subjdir/tvb_inputs/structural_inputs/tract_lengths.txt
 mv $subjdir/tvb_inputs/volume.txt $subjdir/tvb_inputs/misc_inputs/lesion_volume.txt
 
 
@@ -59,7 +59,7 @@ done
 
 
 #generate cortical.txt and centres.txt
-python $BB_BIN_DIR/bb_diffusion_pipeline/tvb_probtrackx2/tvb_generate_centres_cortical.py $subjdir $PARC_LUT
+python $BB_BIN_DIR/bb_diffusion_pipeline/tvb_probtrackx2/tvb_generate_centres_cortical.py $subjdir $PARC_LUT ${PARC_NAME}
 
 
 subj=$1

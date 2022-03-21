@@ -161,7 +161,7 @@ def SC_FC(subj,subjName):
     #import SC data
     SC = ""
     try:
-        SC = np.loadtxt(subj + "/dMRI/sc.txt")
+        SC = np.loadtxt(subj + "/dMRI/sc_"+PARC_NAME+".txt")
     except:
         print("ERROR: sc file not found")
 
@@ -170,7 +170,7 @@ def SC_FC(subj,subjName):
     #import TL data
     tract_lengths = ""
     try:
-        tract_lengths = np.loadtxt(subj + "/dMRI/distance.txt")
+        tract_lengths = np.loadtxt(subj + "/dMRI/distance_"+PARC_NAME+".txt")
     except:
         print("ERROR: distance file not found")
 
