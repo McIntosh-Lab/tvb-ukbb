@@ -86,6 +86,7 @@ def consistency_thresholding(zip_dir, threshold, subject_list, PARC_NAME):
     subjects = []
     with open(subject_list) as subject_list_file:
         for line in subject_list_file:
+            line = line.rstrip('\n')
             subjects.append(line)
 
     consistency_mask=""
@@ -116,27 +117,23 @@ def consistency_thresholding(zip_dir, threshold, subject_list, PARC_NAME):
             #if name of uncompressed dir from this subj zip is ambiguous, give it a better name 
             ambiguous_dir=os.path.join(outputdir,"tvb_inputs")
             specific_dir=os.path.join(outputdir,subject_file_name[:-4])
-            end_dir=""
-            # dont rename uncompressed zip because user is not expecting it
-            # if os.path.exists(ambiguous_dir):
-                # os.rename(ambiguous_dir,specific_dir)
 
-            if os.path.exists(specific_dir):
-                end_dir=specific_dir
+            # rename uncompressed zip
             if os.path.exists(ambiguous_dir):
-                end_dir=ambiguous_dir
+                os.rename(ambiguous_dir,specific_dir)
+
+            end_dir=specific_dir
 
             #past version of pipeline generates SUBJECTNAME_tvb_structural_inputs.zip within the tvb_inputs directory.
             #new version generates structural_inputs.zip instead
             specific_struct_zip=os.path.join(end_dir,subject+"_tvb_structural_inputs.zip")
             ambiguous_struct_zip=os.path.join(end_dir,"structural_inputs.zip")
 
-            #unzip struct inputs
-            struct_zip=""
             if os.path.exists(specific_struct_zip):
-                struct_zip=specific_struct_zip
-            if os.path.exists(ambiguous_struct_zip):
-                struct_zip=ambiguous_struct_zip
+                os.rename(specific_struct_zip,ambiguous_struct_zip)
+
+            #unzip struct inputs
+            struct_zip=ambiguous_struct_zip
 
             with zipfile.ZipFile(struct_zip, 'r') as zip_ref:
                 zip_ref.extractall(end_dir)
@@ -145,7 +142,7 @@ def consistency_thresholding(zip_dir, threshold, subject_list, PARC_NAME):
             SC_path=os.path.join(end_dir,"structural_inputs","weights.txt")
             
             SC=""
-            if os.path.exist(SC_path):
+            if os.path.exists(SC_path):
                 SC=np.loadtxt(SC_path)
 
                 #binarize SC and add to consistency mask to track how many subs have a connnection for each connection 
@@ -160,9 +157,12 @@ def consistency_thresholding(zip_dir, threshold, subject_list, PARC_NAME):
             if os.path.exists(ambiguous_dir):
                 shutil.rmtree(ambiguous_dir)
 
+    if consistency_mask == "":
+        quit()
     #binarize consistency mask, thresholded by (#subs * threshold %)
-    min_sub_count = threshold*subcounter
-    consistency_mask=np.where(consistency_mask>=min_sub_count, 1, 0)
+    min_sub_count = float(threshold)*subcounter
+    consistency_mask = consistency_mask - min_sub_count
+    consistency_mask=np.where(consistency_mask>=0, 1, 0)
 
     #go into each subject and edit their weights.txt
     for subject in subjects:
@@ -186,33 +186,12 @@ def consistency_thresholding(zip_dir, threshold, subject_list, PARC_NAME):
         if os.path.exists(subject_zip):
 
             #if specific dir exists then skip unzipping
-            specific_dir=os.path.join(outputdir,subject_file_name[:-4])
-            end_dir=""
-            if os.path.exists(specific_dir):
-                end_dir=specific_dir
-            else:
-                with zipfile.ZipFile(subject_zip, 'r') as zip_ref:
-                    zip_ref.extractall(outputdir)
-                
-                end_dir=os.path.join(outputdir,"tvb_inputs")
-                
-                specific_struct_zip=os.path.join(end_dir,subject+"_tvb_structural_inputs.zip")
-                ambiguous_struct_zip=os.path.join(end_dir,"structural_inputs.zip")
-
-                struct_zip=""
-                if os.path.exists(specific_struct_zip):
-                    struct_zip=specific_struct_zip
-                if os.path.exists(ambiguous_struct_zip):
-                    struct_zip=ambiguous_struct_zip
-
-                with zipfile.ZipFile(struct_zip, 'r') as zip_ref:
-                    zip_ref.extractall(end_dir)
-
+            end_dir=os.path.join(outputdir,subject_file_name[:-4])
             SC_path=os.path.join(end_dir,"structural_inputs","weights.txt")
             
             #load SCs again and apply consistency mask
             SC=""
-            if os.path.exist(SC_path):
+            if os.path.exists(SC_path):
                 SC=np.loadtxt(SC_path)
                 SC=consistency_mask*SC
                 np.savetxt(SC_path, SC)
@@ -224,25 +203,16 @@ def consistency_thresholding(zip_dir, threshold, subject_list, PARC_NAME):
             if os.path.exists(os.path.join(end_dir,"structural_inputs")):
                 
 
-                #find struct zip to overwrite
-                specific_struct_zip=os.path.join(end_dir,subject+"_tvb_structural_inputs.zip")
-                ambiguous_struct_zip=os.path.join(end_dir,"structural_inputs.zip")
-
-                struct_zip=""
-                if os.path.exists(specific_struct_zip):
-                    struct_zip=specific_struct_zip
-                if os.path.exists(ambiguous_struct_zip):
-                    struct_zip=ambiguous_struct_zip
-
+                struct_zip=os.path.join(end_dir,"structural_inputs.zip")
                 #remove existing zip and save new for structural inputs
-                shutil.rmtree(struct_zip)
-                shutil.make_archive(struct_zip, 'zip', os.path.join(end_dir,"structural_inputs"))
+                os.remove(struct_zip)
+                shutil.make_archive(struct_zip[:-4], 'zip', os.path.join(end_dir,"structural_inputs"))
 
                 #remove uncompressed structural inputs dir
                 shutil.rmtree(os.path.join(end_dir,"structural_inputs"))
 
                 #make zip for this sub
-                shutil.make_archive(output_zip, 'zip', end_dir)
+                shutil.make_archive(output_zip[:-4], 'zip', end_dir)
 
                 shutil.rmtree(end_dir)
 
