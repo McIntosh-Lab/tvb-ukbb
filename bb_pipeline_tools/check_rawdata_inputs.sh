@@ -24,7 +24,7 @@ DWI=("DIFF_*" "MB3_*" "*dwi*.*" "*DWI*.*")
 #iterate through subjlist
 while IFS=$' \t\r\n' read -r subjname group; do
 	currentdir=`pwd`
-	cd "${group}/${subj}/rawdata/"
+	cd "${group}/${subjname}/rawdata/"
 
 	T1_flag="false"
 	T2_flag="false"
@@ -43,7 +43,7 @@ while IFS=$' \t\r\n' read -r subjname group; do
 
 	done
 	if [ $T1_flag = "false" ]; then
-		echo "${group}/${subj} is missing T1"
+		echo "${group}/${subjname} is missing T1"
 	fi
 
 
@@ -57,7 +57,7 @@ while IFS=$' \t\r\n' read -r subjname group; do
 
 	done
 	if [ $T2_flag = "false" ]; then
-		echo "${group}/${subj} is missing T2"
+		echo "${group}/${subjname} is missing T2"
 	fi
 
 	#check rfmri rawdatas
@@ -70,7 +70,7 @@ while IFS=$' \t\r\n' read -r subjname group; do
 
 	done
 	if [ $rfMRI_flag = "false" ]; then
-		echo "${group}/${subj} is missing rfMRI"
+		echo "${group}/${subjname} is missing rfMRI"
 	fi
 
 	#check tfmri rawdatas
@@ -83,7 +83,7 @@ while IFS=$' \t\r\n' read -r subjname group; do
 
 	# done
 	#if [ $tfMRI_flag = "false" ]; then
-	#	echo "${group}/${subj} is missing tfMRI"
+	#	echo "${group}/${subjname} is missing tfMRI"
 	#fi
 
 	#check swi rawdatas
@@ -96,7 +96,7 @@ while IFS=$' \t\r\n' read -r subjname group; do
 
 	# done
 	#if [ $SWI_flag = "false" ]; then
-	#	echo "${group}/${subj} is missing SWI"
+	#	echo "${group}/${subjname} is missing SWI"
 	#fi
 
 
@@ -110,7 +110,7 @@ while IFS=$' \t\r\n' read -r subjname group; do
 
 	done
 	if [ $DWI_flag = "false" ]; then
-		echo "${group}/${subj} is missing DWI"
+		echo "${group}/${subjname} is missing DWI"
 	fi
 
 
