@@ -1,8 +1,8 @@
 #!/bin/bash
 #
 # this script should be run while in an ADNI3 directory (ls should show AD, CN, LMCI, etc directories)
-# This script checks processed subjects for complete rawdata files 
-# missing expected output files will be printed if not found.
+# This script checks processed subjects for rawdata files 
+# missing expected rawdata files will be printed if not found.
 #
 # Usage while in directory containing subjects: 
 #		check_rawdata_inputs.sh  list_of_subjects.tsv
