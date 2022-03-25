@@ -4,9 +4,9 @@
 # missing expected output files will be printed if not found.
 #
 # Usage while in directory containing subjects: 
-#		check_rawdata_inputs.sh  list_of_subjects.txt
+#		check_rawdata_inputs.sh  list_of_subjects.tsv
 #
-#   list_of_subjects.txt should be a text file containing list of subjects to be checked, one per line
+#   list_of_subjects.tsv should be a file containing list of subjects to be checked, one per line
 # 
 # Author: Justin Wang
 

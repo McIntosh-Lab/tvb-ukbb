@@ -4,9 +4,9 @@
 # output files will be printed if not found.
 #
 # Usage while in directory containing subjects: 
-#       check_pipeline_completion.sh  list_of_subjects.txt
+#       check_pipeline_completion.sh  list_of_subjects.tsv
 #
-#   list_of_subjects.txt should be a text file containing list of subjects to be checked, one per line
+#   list_of_subjects.tsv should be a file containing list of subjects to be checked, one per line
 # 
 # Author: Justin Wang
 
@@ -15,6 +15,7 @@
 while IFS= read -r subjname; do
     if [ -d $subjname ]
     then
+        cd $subjname
         #array of ica dirs
         array=()
         while IFS=  read -r -d $'\0'; do
