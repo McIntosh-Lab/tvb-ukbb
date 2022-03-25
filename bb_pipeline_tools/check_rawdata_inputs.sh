@@ -1,7 +1,7 @@
 #!/bin/bash
 # 
-# This script checks processed subjects for complete rawdata files 
-# missing expected output files will be printed if not found.
+# This script checks processed subjects for rawdata files 
+# missing rawdata files will be printed if not found.
 #
 # Usage while in directory containing subjects: 
 #		check_rawdata_inputs.sh  list_of_subjects.tsv
