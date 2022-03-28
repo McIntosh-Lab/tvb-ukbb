@@ -17,7 +17,7 @@ def generate_centres_cortical(subjdir, PARC_LUT):
 		row[0]=int(row[0])
 		ROI_list.append(row)
 
-	ROI_list=sorted(ROI_list,key=lambda l:l[0])
+	#ROI_list=sorted(ROI_list,key=lambda l:l[0])
 
 	label_image = os.path.join(subjdir,"T1/labelled_GM.nii.gz")
 	img = nib.load(label_image)
