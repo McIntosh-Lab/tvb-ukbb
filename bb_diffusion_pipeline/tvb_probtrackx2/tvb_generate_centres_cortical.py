@@ -37,28 +37,27 @@ def generate_centres_cortical(subjdir, PARC_LUT):
 		ROI_num = row[0]
 		ROI_name = row[1]
 		result = np.where(data == ROI_num)
-		x_cog=((np.mean(result[0])-(img.header['dim'][1]-1)/2)*img.header['pixdim'][0])
-		y_cog=((np.mean(result[1])-(img.header['dim'][2]-1)/2)*img.header['pixdim'][1])
-		z_cog=((np.mean(result[2])-(img.header['dim'][3]-1)/2)*img.header['pixdim'][2])
+		x_cog=((np.mean(result[0])-(img.header['dim'][1]-1)/2)*img.header['pixdim'][1])
+		y_cog=((np.mean(result[1])-(img.header['dim'][2]-1)/2)*img.header['pixdim'][2])
+		z_cog=((np.mean(result[2])-(img.header['dim'][3]-1)/2)*img.header['pixdim'][3])
 		
 		#some of the ROIs in LUT arent in the SCFC... how do we know which ones will be used for the final weights matrices?
 		if np.isnan(x_cog) or np.isnan(y_cog) or np.isnan(z_cog):
 			print("found nan")
-		else:	
 
-			f.write(str(row[1])+"\t"+str(x_cog)+"\t"+str(y_cog)+"\t"+str(z_cog)+"\n")
+		f.write(str(row[1])+"\t"+str(x_cog)+"\t"+str(y_cog)+"\t"+str(z_cog)+"\n")
 
-			#todo find pattern for subcort/cort
-			if ROI_num > 400:
-				g.write("0\n")
-			else:
-				g.write("1\n")
+		#todo find pattern for subcort/cort
+		if ROI_num > 400:
+			g.write("0\n")
+		else:
+			g.write("1\n")
 
 
-			if "lh" in ROI_name or "LH" in ROI_name:
-				h.write("0\n")
-			else:
-				h.write("1\n")
+		if "lh" in ROI_name or "LH" in ROI_name:
+			h.write("0\n")
+		else:
+			h.write("1\n")
 
 
 
