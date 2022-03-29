@@ -10,7 +10,7 @@ import numpy as np
 import sys
 
 
-def tvb_concat_probtrackx2(subj, batch=True, PARC_NAME):
+def tvb_concat_probtrackx2(subj, PARC_NAME, batch=True):
     """Function that generates distance, fdt_network_matrix.txt,
     SC, waytotal, fdt_network_matrix for a subject.
 
@@ -120,7 +120,7 @@ if __name__ == "__main__":
 
     """
     # try:
-    if len(sys.argv) > 2 and (sys.argv[2] == "gpu_batch" or sys.argv[2] == "false"):
-        tvb_concat_probtrackx2(sys.argv[1], batch=True, sys.argv[3])
+    if len(sys.argv) > 2 and (sys.argv[3] == "gpu_batch" or sys.argv[3] == "false"):
+        tvb_concat_probtrackx2(sys.argv[1], sys.argv[2], batch=True)
     else:
-        tvb_concat_probtrackx2(sys.argv[1], batch=False, sys.argv[3])
+        tvb_concat_probtrackx2(sys.argv[1], sys.argv[2], batch=False)
