@@ -15,7 +15,7 @@ subjdir=`echo ${subjdir} | sed 's/\/$/$/g'`
 echo subjectdir is $subjdir
 
 
-python $BB_BIN_DIR/bb_diffusion_pipeline/tvb_probtrackx2/tvb_concat_probtrackx2.py $subjdir $PROBTRACKX_GPU ${PARC_NAME}
+python $BB_BIN_DIR/bb_diffusion_pipeline/tvb_probtrackx2/tvb_concat_probtrackx2.py $subjdir ${PARC_NAME} $PROBTRACKX_GPU
 
 # move probtrackx logs to subject log directory
 # mv bb_probtrackx_${1}.e* $subjdir/logs/.
