@@ -39,15 +39,12 @@
 
 import numpy as np
 import sys
-from scipy.stats import zscore
-import matplotlib.pyplot as plt
-import matplotlib
 import os
-import copy
 import zipfile
 import shutil
+import csv
 
-def consistency_thresholding(zip_dir, threshold, subject_list, PARC_NAME):
+def consistency_thresholding(zip_dir, threshold, subject_list, PARC_NAME, PARC_LUT, ROI_remove):
     """Script to consistency threshold a group of processed subjects' structural 
      connectivity matrices.
 
@@ -88,6 +85,28 @@ def consistency_thresholding(zip_dir, threshold, subject_list, PARC_NAME):
         for line in subject_list_file:
             line = line.rstrip('\n')
             subjects.append(line)
+
+    #import ROIs to remove into an array
+    ROIs_to_remove = []
+    with open(ROI_remove) as ROI_remove_file:
+        for line in ROI_remove_file:
+            line = line.rstrip('\n')
+            ROIs_to_remove.append(line)
+
+    #open PARC_LUT
+    datafile = open(PARC_LUT, 'r')
+    datareader = csv.reader(datafile, delimiter = "\t")
+    ROI_list = []
+
+    for row in datareader:
+        row[0]=int(row[0])
+        ROI_list.append(row)
+
+    #change ROIs_to_remove from list of ROI #s to remove into list of matrix indices to remove
+    for i in range(len(ROIs_to_remove)):
+        for j in range(len(ROI_list)):
+            if int(ROIs_to_remove[i]) == int(ROI_list[j][0]):
+                ROIs_to_remove[i] = j
 
     consistency_mask=""
     subcounter=0
@@ -143,22 +162,33 @@ def consistency_thresholding(zip_dir, threshold, subject_list, PARC_NAME):
             
             SC=""
             if os.path.exists(SC_path):
+                #load SC
                 SC=np.loadtxt(SC_path)
+                
+                #remove ROIs from SC and save without these ROIs
+                SC = np.delete(SC, ROIs_to_remove, axis=0)
+                SC = np.delete(SC, ROIs_to_remove, axis=1)
+                np.savetxt(SC_path, SC)
 
-                #binarize SC and add to consistency mask to track how many subs have a connnection for each connection 
-                SC=np.where(SC>0, 1, 0)
-                if consistency_mask=="":
-                    consistency_mask=SC
+                if np.any(np.isnan(SC)):
+                    print("found nan in",SC_path)
                 else:
-                    consistency_mask=consistency_mask+SC
-                subcounter = subcounter+1
+                    #binarize SC and add to consistency mask to track how many subs have a connnection for each connection 
+                    SC=np.where(SC>0, 1, 0)
+                    if consistency_mask=="":
+                        consistency_mask=SC
+                    else:
+                        consistency_mask=consistency_mask+SC
+                    subcounter = subcounter+1
             
-            #delete dir if ambiguous
+            #delete dir if ambiguous (this code shouldnt run anyway)
             if os.path.exists(ambiguous_dir):
                 shutil.rmtree(ambiguous_dir)
 
+    #quit if weve encountered no nan-less SC matrices
     if consistency_mask == "":
         quit()
+
     #binarize consistency mask, thresholded by (#subs * threshold %)
     min_sub_count = float(threshold)*subcounter
     consistency_mask = consistency_mask - min_sub_count
@@ -193,29 +223,45 @@ def consistency_thresholding(zip_dir, threshold, subject_list, PARC_NAME):
             SC=""
             if os.path.exists(SC_path):
                 SC=np.loadtxt(SC_path)
-                SC=consistency_mask*SC
-                np.savetxt(SC_path, SC)
+                sc_has_nans=np.any(np.isnan(SC))
+                if not sc_has_nans:
+                    #threshold SC and save
+                    SC=consistency_mask*SC
+                    np.savetxt(SC_path, SC)
 
-            
+                    #load TL, remove ROIS, threshold, and save
+                    TL_path=os.path.join(end_dir,"structural_inputs","distance.txt")
+                    if os.path.exists(TL_path):
+                        TL=np.loadtxt(TL_path)
+                        TL = np.delete(TL, ROIs_to_remove, axis=0)
+                        TL = np.delete(TL, ROIs_to_remove, axis=1)
+                        TL=consistency_mask*TL
+                        np.savetxt(TL_path, TL)
+                    #zip and clean up
+                    # if os.path.exists(os.path.join(end_dir,"structural_inputs")):
+                    #removed if statement because implied by existenc of sc path    
 
+                    struct_zip=os.path.join(end_dir,"structural_inputs.zip")
+                    #remove existing zip and save new for structural inputs
+                    os.remove(struct_zip)
+                    shutil.make_archive(struct_zip[:-4], 'zip', end_dir,"structural_inputs")
 
-            #zip and clean up
-            if os.path.exists(os.path.join(end_dir,"structural_inputs")):
-                
+                    #remove uncompressed structural inputs dir
+                    shutil.rmtree(os.path.join(end_dir,"structural_inputs"))
 
-                struct_zip=os.path.join(end_dir,"structural_inputs.zip")
-                #remove existing zip and save new for structural inputs
-                os.remove(struct_zip)
-                shutil.make_archive(struct_zip[:-4], 'zip', os.path.join(end_dir,"structural_inputs"))
+                    end_dir_thresh=end_dir+"_thresholded" #_tvb_inputs
+                    os.rename(end_dir,end_dir_thresh)
 
-                #remove uncompressed structural inputs dir
-                shutil.rmtree(os.path.join(end_dir,"structural_inputs"))
+                    #make zip for this sub
+                    shutil.make_archive(end_dir_thresh, 'zip', os.path.dirname(end_dir_thresh), os.path.basename(end_dir_thresh))
 
-                #make zip for this sub
-                shutil.make_archive(output_zip[:-4], 'zip', end_dir)
-
+                    shutil.rmtree(end_dir_thresh)
+                else:
+                    print("deleted",SC_path)
+                    shutil.rmtree(end_dir)
+            else:
+                print("deleted",SC_path)
                 shutil.rmtree(end_dir)
-
 
 
 if __name__ == "__main__":
@@ -252,6 +298,6 @@ if __name__ == "__main__":
 
     """
     # try:
-    consistency_thresholding(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4])
+    consistency_thresholding(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4],sys.argv[5],sys.argv[6])
 
     
