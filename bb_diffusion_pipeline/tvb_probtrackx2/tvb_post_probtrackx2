@@ -72,13 +72,13 @@ cd $subjdir/tvb_inputs && zip -r ./${subj}_tvb_structural_inputs.zip ./structura
 
 rm -rf $subjdir/tvb_inputs/structural_inputs
 
-cd $subjdir
+
 
 #rename tvb inputs to be subj and parc specific
-mv ./tvb_inputs ./${subj}_${PARC_NAME}_tvb_inputs
+mv ${subjdir}/tvb_inputs ${subjdir}/${subj}_${PARC_NAME}_tvb_inputs
 
 #zip it
-zip -r ./${subj}_${PARC_NAME}_tvb_inputs.zip ./${subj}_${PARC_NAME}_tvb_inputs && cd -
+cd $subjdir && zip -r ./${subj}_${PARC_NAME}_tvb_inputs.zip ./${subj}_${PARC_NAME}_tvb_inputs && cd -
 
 rm -rf $subjdir/${subj}_${PARC_NAME}_tvb_inputs
 
