@@ -248,7 +248,7 @@ def consistency_thresholding(zip_dir, threshold, subject_list, PARC_NAME, PARC_L
                     
                     for input_file in single_row_ROI_remove:
                         if os.path.exists(input_file):
-                            loaded_input = np.loadtxt(input_file)
+                            loaded_input = np.genfromtxt(input_file,delimiter='\t', dtype='str')
                             loaded_input = np.delete(loaded_input, ROIs_to_remove)
                             np.savetxt(input_file, loaded_input)
 
