@@ -2,7 +2,7 @@ The 'TVB_SchaeferTian' parcellations were created by combining the Schaefer2018 
 Different granularities of these hierarchical parcellations were chosen and collapsed into a single image file. Detailed label information can be found in the associated lookup tables (*_LUT.tsv).
 
 The following customizations were also performed:
-TVB_SchaeferTian_420: The 20 subcortical regions are comprised of the regions from the Tian2020 Scale 1 atlas except for the hippocampus. For hippocampus, the Scale 3 atlas was used with the hippocampal head divisions (HIP-head-m, HIP-head-l) collapsed into a single parcel (HIP-head).
+TVB_SchaeferTian_220 & TVB_SchaeferTian_420: The 20 subcortical regions are comprised of the regions from the Tian2020 Scale 1 atlas except for the hippocampus. For hippocampus, the Scale 3 atlas was used with the hippocampal head divisions (HIP-head-m, HIP-head-l) collapsed into a single parcel (HIP-head).
 TVB_SchaeferTian_436: The 36 subcortical regions are comprised of the regions from the Tian2020 Scale 2 atlas except for the hippocampus. For hippocampus, the Scale 3 atlas hippocampal divisions were used.
 
 Citations:
