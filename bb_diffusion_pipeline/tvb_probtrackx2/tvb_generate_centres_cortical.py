@@ -18,8 +18,11 @@ def generate_centres_cortical(subjdir, PARC_LUT, PARC_NAME):
 		ROI_list.append(row)
 
 	#ROI_list=sorted(ROI_list,key=lambda l:l[0])
-
-	label_image = os.path.join(subjdir,"T1/labelled_GM_"+PARC_NAME+".nii.gz")
+	
+	if PARC_NAME != "":
+		PARC_NAME="_"+PARC_NAME
+		
+	label_image = os.path.join(subjdir,"T1/labelled_GM"+PARC_NAME+".nii.gz")
 	img = nib.load(label_image)
 	data = img.get_fdata()
 	#print(t1_data[np.nonzero(t1_data)])
