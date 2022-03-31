@@ -254,23 +254,21 @@ def consistency_thresholding(zip_dir, threshold, subject_list, PARC_NAME, PARC_L
 
 
                     #load fc and ts files to remove ROIs
-                    FC_path=""
-                    TS_path=""
                     for file in os.listdir(os.path.join(end_dir,"functional_inputs")):
                         if file.endswith(".ica"):
                             FC_path=os.path.join(end_dir,"functional_inputs",file,file+"_functional_connectivity.txt")
                             TS_path=os.path.join(end_dir,"functional_inputs",file,file+"_time_series.txt")
 
-                    if os.path.exists(FC_path):
-                        FC=np.loadtxt(FC_path)
-                        FC = np.delete(FC, ROIs_to_remove, axis=0)
-                        FC = np.delete(FC, ROIs_to_remove, axis=1)
-                        np.savetxt(FC_path, FC)
+                            if os.path.exists(FC_path):
+                                FC=np.loadtxt(FC_path)
+                                FC = np.delete(FC, ROIs_to_remove, axis=0)
+                                FC = np.delete(FC, ROIs_to_remove, axis=1)
+                                np.savetxt(FC_path, FC)
 
-                    if os.path.exists(TS_path):
-                        TS=np.loadtxt(TS_path)
-                        TS = np.delete(TS, ROIs_to_remove, axis=1)
-                        np.savetxt(TS_path, TS)
+                            if os.path.exists(TS_path):
+                                TS=np.loadtxt(TS_path)
+                                TS = np.delete(TS, ROIs_to_remove, axis=1)
+                                np.savetxt(TS_path, TS)
 
                     
 
