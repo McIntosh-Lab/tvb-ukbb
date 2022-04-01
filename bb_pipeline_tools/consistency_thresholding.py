@@ -250,9 +250,8 @@ def consistency_thresholding(zip_dir, threshold, subject_list, PARC_NAME, PARC_L
                         if os.path.exists(input_file):
                             loaded_input = np.genfromtxt(input_file,delimiter='\t', dtype='str')
                             loaded_input = np.delete(loaded_input, ROIs_to_remove)
-                            np.savetxt(input_file, loaded_input)
-
-
+                            # np.savetxt(input_file, loaded_input)
+                            np.savetxt(input_file,loaded_input, delimiter="\t", fmt="%s")
                     #load fc and ts files to remove ROIs
                     for file in os.listdir(os.path.join(end_dir,"functional_inputs")):
                         if file.endswith(".ica"):
