@@ -10,7 +10,7 @@ import copy
 from scipy.stats.stats import pearsonr
 
 	
-def connectivity_correlation(first_matrix, first_matrix):
+def connectivity_correlation(first_matrix, second_matrix):
 
     #load and flatten
     first=np.loadtxt(first_matrix)
