@@ -321,21 +321,21 @@ def IDP_html_gen(subj,PARC_NAME):
     <br>
 
     <br>
-    <a href="../../IDP_files/" class="w3-bar-item w3-button">High-Priority IDPs: """
+    <a href="../../IDP_files_"""+PARC_NAME+"""/" class="w3-bar-item w3-button">High-Priority IDPs: """
         + str(IDP_dir)[:-1]
         + "_"
         + PARC_NAME
         + "/priority_IDPs.tsv"
         + """</a>
     <br>
-    <a href="../../IDP_files/" class="w3-bar-item w3-button">New TVB IDPs: """
+    <a href="../../IDP_files_"""+PARC_NAME+"""/" class="w3-bar-item w3-button">New TVB IDPs: """
         + str(IDP_dir)[:-1]
         + "_"
         + PARC_NAME
         + "/tvb_new_IDPs.tsv"
         + """</a>
     <br>
-    <a href="../../IDP_files/" class="w3-bar-item w3-button">Lower-priority IDPs: """
+    <a href="../../IDP_files_"""+PARC_NAME+"""/" class="w3-bar-item w3-button">Lower-priority IDPs: """
         + str(IDP_dir)[:-1]
         + "_"
         + PARC_NAME
@@ -343,7 +343,7 @@ def IDP_html_gen(subj,PARC_NAME):
         + """</a>
     <br>
 
-    <a href="../../IDP_files/" class="w3-bar-item w3-button">Combination of the above IDPs: """
+    <a href="../../IDP_files_"""+PARC_NAME+"""/" class="w3-bar-item w3-button">Combination of the above IDPs: """
         + str(IDP_dir)[:-1]
         + "_"
         + PARC_NAME
