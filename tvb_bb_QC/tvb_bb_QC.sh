@@ -333,9 +333,11 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 
 	$BB_BIN_DIR/tvb_bb_QC/html_gen.sh  $dirSubject $sub
 
-### RENAME QC TO BE PARC SPECIFIC ###
+### RENAME QC AND IDP DIRS TO BE PARC SPECIFIC ###
 
 	mv ${dirSubject}/QC ${dirSubject}/QC_${PARC_NAME}
+	mv ${dirSubject}/IDP_files ${dirSubject}/IDP_files_${PARC_NAME}
+
 
 set -e
 
