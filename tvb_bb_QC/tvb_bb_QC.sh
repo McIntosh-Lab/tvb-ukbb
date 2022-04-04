@@ -325,7 +325,7 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 	python $BB_BIN_DIR/tvb_bb_QC/IDP_postprocessing.py $dirSubject $BB_BIN_DIR/bb_IDP/ukbb_IDP_list.tsv $BB_BIN_DIR/bb_IDP/IDPoi.txt $BB_BIN_DIR/bb_IDP/thresholds.tsv
 	#TODO: only give $BB_BIN_DIR as arg for above and resolve relative pathing in script
 	
-	python $BB_BIN_DIR/tvb_bb_QC/IDP_html_gen.py $dirSubject
+	python $BB_BIN_DIR/tvb_bb_QC/IDP_html_gen.py $dirSubject ${PARC_NAME}
 
 
 
@@ -333,6 +333,9 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 
 	$BB_BIN_DIR/tvb_bb_QC/html_gen.sh  $dirSubject $sub
 
+### RENAME QC TO BE PARC SPECIFIC ###
+
+	mv ${dirSubject}/QC ${dirSubject}/QC_${PARC_NAME}
 
 set -e
 

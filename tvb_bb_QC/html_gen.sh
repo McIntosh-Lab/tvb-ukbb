@@ -60,6 +60,7 @@ cat > $subjdir$html_output_dir"/report.html" << EOF
       <h5 class="w3-hide-large" style="white-space:nowrap">QC IMAGE REPORT</h5>
       
       <h3 class="w3-hide-medium w3-hide-small">$sub_upper</h3>
+      <h5 class="w3-hide-medium w3-hide-small">Parcellation - ${PARC_NAME}</h5>
       
     </div>
  
@@ -107,7 +108,23 @@ cat > $subjdir$html_output_dir"/report.html" << EOF
 </div>
 <!-- Page content -->
 <div class="w3-content w3-padding-large w3-margin-top" id="portfolio" style="color:white; text-align: center;">
+<h1>
+    <select name="menu1" id="menu1" onkeydown="IgnoreAlpha(event);">
+      <option selected="selected">${PARC_NAME}</option>
+      <option >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</option>
 
+      
+      </select>
+      <script type="text/javascript">
+     var urlmenu = document.getElementById( 'menu1' );
+     urlmenu.onchange = function() {
+          if (this.options[ this.selectedIndex ].value != ""){
+            window.open( this.options[ this.selectedIndex ].value, '_self');
+          }
+     };
+    </script></h1>  
+<br>
+<br>
 
 
 <!-- End page content -->
@@ -157,7 +174,7 @@ cat > $subjdir$html_output_dir"/anat.html" << EOF
       <h5 class="w3-hide-large" style="white-space:nowrap">ANATOMICAL IMAGE REPORT</h5>
       
       <h3 class="w3-hide-medium w3-hide-small">$sub_upper</h3>
-      
+      <h5 class="w3-hide-medium w3-hide-small">Parcellation - ${PARC_NAME}</h5>
     </div>
  
 
@@ -212,7 +229,22 @@ cat > $subjdir$html_output_dir"/anat.html" << EOF
   <br>______<br><br>
   <h1> $sub_upper 
   <br>
-  <div id="analysis_title" style="display: inline; font-size: 28px">EXTRACTION</div></h1>
+  <div id="analysis_title" style="display: inline; font-size: 28px">EXTRACTION</div><br>    
+    <select name="menu1" id="menu1" onkeydown="IgnoreAlpha(event);">
+      <option selected="selected">${PARC_NAME}</option>
+      <option >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</option>
+
+      
+      </select>
+      <script type="text/javascript">
+     var urlmenu = document.getElementById( 'menu1' );
+     urlmenu.onchange = function() {
+          if (this.options[ this.selectedIndex ].value != ""){
+            window.open( this.options[ this.selectedIndex ].value, '_self');
+          }
+     };
+    </script>
+    </h1>
   ______<br><br>
 
 
@@ -440,6 +472,7 @@ cat > $subjdir$html_output_dir"/dMRI.html" << EOF
       <h5 class="w3-hide-large" style="white-space:nowrap">dMRI IMAGE REPORT</h5>
       
       <h3 class="w3-hide-medium w3-hide-small">$sub_upper</h3>
+      <h5 class="w3-hide-medium w3-hide-small">Parcellation - ${PARC_NAME}</h5>
       
     </div>
  
@@ -497,7 +530,22 @@ cat > $subjdir$html_output_dir"/dMRI.html" << EOF
   <br>______<br><br>
   <h1> $sub_upper dMRI 
   <br>
-  <div id="analysis_title" style="display: inline; font-size: 28px">DW</div></h1>
+  <div id="analysis_title" style="display: inline; font-size: 28px">DW</div><br>    
+    <select name="menu1" id="menu1" onkeydown="IgnoreAlpha(event);">
+      <option selected="selected">${PARC_NAME}</option>
+      <option >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</option>
+
+      
+      </select>
+      <script type="text/javascript">
+     var urlmenu = document.getElementById( 'menu1' );
+     urlmenu.onchange = function() {
+          if (this.options[ this.selectedIndex ].value != ""){
+            window.open( this.options[ this.selectedIndex ].value, '_self');
+          }
+     };
+    </script>
+    </h1>
   ______<br><br>
 
 
@@ -755,6 +803,7 @@ cat > $subjdir$html_output_dir"/fMRI.html" << EOF
       <h5 class="w3-hide-large" style="white-space:nowrap">fMRI IMAGE REPORT</h5>
       
       <h3 class="w3-hide-medium w3-hide-small">$sub_upper</h3>
+      <h5 class="w3-hide-medium w3-hide-small">Parcellation - ${PARC_NAME}</h5>
       
     </div>
  
@@ -810,6 +859,22 @@ cat > $subjdir$html_output_dir"/fMRI.html" << EOF
 
 <br><br><a name="fMRI_REPORTS">______</a><br><br>
   <h1> fMRI REPORTS </h1>
+
+  <h1>
+    <select name="menu1" id="menu1" onkeydown="IgnoreAlpha(event);">
+      <option selected="selected">${PARC_NAME}</option>
+      <option >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</option>
+
+      
+      </select>
+      <script type="text/javascript">
+     var urlmenu = document.getElementById( 'menu1' );
+     urlmenu.onchange = function() {
+          if (this.options[ this.selectedIndex ].value != ""){
+            window.open( this.options[ this.selectedIndex ].value, '_self');
+          }
+     };
+    </script></h1>
   ______
 
 EOF
@@ -898,6 +963,7 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
       <h5 class="w3-hide-large" style="white-space:nowrap">SC/FC IMAGE REPORT</h5>
       
       <h3 class="w3-hide-medium w3-hide-small">$sub_upper</h3>
+      <h5 class="w3-hide-medium w3-hide-small">Parcellation - ${PARC_NAME}</h5>
       
     </div>
  
@@ -955,7 +1021,22 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
   <br>______<br><br>
   <h1> $sub_upper SC/FC 
   <br>
-  <div id="analysis_title" style="display: inline; font-size: 28px">STRUCTURAL CONNECTIVITY</div></h1>
+  <div id="analysis_title" style="display: inline; font-size: 28px">STRUCTURAL CONNECTIVITY</div><br>    
+    <select name="menu1" id="menu1" onkeydown="IgnoreAlpha(event);">
+      <option selected="selected">${PARC_NAME}</option>
+      <option >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</option>
+
+      
+      </select>
+      <script type="text/javascript">
+     var urlmenu = document.getElementById( 'menu1' );
+     urlmenu.onchange = function() {
+          if (this.options[ this.selectedIndex ].value != ""){
+            window.open( this.options[ this.selectedIndex ].value, '_self');
+          }
+     };
+    </script>
+    </h1>
   ______<br><br>
 
 

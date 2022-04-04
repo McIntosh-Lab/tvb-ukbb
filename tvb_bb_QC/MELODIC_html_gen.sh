@@ -42,6 +42,7 @@ cat > $MELODIC_html << EOF
       <h5 class="w3-hide-large" style="white-space:nowrap">MELODIC IMAGE REPORT</h5>
       
       <h3 class="w3-hide-medium w3-hide-small">$sub_upper</h3>
+      <h5 class="w3-hide-medium w3-hide-small">Parcellation - ${PARC_NAME}</h5>
       
     </div>
  
@@ -98,7 +99,21 @@ cat > $MELODIC_html << EOF
 
   <br>______<br><br>
   <h1> $sub_upper <div id="analysis_title_0" style="display: inline;"></div> 
-  <br>
+  <h1>
+    <select name="menu1" id="menu1" onkeydown="IgnoreAlpha(event);">
+      <option selected="selected">"""+PARC_NAME+"""</option>
+      <option >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</option>
+
+      
+      </select>
+      <script type="text/javascript">
+     var urlmenu = document.getElementById( 'menu1' );
+     urlmenu.onchange = function() {
+          if (this.options[ this.selectedIndex ].value != ""){
+            window.open( this.options[ this.selectedIndex ].value, '_self');
+          }
+     };
+    </script></h1>
 </h1>
   <br>
 

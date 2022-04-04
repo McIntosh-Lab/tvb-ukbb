@@ -14,8 +14,8 @@ import os
 
 
 
-def IDP_html_gen(subj):
 
+def IDP_html_gen(subj,PARC_NAME):
     """Function that generates the IDP page of the QC report for a
     subject. 
 
@@ -83,6 +83,7 @@ def IDP_html_gen(subj):
           <h5 class="w3-hide-large" style="white-space:nowrap">IDP IMAGE REPORT</h5>
           
           <h3 class="w3-hide-medium w3-hide-small">"""+subjname+"""</h3>
+          <h5 class="w3-hide-medium w3-hide-small">Parcellation - """+PARC_NAME+"""</h5>
           
         </div>
      
@@ -139,6 +140,21 @@ def IDP_html_gen(subj):
 
 	<br><br><a name="fMRI_REPORTS">______</a><br><br>
 	  <h1> IDP REPORTS </h1>
+      <h1>
+    <select name="menu1" id="menu1" onkeydown="IgnoreAlpha(event);">
+      <option selected="selected">"""+PARC_NAME+"""</option>
+      <option >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</option>
+
+      
+      </select>
+      <script type="text/javascript">
+     var urlmenu = document.getElementById( 'menu1' );
+     urlmenu.onchange = function() {
+          if (this.options[ this.selectedIndex ].value != ""){
+            window.open( this.options[ this.selectedIndex ].value, '_self');
+          }
+     };
+    </script></h1>
 	  ______<br><br><br>
 
 	
@@ -374,5 +390,4 @@ if __name__ == "__main__":
 
     """
     # try:
-    IDP_html_gen(sys.argv[1])
-
+    IDP_html_gen(sys.argv[1],sys.argv[2])
