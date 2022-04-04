@@ -28,7 +28,7 @@ def connectivity_correlation(first_matrix, second_matrix):
     first=np.compress(bad, first)  # array([  5.,   1.,   6.,  10.,   1.,   1.])
     second=np.compress(bad, second)  # array([ 4.,  4.,  5.,  6.,  1.,  8.])
 
-    print(str(pearsonr(second,first))) 
+    # print(str(pearsonr(second,first))) 
     return str(pearsonr(second,first))
 
 if __name__ == "__main__":
