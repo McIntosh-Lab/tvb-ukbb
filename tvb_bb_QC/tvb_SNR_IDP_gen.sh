@@ -1,8 +1,8 @@
 #!/bin/sh
 #
-# Script name: bb_IDP_func_TSNR
+# Script name: bb_IDP_func_tSNR
 #
-# Description: Script to generate the IDPs related to TSNR for fMRI.
+# Description: Script to generate the IDPs related to tSNR for fMRI.
 #
 # Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
 #
