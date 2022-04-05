@@ -348,11 +348,11 @@ def MELODIC_SNR(subj,fix4melviewtxt):
                             print (p_signal)
                             print (p_noise)
 
-                            write_to_IDP_file(subj, "MELODIC_SNR_prop_IC_unknown_"+str(os.path.basename(name))+"_"+file, "tvb_IDP_MELODIC_SNR", str(num_in_cat), "MELODIC_SNR_proportion_IC_unknown_"+str(os.path.basename(name))+"_"+file, "proportion out of 1", "float", "MELODIC signal to noise ratio - proportion of ICs that are unknown in "+str(os.path.basename(name))+" for "+file, str(p_unknown))
+                            write_to_IDP_file(subj, "FIX_prop_IC_unknown_"+file, "tvb_IDP_FIX_classes", str(num_in_cat), "FIX_proportion_IC_unknown_"+file, "proportion out of 1", "float", "Proportion of MELODIC ICs that are classified as unknown by FIX for "+file, str(p_unknown))
                             num_in_cat+=1
-                            write_to_IDP_file(subj, "MELODIC_SNR_prop_IC_signal_"+str(os.path.basename(name))+"_"+file, "tvb_IDP_MELODIC_SNR", str(num_in_cat), "MELODIC_SNR_proportion_IC_signal_"+str(os.path.basename(name))+"_"+file, "proportion out of 1", "float", "MELODIC signal to noise ratio - proportion of ICs that are signal in "+str(os.path.basename(name))+" for "+file, str(p_signal))
+                            write_to_IDP_file(subj, "FIX_prop_IC_signal_"+file, "tvb_IDP_FIX_classes", str(num_in_cat), "FIX_proportion_IC_signal_"+file, "proportion out of 1", "float", "Proportion of MELODIC ICs that are classified as signal by FIX for "+file, str(p_signal))
                             num_in_cat+=1
-                            write_to_IDP_file(subj, "MELODIC_SNR_prop_IC_noise_"+str(os.path.basename(name))+"_"+file, "tvb_IDP_MELODIC_SNR", str(num_in_cat), "MELODIC_SNR_proportion_IC_noise_"+str(os.path.basename(name))+"_"+file, "proportion out of 1", "float", "MELODIC signal to noise ratio - proportion of ICs that are noise in "+str(os.path.basename(name))+" for "+file, str(p_noise))
+                            write_to_IDP_file(subj, "FIX_prop_IC_noise_"+file, "tvb_IDP_FIX_classes", str(num_in_cat), "FIX_proportion_IC_noise_"+file, "proportion out of 1", "float", "Proportion of MELODIC ICs that are classified as noise by FIX for "+file, str(p_noise))
                             num_in_cat+=1
 
 
@@ -558,13 +558,13 @@ def fmri_SNR_numvol(subj, BB_BIN_DIR):
                 print (clean_SNR_result)
                 print (numvol_result)
 
-                write_to_IDP_file(subj, file+"_TSNR", "tvb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the pre-processed "+file+" - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
+                write_to_IDP_file(subj, file+"_tSNR", "tvb_IDP_func_tSNR", str(num_in_cat), "QC_"+file+"_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the pre-processed "+file+" - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
                 num_in_cat +=1
 
-                write_to_IDP_file(subj, file+"_cleaned_TSNR", "tvb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_cleaned_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the artefact-cleaned pre-processed "+file+" - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(clean_SNR_result))
+                write_to_IDP_file(subj, file+"_cleaned_tSNR", "tvb_IDP_func_tSNR", str(num_in_cat), "QC_"+file+"_cleaned_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the artefact-cleaned pre-processed "+file+" - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(clean_SNR_result))
                 num_in_cat +=1
 
-                write_to_IDP_file(subj, file+"_num_vol", "tvb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_num_vol", "volumes", "int", "Number of volumes in "+file+" scan", str(numvol_result))
+                write_to_IDP_file(subj, file+"_num_vol", "tvb_IDP_func_tSNR", str(num_in_cat), "QC_"+file+"_num_vol", "volumes", "int", "Number of volumes in "+file+" scan", str(numvol_result))
                 num_in_cat +=1
 
                 
@@ -581,10 +581,10 @@ def fmri_SNR_numvol(subj, BB_BIN_DIR):
                 print (SNR_result)
                 print (numvol_result)
 
-                write_to_IDP_file(subj, file+"_TSNR", "tvb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the pre-processed "+file+" - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
+                write_to_IDP_file(subj, file+"_tSNR", "tvb_IDP_func_tSNR", str(num_in_cat), "QC_"+file+"_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the pre-processed "+file+" - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
                 num_in_cat +=1
                 
-                write_to_IDP_file(subj, file+"_num_vol", "tvb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_num_vol", "volumes", "int", "Number of volumes in "+file+" scan", str(numvol_result))
+                write_to_IDP_file(subj, file+"_num_vol", "tvb_IDP_func_tSNR", str(num_in_cat), "QC_"+file+"_num_vol", "volumes", "int", "Number of volumes in "+file+" scan", str(numvol_result))
                 num_in_cat +=1
     except:
         print("ERROR: fmri SNR or numvol error")
@@ -615,10 +615,10 @@ def susceptibility_SNR(subj, BB_BIN_DIR):
                     print (SNR_result)
                     print (clean_SNR_result)
 
-                    write_to_IDP_file(subj, file+"_"+parclist_dict[susceptibility_parc]+"_TSNR", "tvb_IDP_func_susceptibility_SNR", str(num_in_cat), "QC_"+file+"_"+parclist_dict[susceptibility_parc]+"_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the pre-processed "+file+" "+parclist_dict[susceptibility_parc]+" regions - median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
+                    write_to_IDP_file(subj, file+"_"+parclist_dict[susceptibility_parc]+"_tSNR", "tvb_IDP_func_susceptibility_SNR", str(num_in_cat), "QC_"+file+"_"+parclist_dict[susceptibility_parc]+"_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the pre-processed "+file+" "+parclist_dict[susceptibility_parc]+" regions - median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
                     num_in_cat +=1
 
-                    write_to_IDP_file(subj, file+"_"+parclist_dict[susceptibility_parc]+"_cleaned_TSNR", "tvb_IDP_func_susceptibility_SNR", str(num_in_cat), "QC_"+file+"_"+parclist_dict[susceptibility_parc]+"_cleaned_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the artefact-cleaned pre-processed "+file+" "+parclist_dict[susceptibility_parc]+" regions - median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(clean_SNR_result))
+                    write_to_IDP_file(subj, file+"_"+parclist_dict[susceptibility_parc]+"_cleaned_tSNR", "tvb_IDP_func_susceptibility_SNR", str(num_in_cat), "QC_"+file+"_"+parclist_dict[susceptibility_parc]+"_cleaned_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the artefact-cleaned pre-processed "+file+" "+parclist_dict[susceptibility_parc]+" regions - median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(clean_SNR_result))
                     num_in_cat +=1
 
                     
@@ -632,7 +632,7 @@ def susceptibility_SNR(subj, BB_BIN_DIR):
                     print("---------")
                     print (SNR_result)
 
-                    write_to_IDP_file(subj, file+"_"+parclist_dict[susceptibility_parc]+"_TSNR", "tvb_IDP_func_susceptibility_SNR", str(num_in_cat), "QC_"+file+"_"+parclist_dict[susceptibility_parc]+"_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the pre-processed  "+file+" "+parclist_dict[susceptibility_parc]+" regions  - median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
+                    write_to_IDP_file(subj, file+"_"+parclist_dict[susceptibility_parc]+"_tSNR", "tvb_IDP_func_susceptibility_SNR", str(num_in_cat), "QC_"+file+"_"+parclist_dict[susceptibility_parc]+"_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the pre-processed  "+file+" "+parclist_dict[susceptibility_parc]+" regions  - median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
                     num_in_cat +=1
                 
     except:
