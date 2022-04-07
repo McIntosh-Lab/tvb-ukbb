@@ -50,6 +50,9 @@ def FC_distribution(subj, PARC_NAME):
                     print("ERROR: fc, ts file not found")
 
 
+                #removing diagonal
+                FC=FC[~np.eye(FC.shape[0],dtype=bool)].reshape(FC.shape[0],-1)
+
                 #get this in the for loop
                 FC_min=np.amin(FC)
                 FC_max=np.amax(FC)
@@ -58,7 +61,8 @@ def FC_distribution(subj, PARC_NAME):
                 FC_mean_to_max=FC_max-FC_mean
                 FC_median_to_max=FC_max-FC_median
                 FC_range=np.ptp(FC)
-                FC_proportion_neg=np.count_nonzero(FC<0)/(FC.shape[0] * FC.shape[1])
+                FC_proportion_neg=np.count_nonzero(FC<0)/np.count_nonzero(~np.isnan(FC))
+                FC_distribution_proportion_zero=np.count_nonzero(FC==0)/np.count_nonzero(~np.isnan(FC))
 
                 #https://stackoverflow.com/questions/6620471/fitting-empirical-distribution-to-theoretical-ones-with-scipy-python
 
@@ -74,6 +78,7 @@ def FC_distribution(subj, PARC_NAME):
                 print(FC_median_to_max)
                 print(FC_range)
                 print(FC_proportion_neg)
+                print(FC_distribution_proportion_zero)
 
                 write_to_IDP_file(subj, "FC_distribution_min_"+file, "tvb_IDP_FC_distribution", str(num_in_cat), "FC_distribution_min_"+file, "pearson correlation coefficient", "float", "Functional connectivity minimum for "+file, str(FC_min))
                 num_in_cat+=1
@@ -89,7 +94,9 @@ def FC_distribution(subj, PARC_NAME):
                 num_in_cat+=1
                 write_to_IDP_file(subj, "FC_distribution_range_"+file, "tvb_IDP_FC_distribution", str(num_in_cat), "FC_distribution_range_"+file, "pearson correlation coefficient", "float", "Functional connectivity range for "+file, str(FC_range))
                 num_in_cat+=1
-                write_to_IDP_file(subj, "FC_distribution_proportion_neg_"+file, "tvb_IDP_FC_distribution", str(num_in_cat), "FC_distribution_proportion_neg_"+file, "proportion out of 1", "float", "Functional connectivity proportion negative for "+file, str(FC_proportion_neg))
+                write_to_IDP_file(subj, "FC_distribution_proportion_neg_"+file, "tvb_IDP_FC_distribution", str(num_in_cat), "FC_distribution_proportion_neg_"+file, "proportion of non-nan and non-inf connections", "float", "Functional connectivity - proportion of non-nan and non-inf connections with 0 value for "+file, str(FC_proportion_neg))
+                num_in_cat+=1
+                write_to_IDP_file(subj, "FC_distribution_proportion_zero_"+file, "tvb_IDP_FC_distribution", str(num_in_cat), "FC_distribution_proportion_zeroes_"+file, "proportion of non-nan and non-inf connections", "float", "Functional connectivity - proportion of non-nan and non-inf connections with 0 value for "+file, str(FC_distribution_proportion_zero))
                 num_in_cat+=1
 
 
@@ -186,6 +193,8 @@ def SC_distribution(subj, PARC_NAME):
     SC[SC == -inf] = "nan"
     SC[SC == inf] = "nan"
 
+    SC=SC[~np.eye(SC.shape[0],dtype=bool)].reshape(SC.shape[0],-1)
+
 
     SC_min=np.nanmin(SC) 
     SC_max=np.nanmax(SC) 
@@ -194,8 +203,8 @@ def SC_distribution(subj, PARC_NAME):
     SC_mean_to_max=SC_max-SC_mean 
     SC_median_to_max=SC_max-SC_median 
     SC_range=SC_max-SC_min 
-    SC_proportion_neg=np.count_nonzero(SC<0)/(SC.shape[0] * SC.shape[1]) 
-
+    SC_proportion_neg=np.count_nonzero(SC<0)/np.count_nonzero(~np.isnan(SC))
+    SC_distribution_proportion_zero=np.count_nonzero(SC==0)/np.count_nonzero(~np.isnan(SC))
 
     #https://stackoverflow.com/questions/6620471/fitting-empirical-distribution-to-theoretical-ones-with-scipy-python
     #https://github.com/cokelaer/fitter/blob/master/src/fitter/fitter.py#L264
@@ -215,6 +224,7 @@ def SC_distribution(subj, PARC_NAME):
     print(SC_proportion_neg)
     print(SC_num_nan)
     print(SC_nan_lines)
+    print(SC_distribution_proportion_zero)
 
     num_in_cat=1
     write_to_IDP_file(subj, "SC_distribution_min", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_distribution_min", "pearson correlation coefficient (log 10)", "float", "Structural connectivity minimum", str(SC_min))
@@ -231,11 +241,13 @@ def SC_distribution(subj, PARC_NAME):
     num_in_cat+=1
     write_to_IDP_file(subj, "SC_distribution_range", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_distribution_range", "pearson correlation coefficient (log 10)", "float", "Structural connectivity range", str(SC_range))
     num_in_cat+=1
-    write_to_IDP_file(subj, "SC_distribution_proportion_neg", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_distribution_proportion_neg", "proportion out of 1", "float", "Structural connectivity proportion negative", str(SC_proportion_neg))
+    write_to_IDP_file(subj, "SC_distribution_proportion_neg", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_distribution_proportion_neg", "proportion of non-nan and non-inf connections", "float", "Structural connectivity - proportion of non-nan and non-inf  connections with negative value", str(SC_proportion_neg))
     num_in_cat+=1
     write_to_IDP_file(subj, "SC_nan_lines", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_nan_lines", "line number", "float", "Structural connectivity - line numbers of rows with all NaNs", str(SC_nan_lines))
     num_in_cat+=1
     write_to_IDP_file(subj, "SC_num_nan", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_number_of_nan_lines", "number of lines", "float", "Structural connectivity - number of all NaN rows", str(SC_num_nan))
+    num_in_cat+=1
+    write_to_IDP_file(subj, "SC_distribution_proportion_zero", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_distribution_proportion_zeroes", "proportion of non-nan and non-inf connections", "float", "Structural connectivity - proportion of non-nan and non-inf connections with 0 value", str(SC_distribution_proportion_zero))
     num_in_cat+=1
 
 
@@ -278,6 +290,153 @@ def SC_distribution(subj, PARC_NAME):
         #plt.plot(pdf_fitted, label=dist_name)    
     #plt.show()
         write_to_IDP_file(subj, "SC_"+dist_name+"_MSE", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_"+dist_name+"_Mean_Squared_Error", "pearon correlation coefficient 2 (log 10)", "float", "Structural connectivity - mean squared error for "+dist_name+" distribution fit", str(squared_error))
+        num_in_cat+=1
+
+
+
+
+def TL_distribution(subj, PARC_NAME):
+
+    
+    #import TL data
+    TL = ""
+    TL_path=subj + "/dMRI/distance_"+PARC_NAME+".txt"
+    try:
+        TL = np.loadtxt(TL_path)
+    except:
+        print("ERROR: tl file not found")
+
+    
+    nanlines=""
+    with open(TL_path) as f:
+        lines = f.read().splitlines()
+        counter1=1
+        counter=0
+        for x in lines:
+
+            x = x.split()
+
+            nan_row=True
+            for y in x:
+                if y != "nan":
+                    nan_row=False
+            if nan_row == True:
+                counter +=1
+                nanlines = nanlines + str(counter1) + ", "
+            counter1 +=1
+
+    #TL is log scale now
+    TL = np.log10(TL)
+
+
+    TL_num_nan=counter
+
+    if nanlines == "":
+        TL_nan_lines = "nan"
+    else:
+        TL_nan_lines=nanlines[:-2]
+
+
+    TL[TL == -inf] = "nan"
+    TL[TL == inf] = "nan"
+
+    TL=TL[~np.eye(TL.shape[0],dtype=bool)].reshape(TL.shape[0],-1)
+
+
+    TL_min=np.nanmin(TL) 
+    TL_max=np.nanmax(TL) 
+    TL_median=np.nanmedian(TL) 
+    TL_mean=np.nanmean(TL) 
+    TL_mean_to_max=TL_max-TL_mean 
+    TL_median_to_max=TL_max-TL_median 
+    TL_range=TL_max-TL_min 
+    TL_proportion_neg=np.count_nonzero(TL<0)/np.count_nonzero(~np.isnan(TL))
+    TL_distribution_proportion_zero=np.count_nonzero(TL==0)/np.count_nonzero(~np.isnan(TL))
+
+    #https://stackoverflow.com/questions/6620471/fitting-empirical-distribution-to-theoretical-ones-with-scipy-python
+    #https://github.com/cokelaer/fitter/blob/master/src/fitter/fitter.py#L264
+
+    #TO DO: distribution analysis WITH TL AND TS^^^ 
+
+    print("---------")
+    print("TL")
+    print("---------")
+    print(TL_min)
+    print(TL_max)
+    print(TL_median)
+    print(TL_mean)
+    print(TL_mean_to_max)
+    print(TL_median_to_max)
+    print(TL_range)
+    print(TL_proportion_neg)
+    print(TL_num_nan)
+    print(TL_nan_lines)
+    print(TL_distribution_proportion_zero)
+
+    num_in_cat=1
+    write_to_IDP_file(subj, "TL_distribution_min", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_min", "mm", "float", "Tract length distance minimum", str(TL_min))
+    num_in_cat+=1
+    write_to_IDP_file(subj, "TL_distribution_max", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_max", "mm", "float", "Tract length distance maximum", str(TL_max))
+    num_in_cat+=1
+    write_to_IDP_file(subj, "TL_distribution_median", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_median", "mm", "float", "Tract length distance median", str(TL_median))
+    num_in_cat+=1
+    write_to_IDP_file(subj, "TL_distribution_mean", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_mean", "mm", "float", "Tract length distance mean", str(TL_mean))
+    num_in_cat+=1
+    write_to_IDP_file(subj, "TL_distribution_mean_to_max", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_mean_to_max", "mm", "float", "Tract length distance from mean to max", str(TL_mean_to_max))
+    num_in_cat+=1
+    write_to_IDP_file(subj, "TL_distribution_median_to_max", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_median_to_max", "mm", "float", "Tract length distance from median to max", str(TL_median_to_max))
+    num_in_cat+=1
+    write_to_IDP_file(subj, "TL_distribution_range", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_range", "mm", "float", "Tract length distance range", str(TL_range))
+    num_in_cat+=1
+    write_to_IDP_file(subj, "TL_distribution_proportion_neg", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_proportion_neg", "proportion of non-nan  and non-inf tracts", "float", "Tract length distance - proportion of non-nan  and non-inf tracts with negative distance", str(TL_proportion_neg))
+    num_in_cat+=1
+    write_to_IDP_file(subj, "TL_nan_lines", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_nan_lines", "line number", "float", "Tract length distance - line numbers of rows with all NaNs", str(TL_nan_lines))
+    num_in_cat+=1
+    write_to_IDP_file(subj, "TL_num_nan", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_number_of_nan_lines", "number of lines", "float", "Tract length distance - number of all NaN rows", str(TL_num_nan))
+    num_in_cat+=1
+    write_to_IDP_file(subj, "TL_distribution_proportion_zero", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_proportion_zeroes", "proportion of non-nan  and non-inf tracts", "float", "Tract length distance - proportion of non-nan  and non-inf tracts with 0 distance", str(TL_distribution_proportion_zero))
+    num_in_cat+=1
+
+
+    TL = TL.flatten()
+
+    y, x = np.histogram(TL[~np.isnan(TL)], bins=100)
+    for index, value in enumerate(x[0:-1]):
+        x[index] = (value + x[index + 1]) / 2 
+    x=x[0:-1]
+    
+    total=np.sum(y)
+
+    dist_names = [
+"lognorm"
+]
+    print(y)
+    print(x)
+    #h = plt.hist(y, bins=range(100))
+    for dist_name in dist_names:
+        dist = getattr(scipy.stats, dist_name)
+        params = dist.fit(TL[~np.isnan(TL)])
+        pdf_fitted = dist.pdf(x, *params) #* total
+
+        
+        y=y - np.min(y)
+
+        y=y / np.max(y)
+
+        
+        pdf_fitted=pdf_fitted - np.min(pdf_fitted)
+        pdf_fitted=pdf_fitted / np.max(pdf_fitted)
+        print(pdf_fitted)
+
+        squared_error = mean_squared_error(pdf_fitted,y)
+        print("------")
+        print("TL_dist")
+
+        print("dist: "+dist_name)
+        print("squared error: "+str(squared_error))
+        #plt.plot(pdf_fitted, label=dist_name)    
+    #plt.show()
+        write_to_IDP_file(subj, "TL_"+dist_name+"_MSE", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_"+dist_name+"_Mean_Squared_Error", "pearon correlation coefficient 2 (log 10)", "float", "Structural connectivity - mean squared error for "+dist_name+" distribution fit", str(squared_error))
         num_in_cat+=1
 
 
@@ -933,6 +1092,7 @@ def new_IDP_gen(subj,LUT_txt,BB_BIN_DIR,PARC_NAME):      #,fix4melviewtxt
 
     FC_distribution(subj, PARC_NAME)
     SC_distribution(subj, PARC_NAME)
+    TL_distribution(subj, PARC_NAME)
     MELODIC_SNR(subj,fix4melviewtxt)
     MCFLIRT_displacement(subj)       
 
