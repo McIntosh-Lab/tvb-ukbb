@@ -801,25 +801,25 @@ def susceptibility_SNR(subj, BB_BIN_DIR):
 
 
 
-def func_head_motion(subj, BB_BIN_DIR):
-    try:
-        num_in_cat=1
-        for file in os.listdir(subj + "/fMRI/"):
-            if file.endswith(".ica") or file.endswith(".feat"):
-                head_motion = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_IDP_func_head_motion.sh'), subj, os.path.join(subj, "fMRI", file, "mc/prefiltered_func_data_mcf_rel_mean.rms")],  stdout=subprocess.PIPE)
-                head_motion = head_motion.stdout.decode('utf-8').strip()
+# def func_head_motion(subj, BB_BIN_DIR):
+#     try:
+#         num_in_cat=1
+#         for file in os.listdir(subj + "/fMRI/"):
+#             if file.endswith(".ica") or file.endswith(".feat"):
+#                 head_motion = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_IDP_func_head_motion.sh'), subj, os.path.join(subj, "fMRI", file, "mc/prefiltered_func_data_mcf_rel_mean.rms")],  stdout=subprocess.PIPE)
+#                 head_motion = head_motion.stdout.decode('utf-8').strip()
 
-                print("---------")
-                print(file + "_func_head_motion")
-                print("---------")
-                print (head_motion)
+#                 print("---------")
+#                 print(file + "_func_head_motion")
+#                 print("---------")
+#                 print (head_motion)
 
-                write_to_IDP_file(subj, file+"_head_motion", "tvb_IDP_func_head_motion", str(num_in_cat), "IDP_"+file+"_head_motion", "mm", "float", "Mean "+file+" head motion, averaged across space and timepoints", str(head_motion))
-                num_in_cat +=1
+#                 write_to_IDP_file(subj, file+"_head_motion", "tvb_IDP_func_head_motion", str(num_in_cat), "IDP_"+file+"_head_motion", "mm", "float", "Mean "+file+" head motion, averaged across space and timepoints", str(head_motion))
+#                 num_in_cat +=1
 
                 
-    except:
-        print("ERROR: func_head_motion error")
+#     except:
+#         print("ERROR: func_head_motion error")
 
 
 
@@ -952,7 +952,7 @@ def all_align_to_T1(subj, BB_BIN_DIR):
         print("ERROR: all_align_to_T1 error")
 
 
-def fieldmap_func_align(subj, BB_BIN_DIR):
+def fieldmap_align_to_func(subj, BB_BIN_DIR):
     try:
         num_in_cat=1
 
@@ -960,20 +960,20 @@ def fieldmap_func_align(subj, BB_BIN_DIR):
             if file.endswith(".ica") or file.endswith(".feat"):
 
 
-                fieldmap_func_align = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/fieldmap_func_align.sh'), os.path.join(subj,"fMRI",file)],  stdout=subprocess.PIPE)
-                fieldmap_func_align = fieldmap_func_align.stdout.decode('utf-8').strip()
+                fieldmap_align_to_func = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/fieldmap_align_to_func.sh'), os.path.join(subj,"fMRI",file)],  stdout=subprocess.PIPE)
+                fieldmap_align_to_func = fieldmap_align_to_func.stdout.decode('utf-8').strip()
 
                 print("---------")
-                print(file +"_fieldmap_func_align")
+                print(file +"_fieldmap_align_to_func")
                 print("---------")
-                print (fieldmap_func_align)
+                print (fieldmap_align_to_func)
 
-                write_to_IDP_file(subj, file+"_fieldmap_func_align", "tvb_IDP_fieldmap_func_align", str(num_in_cat), "QC_"+file+"-fieldmap-to-func_linear_alignment_discrepancy", "AU", "float", "Discrepancy between the "+file+" field map brain image and the "+file+" func image", str(fieldmap_func_align))
+                write_to_IDP_file(subj, file+"_fieldmap_align_to_func", "tvb_IDP_fieldmap_align_to_func", str(num_in_cat), "QC_"+file+"-fieldmap-to-func_linear_alignment_discrepancy", "AU", "float", "Discrepancy between the "+file+" field map brain image and the "+file+" func image", str(fieldmap_align_to_func))
                 num_in_cat +=1
 
                 
     except:
-        print("ERROR: fieldmap_func_align error")
+        print("ERROR: fieldmap_align_to_func error")
 
 
 def eddy_outliers(subj, BB_BIN_DIR):
@@ -1099,9 +1099,9 @@ def new_IDP_gen(subj,LUT_txt,BB_BIN_DIR,PARC_NAME):      #,fix4melviewtxt
     homotopic(subj,LUT_txt)
     fmri_SNR_numvol(subj, BB_BIN_DIR)
     susceptibility_SNR(subj, BB_BIN_DIR)
-    func_head_motion(subj, BB_BIN_DIR)
+    # func_head_motion(subj, BB_BIN_DIR)
     all_align_to_T1(subj, BB_BIN_DIR)
-    fieldmap_func_align(subj, BB_BIN_DIR)
+    fieldmap_align_to_func(subj, BB_BIN_DIR)
     eddy_outliers(subj, BB_BIN_DIR)
     #func_task_activation(subj, BB_BIN_DIR) #not implemented in our pipeline
 
