@@ -18,6 +18,7 @@ import scipy
 from numpy import inf
 import scipy.stats
 import subprocess
+import nibabel as nib
 # increasing font size for plots
 font = {"size": 100}
 matplotlib.rc("font", **font)
@@ -816,6 +817,48 @@ def fieldmap_func_align(subj, BB_BIN_DIR):
         print("ERROR: fieldmap_func_align error")
 
 
+def eddy_outliers(subj, BB_BIN_DIR):
+    try:
+        num_in_cat = 1
+
+        outlier_report=os.path.join(subj,"dMRI","dMRI","data.eddy_outlier_report")
+        eddy_num_outliers = sum(1 for line in open(outlier_report))
+
+        print("---------")
+        print("eddy_num_outliers")
+        print("---------")
+        print (eddy_num_outliers)
+
+        write_to_IDP_file(subj, "eddy_num_outliers", "tvb_IDP_diff_eddy_outliers", str(num_in_cat), "eddy_number_of_outlier_slices", "number of slices", "int", "Number of diffusion slices that have been classified as outliers by eddy", str(eddy_num_outliers))
+        num_in_cat +=1
+
+
+
+        bvalsFile=os.path.join(subj,"dMRI","dMRI","bvals")
+        bvals=np.genfromtxt(bvalsFile, dtype=float) 
+        no_dw_vols=(bvals > 100).sum()
+
+
+        olMapFile = os.path.join(subj,"dMRI","dMRI","data.eddy_outlier_map")  
+        olMap = np.genfromtxt(olMapFile,dtype=None, delimiter=" ", skip_header=1)   
+
+        eddyFile=os.path.join(subj,"dMRI","dMRI","data.nii.gz")  #"$dirSubject/dMRI/dMRI/data.nii.gz"#TODO
+        eddy_epi = nib.load(eddyFile) 
+        vol_size = eddy_epi.shape
+        eddy_percent_outliers = 100*np.count_nonzero(olMap)/(no_dw_vols*vol_size[2])
+
+        print("---------")
+        print("eddy_percent_outliers")
+        print("---------")
+        print(eddy_percent_outliers)
+
+
+        write_to_IDP_file(subj, "eddy_percent_outliers", "tvb_IDP_diff_eddy_outliers", str(num_in_cat), "eddy_percent_slice_outliers", "%", "float", "Percent of diffusion slices that have been classified as outliers by eddy", str(eddy_percent_outliers))
+        num_in_cat +=1
+
+                
+    except:
+        print("ERROR: tvb_IDP_diff_eddy_outliers error")
 
 
 def write_to_IDP_file(subj,short,category,num_in_cat,long_var,unit,dtype,description,value):
@@ -899,6 +942,7 @@ def new_IDP_gen(subj,LUT_txt,BB_BIN_DIR,PARC_NAME):      #,fix4melviewtxt
     func_head_motion(subj, BB_BIN_DIR)
     all_align_to_T1(subj, BB_BIN_DIR)
     fieldmap_func_align(subj, BB_BIN_DIR)
+    eddy_outliers(subj, BB_BIN_DIR)
     #func_task_activation(subj, BB_BIN_DIR) #not implemented in our pipeline
 
 
