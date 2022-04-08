@@ -306,21 +306,21 @@ def IDP_html_gen(subj,PARC_NAME):
     <br>
 
     <br>
-    <a href="../../IDP_files_"""+PARC_NAME+"""/" class="w3-bar-item w3-button">High-Priority IDPs: """
+    <a href="../../IDP_files_"""+PARC_NAME+"""/" id="hi_IDP" class="w3-bar-item w3-button">High-Priority IDPs: """
         + str(IDP_dir)[:-1]
         + "_"
         + PARC_NAME
         + "/priority_IDPs.tsv"
         + """</a>
     <br>
-    <a href="../../IDP_files_"""+PARC_NAME+"""/" class="w3-bar-item w3-button">New TVB IDPs: """
+    <a href="../../IDP_files_"""+PARC_NAME+"""/" id="new_IDP" class="w3-bar-item w3-button">New TVB IDPs: """
         + str(IDP_dir)[:-1]
         + "_"
         + PARC_NAME
         + "/tvb_new_IDPs.tsv"
         + """</a>
     <br>
-    <a href="../../IDP_files_"""+PARC_NAME+"""/" class="w3-bar-item w3-button">Lower-priority IDPs: """
+    <a href="../../IDP_files_"""+PARC_NAME+"""/" id="low_IDP" class="w3-bar-item w3-button">Lower-priority IDPs: """
         + str(IDP_dir)[:-1]
         + "_"
         + PARC_NAME
@@ -328,7 +328,7 @@ def IDP_html_gen(subj,PARC_NAME):
         + """</a>
     <br>
 
-    <a href="../../IDP_files_"""+PARC_NAME+"""/" class="w3-bar-item w3-button">Combination of the above IDPs: """
+    <a href="../../IDP_files_"""+PARC_NAME+"""/" id="combo_IDP" class="w3-bar-item w3-button">Combination of the above IDPs: """
         + str(IDP_dir)[:-1]
         + "_"
         + PARC_NAME
@@ -345,7 +345,20 @@ def IDP_html_gen(subj,PARC_NAME):
 	</body>
 
 	<script>
-	 updateTitle();updateImage();
+	updateTitle();updateImage();
+    
+    document.getElementById("hi_IDP").innerHTML = document.getElementById("hi_IDP").href;
+    document.getElementById("hi_IDP").innerHTML = document.getElementById("hi_IDP").innerHTML + "priority_IDPs.tsv"
+
+    document.getElementById("new_IDP").innerHTML = document.getElementById("new_IDP").href;
+    document.getElementById("new_IDP").innerHTML = document.getElementById("new_IDP").href + "tvb_new_IDPs.tsv";
+
+    document.getElementById("low_IDP").innerHTML = document.getElementById("low_IDP").href;
+    document.getElementById("low_IDP").innerHTML = document.getElementById("low_IDP").href + "non_priority_IDPs.tsv";
+
+    document.getElementById("combo_IDP").innerHTML = document.getElementById("combo_IDP").href;
+    document.getElementById("combo_IDP").innerHTML = document.getElementById("combo_IDP").href + "significant_IDPs.tsv";
+
 	</script>
 
 
