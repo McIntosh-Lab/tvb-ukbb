@@ -107,7 +107,7 @@ def IDP_html_gen(subj,PARC_NAME):
         <a href="report.html" class="w3-bar-item w3-button">Home</a>
         <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
         <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
-        <a href="MELODIC-FIX.html" class="w3-bar-item w3-button">MELODIC-FIX</a>
+        <a href="MELODIC_FIX.html" class="w3-bar-item w3-button">MELODIC-FIX</a>
         <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
         <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
         <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
@@ -120,7 +120,7 @@ def IDP_html_gen(subj,PARC_NAME):
       <a href="report.html" class="w3-bar-item w3-button">Home</a>
         <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
         <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
-        <a href="MELODIC-FIX.html" class="w3-bar-item w3-button">MELODIC-FIX</a>
+        <a href="MELODIC_FIX.html" class="w3-bar-item w3-button">MELODIC-FIX</a>
         <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
         <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
         <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
