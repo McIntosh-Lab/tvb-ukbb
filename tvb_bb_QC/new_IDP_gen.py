@@ -1135,13 +1135,14 @@ def new_IDP_gen(subj,LUT_txt,BB_BIN_DIR,PARC_NAME,FSLDIR):      #,fix4melviewtxt
     susceptibility_SNR(subj, BB_BIN_DIR)
     MCFLIRT_displacement(subj)       
     MELODIC_SNR(subj,fix4melviewtxt)
+    rfMRI_FD_DVARS(subj, PARC_NAME, FSLDIR)
+    
     FC_distribution(subj, PARC_NAME)
     homotopic(subj,LUT_txt)
 
     eddy_outliers(subj, BB_BIN_DIR)
     SC_distribution(subj, PARC_NAME)
     TL_distribution(subj, PARC_NAME)
-    rfMRI_FD_DVARS(subj, PARC_NAME, FSLDIR)
 
     #func_task_activation(subj, BB_BIN_DIR) #not implemented in our pipeline
 

@@ -269,7 +269,7 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 
 		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/probtrackx_${PARC_NAME}/exclude.nii.gz -p red-yellow -a 25.0 -s /dMRI/probtrackx_${PARC_NAME}/labelledWM_GM_${PARC_NAME}.nii.gz -h blue-lightblue -i 100.0 /dMRI/dMRI/dti_FA.nii.gz $dirSubject  dMRI_tractography_exclude_seeds
 
-		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dxs_under" "../../dMRI/dMRI/dti_FA.nii.gz" "dxs_over1" "../../dMRI/probtrackx_${PARC_NAME}/exclude.nii.gz" "dxs_over2" "dMRI/probtrackx_${PARC_NAME}/labelledWM_GM_${PARC_NAME}.nii.gz" 1
+		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dxs_under" "../../dMRI/dMRI/dti_FA.nii.gz" "dxs_over1" "../../dMRI/probtrackx_${PARC_NAME}/exclude.nii.gz" "dxs_over2" "../../dMRI/probtrackx_${PARC_NAME}/labelledWM_GM_${PARC_NAME}.nii.gz" 1
 
 
 #export FSLDIR=/opt/HCPpipelines-4.1.3/fsl

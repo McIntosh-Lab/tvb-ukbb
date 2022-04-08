@@ -10,13 +10,13 @@ sub_upper=${sub}
 mkdir -p $dirSubject"/QC/html"
 
 
-MELODIC-FIX_html=$dirSubject"/QC/html/MELODIC-FIX.html"
+MELODIC_FIX_HTML=$dirSubject"/QC/html/MELODIC_FIX.html"
 
-rm -f $MELODIC-FIX_html
+rm -f $MELODIC_FIX_HTML
 
-if [ ! -e $MELODIC-FIX_html ]; then
+if [ ! -e $MELODIC_FIX_HTML ]; then
   
-cat > $MELODIC-FIX_html << EOF
+cat > $MELODIC_FIX_HTML << EOF
 
 
 <!DOCTYPE html>
@@ -25,7 +25,7 @@ cat > $MELODIC-FIX_html << EOF
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/w3.css">
-<script src="./togglesMELODIC-FIX.js" type="text/javascript" charset="utf-8"></script>
+<script src="./togglesMELODIC_FIX.js" type="text/javascript" charset="utf-8"></script>
 <script src="./sidebartoggles.js" type="text/javascript" charset="utf-8"></script>
 
 <body class="w3-main" style="background-color:black; " onload="updateTitle();updateImage();updateTitle();">
@@ -69,7 +69,7 @@ cat > $MELODIC-FIX_html << EOF
     <a href="report.html" class="w3-bar-item w3-button">Home</a>
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
-    <a href="MELODIC-FIX.html" class="w3-bar-item w3-button">MELODIC-FIX</a>
+    <a href="MELODIC_FIX.html" class="w3-bar-item w3-button">MELODIC-FIX</a>
     <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
@@ -82,7 +82,7 @@ cat > $MELODIC-FIX_html << EOF
   <a href="report.html" class="w3-bar-item w3-button">Home</a>
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
-    <a href="MELODIC-FIX.html" class="w3-bar-item w3-button">MELODIC-FIX</a>
+    <a href="MELODIC_FIX.html" class="w3-bar-item w3-button">MELODIC-FIX</a>
     <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
@@ -148,7 +148,7 @@ done < <(find $dirSubject/fMRI -maxdepth 1 -type d -name "*.ica" -print0)
 #for each .ica file
 for t in ${array[@]}; do
   rfMRI_ver=`basename $t`
-cat <<EOF >> $MELODIC-FIX_html
+cat <<EOF >> $MELODIC_FIX_HTML
 
 <option value="$rfMRI_ver" id="$rfMRI_ver">$rfMRI_ver</option>
 
@@ -158,7 +158,7 @@ done
 
 #printing inbetween filler
 
-cat <<EOF >> $MELODIC-FIX_html
+cat <<EOF >> $MELODIC_FIX_HTML
 
   </select></label>
   &nbsp&nbsp&nbsp&nbsp
@@ -195,7 +195,7 @@ for t in ${array[@]}; do
     fi
   done < $file
 
-cat <<EOF >> $MELODIC-FIX_html
+cat <<EOF >> $MELODIC_FIX_HTML
 
 <!-- Component -->
 
@@ -210,14 +210,14 @@ for ((n=1;n<=$num;n++)); do
   if [[ " ${noise_array[@]} " =~ " $n " ]]; then
       SIG_or_NOISE="NOISE"
   else
-cat <<EOF >> $MELODIC-FIX_html
+cat <<EOF >> $MELODIC_FIX_HTML
       <option value="$n" id="$n">SIGNAL: IC_$n</option>
 EOF
   fi
 done
 
 
-cat <<EOF >> $MELODIC-FIX_html
+cat <<EOF >> $MELODIC_FIX_HTML
     </optgroup>
     <optgroup label="Noise">
 EOF
@@ -226,7 +226,7 @@ EOF
 
 for ((n=1;n<=$num;n++)); do
   if [[ " ${noise_array[@]} " =~ " $n " ]]; then
-cat <<EOF >> $MELODIC-FIX_html
+cat <<EOF >> $MELODIC_FIX_HTML
       <option value="$n" id="$n">NOISE: IC_$n</option>
 EOF
   else
@@ -236,7 +236,7 @@ done
 
 
 
-cat <<EOF >> $MELODIC-FIX_html
+cat <<EOF >> $MELODIC_FIX_HTML
     </optgroup>
     <optgroup label="Unknown">
 EOF
@@ -245,7 +245,7 @@ EOF
 
 for ((n=1;n<=$num;n++)); do
   if [[ " ${unknown_array[@]} " =~ " $n " ]]; then
-cat <<EOF >> $MELODIC-FIX_html
+cat <<EOF >> $MELODIC_FIX_HTML
       <option value="$n" id="$n">UNKNOWN: IC_$n</option>
 EOF
   else
@@ -256,7 +256,7 @@ done
 
 
 
-cat <<EOF >> $MELODIC-FIX_html
+cat <<EOF >> $MELODIC_FIX_HTML
     </optgroup>
   </select></label>
 
@@ -266,7 +266,7 @@ done
 
 
 
-cat <<EOF >> $MELODIC-FIX_html
+cat <<EOF >> $MELODIC_FIX_HTML
 
 <br>
 <br>
@@ -348,7 +348,7 @@ for t in ${array[@]}; do
 
 
 
-cat <<EOF >> $MELODIC-FIX_html
+cat <<EOF >> $MELODIC_FIX_HTML
 
 
 <div class="c_${n}_$rfMRI_ver" style="display: none;">
@@ -379,7 +379,7 @@ done
 
 
 
-cat <<EOF >> $MELODIC-FIX_html
+cat <<EOF >> $MELODIC_FIX_HTML
 
 
  <br> <br>
