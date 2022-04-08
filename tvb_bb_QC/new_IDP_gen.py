@@ -374,19 +374,19 @@ def TL_distribution(subj, PARC_NAME):
     print(TL_distribution_proportion_zero)
 
     num_in_cat=1
-    write_to_IDP_file(subj, "TL_distribution_min", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_min", "mm", "float", "Tract length distance minimum", str(TL_min))
+    write_to_IDP_file(subj, "TL_distribution_min", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_min", "mm (log 10)", "float", "Tract length distance minimum", str(TL_min))
     num_in_cat+=1
-    write_to_IDP_file(subj, "TL_distribution_max", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_max", "mm", "float", "Tract length distance maximum", str(TL_max))
+    write_to_IDP_file(subj, "TL_distribution_max", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_max", "mm (log 10)", "float", "Tract length distance maximum", str(TL_max))
     num_in_cat+=1
-    write_to_IDP_file(subj, "TL_distribution_median", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_median", "mm", "float", "Tract length distance median", str(TL_median))
+    write_to_IDP_file(subj, "TL_distribution_median", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_median", "mm (log 10)", "float", "Tract length distance median", str(TL_median))
     num_in_cat+=1
-    write_to_IDP_file(subj, "TL_distribution_mean", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_mean", "mm", "float", "Tract length distance mean", str(TL_mean))
+    write_to_IDP_file(subj, "TL_distribution_mean", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_mean", "mm (log 10)", "float", "Tract length distance mean", str(TL_mean))
     num_in_cat+=1
-    write_to_IDP_file(subj, "TL_distribution_mean_to_max", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_mean_to_max", "mm", "float", "Tract length distance from mean to max", str(TL_mean_to_max))
+    write_to_IDP_file(subj, "TL_distribution_mean_to_max", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_mean_to_max", "mm (log 10)", "float", "Tract length distance from mean to max", str(TL_mean_to_max))
     num_in_cat+=1
-    write_to_IDP_file(subj, "TL_distribution_median_to_max", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_median_to_max", "mm", "float", "Tract length distance from median to max", str(TL_median_to_max))
+    write_to_IDP_file(subj, "TL_distribution_median_to_max", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_median_to_max", "mm (log 10)", "float", "Tract length distance from median to max", str(TL_median_to_max))
     num_in_cat+=1
-    write_to_IDP_file(subj, "TL_distribution_range", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_range", "mm", "float", "Tract length distance range", str(TL_range))
+    write_to_IDP_file(subj, "TL_distribution_range", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_range", "mm (log 10)", "float", "Tract length distance range", str(TL_range))
     num_in_cat+=1
     write_to_IDP_file(subj, "TL_distribution_proportion_neg", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_proportion_neg", "proportion of non-nan  and non-inf tracts", "float", "Tract length distance - proportion of non-nan  and non-inf tracts with negative distance", str(TL_proportion_neg))
     num_in_cat+=1
@@ -1020,6 +1020,44 @@ def eddy_outliers(subj, BB_BIN_DIR):
         print("ERROR: tvb_IDP_diff_eddy_outliers error")
 
 
+def rfMRI_FD_DVARS(subj, BB_BIN_DIR, FSLDIR):
+    try:
+        num_in_cat=1
+        for file in os.listdir(subj + "/fMRI/"):
+            if file.endswith(".ica"):
+                # SNR_result = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_SNR_IDP_gen.sh'), subj, file, os.path.join(subj, "fMRI", file, "filtered_func_data")],  stdout=subprocess.PIPE)
+                # SNR_result = SNR_result.stdout.decode('utf-8').strip()
+
+                FD = subprocess.run([os.path.join(FSLDIR, 'bin','fsl_motion_outliers'), "-i", os.path.join(subj, "fMRI", file, "filtered_func_data_clean"), "-o", os.path.join(subj, "IDP_files", "FD_confound_mat_"+file+".txt"), "-s", os.path.join(subj, "IDP_files", "FD_"+file+".txt"), "-p", os.path.join(subj, "IDP_files", "FD_"+file+".png"), "--fd"],  stdout=subprocess.PIPE)
+
+
+                DVARS = subprocess.run([os.path.join(FSLDIR, 'bin','fsl_motion_outliers'), "-i", os.path.join(subj, "fMRI", file, "filtered_func_data_clean"), "-o", os.path.join(subj, "IDP_files", "DVARS_confound_mat_"+file+".txt"), "-s", os.path.join(subj, "IDP_files", "DVARS_"+file+".txt"), "-p", os.path.join(subj, "IDP_files", "DVARS_"+file+".png"), "--dvars"],  stdout=subprocess.PIPE)
+
+
+                FD=np.average(np.loadtxt(os.path.join(subj, "IDP_files", "FD_"+file+".txt")))
+                DVARS=np.average(np.loadtxt(os.path.join(subj, "IDP_files", "DVARS_"+file+".txt")))
+
+                print("---------")
+                print(file + "_rfMRI_FD_DVARS")
+                print("---------")
+                print (FD)
+                print (DVARS)
+
+                write_to_IDP_file(subj, "FD_"+file, "tvb_IDP_rfMRI_FD_DVARS", str(num_in_cat), "QC_FD_"+file, "mm", "float", "Mean framewise displacement (FD) in the artefact-cleaned pre-processed "+file+" func image", str(FD))
+                num_in_cat +=1
+
+                write_to_IDP_file(subj, "DVARS_"+file, "tvb_IDP_rfMRI_FD_DVARS", str(num_in_cat), "QC_DVARS_"+file, "AU", "float", "Mean derivative of root mean square variance over voxels (DVARS) in the artefact-cleaned pre-processed "+file+" func image", str(DVARS))
+                num_in_cat +=1
+
+
+                
+    except:
+        print("ERROR: rfMRI_FD_DVARS error")
+
+
+
+
+
 def write_to_IDP_file(subj,short,category,num_in_cat,long_var,unit,dtype,description,value):
     
     global IDP_num_counter
@@ -1039,7 +1077,7 @@ def write_to_IDP_file(subj,short,category,num_in_cat,long_var,unit,dtype,descrip
 
 
 
-def new_IDP_gen(subj,LUT_txt,BB_BIN_DIR,PARC_NAME):      #,fix4melviewtxt
+def new_IDP_gen(subj,LUT_txt,BB_BIN_DIR,PARC_NAME,FSLDIR):      #,fix4melviewtxt
     """Function that generates new IDPs for a subject.
 
     TODO: more error handling here and in function def to deal with 
@@ -1090,19 +1128,21 @@ def new_IDP_gen(subj,LUT_txt,BB_BIN_DIR,PARC_NAME):      #,fix4melviewtxt
 
     fix4melviewtxt=""
 
-    FC_distribution(subj, PARC_NAME)
-    SC_distribution(subj, PARC_NAME)
-    TL_distribution(subj, PARC_NAME)
-    MELODIC_SNR(subj,fix4melviewtxt)
-    MCFLIRT_displacement(subj)       
-
-    homotopic(subj,LUT_txt)
-    fmri_SNR_numvol(subj, BB_BIN_DIR)
-    susceptibility_SNR(subj, BB_BIN_DIR)
-    # func_head_motion(subj, BB_BIN_DIR)
     all_align_to_T1(subj, BB_BIN_DIR)
     fieldmap_align_to_func(subj, BB_BIN_DIR)
+    # func_head_motion(subj, BB_BIN_DIR)
+    fmri_SNR_numvol(subj, BB_BIN_DIR)
+    susceptibility_SNR(subj, BB_BIN_DIR)
+    MCFLIRT_displacement(subj)       
+    MELODIC_SNR(subj,fix4melviewtxt)
+    FC_distribution(subj, PARC_NAME)
+    homotopic(subj,LUT_txt)
+
     eddy_outliers(subj, BB_BIN_DIR)
+    SC_distribution(subj, PARC_NAME)
+    TL_distribution(subj, PARC_NAME)
+    rfMRI_FD_DVARS(subj, PARC_NAME, FSLDIR)
+
     #func_task_activation(subj, BB_BIN_DIR) #not implemented in our pipeline
 
 
@@ -1137,6 +1177,6 @@ if __name__ == "__main__":
 
     #TODO: use argparse https://stackoverflow.com/questions/32761999/how-to-pass-an-entire-list-as-command-line-argument-in-python/32763023
     # try:
-    new_IDP_gen(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4]) #,sys.argv[3])
+    new_IDP_gen(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4],sys.argv[5]) #,sys.argv[3])
 
     
