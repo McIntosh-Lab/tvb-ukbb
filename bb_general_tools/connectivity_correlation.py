@@ -10,11 +10,16 @@ import copy
 from scipy.stats.stats import pearsonr
 
 	
-def connectivity_correlation(first_matrix, second_matrix):
+def connectivity_correlation(first_matrix, second_matrix, load):
 
-    #load and flatten
-    first=np.loadtxt(first_matrix)
-    second=np.loadtxt(second_matrix)
+    if load ==True:
+        #load and flatten
+        first=np.loadtxt(first_matrix)
+        second=np.loadtxt(second_matrix)
+    else:
+        first=first_matrix
+        second=second_matrix
+        
     first=first.flatten()
     second=second.flatten()
 
@@ -29,7 +34,7 @@ def connectivity_correlation(first_matrix, second_matrix):
     second=np.compress(bad, second)  # array([ 4.,  4.,  5.,  6.,  1.,  8.])
 
     # print(str(pearsonr(second,first))) 
-    return str(pearsonr(second,first))
+    return pearsonr(second,first)
 
 if __name__ == "__main__":
     """Function that generates distance, fdt_network_matrix.txt,
@@ -48,4 +53,4 @@ if __name__ == "__main__":
 
     """
     # try:
-    connectivity_correlation(sys.argv[1], sys.argv[2])
+    connectivity_correlation(sys.argv[1], sys.argv[2], sys.argv[2])

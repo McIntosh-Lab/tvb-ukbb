@@ -296,10 +296,14 @@ then
 fi
 
 #label GM with ROIs
-${AFNIDIR}/3dROIMaker -inset $1/T1/cort_subcort_GM.nii.gz -thresh 0.1 -inflate 1 -prefix $1/T1/labelled -refset $1/T1/transforms/parcel_to_T1.nii.gz -nifti -neigh_upto_vert -dump_no_labtab
+${AFNIDIR}/3dROIMaker -inset $1/T1/cort_subcort_GM.nii.gz -thresh 0.1 -inflate 1 -prefix $1/T1/labelled -refset $1/T1/transforms/parcel_to_T1_${PARC_NAME}.nii.gz -nifti -neigh_upto_vert -dump_no_labtab
+
+#rename labelled GM and GMI to include parcellation
+mv labelled_GM.nii.gz labelled_GM_${PARC_NAME}.nii.gz 
+mv labelled_GMI.nii.gz labelled_GMI_${PARC_NAME}.nii.gz 
 
 #for some reason both labelled_GM and labelled_GMI are inflated; fix it here
-${FSLDIR}/bin/fslmaths $1/T1/labelled_GM -mas $1/T1/cort_subcort_GM.nii.gz $1/T1/labelled_GM
+${FSLDIR}/bin/fslmaths $1/T1/labelled_GM_${PARC_NAME} -mas $1/T1/cort_subcort_GM.nii.gz $1/T1/labelled_GM_${PARC_NAME}
 
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
 
