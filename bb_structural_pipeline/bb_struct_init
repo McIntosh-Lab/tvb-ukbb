@@ -285,7 +285,6 @@ $BB_BIN_DIR/bb_structural_pipeline/bb_QC_CNR_corners_complete ../$1
 
 
 
-
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
 
 set +x
