@@ -61,9 +61,13 @@ while IFS=$' \t\r\n' read -r subjname group; do
 	fi
 
 	#check rfmri rawdatas
+	rfMRI_counter=0
+	rfMRI_last=""
 	for t in ${rfMRI[@]}; do
 		if compgen -G "$t" > /dev/null; then
 		    rfMRI_flag="true"
+		    rfMRI_counter=$((rfMRI_counter+1))
+		    rfMRI_last=`ls ${t}`
 		else
 			:
 		fi
@@ -71,6 +75,12 @@ while IFS=$' \t\r\n' read -r subjname group; do
 	done
 	if [ $rfMRI_flag = "false" ]; then
 		echo "${group}/${subjname} is missing rfMRI"
+	fi
+	if [ $rfMRI_counter -eq 1 ]; then
+		mydim4=`${FSLDIR}/bin/fslval ${rfMRI_last} dim4`
+		if [ $mydim4 -eq 1 ]; then
+			echo "${group}/${subjname} is missing rfMRI. only SBREF exists."
+		fi
 	fi
 
 	#check tfmri rawdatas
