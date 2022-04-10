@@ -150,7 +150,7 @@ def ED_TL_correlation(zip_dir, subject_list, PARC_NAME, PARC_LUT, subject_age_li
                     #load centres and save ED matrix into outputdir
                     centres=""
                     if os.path.exists(centres_path):
-                        centres=np.genfromtxt(centres_path)
+                        centres=np.genfromtxt(centres_path, dtype='str')
                         ED=np.zeros((centres.shape[0], centres.shape[0]))
                         for i in range(centres.shape[0]):
                             for j in range(centres.shape[0]):
@@ -169,8 +169,7 @@ def ED_TL_correlation(zip_dir, subject_list, PARC_NAME, PARC_LUT, subject_age_li
     sub_array=""
     decile_array=""
 
-    mydtype = [('sub', str), ('age', float)]
-    subject_age_list=np.genfromtxt(subject_age_list_file,dtype=mydtype)
+    subject_age_list=np.genfromtxt(subject_age_list_file,dtype='str')
 
 
     #go through subjects and populate arrays, one index per subj
