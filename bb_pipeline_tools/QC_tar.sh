@@ -5,7 +5,7 @@
 # Description: Script to generate QC tars for portability 
 #
 # Usage: 
-#         While in subjects folder:  QC_tar.sh subject_name 
+#         While in subjects folder:  QC_tar.sh subject_name PARC_NAME
 #
 ## Author: Justin Wang
 
@@ -14,6 +14,7 @@ set -x
 echo "$-"
 set +e
 
+PARC_NAME=${3}
 
 origDir=`pwd`
 
@@ -79,7 +80,7 @@ done
 
 
 
-tar -cf $origDir/${sub}_QC.tar $sub/QC $sub/logs$fMRI_files $sub/IDP_files/*.txt $sub/IDP_files/*.tsv
+tar -cf $origDir/${sub}_QC_${PARC_NAME}.tar $sub/QC_${PARC_NAME} $sub/logs$fMRI_files $sub/IDP_files_${PARC_NAME}/*.txt $sub/IDP_files_${PARC_NAME}/*.tsv
 #may need --ignore-failed-read option for non existent files/folders
 
 
