@@ -179,7 +179,7 @@ def ED_TL_correlation(zip_dir, subject_list, PARC_NAME, PARC_LUT, subject_age_li
         ED_file = subject+"_"+PARC_NAME+"_ED.txt"
         TL_file = subject+"_"+PARC_NAME+"_TL.txt"
 
-        if os.path.exists(ED_file) and os.path.exists(TL_file) and os.path.exists(subject_age_list):
+        if os.path.exists(outputdir,ED_file) and os.path.exists(outputdir,TL_file) and os.path.exists(outputdir,subject_age_list):
 
             ED = np.loadtxt(os.path.join(outputdir,ED_file))
             TL = np.loadtxt(os.path.join(outputdir,TL_file))
