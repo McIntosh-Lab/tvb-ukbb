@@ -34,13 +34,13 @@ while IFS=$' \t\r\n' read -r subjname group; do
             if [ -f "fMRI/$rfMRI_ver/ts_${PARC_NAME}.txt" ]; then
                 :
             else
-                echo "$subjname is missing ts_${PARC_NAME}.txt"
+                echo "${group}/${subjname} is missing ts_${PARC_NAME}.txt"
             fi
 
             if [ -f "fMRI/$rfMRI_ver/fc_${PARC_NAME}.txt" ]; then
                 :
             else
-                echo "$subjname is missing fc_${PARC_NAME}.txt"
+                echo "${group}/${subjname} is missing fc_${PARC_NAME}.txt"
             fi
         done
 
@@ -48,21 +48,21 @@ while IFS=$' \t\r\n' read -r subjname group; do
         if [ -f "dMRI/sc_${PARC_NAME}.txt" ]; then
                 :
         else
-                echo "$subjname is missing sc_${PARC_NAME}.txt"
+                echo "${group}/${subjname} is missing sc_${PARC_NAME}.txt"
         fi
 
         #check QC HTML generation
         if [ -f "QC_${PARC_NAME}/html/IDP.html" ]; then
                 :
         else
-                echo "$subjname has incomplete QC report"
+                echo "${group}/${subjname} has incomplete QC report"
         fi
 
         #check IDP generation
         if [ -f "IDP_files_${PARC_NAME}/significant_IDPs.tsv" ]; then
                 :
         else
-                echo "$subjname has incomplete IDP processing"
+                echo "${group}/${subjname} has incomplete IDP processing"
         fi
 
         cd ../..
