@@ -154,8 +154,8 @@ def ED_TL_correlation(zip_dir, subject_list, PARC_NAME, PARC_LUT, subject_age_li
                         ED=np.zeros((centres.shape[0], centres.shape[0]))
                         for i in range(centres.shape[0]):
                             for j in range(centres.shape[0]):
-                                a=numpy.array((float(centres[i][1]), float(centres[i][2]), float(centres[i][3])))
-                                b=numpy.array((float(centres[j][1]), float(centres[j][2]), float(centres[j][3])))
+                                a=np.array((float(centres[i][1]), float(centres[i][2]), float(centres[i][3])))
+                                b=np.array((float(centres[j][1]), float(centres[j][2]), float(centres[j][3])))
                                 ED[i][j]=np.linalg.norm(a-b)
 
                         np.savetxt(uncompressed_subj[:-10]+"ED.txt", ED)
