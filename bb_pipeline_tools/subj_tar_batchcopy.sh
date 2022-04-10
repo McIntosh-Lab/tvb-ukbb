@@ -2,7 +2,7 @@
 #
 # Script name: subj_tar_batchcopy.sh
 #
-# Description: Script to batch generate subj tars for portability 
+# Description: Script to batch generate subj tars for all processed subs and copy them into subj_tar
 #
 # Usage: 
 #         While in subjects folder (you should see AD, CN, EMCI etc subdirs):  subj_tar_batchcopy.sh subjects_tsv
