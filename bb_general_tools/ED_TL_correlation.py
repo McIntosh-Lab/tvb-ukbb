@@ -47,7 +47,7 @@ from connectivity_correlation import connectivity_correlation
 import math
 import matplotlib.pyplot as plt
 
-def consistency_thresholding(zip_dir, threshold, subject_list, PARC_NAME, PARC_LUT, subject_age_list_file):
+def ED_TL_correlation(zip_dir, subject_list, PARC_NAME, PARC_LUT, subject_age_list_file):
     """Script to consistency threshold a group of processed subjects' structural 
      connectivity matrices.
 
@@ -273,6 +273,6 @@ if __name__ == "__main__":
 
     """
     # try:
-    ED_TL_correlation(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4],sys.argv[5],sys.argv[6])
+    ED_TL_correlation(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4],sys.argv[5])
 
     
