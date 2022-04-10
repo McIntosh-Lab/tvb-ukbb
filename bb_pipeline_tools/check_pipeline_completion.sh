@@ -26,7 +26,10 @@ while IFS=$' \t\r\n' read -r subjname group; do
             array+=("$REPLY")
         done < <(find fMRI -maxdepth 1 -type d -name "*.ica" -print0)
 
-
+        #check missing ica
+        if (( ${#array[@]} == 0 )); then
+            echo "${group}/${subjname} is missing ica"
+        fi
 
         #for each .ica file, check ts and fc
         for t in ${array[@]}; do
