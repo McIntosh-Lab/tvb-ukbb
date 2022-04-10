@@ -183,6 +183,7 @@ def ED_TL_correlation(zip_dir, subject_list, PARC_NAME, PARC_LUT, subject_age_li
 
             ED = np.loadtxt(os.path.join(outputdir,ED_file))
             TL = np.loadtxt(os.path.join(outputdir,TL_file))
+            decile=np.nan
             decile=math.floor(float([item[1] for i,item in enumerate(subject_age_list) if subject in item[0]][0])/10)
 
             if index == 0:
@@ -197,10 +198,15 @@ def ED_TL_correlation(zip_dir, subject_list, PARC_NAME, PARC_LUT, subject_age_li
                 sub_array=np.append(sub_array,np.array([subject]),axis=0)
                 decile_array=np.append(decile_array,np.array([decile]),axis=0)
 
+        else:
+            print(subject,"missing ED or TL")
 
     #create 2d list of deciles containing [age, whole brain EDTL correlation]
     whole_brain_EDTL=[]
-    for i in range(len(subjects)):
+    for i in range(len(ED_array)):
+        print(connectivity_correlation(ED_array[i],TL_array[i],False))
+        print(connectivity_correlation(ED_array[i],TL_array[i],False)[0])
+        print(decile_array[i])
         whole_brain_EDTL.append([decile_array[i],connectivity_correlation(ED_array[i],TL_array[i],False)[0]])
 
     deciles=[0,1,2,3,4,5,6,7,8,9]
