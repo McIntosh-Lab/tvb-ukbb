@@ -1,6 +1,6 @@
 #!/bin/bash
 # this script should be run while in an ADNI3 directory (ls should show AD, CN, LMCI, etc directories)
-# this script will copy tvb_inputs from your run subjects into tvb_inputs dir
+# this script will copy all tvb_inputs from your processed subjects into tvb_inputs dir
 #
 # usage: tvb_input_batchcopy.sh Cam-CAN_subject_list.tsv
 
