@@ -185,7 +185,7 @@ def ED_TL_correlation(zip_dir, subject_list, PARC_NAME, PARC_LUT, subject_age_li
             TL = np.loadtxt(os.path.join(outputdir,TL_file))
             decile=np.nan
             decile=float([item[1] for i,item in enumerate(subject_age_list) if subject in item[0]][0])
-            if decile != float("NaN"):
+            if not math.isnan(decile):
                 decile=math.floor(decile/10)
 
             if index == 0:
