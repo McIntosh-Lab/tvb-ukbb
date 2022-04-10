@@ -217,7 +217,7 @@ def ED_TL_correlation(zip_dir, subject_list, PARC_NAME, PARC_LUT, subject_age_li
     x=[]
     #create list for each decile
     for decile in deciles:
-        mylist=whole_brain_EDTL[whole_brain_EDTL[:,0]==decile][:,[1]]
+        mylist=whole_brain_EDTL[whole_brain_EDTL[:,0]==decile][:,1]
         x.append(mylist)
         print(str(decile)," decile average EDTL correlation: ",str(sum(mylist)/len(mylist)))
     plt.boxplot(x)
