@@ -173,38 +173,29 @@ def ED_TL_correlation(zip_dir, subject_list, PARC_NAME, PARC_LUT, subject_age_li
 
 
     #go through subjects and populate arrays, one index per subj
-    for subject in subjects:#
+    for index,subject in enumerate(subjects):#
 
         #load ED, TL
         ED_file = subject+"_"+PARC_NAME+"_ED.txt"
         TL_file = subject+"_"+PARC_NAME+"_TL.txt"
 
-        ED = np.loadtxt(os.path.join(outputdir,ED_file))
-        TL = np.loadtxt(os.path.join(outputdir,TL_file))
+        if os.path.exists(ED_file) and os.path.exists(TL_file) and os.path.exists(subject_age_list):
 
-        if ED_array=="":
-            ED_array=np.array([ED])
-        else:
-            ED_array=np.append(ED_array,np.array([ED]),axis=0)
+            ED = np.loadtxt(os.path.join(outputdir,ED_file))
+            TL = np.loadtxt(os.path.join(outputdir,TL_file))
+            decile=math.floor(float([item[1] for i,item in enumerate(subject_age_list) if subject in item[0]][0])/10)
 
+            if index == 0:
+                ED_array=np.array([ED])
+                TL_array=np.array([TL])
+                sub_array=np.array([subject])
+                decile_array=np.array([decile])
 
-        if TL_array=="":
-            TL_array=np.array([TL])
-        else:
-            TL_array=np.append(TL_array,np.array([TL]),axis=0)
-
-
-        if sub_array=="":
-            sub_array=np.array([subject])
-        else:
-            sub_array=np.append(sub_array,np.array([subject]),axis=0)
-
-
-        decile=math.floor(float([item[1] for i,item in enumerate(subject_age_list) if subject in item[0]][0])/10)
-        if decile_array=="":
-            decile_array=np.array([decile])
-        else:
-            decile_array=np.append(decile_array,np.array([decile]),axis=0)
+            else:
+                ED_array=np.append(ED_array,np.array([ED]),axis=0)
+                TL_array=np.append(TL_array,np.array([TL]),axis=0)
+                sub_array=np.append(sub_array,np.array([subject]),axis=0)
+                decile_array=np.append(decile_array,np.array([decile]),axis=0)
 
 
     #create 2d list of deciles containing [age, whole brain EDTL correlation]
