@@ -203,7 +203,7 @@ def ED_TL_correlation(zip_dir, subject_list, PARC_NAME, PARC_LUT, subject_age_li
 
     #create 2d list of deciles containing [age, whole brain EDTL correlation]
     whole_brain_EDTL=[]
-    for i in range(len(ED_array)):
+    for i in range(ED_array.shape[0]):
         print(connectivity_correlation(ED_array[i],TL_array[i],False))
         print(connectivity_correlation(ED_array[i],TL_array[i],False)[0])
         print(decile_array[i])
