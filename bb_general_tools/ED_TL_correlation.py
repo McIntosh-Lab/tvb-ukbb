@@ -225,7 +225,7 @@ def ED_TL_correlation(zip_dir, subject_list, PARC_NAME, PARC_LUT, subject_age_li
     plt.boxplot(x)
     plt.title("Whole-Brain Euclidean Distance - Tract Length Matrix Correlation")
     plt.xlabel('Decile')
-    plt.xlabel('Whole-Brain ED-TL Pearson Correlation')
+    plt.ylabel('Whole-Brain ED-TL Pearson Correlation')
 
     plt.savefig(os.path.join(outputdir,'ED_TL_wholebrain_by_decile.png'), format='png')
     plt.savefig(os.path.join(outputdir,'ED_TL_wholebrain_by_decile.svg'), format='svg')
