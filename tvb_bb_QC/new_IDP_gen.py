@@ -133,7 +133,7 @@ def FC_distribution(subj, PARC_NAME):
 
                     squared_error = mean_squared_error(pdf_fitted,y)
                     print("------")
-                    print("SC_dist")
+                    print("FC_dist",file)
 
                     print("dist: "+dist_name)
                     print("squared error: "+str(squared_error))
@@ -614,7 +614,7 @@ def MCFLIRT_displacement(subj):
 
 
 
-def homotopic(subj,LUT_txt):
+def homotopic(subj,LUT_txt,PARC_NAME):
     #get indices of homotopic pairs
     #get the fc value for each pair
     #get distribution of these fc values  
