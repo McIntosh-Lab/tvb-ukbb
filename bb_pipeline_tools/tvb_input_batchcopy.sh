@@ -7,7 +7,7 @@
 mkdir -p tvb_inputs
 while IFS=$' \t\r\n' read -r subjname group; do
         mkdir -p tvb_inputs/${group}
-        mv ${group}/${subjname}/*tvb_inputs*.zip tvb_inputs/${group}/
+        mv ${group}/${subjname}/*tvb_inputs.zip tvb_inputs/${group}/
 done < "$1"
 
 
