@@ -69,8 +69,7 @@ ${FSLDIR}/bin/applywarp --rel --interp=nn --in=$templ/MNI152_T1_1mm_brain_mask -
 ${FSLDIR}/bin/fslmaths T1 -mul T1_brain_mask T1_brain
 ${FSLDIR}/bin/fslmaths T1_brain_to_MNI -mul $templ/MNI152_T1_1mm_brain_mask T1_brain_to_MNI
 
-#register parcellation, cerebellar and brainstem masks to T1
-${FSLDIR}/bin/applywarp --rel --interp=nn --in=$PARC_IMG --ref=T1 -w T1_to_MNI_warp_coef_inv -o parcel_to_T1_${PARC_NAME}
+#register cerebellar and brainstem masks to T1
 ${FSLDIR}/bin/applywarp --rel --interp=nn --in=${templ}/cerebellum --ref=T1 -w T1_to_MNI_warp_coef_inv -o cerebellum_to_T1
 ${FSLDIR}/bin/applywarp --rel --interp=nn --in=${templ}/brainstem --ref=T1 -w T1_to_MNI_warp_coef_inv -o brainstem_to_T1
 
@@ -266,16 +265,10 @@ then
      ${FSLDIR}/bin/fslmaths T1_fast/T1_brain_GM_mask_noCerebBS_dil2 -add T1_fast/T1_brain_WM_mask_noCerebBS -thr 2 -bin interface
 fi
 
-
-#label GM with ROIs
-${AFNIDIR}/3dROIMaker -inset cort_subcort_GM.nii.gz -thresh 0.1 -inflate 1 -prefix labelled -refset transforms/parcel_to_T1_${PARC_NAME}.nii.gz -nifti -neigh_upto_vert -dump_no_labtab
-
-#rename labelled GM and GMI to include parcellation
-mv labelled_GM.nii.gz labelled_GM_${PARC_NAME}.nii.gz 
-mv labelled_GMI.nii.gz labelled_GMI_${PARC_NAME}.nii.gz 
-
-#for some reason both labelled_GM and labelled_GMI are inflated; fix it here
-${FSLDIR}/bin/fslmaths labelled_GM_${PARC_NAME} -mas cort_subcort_GM.nii.gz labelled_GM_${PARC_NAME}
+cd ../..
+#Run parcellation-specific structural processing
+$BB_BIN_DIR/bb_structural_pipeline/tvb_struct_parcellation.sh ${1}
+cd $1/T1
 
 #Run Siena
 $BB_BIN_DIR/bb_structural_pipeline/bb_sienax `pwd`/..
