@@ -21,7 +21,11 @@ import bb_pipeline_tools.bb_logging_tool as LT
 
 def tvb_reparcellate_pipeline(subject, fileConfiguration, PARC_NAME):
 
+    subject = subject.strip()
 
+    if subject[-1] == "/":
+        subject = subject[0 : len(subject) - 1]
+        
     logger = LT.initLogging(__file__, subject)
     logDir = logger.logDir
     baseDir = logDir[0 : logDir.rfind("/logs/")]
@@ -161,7 +165,7 @@ def tvb_reparcellate_pipeline(subject, fileConfiguration, PARC_NAME):
     print("QC reparcellation pipeline complete.")
     return jobQC
 
-
+    LT.finishLogging(logger)
 
 
 if __name__ == "__main__":
