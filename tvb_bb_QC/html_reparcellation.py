@@ -80,3 +80,4 @@ if __name__ == "__main__":
     #subject and subjdir here are interchangeable, only subj relative from pipeline cwd is used (i.e. only subj dir/name, not full filepath)
     # call pipeline
     html_reparcellation(subjdir, PARC_NAME)
+    
