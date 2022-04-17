@@ -53,31 +53,24 @@ def tvb_reparcellate_pipeline(subject, fileConfiguration, PARC_NAME):
     # FUNCTIONAL
     ######
     print("Beginning functional reparcellation pipeline")
-    rfMRI_nums = [
-         k.split("_")[-1]
-         for k in fileConfiguration.keys()
-         if "rfMRI" in k and "oldpath" not in k and "SBRef" not in k
-    ]
 
-    if len(rfMRI_nums) > 0:
+    if ("rfMRI" in fileConfiguration) and (fileConfiguration["rfMRI"] != ""):
         print("rfMRI files found. Running rfMRI subpipe reparcellation")
-        for i in range(len(rfMRI_nums)):
-            print("Running FC reparcellation...")
+        print("Running FC reparcellation...")
 
-            ### compute FC using parcellation
-            jobFC = LT.runCommand(
-                logger,
-                "$BB_BIN_DIR/bb_functional_pipeline/tvb_FC "
-                + subject
-                + f" {rfMRI_nums[i]}",
-                f"tvb_FC_{i}_"
-                + subname
-                + "_"
-                + PARC_NAME
-                + "_"
-                + "reparcellation"
-            )
-            print("FC reparcellation completed.")
+        ### compute FC using parcellation
+        jobFC = LT.runCommand(
+            logger,
+            "$BB_BIN_DIR/bb_functional_pipeline/tvb_FC "
+            + subject,
+            "tvb_FC_"
+            + subname
+            + "_"
+            + PARC_NAME
+            + "_"
+            + "reparcellation"
+        )
+        print("FC reparcellation completed.")
         print("rfMRI subpipe reparcellation complete.")
     else:
         logger.error(
