@@ -19,7 +19,10 @@ def connectivity_correlation(first_matrix, second_matrix, load):
     else:
         first=first_matrix
         second=second_matrix
-        
+
+    first = np.triu(first)
+    second = np.triu(second)
+    
     first=first.flatten()
     second=second.flatten()
 

@@ -44,10 +44,10 @@ import zipfile
 import shutil
 import csv
 from connectivity_correlation import connectivity_correlation
-import pandas as pd
+import math
+import matplotlib.pyplot as plt
 
-
-def consistency_thresholding(zip_dir, threshold, subject_list, PARC_NAME, PARC_LUT):
+def ED_TL_correlation(zip_dir, subject_list, PARC_NAME, PARC_LUT, subject_age_list_file):
     """Script to consistency threshold a group of processed subjects' structural 
      connectivity matrices.
 
@@ -84,14 +84,15 @@ def consistency_thresholding(zip_dir, threshold, subject_list, PARC_NAME, PARC_L
 
 
 
-    #import subject names into an array
+    #import subject names into subjects array
     subjects = []
     with open(subject_list) as subject_list_file:
         for line in subject_list_file:
             line = line.rstrip('\n')
             subjects.append(line)
 
-    #open PARC_LUT
+
+    #open PARC_LUT int ROI_list
     datafile = open(PARC_LUT, 'r')
     datareader = csv.reader(datafile, delimiter = "\t")
     ROI_list = []
@@ -100,10 +101,8 @@ def consistency_thresholding(zip_dir, threshold, subject_list, PARC_NAME, PARC_L
         row[0]=int(row[0])
         ROI_list.append(row)
 
-    consistency_mask=""
-    subcounter=0
 
-    #IF ED TL files dont exist
+    #IF ED TL files dont exist already in outputdir, gen them
     #unzip each subject into output dir
     for subject in subjects:
 
@@ -117,54 +116,66 @@ def consistency_thresholding(zip_dir, threshold, subject_list, PARC_NAME, PARC_L
         subject_file_name = subject+"_"+PARC_NAME+"_tvb_inputs.zip"
         subject_zip = os.path.join(zip_dir,subject_file_name)
 
-        #unzip subject
+        #gen EDTL files if the subj zip is available
         if os.path.exists(subject_zip):
-            with zipfile.ZipFile(subject_zip, 'r') as zip_ref:
-                zip_ref.extractall(outputdir)
 
+            #uncompressed tvb input folder location (in outputdir)
             uncompressed_subj=os.path.join(outputdir,subject_file_name[:-4])
 
-            struct_zip=os.path.join(uncompressed_subj,"structural_inputs.zip")
+            #if ED and TL txt files for this sub and parc dont both exist in outputdir, 
+            if not (os.path.exists(uncompressed_subj[:-10]+"ED.txt") and os.path.exists(uncompressed_subj[:-10]+"TL.txt")):
+            
+                #unzip into outputdir
+                with zipfile.ZipFile(subject_zip, 'r') as zip_ref:
+                    zip_ref.extractall(outputdir)
 
-            if os.path.exists(struct_zip):
-                with zipfile.ZipFile(struct_zip, 'r') as zip_ref:
-                    zip_ref.extractall(uncompressed_subj)
+                #struct zip 
+                struct_zip=os.path.join(uncompressed_subj,"structural_inputs.zip")
 
-                TL_path=os.path.join(struct_zip[:-4],"tract_lengths.txt")
-                centres_path=os.path.join(struct_zip[:-4],"centres.txt")
-                
-
-                TL=""
-                if os.path.exists(TL_path):
-                #load SC
-                    TL=np.loadtxt(TL_path)
-                    np.savetxt(uncompressed_subj[:-10]+"TL.txt", TL)
-
-                centres=""
-                if os.path.exists(centres_path):
-                #load SC
-                    centres=np.genfromtxt(centres_path)
-                    ED=np.zeros((centres.shape[0], centres.shape[0]))
-                    for i in range(centres.shape[0]):
-                        for j in range(centres.shape[0]):
-                            a=numpy.array((float(centres[i][1]), float(centres[i][2]), float(centres[i][3])))
-                            b=numpy.array((float(centres[j][1]), float(centres[j][2]), float(centres[j][3])))
-                            ED[i][j]=np.linalg.norm(a-b)
-
-                    np.savetxt(uncompressed_subj[:-10]+"ED.txt", ED)
-
-            shutil.rmtree(uncompressed_subj)
+                #unzip struct zip
+                if os.path.exists(struct_zip):
+                    with zipfile.ZipFile(struct_zip, 'r') as zip_ref:
+                        zip_ref.extractall(uncompressed_subj)
 
 
-    #add condition for if ED TL files exist
-    #per subject, whole brain ED TL correlation
+                    TL_path=os.path.join(struct_zip[:-4],"tract_lengths.txt")
+                    centres_path=os.path.join(struct_zip[:-4],"centres.txt")
+                    
+                    #load TL and save into outputdir
+                    TL=""
+                    if os.path.exists(TL_path):
+                        TL=np.loadtxt(TL_path)
+                        np.savetxt(uncompressed_subj[:-10]+"TL.txt", TL)
+
+                    #load centres and save ED matrix into outputdir
+                    centres=""
+                    if os.path.exists(centres_path):
+                        centres=np.genfromtxt(centres_path, dtype='str')
+                        ED=np.zeros((centres.shape[0], centres.shape[0]))
+                        for i in range(centres.shape[0]):
+                            for j in range(centres.shape[0]):
+                                a=np.array((float(centres[i][1]), float(centres[i][2]), float(centres[i][3])))
+                                b=np.array((float(centres[j][1]), float(centres[j][2]), float(centres[j][3])))
+                                ED[i][j]=np.linalg.norm(a-b)
+
+                        np.savetxt(uncompressed_subj[:-10]+"ED.txt", ED)
+
+                #remove uncompressed subj from outputdir
+                shutil.rmtree(uncompressed_subj)
+
+
     ED_array=""
     TL_array=""
     sub_array=""
     decile_array=""
 
-    for subject in subjects:
+    subject_age_list=np.genfromtxt(subject_age_list_file,dtype='str')
 
+
+    #go through subjects and populate arrays, one index per subj
+    for subject in subjects:#
+
+        #load ED, TL
         ED_file = subject+"_"+PARC_NAME+"_ED.txt"
         TL_file = subject+"_"+PARC_NAME+"_TL.txt"
 
@@ -189,30 +200,38 @@ def consistency_thresholding(zip_dir, threshold, subject_list, PARC_NAME, PARC_L
             sub_array=np.append(sub_array,np.array([subject]),axis=0)
 
 
-
-        #TODO DECILE = 
+        decile=math.floor(float([item[1] for i,item in enumerate(subject_age_list) if subject in item[0]][0])/10)
         if decile_array=="":
             decile_array=np.array([decile])
         else:
             decile_array=np.append(decile_array,np.array([decile]),axis=0)
 
 
-    #create 2d list of deciles and whole brain EDTL correlation
+    #create 2d list of deciles containing [age, whole brain EDTL correlation]
     whole_brain_EDTL=[]
     for i in range(len(subjects)):
         whole_brain_EDTL.append([decile_array[i],connectivity_correlation(ED_array[i],TL_array[i],False)[0]])
 
+    deciles=[0,1,2,3,4,5,6,7,8,9]
+    #get
+
+    x=[]
+    #create list for each decile
+    for decile in deciles:
+        mylist=whole_brain_EDTL[whole_brain_EDTL[:,0]==decile][:,[1]]
+        x.append(mylist)
+    plt.boxplot(x)
+    plt.title("Whole-Brain Euclidean Distance - Tract Length Matrix Correlation")
+    plt.xlabel('Decile')
+    plt.xlabel('Whole-Brain ED-TL Pearson Correlation')
+
+    plt.savefig(os.path.join(outputdir,'ED_TL_wholebrain_by_decile.png'), format='png')
+    plt.savefig(os.path.join(outputdir,'ED_TL_wholebrain_by_decile.svg'), format='svg')
+
+
+    plt.show()
     #whole brain edtl vis: 
     #average of all correlations, as well as by decile
-
-
-    #per connection EDTL correlation
-
-
-
-    #per connection per decile EDTL correlation 
-#need subject age list
-sub, ed, tl, corr, age_decile
 
 
             
