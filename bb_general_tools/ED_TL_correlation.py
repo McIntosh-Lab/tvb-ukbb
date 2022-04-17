@@ -173,43 +173,43 @@ def ED_TL_correlation(zip_dir, subject_list, PARC_NAME, PARC_LUT, subject_age_li
 
 
     #go through subjects and populate arrays, one index per subj
-    for subject in subjects:#
+    for index,subject in enumerate(subjects):#
 
         #load ED, TL
         ED_file = subject+"_"+PARC_NAME+"_ED.txt"
         TL_file = subject+"_"+PARC_NAME+"_TL.txt"
 
-        ED = np.loadtxt(os.path.join(outputdir,ED_file))
-        TL = np.loadtxt(os.path.join(outputdir,TL_file))
+        if os.path.exists(os.path.join(outputdir,ED_file)) and os.path.exists(os.path.join(outputdir,TL_file)) and os.path.exists(subject_age_list_file):
 
-        if ED_array=="":
-            ED_array=np.array([ED])
+            ED = np.loadtxt(os.path.join(outputdir,ED_file))
+            TL = np.loadtxt(os.path.join(outputdir,TL_file))
+            decile=np.nan
+            decile=float([item[1] for i,item in enumerate(subject_age_list) if subject in item[0]][0])
+            if not math.isnan(decile):
+                decile=math.floor(decile/10)
+
+            if index == 0:
+                ED_array=np.array([ED])
+                TL_array=np.array([TL])
+                sub_array=np.array([subject])
+                decile_array=np.array([decile])
+
+
+            else:
+                ED_array=np.append(ED_array,np.array([ED]),axis=0)
+                TL_array=np.append(TL_array,np.array([TL]),axis=0)
+                sub_array=np.append(sub_array,np.array([subject]),axis=0)
+                decile_array=np.append(decile_array,np.array([decile]),axis=0)
+
         else:
-            ED_array=np.append(ED_array,np.array([ED]),axis=0)
-
-
-        if TL_array=="":
-            TL_array=np.array([TL])
-        else:
-            TL_array=np.append(TL_array,np.array([TL]),axis=0)
-
-
-        if sub_array=="":
-            sub_array=np.array([subject])
-        else:
-            sub_array=np.append(sub_array,np.array([subject]),axis=0)
-
-
-        decile=math.floor(float([item[1] for i,item in enumerate(subject_age_list) if subject in item[0]][0])/10)
-        if decile_array=="":
-            decile_array=np.array([decile])
-        else:
-            decile_array=np.append(decile_array,np.array([decile]),axis=0)
-
+            print(subject,"missing ED or TL")
 
     #create 2d list of deciles containing [age, whole brain EDTL correlation]
     whole_brain_EDTL=[]
-    for i in range(len(subjects)):
+    for i in range(ED_array.shape[0]):
+        # print(connectivity_correlation(ED_array[i],TL_array[i],False))
+        # print(connectivity_correlation(ED_array[i],TL_array[i],False)[0])
+        # print(decile_array[i])
         whole_brain_EDTL.append([decile_array[i],connectivity_correlation(ED_array[i],TL_array[i],False)[0]])
 
     deciles=[0,1,2,3,4,5,6,7,8,9]
@@ -218,8 +218,9 @@ def ED_TL_correlation(zip_dir, subject_list, PARC_NAME, PARC_LUT, subject_age_li
     x=[]
     #create list for each decile
     for decile in deciles:
-        mylist=whole_brain_EDTL[whole_brain_EDTL[:,0]==decile][:,[1]]
+        mylist=whole_brain_EDTL[whole_brain_EDTL[:,0]==decile][:,1]
         x.append(mylist)
+        print(str(decile)," decile average EDTL correlation: ",str(sum(mylist)/len(mylist)))
     plt.boxplot(x)
     plt.title("Whole-Brain Euclidean Distance - Tract Length Matrix Correlation")
     plt.xlabel('Decile')
