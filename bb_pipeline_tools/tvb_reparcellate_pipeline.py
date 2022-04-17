@@ -16,10 +16,25 @@ import json
 
 sys.path.insert(1, os.path.dirname(__file__) + "/..")
 import bb_pipeline_tools.bb_logging_tool as LT
-
+from tvb_bb_QC.html_reparcellation import html_reparcellation
 #EXPORT PARC stuff
 
 def tvb_reparcellate_pipeline(subject, fileConfiguration, PARC_NAME):
+
+    #import fileconfig from json if none given
+    if fileConfiguration=="none":
+        try:
+            fd_fileName = "logs/file_descriptor.json"
+            json_path = os.path.abspath(f"./{subject}/{fd_fileName}")
+            with open(json_path, "r") as f:
+                fileConfiguration = json.load(f)
+        except:
+            print(f"{json_path} could not be loaded. Exiting")
+            sys.exit(1)
+
+
+
+
 
     subject = subject.strip()
 
@@ -170,9 +185,16 @@ def tvb_reparcellate_pipeline(subject, fileConfiguration, PARC_NAME):
         + "reparcellation"
     )
     print("QC reparcellation pipeline complete.")
-    return jobQC
+
+
+
+    print("Beginning QC html reparcellation dropdown...")
+    html_reparcellation(subject,PARC_NAME)
+    print("QC html reparcellation dropdown complete.")
 
     LT.finishLogging(logger)
+
+    return jobQC
 
 
 if __name__ == "__main__":

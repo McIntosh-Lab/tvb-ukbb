@@ -51,6 +51,8 @@ export QUEUE_PARALLEL="parallel.q"
 #           use for systems without CUDA GPU
 export PROBTRACKX_GPU="true"
 
+export REPARCELLATE="false" #TO BE MODIFIED BY USER
+
 #SETUP AFNI
 # export AFNIDIR=/opt/afni                                                        #TO BE MODIFIED BY USER
 export AFNIDIR="/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Compiler/gcc9/afni/20.3.05"
