@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # This script renames parcellation-specific files by appending original parcellation name as suffix
 # to be run before re-parcellation if parcellation-specific files are generically named
@@ -38,9 +38,8 @@ for t in ${array[@]}; do
         mv $subjID/fMRI/${rfMRI_ver}/parcellation.nii.gz $subjID/fMRI/${rfMRI_ver}/parcellation_${PARC_NAME}.nii.gz 
         mv $subjID/fMRI/${rfMRI_ver}/ts_roied.txt $subjID/fMRI/${rfMRI_ver}/ts_roied_${PARC_NAME}.txt
         mv $subjID/fMRI/${rfMRI_ver}/ts.txt $subjID/fMRI/${rfMRI_ver}/ts_${PARC_NAME}.txt
-        mv $subjID/fMRI/${rfMRI_ver}/stats.sum /fMRI/${rfMRI_ver}/stats_${PARC_NAME}.sum
+        mv $subjID/fMRI/${rfMRI_ver}/stats.sum $subjID/fMRI/${rfMRI_ver}/stats_${PARC_NAME}.sum
         mv $subjID/fMRI/${rfMRI_ver}/fc.txt $subjID/fMRI/${rfMRI_ver}/fc_${PARC_NAME}.txt
-        ​
 done
 
 
