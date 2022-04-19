@@ -39,7 +39,7 @@ def html_reparcellation(subjdir, PARC_NAME):
 				#dictionary containing string to insert into current non-new parcellation QC and location of non-new parcellation QC
 				#for adding link to new parc as a dropdown item in the current non-new parcellation QC
 				mydict={
-				"insert_string":'<option value="../../QC_'+PARC_NAME+'/html/'+htmlfile+'">'PARC_NAME'</option>',
+				"insert_string":'<option value="../../QC_'+PARC_NAME+'/html/'+htmlfile+'">'+PARC_NAME+'</option>',
 				"file":os.path.join(QC,"html",htmlfile)
 				}
 				mydictlist.append(mydict)
@@ -47,7 +47,7 @@ def html_reparcellation(subjdir, PARC_NAME):
 				#dictionary containing string to insert into new parcellation QC and location of new parcellation QC
 				#for adding link to the current non-new parcellation as a dropdown item in the new parc QC
 				mydict={
-				"insert_string":'<option value="../../QC_'+parc+'/html/'+htmlfile+'">'parc'</option>',
+				"insert_string":'<option value="../../QC_'+parc+'/html/'+htmlfile+'">'+parc+'</option>',
 				"file":os.path.join(subjdir,"QC_"+PARC_NAME,"html",htmlfile)
 				}
 				mydictlist.append(mydict)
