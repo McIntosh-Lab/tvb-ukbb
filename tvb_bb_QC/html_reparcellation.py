@@ -57,27 +57,27 @@ def html_reparcellation(subjdir, PARC_NAME):
 				for dict_item in mydictlist:
 
 					with open(dict_item["file"], 'r+') as f:
-				    	a = [x.rstrip() for x in f]
-					    index = 0
-					    for item in a:
-					        if re.search(landmark_string, item):
-				     			a.insert(index, dict_item["insert_string"]) # Inserts "Hello everyone" into `a`
-					            break
-					        index += 1
+						a = [x.rstrip() for x in f]
+						index = 0
+						for item in a:
+							if re.search(landmark_string, item):
+					 			a.insert(index, dict_item["insert_string"]) # Inserts "Hello everyone" into `a`
+								break
+							index += 1
 				
-					    f.seek(0)
-					    f.truncate()
-					    # Write each line back
-					    for line in a:
-					        f.write(line + "\n")
+						f.seek(0)
+						f.truncate()
+						# Write each line back
+						for line in a:
+							f.write(line + "\n")
 
-				    	f.close()
+						f.close()
 
 if __name__ == "__main__":
-    # grab subject name from command
-    subjdir = sys.argv[1]
-    PARC_NAME = sys.argv[2]
-    #subject and subjdir here are interchangeable, only subj relative from pipeline cwd is used (i.e. only subj dir/name, not full filepath)
-    # call pipeline
-    html_reparcellation(subjdir, PARC_NAME)
-    
+	# grab subject name from command
+	subjdir = sys.argv[1]
+	PARC_NAME = sys.argv[2]
+	#subject and subjdir here are interchangeable, only subj relative from pipeline cwd is used (i.e. only subj dir/name, not full filepath)
+	# call pipeline
+	html_reparcellation(subjdir, PARC_NAME)
+	
