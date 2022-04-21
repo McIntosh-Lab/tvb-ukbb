@@ -61,7 +61,7 @@ def html_reparcellation(subjdir, PARC_NAME):
 						index = 0
 						for item in a:
 							if re.search(landmark_string, item):
-					 			a.insert(index, dict_item["insert_string"]) # Inserts "Hello everyone" into `a`
+								a.insert(index, dict_item["insert_string"]) # Inserts "Hello everyone" into `a`
 								break
 							index += 1
 				
