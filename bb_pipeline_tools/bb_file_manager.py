@@ -315,6 +315,32 @@ def manage_struct(listFiles, flag):
         move_file(fileName, "unclassified/" + os.path.basename(fileName))
 
 
+
+def manage_fmap(listFiles):
+
+    # listFiles = robustSort(listFiles)
+    numFiles = len(listFiles)
+
+    listFiles = [rename_no_coil_echo_info(x) for x in listFiles]
+
+    for i in listFiles:#TODO currently specific for openfMRI
+        if "magnitude1" in i:
+            move_file_add_to_config(normalisedFileName, "fmap_mag1", False)
+            listFiles.remove(i)
+
+        if "magnitude2" in i:
+            move_file_add_to_config(normalisedFileName, "fmap_mag2", False)
+            listFiles.remove(i)
+
+        if "phasediff" in i:
+            move_file_add_to_config(normalisedFileName, "fmap_phase", False)
+            listFiles.remove(i)
+    
+    for fileName in listFiles:
+        # os.path.basename will not work on Windows
+        move_file(fileName, "unclassified/" + os.path.basename(fileName))
+
+
 # The flag parameter indicates whether this is resting or task fMRI
 def manage_fMRI(listFiles, flag):
 
@@ -715,7 +741,7 @@ def bb_file_manager(subject):
     patterns_actions = [
         [["*.[^log]"], capitalize_and_clean],
         [["dicom", "DICOM"], move_to, "delete/"],
-        [["*T1*.nii.gz", "*MPRAGE*.nii.gz", "*IR-FSPGR*.nii.gz"], manage_struct, "T1"],
+        [["*T1*.nii*", "*MPRAGE*.nii.gz", "*IR-FSPGR*.nii.gz"], manage_struct, "T1"],
         [["*T2**.nii.gz"], manage_struct, "T2"],
         [
             [
@@ -725,6 +751,8 @@ def bb_file_manager(subject):
                 "*task*rest*.nii.gz",
                 "*epi_rest*.nii.gz",
                 "*epi_movie*.nii.gz",
+                "*facerecognition*bold.nii*",
+
             ],
             manage_fMRI,
             "rfMRI",
@@ -744,6 +772,8 @@ def bb_file_manager(subject):
         [["DIFF_*", "MB3_*", "*dwi*.*", "*DWI*.*"], manage_DWI],
         [["SWI*.*"], move_to, "SWI/unclassified/"],
         [["*.[^log]"], move_to, "unclassified/"],
+        [["*magnitude1*.nii*", "*magnitude2*.nii*", "*phasediff*.nii*"], manage_fmap],
+        #TODO: change to be generic for cam-can esque fmap files. currently specific to openfMRI
     ]
 
     os.chdir(subject)
