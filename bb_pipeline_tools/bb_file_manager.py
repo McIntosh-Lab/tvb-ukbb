@@ -323,18 +323,26 @@ def manage_fmap(listFiles):
 
     listFiles = [rename_no_coil_echo_info(x) for x in listFiles]
 
-    for i in listFiles:#TODO currently specific for openfMRI
+    idx_to_remove = []
+
+    for index, i in enumerate(listFiles):#TODO currently specific for openfMRI
         if "magnitude1" in i:
             move_file_add_to_config(i, "fmap_mag1", False)
-            listFiles.remove(i)
+            idx_to_remove.append(index)
 
         if "magnitude2" in i:
             move_file_add_to_config(i, "fmap_mag2", False)
-            listFiles.remove(i)
+            idx_to_remove.append(index)
 
         if "phasediff" in i:
             move_file_add_to_config(i, "fmap_phase", False)
-            listFiles.remove(i)
+            idx_to_remove.append(index)
+
+
+    #remove indexes to remove
+    idx_to_remove.sort(reverse=True)
+    for item in idx_to_remove:
+        del listFiles[item]
     
     for fileName in listFiles:
         # os.path.basename will not work on Windows
