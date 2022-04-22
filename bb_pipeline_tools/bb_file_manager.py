@@ -325,15 +325,15 @@ def manage_fmap(listFiles):
 
     for i in listFiles:#TODO currently specific for openfMRI
         if "magnitude1" in i:
-            move_file_add_to_config(normalisedFileName, "fmap_mag1", False)
+            move_file_add_to_config(i, "fmap_mag1", False)
             listFiles.remove(i)
 
         if "magnitude2" in i:
-            move_file_add_to_config(normalisedFileName, "fmap_mag2", False)
+            move_file_add_to_config(i, "fmap_mag2", False)
             listFiles.remove(i)
 
         if "phasediff" in i:
-            move_file_add_to_config(normalisedFileName, "fmap_phase", False)
+            move_file_add_to_config(i, "fmap_phase", False)
             listFiles.remove(i)
     
     for fileName in listFiles:

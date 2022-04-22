@@ -130,6 +130,12 @@ done <$AGE_SPECIFIC_TEMPLATE_LIST
 AGE_SPEC_TEMPLATE=`eval echo ${AGE_SPEC_TEMPLATE}`
 FAST_PRIORS_PREFIX=`eval echo ${FAST_PRIORS_PREFIX}`
 
+if [ -z "$AGE_SPEC_TEMPLATE" ] || [ -z "$FAST_PRIORS_PREFIX" ] ;
+then
+  AGE_SPEC_TEMPLATE="$templ/age-specific/avg152T1_brain"
+  FAST_PRIORS_PREFIX="$templ/age-specific/avg152T1"
+fi
+
 
 #Generate additional registration to age-specific template (and its inverse)
 ${FSLDIR}/bin/flirt -in T1_unbiased_brain -ref $AGE_SPEC_TEMPLATE -o transforms/T1_unbiased_brain_to_AgeSpecTemplate -omat transforms/T1_to_AgeSpecTemplate.mat
