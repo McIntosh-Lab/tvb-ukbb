@@ -31,7 +31,7 @@ def FC_distribution(subj, PARC_NAME):
     #for each ica folder in fMRI
     try:
         num_in_cat=1
-        for file in os.listdir(subj + "/fMRI/"):
+        for file in sorted(os.listdir(subj + "/fMRI/")):
             if file.endswith(".ica"):
 
                 #import FC and TS data
@@ -451,7 +451,7 @@ def MELODIC_SNR(subj,fix4melviewtxt):
     #for each ica folder in fMRI
     try:
         num_in_cat=1
-        for file in os.listdir(subj + "/fMRI/"):
+        for file in sorted(os.listdir(subj + "/fMRI/")):
             if file.endswith(".ica"):
 
                 #TODO: might have to replace this with string + concat if the asterisk doesnt work properly in os path join
@@ -526,7 +526,7 @@ def MELODIC_SNR(subj,fix4melviewtxt):
 def MCFLIRT_displacement(subj):
     try:
         num_in_cat=1
-        for file in os.listdir(subj + "/fMRI/"):
+        for file in sorted(os.listdir(subj + "/fMRI/")):
             if file.endswith(".ica") or file.endswith(".feat"):
                 rel_displacement_file = os.path.join(subj + "/fMRI/", file, "mc", "prefiltered_func_data_mcf_rel.rms")
                 abs_displacement_file = os.path.join(subj + "/fMRI/", file, "mc", "prefiltered_func_data_mcf_abs.rms")
@@ -656,7 +656,7 @@ def homotopic(subj,LUT_txt,PARC_NAME):
 
     try:
         num_in_cat=1
-        for file in os.listdir(subj + "/fMRI/"):
+        for file in sorted(os.listdir(subj + "/fMRI/")):
             if file.endswith(".ica"):
 
                 #import FC and TS data
@@ -700,7 +700,7 @@ def homotopic(subj,LUT_txt,PARC_NAME):
 def fmri_SNR_numvol(subj, BB_BIN_DIR):
     try:
         num_in_cat=1
-        for file in os.listdir(subj + "/fMRI/"):
+        for file in sorted(os.listdir(subj + "/fMRI/")):
             if file.endswith(".ica"):
                 SNR_result = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_SNR_IDP_gen.sh'), subj, file, os.path.join(subj, "fMRI", file, "filtered_func_data")],  stdout=subprocess.PIPE)
                 SNR_result = SNR_result.stdout.decode('utf-8').strip()
@@ -760,7 +760,7 @@ def susceptibility_SNR(subj, BB_BIN_DIR):
 
         parclist_dict={non_susc_mask:"non-susceptible",susc_mask:"susceptible"}
         for susceptibility_parc in susceptibility_parc_list:    
-            for file in os.listdir(subj + "/fMRI/"):
+            for file in sorted(os.listdir(subj + "/fMRI/")):
                 if file.endswith(".ica"):
                     SNR_result = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_susceptibility_SNR_IDP_gen.sh'), subj, os.path.join("fMRI", file, "filtered_func_data"), susceptibility_parc, file, "ica", parclist_dict[susceptibility_parc]],  stdout=subprocess.PIPE)
                     SNR_result = SNR_result.stdout.decode('utf-8').strip()
@@ -804,7 +804,7 @@ def susceptibility_SNR(subj, BB_BIN_DIR):
 # def func_head_motion(subj, BB_BIN_DIR):
 #     try:
 #         num_in_cat=1
-#         for file in os.listdir(subj + "/fMRI/"):
+#         for file in sorted(os.listdir(subj + "/fMRI/")):
 #             if file.endswith(".ica") or file.endswith(".feat"):
 #                 head_motion = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_IDP_func_head_motion.sh'), subj, os.path.join(subj, "fMRI", file, "mc/prefiltered_func_data_mcf_rel_mean.rms")],  stdout=subprocess.PIPE)
 #                 head_motion = head_motion.stdout.decode('utf-8').strip()
@@ -827,7 +827,7 @@ def susceptibility_SNR(subj, BB_BIN_DIR):
 def func_task_activation(subj, BB_BIN_DIR):
     try:
         num_in_cat=1
-        for file in os.listdir(subj + "/fMRI/"):
+        for file in sorted(os.listdir(subj + "/fMRI/")):
             if file.endswith(".feat"):
                 task_activation = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_IDP_func_task_activation.sh'), subj, file],  stdout=subprocess.PIPE)
                 task_activation = task_activation.stdout.decode('utf-8').strip()
@@ -915,7 +915,7 @@ def all_align_to_T1(subj, BB_BIN_DIR):
             write_to_IDP_file(subj, baseDict[file]+"_align_to_T1", "tvb_IDP_all_align_to_T1", str(num_in_cat), "QC_"+baseDict[file]+"-to-T1_linear_alignment_discrepancy", "AU", "float", "Discrepancy between the "+baseDict[file]+" brain image (linearly-aligned to the T1) and the T1 brain image", str(align_to_T1))
             num_in_cat +=1
 
-        for file in os.listdir(subj + "/fMRI/"):
+        for file in sorted(os.listdir(subj + "/fMRI/")):
             if file.endswith(".ica") or file.endswith(".feat"):
 
 
@@ -956,7 +956,7 @@ def fieldmap_align_to_func(subj, BB_BIN_DIR):
     try:
         num_in_cat=1
 
-        for file in os.listdir(subj + "/fMRI/"):
+        for file in sorted(os.listdir(subj + "/fMRI/")):
             if file.endswith(".ica") or file.endswith(".feat"):
 
 
@@ -1023,7 +1023,7 @@ def eddy_outliers(subj, BB_BIN_DIR):
 def rfMRI_FD_DVARS(subj, BB_BIN_DIR, FSLDIR):
     try:
         num_in_cat=1
-        for file in os.listdir(subj + "/fMRI/"):
+        for file in sorted(os.listdir(subj + "/fMRI/")):
             if file.endswith(".ica"):
                 # SNR_result = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_SNR_IDP_gen.sh'), subj, file, os.path.join(subj, "fMRI", file, "filtered_func_data")],  stdout=subprocess.PIPE)
                 # SNR_result = SNR_result.stdout.decode('utf-8').strip()

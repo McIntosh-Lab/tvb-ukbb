@@ -52,7 +52,7 @@ def SC_FC(subj,subjName, PARC_NAME):
     #import data and generate graphs for fMRI
     #for each ica folder in fMRI
     try:
-        for file in os.listdir(subj + "/fMRI/"):
+        for file in sorted(os.listdir(subj + "/fMRI/")):
             if file.endswith(".ica"):
 
                 #import FC and TS data

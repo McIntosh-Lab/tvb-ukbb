@@ -14,7 +14,7 @@ def html_reparcellation(subjdir, PARC_NAME):
 
 
 
-
+	#grab existing QCs
 	QC_subdirs = filter(os.path.isdir, os.listdir(subjdir))
 	QC_subdirs = [os.path.join(subjdir, f) for f in QC_subdirs if f[0:2]=="QC"] # add path to each file
 	QC_subdirs.sort(key=lambda x: os.path.getmtime(x))

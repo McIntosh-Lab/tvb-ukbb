@@ -771,6 +771,8 @@ array=()
 while IFS=  read -r -d $'\0'; do
     array+=("$REPLY")
 done < <(find $subjdir/fMRI -maxdepth 1 -type d -name "*.ica" -print0)
+IFS=$'\n' array=($(sort <<<"${array[*]}")); unset IFS
+
 
 
 
