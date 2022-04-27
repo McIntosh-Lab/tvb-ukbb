@@ -1020,6 +1020,46 @@ def eddy_outliers(subj, BB_BIN_DIR):
         print("ERROR: tvb_IDP_diff_eddy_outliers error")
 
 
+
+def SNR_CNR(subj, BB_BIN_DIR):
+    try:
+        num_in_cat = 1
+
+        print("---------")
+        print("SNR_CNR")
+        print("---------")
+
+        qcjson=os.path.join(subj,"QC","eddyQUAD","data.qc","qc.json")
+
+        
+        if os.path.exists(qcjson):
+            with open(qcjson, 'r') as d:
+                data = json.load(d)
+
+            num_shells=(data["data_no_shells"])
+            
+
+            SNR=(data["qc_cnr_avg"][0])
+            print(SNR)
+
+            write_to_IDP_file(subj, "eddy_quad_SNR", "tvb_IDP_eddy_quad_SNR_CNR", str(num_in_cat), "eddy_quad_whole_brain_mean_signal_to_noise_ratio", "ratio", "float", "Whole-brain mean signal-to-noise ratio", str(SNR))
+            num_in_cat +=1
+
+
+            for i in range(int(num_shells)):
+                CNR=data["qc_cnr_avg"][i+1]
+                shell=data["data_unique_bvals"][i]
+                print(shell)   
+                print(CNR)
+
+                write_to_IDP_file(subj, "eddy_quad_CNR_b"+str(shell), "tvb_IDP_eddy_quad_SNR_CNR", str(num_in_cat), "eddy_quad_whole_brain_mean_constrast_to_noise_ratio_for_shell_b"+str(shell), "ratio", "float", "Whole-brain mean contrast-to-noise ratio for shell b"+str(shell), str(CNR))
+                num_in_cat +=1
+
+    except:
+        print("ERROR: SNR_CNR error")
+
+
+
 def rfMRI_FD_DVARS(subj, BB_BIN_DIR, FSLDIR):
     try:
         num_in_cat=1
@@ -1141,6 +1181,7 @@ def new_IDP_gen(subj,LUT_txt,BB_BIN_DIR,PARC_NAME,FSLDIR):      #,fix4melviewtxt
     homotopic(subj,LUT_txt)
 
     eddy_outliers(subj, BB_BIN_DIR)
+    SNR_CNR(subj, BB_BIN_DIR)
     SC_distribution(subj, PARC_NAME)
     TL_distribution(subj, PARC_NAME)
 
