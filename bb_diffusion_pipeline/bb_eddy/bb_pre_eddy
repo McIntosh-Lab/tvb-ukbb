@@ -71,7 +71,7 @@ echo $indx > $direc/dMRI/dMRI/eddy_index.txt
 if [ -z ${topupValue} ]; then
 
 	# Creation of acqparam file, borrowed from TOPUP prep in bb_prepare_struct_field
-	EPIfactor=96 #aka Echo Train Length, number of lines
+	# EPIfactor=96 #aka Echo Train Length, number of lines
 	dtiDwell=`$BB_BIN_DIR/bb_pipeline_tools/bb_get_dwell_time $direc/dMRI/raw/dwi.nii.gz`
 	
 
