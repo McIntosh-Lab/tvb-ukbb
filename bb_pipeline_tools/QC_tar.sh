@@ -29,14 +29,15 @@ if [[ "$sub" =~ '/'$ ]]; then
   sub=${sub%?}
 fi
 
-sub_original=${sub}
-sub=${sub}_QC
-mv ${origDir}/${sub_original} ${origDir}/${sub}
-
 
 if [[ "$origDir" =~ '/'$ ]]; then 
   origDir=${origDir%?}
 fi
+
+
+sub_original=${sub}
+sub=${sub}_QC
+mv ${origDir}/${sub_original} ${origDir}/${sub}
 
 
 if [[ "$1" == "" ]] ; then
@@ -88,7 +89,7 @@ if [[ -d "$2" ]]; then
 fi
 
 
-tar -cf $origDir/${sub}_QC.tar $sub/QC* $sub/logs$fMRI_files $sub/IDP_files*/*.txt /$sub/IDP_files*/*.tsv
+tar -cf $origDir/${sub}.tar $sub/QC* $sub/logs$fMRI_files $sub/IDP_files*/*.txt /$sub/IDP_files*/*.tsv
 #may need --ignore-failed-read option for non existent files/folders
 
 if [[ -d "$2" ]]; then
