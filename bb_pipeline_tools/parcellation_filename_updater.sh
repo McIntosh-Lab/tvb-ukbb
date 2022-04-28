@@ -7,11 +7,19 @@
 # intermediate and output files.
 #
 # usage, in the directory containing subjects:
-#       rename_origParcel <subject ID> <parcellation name>
+#       parcellation_filename_updater.sh <subject ID> <parcellation name>
 
 set +e 
 
 subjID=$1
+
+
+if [[ "$subjID" =~ '/'$ ]]; then 
+  subjID=${subjID%?}
+fi
+
+
+
 PARC_NAME=$2
 
 # T1

@@ -29,6 +29,11 @@ if [[ "$sub" =~ '/'$ ]]; then
   sub=${sub%?}
 fi
 
+sub_original=${sub}
+sub=${sub}_QC
+mv ${origDir}/${sub_original} ${origDir}/${sub}
+
+
 if [[ "$origDir" =~ '/'$ ]]; then 
   origDir=${origDir%?}
 fi
@@ -89,6 +94,9 @@ tar -cf $origDir/${sub}_QC.tar $sub/QC* $sub/logs$fMRI_files $sub/IDP_files*/*.t
 if [[ -d "$2" ]]; then
     cd ..
 fi
+
+mv ${origDir}/${sub} ${origDir}/${sub_original}
+
 
 set -e
  
