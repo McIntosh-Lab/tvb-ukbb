@@ -106,7 +106,7 @@ export SynB0="y"                                            #TO BE MODIFIED BY U
 export PE_direction="0 -1 0"                                            #TO BE MODIFIED BY USER
 export topupValue="0.1"					#TO BE MODIFIED BY USER - leave empty "" for no value
 export topupValue_default="0.1"					#TO BE MODIFIED BY USER - leave empty "" for no value
-
+export EPIfactor="50"					#TO BE MODIFIED BY USER
 
 # set to 1 for single shell diffusion data and 2 for multi-shell
 export DIFF_SHELL_TYPE="1"
