@@ -1178,7 +1178,7 @@ def new_IDP_gen(subj,LUT_txt,BB_BIN_DIR,PARC_NAME,FSLDIR):      #,fix4melviewtxt
     rfMRI_FD_DVARS(subj, PARC_NAME, FSLDIR)
     
     FC_distribution(subj, PARC_NAME)
-    homotopic(subj,LUT_txt)
+    homotopic(subj,LUT_txt,PARC_NAME)
 
     eddy_outliers(subj, BB_BIN_DIR)
     SNR_CNR(subj, BB_BIN_DIR)
