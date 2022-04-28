@@ -326,15 +326,15 @@ def manage_fmap(listFiles):
     idx_to_remove = []
 
     for index, i in enumerate(listFiles):#TODO currently specific for openfMRI
-        if "magnitude1" in i:
+        if "magnitude1" in i or "01_fmap" in i:
             move_file_add_to_config(i, "fmap_mag1", False)
             idx_to_remove.append(index)
 
-        if "magnitude2" in i:
+        elif "magnitude2" in i or "02_fmap" in i:
             move_file_add_to_config(i, "fmap_mag2", False)
             idx_to_remove.append(index)
 
-        if "phasediff" in i:
+        elif "phasediff" in i or "fmap" in i:
             move_file_add_to_config(i, "fmap_phase", False)
             idx_to_remove.append(index)
 
@@ -749,7 +749,7 @@ def bb_file_manager(subject):
     patterns_actions = [
         [["*.[^log]"], capitalize_and_clean],
         [["dicom", "DICOM"], move_to, "delete/"],
-        [["*T1*.nii*", "*MPRAGE*.nii.gz", "*IR-FSPGR*.nii.gz"], manage_struct, "T1"],
+        [["*T1*.nii.gz", "*MPRAGE*.nii.gz", "*IR-FSPGR*.nii.gz"], manage_struct, "T1"],
         [["*T2**.nii.gz"], manage_struct, "T2"],
         [
             [
@@ -780,7 +780,7 @@ def bb_file_manager(subject):
         [["DIFF_*", "MB3_*", "*dwi*.*", "*DWI*.*"], manage_DWI],
         [["SWI*.*"], move_to, "SWI/unclassified/"],
         [["*.[^log]"], move_to, "unclassified/"],
-        [["*magnitude1*.nii*", "*magnitude2*.nii*", "*phasediff*.nii*"], manage_fmap],
+        [["*magnitude1*.nii*", "*magnitude2*.nii*", "*phasediff*.nii*", "*fmap*.nii*"], manage_fmap],
         #TODO: change to be generic for cam-can esque fmap files. currently specific to openfMRI
     ]
 
