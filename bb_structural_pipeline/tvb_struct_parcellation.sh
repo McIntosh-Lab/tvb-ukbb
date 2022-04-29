@@ -13,7 +13,7 @@
 cd $1/T1
 
 #register parcellation mask to T1
-${FSLDIR}/bin/applywarp --rel --interp=nn --in=$PARC_IMG --ref=T1 -w T1_to_MNI_warp_coef_inv -o transforms/parcel_to_T1_${PARC_NAME}
+${FSLDIR}/bin/applywarp --rel --interp=nn --in=$PARC_IMG --ref=T1 -w transforms/T1_to_MNI_warp_coef_inv -o transforms/parcel_to_T1_${PARC_NAME}
 
 #label GM with ROIs
 ${AFNIDIR}/3dROIMaker -inset cort_subcort_GM.nii.gz -thresh 0.1 -inflate 1 -prefix labelled -refset transforms/parcel_to_T1_${PARC_NAME}.nii.gz -nifti -neigh_upto_vert -dump_no_labtab
