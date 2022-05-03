@@ -1,0 +1,311 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<title>dMRI IMAGE REPORT</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/w3.css">
+<script src="./zoomer.js" type="text/javascript" charset="utf-8"></script>
+<script src="./toggles.js" type="text/javascript" charset="utf-8"></script>
+<script src="./sidebartoggles.js" type="text/javascript" charset="utf-8"></script>
+<script src="./image_gen_links.js" type="text/javascript" charset="utf-8"></script>
+
+<body class="w3-main" style="background-color:black; " onload="updateTitle();updateImage();update_links();">
+<!--document.getElementById('image_link').innerHTML = document.getElementById('ex_a').src;-->
+
+
+<!-- Header -->
+<header class="w3-display-container  w3-center" style="max-height:1000px; ">
+  <img class="w3-image" src="images/1.jpg" alt="Me" width=100% style="max-height:1000px;object-fit: cover;">
+  
+    <div class="w3-display-middle w3-padding-large w3-border w3-wide w3-text-light-grey w3-center" style="background-color:rgba(0, 0, 0, 0.75);">
+
+      <h1 class="w3-hide-medium w3-hide-small w3-xxxlarge">dMRI IMAGE REPORT</h1>
+      <h5 class="w3-hide-large" style="white-space:nowrap">dMRI IMAGE REPORT</h5>
+      
+      <h3 class="w3-hide-medium w3-hide-small">sub-0001</h3>
+      <h5 class="w3-hide-medium w3-hide-small">Parcellation - TVBSchaeferTian420</h5>
+      
+    </div>
+ 
+
+  <!-- Sidebar -->
+
+  <div id="mySidebar" class="sidebar" style="width: 0; margin-left: 0; font-size: 12px">
+    <a href="file:notes/" class="w3-center">open notes.txt file in local system to make changes</a>
+    <br>
+    <iframe src="notes/notes.txt" style="background: #FFFFFF; height: 90%"></iframe>
+
+  </div>
+
+  <!-- Sidebar button -->
+   <div id="main" align="left" >
+    <button id="togglebutton" class="openbtn sticky" onclick="toggNav()">NOTES</button>  
+  </div>
+
+
+
+
+  <!-- Navbar (placed at the bottom of the header image) -->
+  <div class="w3-bar w3-light-grey w3-round w3-display-bottommiddle w3-hide-small w3-hide-medium" style="bottom:65px">
+    <a href="report.html" class="w3-bar-item w3-button">Home</a>
+    <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
+    <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
+    <a href="MELODIC_FIX.html" class="w3-bar-item w3-button">MELODIC-FIX</a>
+    <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
+    <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+    <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
+  </div>
+</header>
+
+<!-- Navbar on small screens -->
+<div class="w3-center w3-black w3-padding-16 w3-hide-large ">
+<div class="w3-bar w3-light-grey w3-round ">
+  <a href="report.html" class="w3-bar-item w3-button">Home</a>
+    <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
+    <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
+    <a href="MELODIC_FIX.html" class="w3-bar-item w3-button">MELODIC-FIX</a>
+    <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
+    <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+    <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
+</div>
+</div>
+
+
+<!-- Page content -->
+<div class="w3-content w3-padding-large w3-margin-top" id="portfolio" style="color:white; text-align: center; height: 900px">
+
+
+  <!-- Images (Portfolio) -->
+
+
+  <br>______<br><br>
+  <h1> sub-0001 dMRI 
+  <br>
+  <div id="analysis_title" style="display: inline; font-size: 28px">DW</div><br>    
+    <select name="menu1" id="menu1" onkeydown="IgnoreAlpha(event);">
+      <option selected="selected">TVBSchaeferTian420</option>
+      <option id="option_placeholder">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</option>
+      <!-- DO NOT REMOVE. PLACEHOLDER FOR SCRIPTS TO INSERT NEW PARC LINKS -->
+
+      
+      </select>
+      <script type="text/javascript">
+     var urlmenu = document.getElementById( 'menu1' );
+     urlmenu.onchange = function() {
+          if (this.options[ this.selectedIndex ].value != ""){
+            window.open( this.options[ this.selectedIndex ].value, '_self');
+          }
+     };
+    </script>
+    </h1>
+  ______<br><br>
+
+
+
+
+
+<!-------------- OPTIONS -------------->
+
+<!-- Analyses -->
+  <label for="Analysis" style="white-space:nowrap;">Analysis <i>(a/d)</i>:
+  <select name="Analysis" id="Analysis" onchange="updateTitle();updateImage();update_links();console.log(this.value)" onkeydown="IgnoreAlpha(event);">
+    <optgroup label="EDDY QUAD">
+      
+      <option value="dw" selected="selected">DW</option>
+      <option value="cnr">tSNR/CNR</option>
+      <option value="../eddyQUAD/data.qc/qc.pdf">EDDY QUAD Report (opens in new tab)</option>
+    </optgroup>
+    <optgroup label="EDDY SQUAD">
+      <option value="../../../EDDY_SQUAD/group_qc.pdf">EDDY SQUAD Report (opens in new tab)</option>
+    </optgroup>
+    <optgroup label="Extraction">
+      <option value="dex" >Extraction</option>
+    </optgroup>
+    <optgroup label="Orientation">
+      <option value="dorf">Orientation</option>
+    </optgroup>
+    <optgroup label="Registration">
+      <option value="dre">Registration</option>
+    </optgroup>
+    <optgroup label="Warping">
+      <option value="wa">Warping</option>
+    </optgroup>
+    <optgroup label="Tractography">
+      <option value="dxc">Exclude</option>
+      <option value="dfs">Light-blue Seeds</option>
+      <option value="dfsrb">Random-big Seeds</option>
+      <option value="dxs">Exclude with seeds</option>
+    </optgroup>
+  </select></label>
+  &nbsp&nbsp&nbsp&nbsp
+
+
+  <!--orientation-->
+  <label for="Orientation" id="ori_opts" style="white-space:nowrap;">Orientation <i>(z/x/c)</i>:
+  <select name="Orientation" id="Orientation" onchange="updateTitle();updateImage();update_links();" onkeydown="IgnoreAlpha(event);">
+    <option value="a">Axial</option>
+    <option value="c">Coronal</option>
+    <option value="s">Sagittal</option>
+  </select></label>
+&nbsp&nbsp&nbsp&nbsp
+
+<!--b-value-->
+<label for="b-value" id="EDDY_opts"  style="display: none;white-space:nowrap;">b-value <i>(z/x/c)</i>:
+  <select name="b-value" id="b-value" onchange="updateTitle();updateImage();update_links();" onkeydown="IgnoreAlpha(event);">
+    <option value="0">0</option>
+    <option value="1000">1000</option>
+    <option value="2000">2000</option>
+  </select></label>
+&nbsp&nbsp&nbsp&nbsp
+
+
+<!-- order appears for registration analyses -->
+<div style="display: none;white-space:nowrap;" id="reg_opts">
+<label id="Order label 1"><input type="radio" id="Order 1" name="Order" value="Order 1" checked="true" onchange="updateTitle();updateImage();update_links();"> Overlay Order 1 <i>(s)</i></label>
+&nbsp&nbsp
+  <label id="Order label 2"><input type="radio" id="Order 2" name="Order" value="Order 2" onchange="updateTitle();updateImage();update_links();"> Overlay Order 2 <i>(s)</i></label>
+</div>
+
+<!-- overlay appears for non-registration analyses -->
+  <label id="non_reg_opts" style="white-space:nowrap;"><input id="Overlay check" type="checkbox" checked="true" onchange="updateTitle();updateImage();update_links();"> Toggle Overlay <i>(s)</i></label>
+  
+
+  <br>
+<br>
+
+Pan enabled for mouse and keyboard <i>(i/j/k/l)</i>
+
+  <br>
+<br>
+
+<!---Zoom Canvas--->
+<div  id="canvas-container">
+  <canvas id='canvas' width='932' height='768' style="border: 1px solid #ccc; "></canvas>
+  
+  
+  <div class="opt" width='932' style="padding-bottom: 80px">
+    <ul>
+      <li onclick="view.scale(0.8)">Zoom Out <i>(q)</i></li>
+      <li onclick="reDraw()">Reset Zoom <i>(w)</i></li>
+      <li onclick="view.scale(1.20)">Zoom In <i>(e)</i></li>
+    </ul>
+<div>
+<label id="zoom_keep_label" style="white-space:nowrap; "><input id="zoom_keep" type="checkbox"> Maintain Zoom when Switching Analyses <i>(r)</i></label></div><br>
+<i style=" font-size: 12px">
+NOTE: Image sizes and therefore maintaining zooms between different analyses can be inconsistent.<br>Some analyses may appear empty when switching into them with a large magnification. Reset Zoom as needed.</i>
+
+    </div>
+
+
+</div>
+
+      
+
+<!-------------- UNDERLAYS -------------->
+  <!-- UNMASKED UNDERLAY -->
+  
+
+  <img src="../images/dMRI_extraction_unmasked/sub-0001_dMRI_extraction_unmasked_axial.png"  id="under_a" style="display: none">
+  <img src="../images/dMRI_extraction_unmasked/sub-0001_dMRI_extraction_unmasked_coronal.png" id="under_c" style="display: none">
+  <img src="../images/dMRI_extraction_unmasked/sub-0001_dMRI_extraction_unmasked_sagittal.png" id="under_s" style="display: none">
+
+
+  <!-- UNMASKED UNDERLAY TRACT -->
+
+
+  <img src="../images/dMRI_tractography_FA/sub-0001_dMRI_tractography_FA_axial.png" id="under_sub_a" style="display: none">
+  <img src="../images/dMRI_tractography_FA/sub-0001_dMRI_tractography_FA_coronal.png" id="under_sub_c" style="display: none">
+  <img src="../images/dMRI_tractography_FA/sub-0001_dMRI_tractography_FA_sagittal.png" id="under_sub_s" style="display: none">
+
+  <!-- UNMASKED FA UNDERLAY ORIENTATION -->
+  <img src="../images/dMRI_orientation_range_FA/sub-0001_dMRI_orientation_range_FA_axial_appended.png" id="under_dorf_a" style="display: none">
+  <img src="../images/dMRI_orientation_range_FA/sub-0001_dMRI_orientation_range_FA_coronal_appended.png" id="under_dorf_c" style="display: none">
+  <img src="../images/dMRI_orientation_range_FA/sub-0001_dMRI_orientation_range_FA_sagittal_appended.png" id="under_dorf_s" style="display: none">
+
+
+<!-------------- OVERLAYS -------------->
+
+  <img src="../eddyQUAD/data.qc/avg_b0.png" id="dw_0" style="display: none">
+  <img src="../eddyQUAD/data.qc/avg_b1000.png" id="dw_1000" style="display: none">
+  <img src="../eddyQUAD/data.qc/avg_b2000.png" id="dw_2000" style="display: none">
+  <img src="../eddyQUAD/data.qc/cnr0000.nii.gz.png" id="cnr_0" style="display: none">
+  <img src="../eddyQUAD/data.qc/cnr0001.nii.gz.png" id="cnr_1000" style="display: none">
+  <img src="../eddyQUAD/data.qc/cnr0002.nii.gz.png" id="cnr_2000" style="display: none">
+
+  <img src="../images/dMRI_extraction_masked/sub-0001_dMRI_extraction_masked_axial.png" id="dex_a" style="display: none">
+  <img src="../images/dMRI_extraction_masked/sub-0001_dMRI_extraction_masked_coronal.png" id="dex_c" style="display: none">
+  <img src="../images/dMRI_extraction_masked/sub-0001_dMRI_extraction_masked_sagittal.png" id="dex_s" style="display: none">
+  
+
+
+  <img src="../images/dMRI_orientation_with_FA/sub-0001_dMRI_orientation_with_FA_axial_appended.png" id="dorf_a" style="display: none">
+  <img src="../images/dMRI_orientation_with_FA/sub-0001_dMRI_orientation_with_FA_coronal_appended.png" id="dorf_c" style="display: none">
+  <img src="../images/dMRI_orientation_with_FA/sub-0001_dMRI_orientation_with_FA_sagittal_appended.png" id="dorf_s" style="display: none">
+
+
+
+
+  <img src="../images/dMRI_registration/order1_sub-0001_dMRI_registration_axial_appended.png" id="o1_a" style="display: none">
+  <img src="../images/dMRI_registration/order1_sub-0001_dMRI_registration_coronal_appended.png" id="o1_c" style="display: none">
+  <img src="../images/dMRI_registration/order1_sub-0001_dMRI_registration_sagittal_appended.png" id="o1_s" style="display: none">
+
+  <img src="../images/dMRI_registration/order2_sub-0001_dMRI_registration_axial_appended.png" id="o2_a" style="display: none">
+  <img src="../images/dMRI_registration/order2_sub-0001_dMRI_registration_coronal_appended.png" id="o2_c" style="display: none">
+  <img src="../images/dMRI_registration/order2_sub-0001_dMRI_registration_sagittal_appended.png" id="o2_s" style="display: none">
+
+
+  <img src="../images/DWI_warping/order1_sub-0001_DWI_warping_axial_appended.png" id="wa1_a" style="display: none">
+  <img src="../images/DWI_warping/order1_sub-0001_DWI_warping_coronal_appended.png" id="wa1_c" style="display: none">
+  <img src="../images/DWI_warping/order1_sub-0001_DWI_warping_sagittal_appended.png" id="wa1_s" style="display: none">
+
+  <img src="../images/DWI_warping/order2_sub-0001_DWI_warping_axial_appended.png" id="wa2_a" style="display: none">
+  <img src="../images/DWI_warping/order2_sub-0001_DWI_warping_coronal_appended.png" id="wa2_c" style="display: none">
+  <img src="../images/DWI_warping/order2_sub-0001_DWI_warping_sagittal_appended.png" id="wa2_s" style="display: none">
+
+
+
+  <img src="../images/dMRI_tractography_seeds/sub-0001_dMRI_tractography_seeds_axial.png"  id="dfs_a" style="display: none">
+  <img src="../images/dMRI_tractography_seeds/sub-0001_dMRI_tractography_seeds_coronal.png" id="dfs_c" style="display: none">
+  <img src="../images/dMRI_tractography_seeds/sub-0001_dMRI_tractography_seeds_sagittal.png" id="dfs_s" style="display: none">
+
+  <img src="../images/dMRI_tractography_seeds_rb/sub-0001_dMRI_tractography_seeds_rb_axial.png"  id="dfsrb_a" style="display: none">
+  <img src="../images/dMRI_tractography_seeds_rb/sub-0001_dMRI_tractography_seeds_rb_coronal.png" id="dfsrb_c" style="display: none">
+  <img src="../images/dMRI_tractography_seeds_rb/sub-0001_dMRI_tractography_seeds_rb_sagittal.png" id="dfsrb_s" style="display: none">
+
+  <img src="../images/dMRI_tractography_exclude/sub-0001_dMRI_tractography_exclude_axial.png" id="dxc_a" style="display: none">
+  <img src="../images/dMRI_tractography_exclude/sub-0001_dMRI_tractography_exclude_coronal.png" id="dxc_c" style="display: none">
+  <img src="../images/dMRI_tractography_exclude/sub-0001_dMRI_tractography_exclude_sagittal.png" id="dxc_s" style="display: none">
+  
+
+  <img src="../images/dMRI_tractography_exclude_seeds/sub-0001_dMRI_tractography_exclude_seeds_axial.png" id="dxs_a" style="display: none">
+  <img src="../images/dMRI_tractography_exclude_seeds/sub-0001_dMRI_tractography_exclude_seeds_coronal.png" id="dxs_c" style="display: none">
+  <img src="../images/dMRI_tractography_exclude_seeds/sub-0001_dMRI_tractography_exclude_seeds_sagittal.png" id="dxs_s" style="display: none">
+
+
+<br><br><br><br>________<br><br><br>
+<div style="text-align: left; font-size: 12px" >
+IMAGE FILE:<br> <a id="image_link" href="../images/T1_extraction_masked/sub-0001_T1_extraction_masked_axial.png">N/A</a>
+<br><br>
+UNDERLAY FILE:<br> <a id="underlay" href="">N/A</a>
+<br><br>
+OVERLAY FILE:<br> <a id="overlay1" href="">N/A</a>
+<br><br>
+SECOND OVERLAY FILE:<br> <a id="overlay2" href="">N/A</a>
+<br><br><br>
+</div>
+<!-- End page content -->
+</div>
+
+</body>
+
+<script>
+
+</script>
+
+
+
+</html>
+
+
+

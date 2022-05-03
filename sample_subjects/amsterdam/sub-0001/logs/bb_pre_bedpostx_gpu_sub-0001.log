@@ -1,0 +1,39 @@
+STANDARD OUT:
+HOST INFO: Linux cdr302.int.cedar.computecanada.ca 3.10.0-1160.53.1.el7.x86_64 #1 SMP Fri Jan 14 13:59:45 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+COMMAND RUN: /home/jwangbay/software/amsterdam/tvb-ukbb/bb_diffusion_pipeline/bb_bedpostx/bb_pre_bedpostx_gpu
+Starting time: Tue May 3 04:05:47 PDT 2022
+---------------------------------------------
+------------------ BedpostX -----------------
+---------------------------------------------
+subjectdir is /scratch/jwangbay/amsterdam/sub-0001/dMRI
+Making bedpostx directory structure
+The command /home/jwangbay/software/amsterdam/tvb-ukbb/bb_diffusion_pipeline/bb_bedpostx/bb_pre_bedpostx_gpu took 0 seconds
+Ending time: Tue May 3 04:05:47 PDT 2022
+
+
+STANDARD ERROR:
+++ fsl_abspath /scratch/jwangbay/amsterdam/sub-0001/dMRI
++ subjdir=/scratch/jwangbay/amsterdam/sub-0001/dMRI
+++ echo /scratch/jwangbay/amsterdam/sub-0001/dMRI
+++ sed 's/\/$/$/g'
++ subjdir=/scratch/jwangbay/amsterdam/sub-0001/dMRI
++ echo ---------------------------------------------
++ echo '------------------ BedpostX -----------------'
++ echo ---------------------------------------------
++ echo subjectdir is /scratch/jwangbay/amsterdam/sub-0001/dMRI
++ echo Making bedpostx directory structure
++ mkdir -p /scratch/jwangbay/amsterdam/sub-0001/dMRI/bedpostx
++ '[' '!' -d /scratch/jwangbay/amsterdam/sub-0001/dMRI ']'
++ '[' '!' -e /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/bvecs ']'
++ cp /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/bvecs /scratch/jwangbay/amsterdam/sub-0001/dMRI/bedpostx
++ '[' '!' -e /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/bvals ']'
++ cp /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/bvals /scratch/jwangbay/amsterdam/sub-0001/dMRI/bedpostx
+++ /opt/fsl/bin/imtest /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/data
++ '[' 1 -eq 0 ']'
++ cp /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/data.nii.gz /scratch/jwangbay/amsterdam/sub-0001/dMRI/bedpostx
+++ /opt/fsl/bin/imtest /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/nodif_brain_mask
++ '[' 1 -eq 0 ']'
++ cp /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/nodif_brain_mask.nii.gz /scratch/jwangbay/amsterdam/sub-0001/dMRI/bedpostx
++ '[' -e /scratch/jwangbay/amsterdam/sub-0001/dMRI/bedpostx.bedpostX/xfms/eye.mat ']'
++ . /home/jwangbay/software/amsterdam/tvb-ukbb/bb_pipeline_tools/bb_set_footer
+++ set +x

@@ -1,0 +1,18 @@
+STANDARD OUT:
+To view the FEAT progress and final report, point your web browser at /scratch/jwangbay/amsterdam/@@@.feat/report_log.html
+
+
+STANDARD ERROR:
+child process exited abnormally
+    while executing
+"fsl:exec "${FSLDIR}/bin/feat ${fsfroot}.fsf -D $FD -I $session -init" -b 10 -N feat0_init -l logs "
+    (procedure "firstLevelMaster" line 145)
+    invoked from within
+"firstLevelMaster $session"
+    invoked from within
+"if { $done_something == 0 } {
+
+    if { ! $fmri(inmelodic) } {
+       if { $fmri(level) == 1 } {
+	      for { set session 1 } { $session <= $fmri(mult..."
+    (file "/opt/fsl/bin/feat" line 390)

@@ -1,0 +1,15 @@
+Single subject QC report generated using eddy quad v1.0.3
+
+When using eddy and its QC tools, we ask you to please reference the papers describing the different aspects of the modelling and corrections. The following suggestion for a methods section and list of references has been tailored for you based on your eddy command line.
+
+METHODS
+The susceptibility induced off-resonance field was estimated from spin-echo EPI images acquired with different phase-encode directions (Andersson et al., 2003). This field was passed to "eddy", a tool that combined it with estimating gross subject movement and eddy current-induced distortions (Andersson & Sotiropoulos, 2016).The quality of the dataset was assessed using the eddy QC tools (Bastiani et al., 2019). Slices with signal loss caused by subject movement coinciding with the diffusion encoding were detected and replaced by predictions made by a Gaussian Process (Andersson et al., 2016).
+
+REFERENCES
+Jesper L.R. Andersson, Stefan Skare and John Ashburner. 2003. How to correct susceptibility distortions in spin-echo echo-planar images: application to diffusion tensor imaging. NeuroImage 20:870-888
+
+Jesper L.R. Andersson and Stamatios N. Sotiropoulos. 2016. An integrated approach to correction for off-resonance effects and subject movement in diffusion MR imaging. NeuroImage 125:1063-1078
+
+Matteo Bastiani, Michiel Cottaar, Sean P. Fitzgibbon, Sana Suri, Fidel Alfaro-Almagro, Stamatios N. Sotiropoulos, Saad Jbabdi and Jesper L.R. Andersson. 2019. Automated quality control for within and between studies diffusion MRI data using a non-parametric framework for movement and distortion correction. NeuroImage 184:801-812
+
+Jesper L.R. Andersson, Mark S. Graham, Eniko Zsoldos and Stamatios N. Sotiropoulos. 2016. Incorporating outlier detection and replacement into a non-parametric framework for movement and distortion correction of diffusion MR images. NeuroImage 141:556-572

@@ -1,0 +1,23 @@
+<HTML><HEAD><link REL=stylesheet TYPE=text/css href=file:/opt/fsl/doc/fsl.css><TITLE>MELODIC report</TITLE></HEAD><BODY>
+
+<OBJECT data=../../report.html></OBJECT>
+<IFRAME  height=80px width=100% src=nav.html frameborder=0></IFRAME><p>
+<b>Analysis methods</b> <br>
+Analysis was carried out using Probabilistic Independent Component Analysis [Beckmann 2004] as implemented in 
+ MELODIC (Multivariate Exploratory Linear Decomposition into Independent Components) Version 3.15, part of FSL (FMRIB's Software Library, <A HREF="http://www.fmrib.ox.ac.uk/fsl/">www.fmrib.ox.ac.uk/fsl</A>).<br>The following data pre-processing was applied to the input data: 
+ masking of non-brain voxels; voxel-wise de-meaning of the data;
+ normalisation of the voxel-wise variance; <br>
+ Pre-processed data were whitened and projected into a 50-dimensional subspace using probabilistic Principal Component Analysis where the number of dimensions was estimated using the Laplace approximation to the Bayesian evidence of the model order [Minka 2000, Beckmann 2004]. 
+ <BR>The whitened observations were decomposed into  sets of vectors which describe signal variation across the temporal domain (time-courses)  and across the spatial domain (maps) by optimising for non-Gaussian spatial source distributions using a fixed-point iteration technique [Hyv&auml;rinen 1999]. 
+Estimated Component maps were divided by the standard deviation of the residual noise and thresholded by fitting a mixture model to the histogram of intensity values [Beckmann 2004]. <p>
+<b>References</b> <br>
+[Hyv&auml;rinen 1999] A. Hyv&auml;rinen. Fast and Robust Fixed-Point Algorithms for Independent Component Analysis. IEEE Transactions on Neural Networks 10(3):626-634, 1999.<br> 
+[Beckmann 2004] C.F. Beckmann and S.M. Smith. Probabilistic Independent Component Analysis for Functional Magnetic Resonance Imaging. IEEE Transactions on Medical Imaging 23(2):137-152 2004. <br>
+[Everson 2000] R. Everson and S. Roberts. Inferring the eigenvalues of covariance matrices from limited, noisy data. IEEE Trans Signal Processing, 48(7):2083-2091, 2000<br>
+[Tipping 1999] M.E. Tipping and C.M.Bishop. Probabilistic Principal component analysis. J Royal Statistical Society B, 61(3), 1999. <br>
+[Beckmann 2001] C.F. Beckmann, J.A. Noble and S.M. Smith. Investigating the intrinsic dimensionality of FMRI data for ICA. In Seventh Int. Conf. on Functional Mapping of the Human Brain, 2001. <br>
+[Minka 2000] T. Minka. Automatic choice of dimensionality for PCA. Technical Report 514, MIT Media Lab Vision and Modeling Group, 2000. <BR>
+<p><hr><b>PCA estimates </b> <p>
+<img BORDER=0 SRC="EVplot.png"><p>
+<HR><CENTER><FONT SIZE=1>This page produced automatically by <A HREF="http://www.fmrib.ox.ac.uk/fsl/melodic/index.html"> MELODIC</A> Version 3.15 - a part of <A HREF="http://www.fmrib.ox.ac.uk/fsl">FSL - FMRIB Software Library</A>.</FONT></CENTER>
+</BODY></HTML>

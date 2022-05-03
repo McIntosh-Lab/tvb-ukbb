@@ -1,0 +1,24 @@
+STANDARD OUT:
+HOST INFO: Linux cdr302.int.cedar.computecanada.ca 3.10.0-1160.53.1.el7.x86_64 #1 SMP Fri Jan 14 13:59:45 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+COMMAND RUN: /home/jwangbay/software/amsterdam/tvb-ukbb/bb_functional_pipeline/bb_clean_fix_logs
+Starting time: Tue May 3 02:39:55 PDT 2022
+The command /home/jwangbay/software/amsterdam/tvb-ukbb/bb_functional_pipeline/bb_clean_fix_logs took 0 seconds
+Ending time: Tue May 3 02:39:55 PDT 2022
+
+
+STANDARD ERROR:
++ subjectLogsDir=/scratch/jwangbay/amsterdam/sub-0001/logs/
++ restingDir=/scratch/jwangbay/amsterdam/sub-0001/fMRI/rfMRI.ica
++ logFile=/scratch/jwangbay/amsterdam/sub-0001/logs//bb_fixlogs_sub-0001.log
++ for fixFile in ".fix.log" ".fix" ".fix_2b_predict.log"
++ '[' -f /scratch/jwangbay/amsterdam/sub-0001/fMRI/rfMRI.ica/.fix.log ']'
++ cat /scratch/jwangbay/amsterdam/sub-0001/fMRI/rfMRI.ica/.fix.log
++ for fixFile in ".fix.log" ".fix" ".fix_2b_predict.log"
++ '[' -f /scratch/jwangbay/amsterdam/sub-0001/fMRI/rfMRI.ica/.fix ']'
++ cat /scratch/jwangbay/amsterdam/sub-0001/fMRI/rfMRI.ica/.fix
++ for fixFile in ".fix.log" ".fix" ".fix_2b_predict.log"
++ '[' -f /scratch/jwangbay/amsterdam/sub-0001/fMRI/rfMRI.ica/.fix_2b_predict.log ']'
++ cat /scratch/jwangbay/amsterdam/sub-0001/fMRI/rfMRI.ica/.fix_2b_predict.log
++ rm /scratch/jwangbay/amsterdam/sub-0001/fMRI/rfMRI.ica/.fix /scratch/jwangbay/amsterdam/sub-0001/fMRI/rfMRI.ica/.fix.log /scratch/jwangbay/amsterdam/sub-0001/fMRI/rfMRI.ica/.fix_2b_predict.log
++ . /home/jwangbay/software/amsterdam/tvb-ukbb/bb_pipeline_tools/bb_set_footer
+++ set +x

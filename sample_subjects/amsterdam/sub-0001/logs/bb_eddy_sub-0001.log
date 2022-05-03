@@ -1,0 +1,227 @@
+STANDARD OUT:
+HOST INFO: Linux cdr302.int.cedar.computecanada.ca 3.10.0-1160.53.1.el7.x86_64 #1 SMP Fri Jan 14 13:59:45 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+COMMAND RUN: /home/jwangbay/software/amsterdam/tvb-ukbb/bb_diffusion_pipeline/bb_eddy/bb_eddy_wrap
+Starting time: Tue May 3 03:40:42 PDT 2022
+Reading images
+Performing volume-to-volume registration
+Running Register
+
+...................Allocated GPU # 0...................
+Loading prediction maker
+Evaluating prediction maker model
+Checking for outliers
+Calculating parameter updates
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.79385, after update mss = 5.2259
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.9636, after update mss = 5.45934
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.51007, after update mss = 8.05081
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.93976, after update mss = 6.43403
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.99855, after update mss = 8.86596
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.38823, after update mss = 4.25043
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.54825, after update mss = 5.58009
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.63542, after update mss = 6.45352
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.3578, after update mss = 9.2716
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.96994, after update mss = 8.14362
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.50211, after update mss = 6.4404
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.47441, after update mss = 5.42728
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.48416, after update mss = 10.8449
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.7659, after update mss = 5.8809
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.71079, after update mss = 5.43012
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.74316, after update mss = 5.87465
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.55922, after update mss = 14.6958
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.75601, after update mss = 6.00271
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.42858, after update mss = 8.89801
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.59232, after update mss = 12.8948
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.79978, after update mss = 11.7498
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.45537, after update mss = 7.10426
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.59736, after update mss = 8.53753
+Iter: 0, Total mss = 3.6714
+Loading prediction maker
+Evaluating prediction maker model
+Checking for outliers
+Loading prediction maker
+Evaluating prediction maker model
+Calculating parameter updates
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 4.04575, after update mss = 6.00799
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 4.51834, after update mss = 7.02613
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.68261, after update mss = 8.42138
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 4.03002, after update mss = 11.163
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.55783, after update mss = 5.31859
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 2.72064, after update mss = 2.79945
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.62546, after update mss = 6.05825
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.71389, after update mss = 6.51939
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.62326, after update mss = 11.7767
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.9198, after update mss = 5.27817
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.7695, after update mss = 6.75719
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.99221, after update mss = 7.37822
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.78959, after update mss = 12.3374
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 4.00062, after update mss = 11.7782
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 2.5497, after update mss = 13.555
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 2.57348, after update mss = 2.62204
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 2.6731, after update mss = 14.4547
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.95682, after update mss = 6.5218
+Iter: 1, Total mss = 3.67009
+Loading prediction maker
+Evaluating prediction maker model
+Checking for outliers
+Loading prediction maker
+Evaluating prediction maker model
+Calculating parameter updates
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.77416, after update mss = 4.58279
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 4.12807, after update mss = 7.08263
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.68919, after update mss = 6.68878
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.98528, after update mss = 5.46676
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.69033, after update mss = 5.4315
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 2.29328, after update mss = 7.85914
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.67074, after update mss = 13.7611
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.92443, after update mss = 6.40438
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 2.54916, after update mss = 5.50361
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 2.63653, after update mss = 8.99892
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.85639, after update mss = 6.5106
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 2.57497, after update mss = 5.4728
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 4.0685, after update mss = 15.7572
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.87782, after update mss = 5.61554
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 2.66042, after update mss = 7.09114
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 2.80363, after update mss = 12.5396
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.98846, after update mss = 7.79803
+Iter: 2, Total mss = 4.57377
+Loading prediction maker
+Evaluating prediction maker model
+Checking for outliers
+Loading prediction maker
+Evaluating prediction maker model
+Calculating parameter updates
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 4.04107, after update mss = 7.15657
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 4.21567, after update mss = 5.18216
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 4.01506, after update mss = 6.63176
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 4.95783, after update mss = 6.07897
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.98596, after update mss = 6.80934
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 6.89628, after update mss = 9.04649
+Iter: 3, Total mss = 9.21539
+Loading prediction maker
+Evaluating prediction maker model
+Checking for outliers
+Loading prediction maker
+Evaluating prediction maker model
+Calculating parameter updates
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 4.19294, after update mss = 10.2922
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.88627, after update mss = 8.29388
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.19432, after update mss = 8.01407
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.05851, after update mss = 5.95963
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 4.10151, after update mss = 4.55528
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.01714, after update mss = 5.76005
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 2.79652, after update mss = 5.95603
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.1308, after update mss = 9.43658
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.43561, after update mss = 9.66658
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.25869, after update mss = 7.38372
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.71547, after update mss = 8.99173
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.18582, after update mss = 6.05562
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 2.72618, after update mss = 7.16124
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 3.40162, after update mss = 7.51467
+EddyInternalGpuUtils::param_update: updates rejected
+EddyInternalGpuUtils::param_update: original mss = 6.69891, after update mss = 6.78762
+Iter: 4, Total mss = 4.6068
+Running sm.ApplyDWILocationReference
+Checking shell alignment along PE-direction (running PostEddyAlignShellsAlongPE)
+Aligning shells (running PostEddyAlignShells)
+Performing final outlier check
+Loading prediction maker
+Evaluating prediction maker model
+Checking for outliers
+Running sm.WriteOutlierFreeData
+Running sm.WriteParameterFile
+Running sm.WriteRegisteredImages
+Running sm.WriteRotatedBVecs
+Running sm.WriteMovementRMS
+Running EDDY::WriteCNRMaps
+Loading prediction maker
+Evaluating prediction maker model
+Loading prediction maker
+Evaluating prediction maker model
+The command /home/jwangbay/software/amsterdam/tvb-ukbb/bb_diffusion_pipeline/bb_eddy/bb_eddy_wrap took 131 seconds
+Ending time: Tue May 3 03:42:53 PDT 2022
+
+
+STANDARD ERROR:
++ baseDir=/scratch/jwangbay/amsterdam/sub-0001
++ '[' y == y ']'
++ eddy_cuda --imain=/scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/DWI.nii.gz --mask=/scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/rawDTI_B0_brain_mask.nii.gz --topup=/scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/SynB0/topup --acqp=/scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/acqparams.txt --index=/scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/eddy_index.txt --bvecs=/scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/bvecs --bvals=/scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/bvals --out=/scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/data --flm=quadratic --resamp=jac --slm=linear --fwhm=2 --ff=5 --sep_offs_move --nvoxhp=1000 --repol --rms --cnr_maps -v
++ . /home/jwangbay/software/amsterdam/tvb-ukbb/bb_pipeline_tools/bb_set_footer
+++ set +x

@@ -5,3 +5,4 @@ bb_diffusion_pipeline/tvb_SynB0/src/train_lin/num_fold_4_total_folds_5_seed_1_nu
 bb_diffusion_pipeline/tvb_SynB0/src/train_lin/num_fold_5_total_folds_5_seed_1_num_epochs_100_lr_0.0001_betas_(0.9,[[:space:]]0.999)_weight_decay_1e-05_num_epoch_88.pth filter=lfs diff=lfs merge=lfs -text
 bb_diffusion_pipeline/tvb_SynB0/src/train_lin/num_fold_1_total_folds_5_seed_1_num_epochs_100_lr_0.0001_betas_(0.9,[[:space:]]0.999)_weight_decay_1e-05_num_epoch_97.pth filter=lfs diff=lfs merge=lfs -text
 bb_functional_pipeline/bb_fix_dir/training_files/ADNI3_Training.RData filter=lfs diff=lfs merge=lfs -text
+*bold.nii.gz filter=lfs diff=lfs merge=lfs -text

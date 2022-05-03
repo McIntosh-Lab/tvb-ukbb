@@ -1,0 +1,23 @@
+num	short	category	num_in_cat	long	unit	dtype	description	value	accepted_ranges	flag
+1	T1_l_align_to_std_diff	bb_IDP_T1_align_to_std	1	QC_T1-to-standard_linear_alignment_discrepancy	AU	float	Discrepancy between the T1 brain image (linearly-aligned to standard space) and the standard-space brain template	6.325330e-01		N/A
+2	T1_nl_align_to_std_diff	bb_IDP_T1_align_to_std	2	QC_T1-to-standard_nonlinear_alignment_discrepancy	AU	float	Discrepancy between the T1 brain image (nonlinearly-aligned to standard space) and the standard-space brain template	4.667700e-01		N/A
+3	T1_nl_align_to_std_warp	bb_IDP_T1_align_to_std	3	QC_T1-to-standard_nonlinear_alignment_warping	AU	float	Amount of warping (averaged distortion) applied to nonlinearly align the T1 brain image to standard space	8.763200e-02		N/A
+4	T1_inverse_SNR	bb_IDP_T1_noise_ratio	1	QC_T1_inverse_SNR	ratio	float	Inverted signal-to-noise ratio in the T1 - background-noise spatial standard deviation divided by mean brain intensity	2.890942e-02		N/A
+5	T1_inverse_CNR	bb_IDP_T1_noise_ratio	2	QC_T1_inverse_CNR	ratio	float	Inverted contrast-to-noise ratio in the T1 - background-noise spatial standard deviation divided by contrast between white and grey matter mean intensities	4.981382e-02		N/A
+6	dMRI_eddy_outlier	bb_IDP_diff_eddy_outliers	1	QC_dMRI_eddy_outlier_slices	count	int	Number of dMRI outlier slices (across all slices in all volumes) detected and corrected	1.000000e+00		N/A
+18	T1_FIRST_left_thalamus	bb_IDP_T1_FIRST_vols	1	IDP_T1_FIRST_left_thalamus_volume	mm3	float	Volume of left thalamus (from T1 brain image)	8.487000e+03		N/A
+19	T1_FIRST_right_thalamus	bb_IDP_T1_FIRST_vols	2	IDP_T1_FIRST_right_thalamus_volume	mm3	float	Volume of right thalamus (from T1 brain image)	8.728000e+03		N/A
+20	T1_FIRST_left_caudate	bb_IDP_T1_FIRST_vols	3	IDP_T1_FIRST_left_caudate_volume	mm3	float	Volume of left caudate (from T1 brain image)	3.911000e+03		N/A
+21	T1_FIRST_right_caudate	bb_IDP_T1_FIRST_vols	4	IDP_T1_FIRST_right_caudate_volume	mm3	float	Volume of right caudate (from T1 brain image)	4.418000e+03		N/A
+22	T1_FIRST_left_putamen	bb_IDP_T1_FIRST_vols	5	IDP_T1_FIRST_left_putamen_volume	mm3	float	Volume of left putamen (from T1 brain image)	5.972000e+03		N/A
+23	T1_FIRST_right_putamen	bb_IDP_T1_FIRST_vols	6	IDP_T1_FIRST_right_putamen_volume	mm3	float	Volume of right putamen (from T1 brain image)	5.786000e+03		N/A
+24	T1_FIRST_left_pallidum	bb_IDP_T1_FIRST_vols	7	IDP_T1_FIRST_left_pallidum_volume	mm3	float	Volume of left pallidum (from T1 brain image)	1.832000e+03		N/A
+25	T1_FIRST_right_pallidum	bb_IDP_T1_FIRST_vols	8	IDP_T1_FIRST_right_pallidum_volume	mm3	float	Volume of right pallidum (from T1 brain image)	1.956000e+03		N/A
+26	T1_FIRST_left_hippocampus	bb_IDP_T1_FIRST_vols	9	IDP_T1_FIRST_left_hippocampus_volume	mm3	float	Volume of left hippocampus (from T1 brain image)	4.383000e+03		N/A
+27	T1_FIRST_right_hippocampus	bb_IDP_T1_FIRST_vols	10	IDP_T1_FIRST_right_hippocampus_volume	mm3	float	Volume of right hippocampus (from T1 brain image)	4.703000e+03		N/A
+28	T1_FIRST_left_amygdala	bb_IDP_T1_FIRST_vols	11	IDP_T1_FIRST_left_amygdala_volume	mm3	float	Volume of left amygdala (from T1 brain image)	1.224000e+03		N/A
+29	T1_FIRST_right_amygdala	bb_IDP_T1_FIRST_vols	12	IDP_T1_FIRST_right_amygdala_volume	mm3	float	Volume of right amygdala (from T1 brain image)	1.315000e+03		N/A
+30	T1_FIRST_left_accumbens	bb_IDP_T1_FIRST_vols	13	IDP_T1_FIRST_left_accumbens_volume	mm3	float	Volume of left accumbens (from T1 brain image)	6.660000e+02		N/A
+31	T1_FIRST_right_accumbens	bb_IDP_T1_FIRST_vols	14	IDP_T1_FIRST_right_accumbens_volume	mm3	float	Volume of right accumbens (from T1 brain image)	4.950000e+02		N/A
+32	T1_FIRST_brain_stem+4th_ventricle	bb_IDP_T1_FIRST_vols	15	IDP_T1_FIRST_brain_stem+4th_ventricle_volume	mm3	float	Volume of brain stem + 4th ventricle (from T1 brain image)	2.473100e+04		N/A
+1142	T2_FLAIR_WMH_volume	bb_IDP_T2_FLAIR_WMH	1	IDP_T2_FLAIR_WMH_volume	mm3	float	Volume of White Matter Hyperintensities calculated with BIANCA (from T1 and T2 FLAIR brain image)	nan		N/A

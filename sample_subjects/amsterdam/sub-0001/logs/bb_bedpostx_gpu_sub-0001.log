@@ -1,0 +1,45 @@
+STANDARD OUT:
+HOST INFO: Linux cdr302.int.cedar.computecanada.ca 3.10.0-1160.53.1.el7.x86_64 #1 SMP Fri Jan 14 13:59:45 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+COMMAND RUN: /home/jwangbay/software/amsterdam/tvb-ukbb/bb_diffusion_pipeline/bb_bedpostx/bb_bedpostx_gpu
+Starting time: Tue May 3 04:05:47 PDT 2022
+subjectdir is /scratch/jwangbay/amsterdam/sub-0001/dMRI
+false
+---------------------------------------------
+------------ BedpostX GPU Version -----------
+---------------------------------------------
+subjectdir is /scratch/jwangbay/amsterdam/sub-0001/dMRI/bedpostx
+Making bedpostx directory structure
+Copying files to bedpost directory
+Pre-processing stage
+Queuing parallel processing stage
+
+----- Bedpostx Monitor -----
+1 parts processed out of 4
+2 parts processed out of 4
+3 parts processed out of 4
+Queuing post processing stage
+4 parts processed out of 4
+All parts processed
+The command /home/jwangbay/software/amsterdam/tvb-ukbb/bb_diffusion_pipeline/bb_bedpostx/bb_bedpostx_gpu took 338 seconds
+Ending time: Tue May 3 04:11:25 PDT 2022
+
+
+STANDARD ERROR:
+++ fsl_abspath /scratch/jwangbay/amsterdam/sub-0001/dMRI
++ subjdir=/scratch/jwangbay/amsterdam/sub-0001/dMRI
+++ echo /scratch/jwangbay/amsterdam/sub-0001/dMRI
+++ sed 's/\/$/$/g'
++ subjdir=/scratch/jwangbay/amsterdam/sub-0001/dMRI
++ echo subjectdir is /scratch/jwangbay/amsterdam/sub-0001/dMRI
++ FSLSUBALREADYRUN=false
++ echo false
++ '[' -d /scratch/jwangbay/amsterdam/sub-0001/dMRI ']'
++ '[' '!' -f /scratch/jwangbay/amsterdam/sub-0001/dMRI/pre_bedpostx_error.txt ']'
++ /opt/fsl/bin/bedpostx_gpu /scratch/jwangbay/amsterdam/sub-0001/dMRI/bedpostx --forcedir --nf=3 --bi=3000 --cnonlinear --model=1
++ file=/scratch/jwangbay/amsterdam/sub-0001/dMRI/bedpostx.bedpostX/merged_ph1samples.nii.gz
++ '[' '!' -f /scratch/jwangbay/amsterdam/sub-0001/dMRI/bedpostx.bedpostX/merged_ph1samples.nii.gz ']'
++ sleep 1m
++ edir=/scratch/jwangbay/amsterdam
++ cd /scratch/jwangbay/amsterdam
++ . /home/jwangbay/software/amsterdam/tvb-ukbb/bb_pipeline_tools/bb_set_footer
+++ set +x

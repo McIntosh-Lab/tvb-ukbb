@@ -1,0 +1,19 @@
+STANDARD OUT:
+HOST INFO: Linux cdr302.int.cedar.computecanada.ca 3.10.0-1160.53.1.el7.x86_64 #1 SMP Fri Jan 14 13:59:45 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+COMMAND RUN: /home/jwangbay/software/amsterdam/tvb-ukbb/bb_functional_pipeline/bb_postprocess_struct
+Starting time: Tue May 3 02:20:53 PDT 2022
+The command /home/jwangbay/software/amsterdam/tvb-ukbb/bb_functional_pipeline/bb_postprocess_struct took 0 seconds
+Ending time: Tue May 3 02:20:53 PDT 2022
+
+
+STANDARD ERROR:
++ direc=/scratch/jwangbay/amsterdam/sub-0001
++ linkDir=/scratch/jwangbay/amsterdam/sub-0001/fMRI/symlink
++ mkdir /scratch/jwangbay/amsterdam/sub-0001/fMRI/symlink
++ ln -s /scratch/jwangbay/amsterdam/sub-0001/T1/T1.nii.gz /scratch/jwangbay/amsterdam/sub-0001/fMRI/symlink/T1.nii.gz
++ ln -s /scratch/jwangbay/amsterdam/sub-0001/T1/T1_brain.nii.gz /scratch/jwangbay/amsterdam/sub-0001/fMRI/symlink/T1_brain.nii.gz
++ ln -s /scratch/jwangbay/amsterdam/sub-0001/T1/transforms/T1_to_MNI_warp.nii.gz /scratch/jwangbay/amsterdam/sub-0001/fMRI/symlink/T1_brain2MNI152_T1_2mm_brain_warp.nii.gz
++ ln -s /scratch/jwangbay/amsterdam/sub-0001/T1/transforms/T1_to_MNI_linear.mat /scratch/jwangbay/amsterdam/sub-0001/fMRI/symlink/T1_brain2MNI152_T1_2mm_brain.mat
++ /opt/fsl/bin/fslmaths /scratch/jwangbay/amsterdam/sub-0001/T1/T1_fast/T1_brain_pve_2.nii.gz -thr 0.5 -bin /scratch/jwangbay/amsterdam/sub-0001/fMRI/symlink/T1_brain_wmseg.nii.gz
++ . /home/jwangbay/software/amsterdam/tvb-ukbb/bb_pipeline_tools/bb_set_footer
+++ set +x

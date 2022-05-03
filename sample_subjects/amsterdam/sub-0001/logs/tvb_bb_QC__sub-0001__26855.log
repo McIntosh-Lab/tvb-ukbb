@@ -1,0 +1,4 @@
+2022-05-03 04:25:24,415 - tvb_bb_QC - INFO - Starting the subject processing: Tue May  3 04:25:24 2022 
+2022-05-03 04:25:24,416 - tvb_bb_QC - INFO - Subject received as input: sub-0001 
+2022-05-03 04:25:24,416 - tvb_bb_QC - INFO - COMMAND TO RUN: 	xvfb-run -a $BB_BIN_DIR/tvb_bb_QC/tvb_bb_QC.sh sub-0001 
+2022-05-03 04:49:35,048 - tvb_bb_QC - INFO - COMMAND OUTPUT: 	 

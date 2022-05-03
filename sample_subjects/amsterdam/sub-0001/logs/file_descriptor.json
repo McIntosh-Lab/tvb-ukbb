@@ -1,0 +1,10 @@
+{
+    "T1": "T1/T1.nii.gz",
+    "dwi": "dMRI/raw/dwi.nii.gz",
+    "dwi_bval": "dMRI/raw/dwi.bval",
+    "dwi_bvec": "dMRI/raw/dwi.bvec",
+    "rfMRI": "fMRI/rfMRI.nii.gz",
+    "rfMRI_SBRef": "fMRI/rfMRI_SBREF.nii.gz",
+    "tfMRI": "fMRI/tfMRI.nii.gz",
+    "tfMRI_SBRef": "fMRI/tfMRI_SBREF.nii.gz"
+}
