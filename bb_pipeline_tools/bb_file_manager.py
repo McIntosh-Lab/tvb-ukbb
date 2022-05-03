@@ -713,7 +713,6 @@ def bb_file_manager(subject):
                 "*epi_rest*.nii.gz",
                 "*rsfMRI*.nii.gz",
                 "*fcMRI*.nii.gz",
-                "*restingstate*.nii.gz",
             ],
             manage_fMRI,
             "rfMRI",
