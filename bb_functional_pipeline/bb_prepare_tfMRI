@@ -39,7 +39,8 @@ descrip=(`echo $descrip | tr ';' ' '`)
 fmriTE=${descrip[0]:3}
 fmriDwell=`bb_get_dwell_time $1/fMRI/tfMRI.nii.gz`
 
-$BB_BIN_DIR/bb_pipeline_tools/bb_GDC_half_voxel --workingdir=$1/fMRI/tfMRI_SBREF_GDC --in=$1/fMRI/tfMRI_SBREF.nii.gz --out=$1/fMRI/tfMRI_SBREF_ud.nii.gz --owarp=$1/fMRI/tfMRI_SBREF_ud_warp.nii.gz
+#$BB_BIN_DIR/bb_pipeline_tools/bb_GDC_half_voxel --workingdir=$1/fMRI/tfMRI_SBREF_GDC --in=$1/fMRI/tfMRI_SBREF.nii.gz --out=$1/fMRI/tfMRI_SBREF_ud.nii.gz --owarp=$1/fMRI/tfMRI_SBREF_ud_warp.nii.gz
+#no gdc
 
 echo "set fmri(outputdir)     \""$nameDir"/fMRI/tfMRI.feat\"" >> $1/fMRI/tfMRI.fsf
 echo "set feat_files(1)       \""$nameDir"/fMRI/tfMRI.nii.gz\"" >> $1/fMRI/tfMRI.fsf
@@ -47,7 +48,7 @@ echo "set alt_ex_func(1)      \""$nameDir"/fMRI/tfMRI_SBREF.nii.gz\"" >> $1/fMRI
 echo "set unwarp_files(1)     \""$nameDir"/fieldmap/fieldmap_fout_to_T1_brain_rad.nii.gz\"" >> $1/fMRI/tfMRI.fsf
 echo "set unwarp_files_mag(1) \""$nameDir"/fMRI/symlink/T1_brain.nii.gz\"" >> $1/fMRI/tfMRI.fsf
 echo "set highres_files(1)    \""$nameDir"/fMRI/symlink/T1_brain.nii.gz\"" >> $1/fMRI/tfMRI.fsf
-echo "set fmri(gdc)           \""$nameDir"/fMRI/tfMRI_SBREF_ud_warp.nii.gz\"" >> $1/fMRI/tfMRI.fsf
+#echo "set fmri(gdc)           \""$nameDir"/fMRI/tfMRI_SBREF_ud_warp.nii.gz\"" >> $1/fMRI/tfMRI.fsf
 echo "set fmri(tr) $fmriTR" >> $1/fMRI/tfMRI.fsf
 echo "set fmri(npts) $fmriNumVol"  >> $1/fMRI/tfMRI.fsf
 echo "set fmri(dwell) $fmriDwell" >> $1/fMRI/tfMRI.fsf
