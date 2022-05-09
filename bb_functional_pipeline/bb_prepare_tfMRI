@@ -46,8 +46,8 @@ echo "set fmri(outputdir)     \""$nameDir"/fMRI/tfMRI.feat\"" >> $1/fMRI/tfMRI.f
 echo "set fmri(regunwarp_yn) 0" >> $1/fMRI/tfMRI.fsf
 echo "set feat_files(1)       \""$nameDir"/fMRI/tfMRI.nii.gz\"" >> $1/fMRI/tfMRI.fsf
 echo "set alt_ex_func(1)      \""$nameDir"/fMRI/tfMRI_SBREF.nii.gz\"" >> $1/fMRI/tfMRI.fsf
-echo "set unwarp_files(1)     \""$nameDir"/fieldmap/fieldmap_fout_to_T1_brain_rad.nii.gz\"" >> $1/fMRI/tfMRI.fsf
-echo "set unwarp_files_mag(1) \""$nameDir"/fMRI/symlink/T1_brain.nii.gz\"" >> $1/fMRI/tfMRI.fsf
+#echo "set unwarp_files(1)     \""$nameDir"/fieldmap/fieldmap_fout_to_T1_brain_rad.nii.gz\"" >> $1/fMRI/tfMRI.fsf
+#echo "set unwarp_files_mag(1) \""$nameDir"/fMRI/symlink/T1_brain.nii.gz\"" >> $1/fMRI/tfMRI.fsf
 echo "set highres_files(1)    \""$nameDir"/fMRI/symlink/T1_brain.nii.gz\"" >> $1/fMRI/tfMRI.fsf
 #echo "set fmri(gdc)           \""$nameDir"/fMRI/tfMRI_SBREF_ud_warp.nii.gz\"" >> $1/fMRI/tfMRI.fsf
 echo "set fmri(tr) $fmriTR" >> $1/fMRI/tfMRI.fsf
