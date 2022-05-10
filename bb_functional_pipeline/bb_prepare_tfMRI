@@ -54,5 +54,6 @@ echo "set fmri(tr) $fmriTR" >> $1/fMRI/tfMRI.fsf
 echo "set fmri(npts) $fmriNumVol"  >> $1/fMRI/tfMRI.fsf
 echo "set fmri(dwell) $fmriDwell" >> $1/fMRI/tfMRI.fsf
 echo "set fmri(te) $fmriTE" >> $1/fMRI/tfMRI.fsf
+echo "set fmri(poststats_yn) 0" >> $1/fMRI/tfMRI.fsf
 
 . $BB_BIN_DIR/bb_pipeline_tools/bb_set_footer 
