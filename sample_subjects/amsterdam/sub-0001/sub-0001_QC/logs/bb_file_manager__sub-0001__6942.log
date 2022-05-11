@@ -1,0 +1,33 @@
+2022-05-10 22:42:16,596 - bb_file_manager - INFO - Starting the subject processing: Tue May 10 22:42:16 2022 
+2022-05-10 22:42:16,597 - bb_file_manager - INFO - Subject received as input: sub-0001 
+2022-05-10 22:42:16,811 - bb_file_manager - INFO - Performing action capitalize_and_clean on files with patterns ['*.[^log]'] 
+2022-05-10 22:42:16,812 - bb_file_manager - INFO - File names changed to upper case. 
+2022-05-10 22:42:16,844 - bb_file_manager - INFO - Performing action move_to on files with patterns ['dicom', 'DICOM'] 
+2022-05-10 22:42:16,901 - bb_file_manager - INFO - Performing action manage_struct on files with patterns ['*T1*.nii.gz', '*MPRAGE*.nii.gz', '*IR-FSPGR*.nii.gz'] 
+2022-05-10 22:42:16,903 - bb_file_manager - INFO - File moved/renamed: /scratch/jwangbay/amsterdam/sub-0001/rawdata/anat/sub-0001_T1w.nii.gz to T1/T1.nii.gz 
+2022-05-10 22:42:17,077 - bb_file_manager - INFO - Performing action manage_struct on files with patterns ['T2*FLAIR*.nii.gz', '*FLAIR*.nii.gz'] 
+2022-05-10 22:42:17,077 - bb_file_manager - ERROR - There was not an intensity-normalized T2. 
+2022-05-10 22:42:17,213 - bb_file_manager - INFO - Performing action manage_fMRI on files with patterns ['*FMRI*RESTING*.nii.gz', 'MB8*RESTING*.nii.gz', '*TASK*REST*.nii.gz', '*task*rest*.nii.gz', '*epi_rest*.nii.gz', '*rsfMRI*.nii.gz', '*fcMRI*.nii.gz'] 
+2022-05-10 22:42:17,739 - bb_file_manager - INFO - File moved/renamed: /scratch/jwangbay/amsterdam/sub-0001/rawdata/func/sub-0001_task-restingstate_acq-seq_bold.nii.gz to fMRI/rfMRI.nii.gz 
+2022-05-10 22:42:18,784 - bb_file_manager - WARNING - There was no SBRef data for the subject fMRI/rfMRI.nii.gz 
+2022-05-10 22:42:18,784 - bb_file_manager - WARNING - The SBRef data will be generated now using the middle point of the subject 
+2022-05-10 22:42:18,784 - bb_file_manager - WARNING - Command to run: /home/jwangbay/software/amsterdam/tvb-ukbb/bb_functional_pipeline/bb_generate_SBRef fMRI/rfMRI.nii.gz fMRI/rfMRI_SBREF.nii.gz 
+2022-05-10 22:42:18,785 - bb_file_manager - INFO - COMMAND TO RUN: 	/home/jwangbay/software/amsterdam/tvb-ukbb/bb_functional_pipeline/bb_generate_SBRef fMRI/rfMRI.nii.gz fMRI/rfMRI_SBREF.nii.gz 
+2022-05-10 22:42:41,819 - bb_file_manager - INFO - COMMAND OUTPUT: 	 
+2022-05-10 22:42:41,945 - bb_file_manager - INFO - Performing action manage_fMRI on files with patterns ['*fmri*task*.nii.gz', '*FMRI*TASK*.nii.gz', 'MB8*TASK*.nii.gz', '*epi_movie*.nii.gz', '*epi_smt*.nii.gz', '*workingmemory*.nii.gz'] 
+2022-05-10 22:42:42,013 - bb_file_manager - INFO - File moved/renamed: /scratch/jwangbay/amsterdam/sub-0001/rawdata/func/sub-0001_task-workingmemory_acq-seq_bold.nii.gz to fMRI/tfMRI.nii.gz 
+2022-05-10 22:42:42,565 - bb_file_manager - WARNING - There was no SBRef data for the subject fMRI/tfMRI.nii.gz 
+2022-05-10 22:42:42,566 - bb_file_manager - WARNING - The SBRef data will be generated now using the middle point of the subject 
+2022-05-10 22:42:42,566 - bb_file_manager - WARNING - Command to run: /home/jwangbay/software/amsterdam/tvb-ukbb/bb_functional_pipeline/bb_generate_SBRef fMRI/tfMRI.nii.gz fMRI/tfMRI_SBREF.nii.gz 
+2022-05-10 22:42:42,566 - bb_file_manager - INFO - COMMAND TO RUN: 	/home/jwangbay/software/amsterdam/tvb-ukbb/bb_functional_pipeline/bb_generate_SBRef fMRI/tfMRI.nii.gz fMRI/tfMRI_SBREF.nii.gz 
+2022-05-10 22:43:01,423 - bb_file_manager - INFO - COMMAND OUTPUT: 	 
+2022-05-10 22:43:01,450 - bb_file_manager - INFO - Performing action manage_SWI on files with patterns ['SWI*nii.gz'] 
+2022-05-10 22:43:01,450 - bb_file_manager - ERROR - There should be at least 134 SWI files. Only 0 found. There will be no SWI processing 
+2022-05-10 22:43:01,534 - bb_file_manager - INFO - Performing action manage_DWI on files with patterns ['DIFF_*', 'MB3_*', '*dwi*.*', '*DWI*.*'] 
+2022-05-10 22:43:01,534 - bb_file_manager - INFO - Single-direction DWI detected. 
+2022-05-10 22:43:01,581 - bb_file_manager - INFO - File moved/renamed: /scratch/jwangbay/amsterdam/sub-0001/rawdata/dwi/sub-0001_dwi.nii.gz to dMRI/raw/dwi.nii.gz 
+2022-05-10 22:43:02,352 - bb_file_manager - INFO - File moved/renamed: /scratch/jwangbay/amsterdam/sub-0001/rawdata/dwi/sub-0001_dwi.bvec to dMRI/raw/dwi.bvec 
+2022-05-10 22:43:02,490 - bb_file_manager - INFO - File moved/renamed: /scratch/jwangbay/amsterdam/sub-0001/rawdata/dwi/sub-0001_dwi.bval to dMRI/raw/dwi.bval 
+2022-05-10 22:43:02,528 - bb_file_manager - INFO - Performing action move_to on files with patterns ['SWI*.*'] 
+2022-05-10 22:43:02,550 - bb_file_manager - INFO - Performing action move_to on files with patterns ['*.[^log]'] 
+2022-05-10 22:43:02,550 - bb_file_manager - INFO - FILECONFIG: {'T1': 'T1/T1.nii.gz', 'rfMRI': 'fMRI/rfMRI.nii.gz', 'rfMRI_SBRef': 'fMRI/rfMRI_SBREF.nii.gz', 'tfMRI': 'fMRI/tfMRI.nii.gz', 'tfMRI_SBRef': 'fMRI/tfMRI_SBREF.nii.gz', 'dwi': 'dMRI/raw/dwi.nii.gz', 'dwi_bvec': 'dMRI/raw/dwi.bvec', 'dwi_bval': 'dMRI/raw/dwi.bval'} 

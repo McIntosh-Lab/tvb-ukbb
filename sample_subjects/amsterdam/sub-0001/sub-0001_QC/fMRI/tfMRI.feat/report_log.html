@@ -1,0 +1,327 @@
+<HTML><HEAD>
+<!--refreshstart-->
+
+<!--refreshstop-->
+<link REL=stylesheet TYPE=text/css href=.files/fsl.css>
+<TITLE>FSL</TITLE></HEAD><BODY><OBJECT data=report.html></OBJECT>
+<h2>Progress Report / Log</h2>
+Started at Wed May 11 00:23:07 PDT 2022<p>
+Feat main script<br><pre>
+
+/bin/cp /scratch/jwangbay/amsterdam/sub-0001/fMRI/tfMRI.fsf design.fsf
+
+/opt/fsl/bin/feat_model design
+
+mkdir .files;cp /opt/fsl/doc/fsl.css .files;cp -r /opt/fsl/doc/images .files/images
+
+/opt/fsl/bin/fsl_sub -T 10 -l logs -N feat0_init   /opt/fsl/bin/feat /scratch/jwangbay/amsterdam/sub-0001/fMRI/tfMRI.feat/design.fsf -D /scratch/jwangbay/amsterdam/sub-0001/fMRI/tfMRI.feat -I 1 -init
+5302
+
+/opt/fsl/bin/fsl_sub -T 241 -l logs -N feat2_pre -j 5302  /opt/fsl/bin/feat /scratch/jwangbay/amsterdam/sub-0001/fMRI/tfMRI.feat/design.fsf -D /scratch/jwangbay/amsterdam/sub-0001/fMRI/tfMRI.feat -I 1 -prestats
+5794
+
+/opt/fsl/bin/fsl_sub -T 23 -l logs -N feat3_film -j 5794  /opt/fsl/bin/feat /scratch/jwangbay/amsterdam/sub-0001/fMRI/tfMRI.feat/design.fsf -D /scratch/jwangbay/amsterdam/sub-0001/fMRI/tfMRI.feat -I 1 -stats
+20413
+
+/opt/fsl/bin/fsl_sub -T 119 -l logs -N feat4_post -j 20413  /opt/fsl/bin/feat /scratch/jwangbay/amsterdam/sub-0001/fMRI/tfMRI.feat/design.fsf -D /scratch/jwangbay/amsterdam/sub-0001/fMRI/tfMRI.feat -poststats 0 
+22246
+
+/opt/fsl/bin/fsl_sub -T 1 -l logs -N feat5_stop -j 5794,20413,22246  /opt/fsl/bin/feat /scratch/jwangbay/amsterdam/sub-0001/fMRI/tfMRI.feat/design.fsf -D /scratch/jwangbay/amsterdam/sub-0001/fMRI/tfMRI.feat -stop
+</pre><hr>Initialisation<br><pre>
+
+/opt/fsl/bin/fslmaths /scratch/jwangbay/amsterdam/sub-0001/fMRI/tfMRI prefiltered_func_data -odt float
+Total original volumes = 160
+
+/opt/fsl/bin/fslmaths /scratch/jwangbay/amsterdam/sub-0001/fMRI/tfMRI_SBREF.nii.gz example_func
+</pre><hr>Preprocessing:Stage 1<br><pre>
+
+/opt/fsl/bin/mainfeatreg -F 6.00 -d /scratch/jwangbay/amsterdam/sub-0001/fMRI/tfMRI.feat -l /scratch/jwangbay/amsterdam/sub-0001/fMRI/tfMRI.feat/logs/feat2_pre -R /scratch/jwangbay/amsterdam/sub-0001/fMRI/tfMRI.feat/report_unwarp.html -r /scratch/jwangbay/amsterdam/sub-0001/fMRI/tfMRI.feat/report_reg.html  -i /scratch/jwangbay/amsterdam/sub-0001/fMRI/tfMRI.feat/example_func.nii.gz  -n 10 -h /scratch/jwangbay/amsterdam/sub-0001/fMRI/symlink/T1_brain.nii.gz -w  BBR -x 90 -s /opt/fsl/data/standard/MNI152_T1_2mm_brain -y 12 -z 90 
+Option -F ( FEAT version parameter ) selected with  argument "6.00"
+Option -d ( output directory ) selected with  argument "/scratch/jwangbay/amsterdam/sub-0001/fMRI/tfMRI.feat"
+Option -l ( logfile )input with argument "/scratch/jwangbay/amsterdam/sub-0001/fMRI/tfMRI.feat/logs/feat2_pre"
+Option -R ( html unwarping report ) selected with  argument "/scratch/jwangbay/amsterdam/sub-0001/fMRI/tfMRI.feat/report_unwarp.html"
+Option -r ( html registration report ) selected with  argument "/scratch/jwangbay/amsterdam/sub-0001/fMRI/tfMRI.feat/report_reg.html"
+Option -i ( main input ) input with argument "/scratch/jwangbay/amsterdam/sub-0001/fMRI/tfMRI.feat/example_func.nii.gz"
+Option -n ( use nonlinear reg ) input with argument "10"
+Option -h ( high-res structural image ) selected with  argument "/scratch/jwangbay/amsterdam/sub-0001/fMRI/symlink/T1_brain.nii.gz"
+Option -w ( highres dof ) selected with  argument "BBR"
+Option -x ( highres search ) selected with  argument "90"
+Option -s ( standard image ) selected with  argument "/opt/fsl/data/standard/MNI152_T1_2mm_brain"
+Option -y ( standard dof ) selected with  argument "12"
+Option -z ( standard search ) selected with  argument "90"
+</pre><hr>Registration<br><pre>
+
+/bin/mkdir -p /scratch/jwangbay/amsterdam/sub-0001/fMRI/tfMRI.feat/reg
+
+
+/opt/fsl/bin/fslmaths /scratch/jwangbay/amsterdam/sub-0001/fMRI/symlink/T1_brain highres
+
+
+/opt/fsl/bin/fslmaths /scratch/jwangbay/amsterdam/sub-0001/fMRI/symlink/T1.nii.gz  highres_head
+
+
+/opt/fsl/bin/fslmaths /scratch/jwangbay/amsterdam/sub-0001/fMRI/symlink/T1_brain_wmseg highres_wmseg
+
+Checking for /scratch/jwangbay/amsterdam/sub-0001/fMRI/symlink/T1_brain2MNI152_T1_2mm_brain_warp and /scratch/jwangbay/amsterdam/sub-0001/fMRI/symlink/T1_brain2MNI152_T1_2mm_brain.mat
+
+/opt/fsl/bin/fslmaths /scratch/jwangbay/amsterdam/sub-0001/fMRI/symlink/T1_brain2MNI152_T1_2mm_brain_warp highres2standard_warp
+
+
+cp /scratch/jwangbay/amsterdam/sub-0001/fMRI/symlink/T1_brain2MNI152_T1_2mm_brain.mat highres2standard.mat
+
+
+/opt/fsl/bin/fslmaths /opt/fsl/data/standard/MNI152_T1_2mm_brain standard
+
+
+/opt/fsl/bin/fslmaths /opt/fsl/data/standard/MNI152_T1_2mm standard_head
+
+
+/opt/fsl/bin/fslmaths /opt/fsl/data/standard/MNI152_T1_2mm_brain_mask_dil standard_mask
+
+did not find file: example_func2highres.mat. Generating transform.
+
+/opt/fsl/bin/epi_reg --epi=example_func --t1=highres_head --t1brain=highres --out=example_func2highres
+FLIRT pre-alignment Running BBR 0.382890 0.999994 -0.001898 0.002725 0.000000 0.001882 0.999982 0.005767 0.000000 -0.002736 -0.005762 0.999980 0.000000 -0.455534 1.109554 3.541941 1.000000
+
+/opt/fsl/bin/convert_xfm -inverse -omat highres2example_func.mat example_func2highres.mat
+
+
+/opt/fsl/bin/slicer example_func2highres highres -s 2 -x 0.35 sla.png -x 0.45 slb.png -x 0.55 slc.png -x 0.65 sld.png -y 0.35 sle.png -y 0.45 slf.png -y 0.55 slg.png -y 0.65 slh.png -z 0.35 sli.png -z 0.45 slj.png -z 0.55 slk.png -z 0.65 sll.png ; /opt/fsl/bin/pngappend sla.png + slb.png + slc.png + sld.png + sle.png + slf.png + slg.png + slh.png + sli.png + slj.png + slk.png + sll.png example_func2highres1.png ; /opt/fsl/bin/slicer highres example_func2highres -s 2 -x 0.35 sla.png -x 0.45 slb.png -x 0.55 slc.png -x 0.65 sld.png -y 0.35 sle.png -y 0.45 slf.png -y 0.55 slg.png -y 0.65 slh.png -z 0.35 sli.png -z 0.45 slj.png -z 0.55 slk.png -z 0.65 sll.png ; /opt/fsl/bin/pngappend sla.png + slb.png + slc.png + sld.png + sle.png + slf.png + slg.png + slh.png + sli.png + slj.png + slk.png + sll.png example_func2highres2.png ; /opt/fsl/bin/pngappend example_func2highres1.png - example_func2highres2.png example_func2highres.png; /bin/rm -f sl?.png example_func2highres2.png
+
+
+/bin/rm example_func2highres1.png
+
+
+/opt/fsl/bin/applywarp --ref=standard --in=highres --out=highres2standard --warp=highres2standard_warp
+
+
+/opt/fsl/bin/convert_xfm -inverse -omat standard2highres.mat highres2standard.mat
+
+
+/opt/fsl/bin/slicer highres2standard standard -s 2 -x 0.35 sla.png -x 0.45 slb.png -x 0.55 slc.png -x 0.65 sld.png -y 0.35 sle.png -y 0.45 slf.png -y 0.55 slg.png -y 0.65 slh.png -z 0.35 sli.png -z 0.45 slj.png -z 0.55 slk.png -z 0.65 sll.png ; /opt/fsl/bin/pngappend sla.png + slb.png + slc.png + sld.png + sle.png + slf.png + slg.png + slh.png + sli.png + slj.png + slk.png + sll.png highres2standard1.png ; /opt/fsl/bin/slicer standard highres2standard -s 2 -x 0.35 sla.png -x 0.45 slb.png -x 0.55 slc.png -x 0.65 sld.png -y 0.35 sle.png -y 0.45 slf.png -y 0.55 slg.png -y 0.65 slh.png -z 0.35 sli.png -z 0.45 slj.png -z 0.55 slk.png -z 0.65 sll.png ; /opt/fsl/bin/pngappend sla.png + slb.png + slc.png + sld.png + sle.png + slf.png + slg.png + slh.png + sli.png + slj.png + slk.png + sll.png highres2standard2.png ; /opt/fsl/bin/pngappend highres2standard1.png - highres2standard2.png highres2standard.png; /bin/rm -f sl?.png highres2standard2.png
+
+
+/bin/rm highres2standard1.png
+
+
+/opt/fsl/bin/convert_xfm -omat example_func2standard.mat -concat highres2standard.mat example_func2highres.mat
+
+
+/opt/fsl/bin/convertwarp --ref=standard --premat=example_func2highres.mat --warp1=highres2standard_warp --out=example_func2standard_warp
+
+
+/opt/fsl/bin/applywarp --ref=standard --in=example_func --out=example_func2standard --warp=example_func2standard_warp
+
+
+/opt/fsl/bin/convert_xfm -inverse -omat standard2example_func.mat example_func2standard.mat
+
+
+/opt/fsl/bin/slicer example_func2standard standard -s 2 -x 0.35 sla.png -x 0.45 slb.png -x 0.55 slc.png -x 0.65 sld.png -y 0.35 sle.png -y 0.45 slf.png -y 0.55 slg.png -y 0.65 slh.png -z 0.35 sli.png -z 0.45 slj.png -z 0.55 slk.png -z 0.65 sll.png ; /opt/fsl/bin/pngappend sla.png + slb.png + slc.png + sld.png + sle.png + slf.png + slg.png + slh.png + sli.png + slj.png + slk.png + sll.png example_func2standard1.png ; /opt/fsl/bin/slicer standard example_func2standard -s 2 -x 0.35 sla.png -x 0.45 slb.png -x 0.55 slc.png -x 0.65 sld.png -y 0.35 sle.png -y 0.45 slf.png -y 0.55 slg.png -y 0.65 slh.png -z 0.35 sli.png -z 0.45 slj.png -z 0.55 slk.png -z 0.65 sll.png ; /opt/fsl/bin/pngappend sla.png + slb.png + slc.png + sld.png + sle.png + slf.png + slg.png + slh.png + sli.png + slj.png + slk.png + sll.png example_func2standard2.png ; /opt/fsl/bin/pngappend example_func2standard1.png - example_func2standard2.png example_func2standard.png; /bin/rm -f sl?.png example_func2standard2.png
+
+</pre><hr>Preprocessing:Stage 2<br><pre>
+
+/opt/fsl/bin/mcflirt -in prefiltered_func_data -out prefiltered_func_data_mcf -mats -plots -reffile example_func -rmsrel -rmsabs -spline_final
+
+/bin/mkdir -p mc ; /bin/mv -f prefiltered_func_data_mcf.mat prefiltered_func_data_mcf.par prefiltered_func_data_mcf_abs.rms prefiltered_func_data_mcf_abs_mean.rms prefiltered_func_data_mcf_rel.rms prefiltered_func_data_mcf_rel_mean.rms mc
+
+/opt/fsl/bin/fsl_tsplot -i prefiltered_func_data_mcf.par -t 'MCFLIRT estimated rotations (radians)' -u 1 --start=1 --finish=3 -a x,y,z -w 640 -h 144 -o rot.png 
+
+/opt/fsl/bin/fsl_tsplot -i prefiltered_func_data_mcf.par -t 'MCFLIRT estimated translations (mm)' -u 1 --start=4 --finish=6 -a x,y,z -w 640 -h 144 -o trans.png 
+
+/opt/fsl/bin/fsl_tsplot -i prefiltered_func_data_mcf_abs.rms,prefiltered_func_data_mcf_rel.rms -t 'MCFLIRT estimated mean displacement (mm)' -u 1 -w 640 -h 144 -a absolute,relative -o disp.png 
+
+/opt/fsl/bin/fslmaths prefiltered_func_data_mcf -Tmean mean_func
+
+/opt/fsl/bin/bet2 mean_func mask -f 0.3 -n -m; /opt/fsl/bin/immv mask_mask mask
+
+/opt/fsl/bin/fslmaths prefiltered_func_data_mcf -mas mask prefiltered_func_data_bet
+
+/opt/fsl/bin/fslstats prefiltered_func_data_bet -p 2 -p 98
+0.000000 33514.535156 
+
+/opt/fsl/bin/fslmaths prefiltered_func_data_bet -thr 3351.4535156 -Tmin -bin mask -odt char
+
+/opt/fsl/bin/fslstats prefiltered_func_data_mcf -k mask -p 50
+26106.447266 
+
+/opt/fsl/bin/fslmaths mask -dilF mask
+
+/opt/fsl/bin/fslmaths prefiltered_func_data_mcf -mas mask prefiltered_func_data_thresh
+
+/opt/fsl/bin/fslmaths prefiltered_func_data_thresh -Tmean mean_func
+
+/opt/fsl/bin/susan prefiltered_func_data_thresh 19579.8354495 2.12314225053 3 1 1 mean_func 19579.8354495 prefiltered_func_data_smooth
+
+/opt/fsl/bin/fslmaths prefiltered_func_data_smooth -mas mask prefiltered_func_data_smooth
+
+/opt/fsl/bin/fslmaths prefiltered_func_data_smooth -mul 0.383047141501 prefiltered_func_data_intnorm
+
+/opt/fsl/bin/fslmaths prefiltered_func_data_intnorm -Tmean tempMean
+
+/opt/fsl/bin/fslmaths prefiltered_func_data_intnorm -bptf 25.0 -1 -add tempMean prefiltered_func_data_tempfilt
+
+/opt/fsl/bin/imrm tempMean
+
+/opt/fsl/bin/fslmaths prefiltered_func_data_tempfilt filtered_func_data
+
+/opt/fsl/bin/fslmaths filtered_func_data -Tmean mean_func
+
+/bin/rm -rf prefiltered_func_data*
+</pre><hr>Stats<br><pre>
+
+mkdir -p custom_timing_files ; /opt/fsl/bin/fslFixText /home/jwangbay/software/amsterdam/tvb-ukbb/bb_data/designS.txt custom_timing_files/ev1.txt
+
+mkdir -p custom_timing_files ; /opt/fsl/bin/fslFixText /home/jwangbay/software/amsterdam/tvb-ukbb/bb_data/designF.txt custom_timing_files/ev2.txt
+
+/opt/fsl/bin/film_gls --in=filtered_func_data --rn=stats --pd=design.mat --thr=1000.0 --sa --ms=5 --con=design.con --fcon=design.fts  
+Log directory is: stats
+paradigm.getDesignMatrix().Nrows()=160
+paradigm.getDesignMatrix().Ncols()=4
+sizeTS=160
+numTS=58844
+Calculating residuals...
+Completed
+Estimating residual autocorrelation...
+Calculating raw AutoCorrs... Completed
+mode = 10175.1
+sig = 1112
+Spatially smoothing auto corr estimates
+...........
+Completed
+Tukey M = 12
+Tukey estimates... Completed
+Completed
+Prewhitening and Computing PEs...
+Percentage done:
+1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,Completed
+Saving results... 
+Completed
+
+/opt/fsl/bin/smoothest -d 155   -m mask -r stats/res4d > stats/smoothness
+</pre><hr>Post-stats<br><pre>
+
+/opt/fsl/bin/fslmaths stats/zstat1 -mas mask thresh_zstat1
+
+echo 58844 > thresh_zstat1.vol
+zstat1: DLH=0.426327 VOLUME=58844 RESELS=10.8557
+
+/opt/fsl/bin/fslmaths stats/zstat2 -mas mask thresh_zstat2
+
+echo 58844 > thresh_zstat2.vol
+zstat2: DLH=0.426327 VOLUME=58844 RESELS=10.8557
+
+/opt/fsl/bin/fslmaths stats/zstat3 -mas mask thresh_zstat3
+
+echo 58844 > thresh_zstat3.vol
+zstat3: DLH=0.426327 VOLUME=58844 RESELS=10.8557
+
+/opt/fsl/bin/fslmaths stats/zstat4 -mas mask thresh_zstat4
+
+echo 58844 > thresh_zstat4.vol
+zstat4: DLH=0.426327 VOLUME=58844 RESELS=10.8557
+
+/opt/fsl/bin/fslmaths stats/zstat5 -mas mask thresh_zstat5
+
+echo 58844 > thresh_zstat5.vol
+zstat5: DLH=0.426327 VOLUME=58844 RESELS=10.8557
+
+/opt/fsl/bin/fslmaths stats/zfstat1 -mas mask thresh_zfstat1
+
+echo 58844 > thresh_zfstat1.vol
+zfstat1: DLH=0.426327 VOLUME=58844 RESELS=10.8557
+
+/opt/fsl/bin/cluster -i thresh_zstat1 -t 2.3 --othresh=thresh_zstat1 -o cluster_mask_zstat1 --connectivity=26  --olmax=lmax_zstat1.txt --scalarname=Z -p 0.05 -d 0.426327 --volume=58844 -c stats/cope1 > cluster_zstat1.txt
+
+/opt/fsl/bin/cluster2html . cluster_zstat1 
+
+/opt/fsl/bin/cluster -i thresh_zstat2 -t 2.3 --othresh=thresh_zstat2 -o cluster_mask_zstat2 --connectivity=26  --olmax=lmax_zstat2.txt --scalarname=Z -p 0.05 -d 0.426327 --volume=58844 -c stats/cope2 > cluster_zstat2.txt
+
+/opt/fsl/bin/cluster2html . cluster_zstat2 
+
+/opt/fsl/bin/cluster -i thresh_zstat3 -t 2.3 --othresh=thresh_zstat3 -o cluster_mask_zstat3 --connectivity=26  --olmax=lmax_zstat3.txt --scalarname=Z -p 0.05 -d 0.426327 --volume=58844 -c stats/cope3 > cluster_zstat3.txt
+
+/opt/fsl/bin/cluster2html . cluster_zstat3 
+
+/opt/fsl/bin/cluster -i thresh_zstat4 -t 2.3 --othresh=thresh_zstat4 -o cluster_mask_zstat4 --connectivity=26  --olmax=lmax_zstat4.txt --scalarname=Z -p 0.05 -d 0.426327 --volume=58844 -c stats/cope4 > cluster_zstat4.txt
+
+/opt/fsl/bin/cluster2html . cluster_zstat4 
+
+/opt/fsl/bin/cluster -i thresh_zstat5 -t 2.3 --othresh=thresh_zstat5 -o cluster_mask_zstat5 --connectivity=26  --olmax=lmax_zstat5.txt --scalarname=Z -p 0.05 -d 0.426327 --volume=58844 -c stats/cope5 > cluster_zstat5.txt
+
+/opt/fsl/bin/cluster2html . cluster_zstat5 
+
+/opt/fsl/bin/cluster -i thresh_zfstat1 -t 2.3 --othresh=thresh_zfstat1 -o cluster_mask_zfstat1 --connectivity=26  --olmax=lmax_zfstat1.txt --scalarname=Z -p 0.05 -d 0.426327 --volume=58844 > cluster_zfstat1.txt
+
+/opt/fsl/bin/cluster2html . cluster_zfstat1 
+
+/opt/fsl/bin/cluster -i thresh_zstat1 -c stats/cope1 -t 2.3  -p 0.05 -d 0.426327 --volume=58844 -x reg/example_func2highres.mat --warpvol=reg/highres2standard_warp --stdvol=reg/standard --mm --connectivity=26 --olmax=lmax_zstat1_std.txt --scalarname=Z  > cluster_zstat1_std.txt
+
+/opt/fsl/bin/cluster2html . cluster_zstat1 -std
+
+/opt/fsl/bin/cluster -i thresh_zstat2 -c stats/cope2 -t 2.3  -p 0.05 -d 0.426327 --volume=58844 -x reg/example_func2highres.mat --warpvol=reg/highres2standard_warp --stdvol=reg/standard --mm --connectivity=26 --olmax=lmax_zstat2_std.txt --scalarname=Z  > cluster_zstat2_std.txt
+
+/opt/fsl/bin/cluster2html . cluster_zstat2 -std
+
+/opt/fsl/bin/cluster -i thresh_zstat3 -c stats/cope3 -t 2.3  -p 0.05 -d 0.426327 --volume=58844 -x reg/example_func2highres.mat --warpvol=reg/highres2standard_warp --stdvol=reg/standard --mm --connectivity=26 --olmax=lmax_zstat3_std.txt --scalarname=Z  > cluster_zstat3_std.txt
+
+/opt/fsl/bin/cluster2html . cluster_zstat3 -std
+
+/opt/fsl/bin/cluster -i thresh_zstat4 -c stats/cope4 -t 2.3  -p 0.05 -d 0.426327 --volume=58844 -x reg/example_func2highres.mat --warpvol=reg/highres2standard_warp --stdvol=reg/standard --mm --connectivity=26 --olmax=lmax_zstat4_std.txt --scalarname=Z  > cluster_zstat4_std.txt
+
+/opt/fsl/bin/cluster2html . cluster_zstat4 -std
+
+/opt/fsl/bin/cluster -i thresh_zstat5 -c stats/cope5 -t 2.3  -p 0.05 -d 0.426327 --volume=58844 -x reg/example_func2highres.mat --warpvol=reg/highres2standard_warp --stdvol=reg/standard --mm --connectivity=26 --olmax=lmax_zstat5_std.txt --scalarname=Z  > cluster_zstat5_std.txt
+
+/opt/fsl/bin/cluster2html . cluster_zstat5 -std
+
+/opt/fsl/bin/cluster -i thresh_zfstat1  -t 2.3  -p 0.05 -d 0.426327 --volume=58844 -x reg/example_func2highres.mat --warpvol=reg/highres2standard_warp --stdvol=reg/standard --mm --connectivity=26 --olmax=lmax_zfstat1_std.txt --scalarname=Z  > cluster_zfstat1_std.txt
+
+/opt/fsl/bin/cluster2html . cluster_zfstat1 -std
+
+/opt/fsl/bin/fslstats thresh_zstat1 -l 0.0001 -R 2>/dev/null
+2.300103 5.601342 
+
+/opt/fsl/bin/fslstats thresh_zstat2 -l 0.0001 -R 2>/dev/null
+2.300422 4.424372 
+
+/opt/fsl/bin/fslstats thresh_zstat3 -l 0.0001 -R 2>/dev/null
+2.300088 5.444784 
+
+/opt/fsl/bin/fslstats thresh_zstat4 -l 0.0001 -R 2>/dev/null
+2.300026 4.907064 
+
+/opt/fsl/bin/fslstats thresh_zstat5 -l 0.0001 -R 2>/dev/null
+0.000000 0.000000 
+
+/opt/fsl/bin/fslstats thresh_zfstat1 -l 0.0001 -R 2>/dev/null
+2.300004 5.452330 
+Rendering using zmin=2.300004 zmax=5.601342
+
+/opt/fsl/bin/overlay 1 0 example_func -a thresh_zstat1 2.300004 5.601342 rendered_thresh_zstat1
+
+/opt/fsl/bin/slicer rendered_thresh_zstat1 -A 750 rendered_thresh_zstat1.png
+
+/bin/cp /opt/fsl/etc/luts/ramp.gif .ramp.gif
+
+/opt/fsl/bin/overlay 1 0 example_func -a thresh_zstat2 2.300004 5.601342 rendered_thresh_zstat2
+
+/opt/fsl/bin/slicer rendered_thresh_zstat2 -A 750 rendered_thresh_zstat2.png
+
+/opt/fsl/bin/overlay 1 0 example_func -a thresh_zstat3 2.300004 5.601342 rendered_thresh_zstat3
+
+/opt/fsl/bin/slicer rendered_thresh_zstat3 -A 750 rendered_thresh_zstat3.png
+
+/opt/fsl/bin/overlay 1 0 example_func -a thresh_zstat4 2.300004 5.601342 rendered_thresh_zstat4
+
+/opt/fsl/bin/slicer rendered_thresh_zstat4 -A 750 rendered_thresh_zstat4.png
+
+/opt/fsl/bin/overlay 1 0 example_func -a thresh_zstat5 2.300004 5.601342 rendered_thresh_zstat5
+
+/opt/fsl/bin/slicer rendered_thresh_zstat5 -A 750 rendered_thresh_zstat5.png
+
+/opt/fsl/bin/overlay 1 0 example_func -a thresh_zfstat1 2.300004 5.601342 rendered_thresh_zfstat1
+
+/opt/fsl/bin/slicer rendered_thresh_zfstat1 -A 750 rendered_thresh_zfstat1.png
+
+mkdir -p tsplot ; /opt/fsl/bin/tsplot . -f filtered_func_data -o tsplot
+</pre><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></BODY></HTML>

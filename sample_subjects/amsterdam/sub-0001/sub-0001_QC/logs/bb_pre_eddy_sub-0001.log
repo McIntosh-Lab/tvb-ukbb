@@ -1,0 +1,132 @@
+STANDARD OUT:
+HOST INFO: Linux cdr345.int.cedar.computecanada.ca 3.10.0-1160.53.1.el7.x86_64 #1 SMP Fri Jan 14 13:59:45 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+COMMAND RUN: /home/jwangbay/software/amsterdam/tvb-ukbb/bb_diffusion_pipeline/bb_eddy/bb_pre_eddy
+Starting time: Wed May 11 00:33:48 PDT 2022
+FLIRT pre-alignment
+Running BBR
+0.262752 0.999985 0.000094 -0.005484 0.000000 -0.000012 0.999888 0.014935 0.000000 0.005485 -0.014935 0.999873 0.000000 0.038690 2.385162 0.076446 1.000000 
+The command /home/jwangbay/software/amsterdam/tvb-ukbb/bb_diffusion_pipeline/bb_eddy/bb_pre_eddy took 92 seconds
+Ending time: Wed May 11 00:35:20 PDT 2022
+
+
+STANDARD ERROR:
++ direc=/scratch/jwangbay/amsterdam/sub-0001
++ mkdir -p /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI
++ ln -s /scratch/jwangbay/amsterdam/sub-0001/dMRI/raw/dwi.nii.gz /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/DWI.nii.gz
++ cp /scratch/jwangbay/amsterdam/sub-0001/dMRI/raw/dwi.bval /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/bvals
++ cp /scratch/jwangbay/amsterdam/sub-0001/dMRI/raw/dwi.bvec /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/bvecs
++ /opt/fsl/bin/fslroi /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/DWI /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/DWI_B0 0 1
++ mkdir -p /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/transforms
++ /home/jwangbay/software/amsterdam/tvb-ukbb/bb_structural_pipeline/bb_epi_reg --epi=/scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/DWI_B0 --t1=/scratch/jwangbay/amsterdam/sub-0001/T1/T1 --t1brain=/scratch/jwangbay/amsterdam/sub-0001/T1/T1_brain --out=/scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/transforms/rawDTI_to_T1 --wmseg=/scratch/jwangbay/amsterdam/sub-0001/T1/T1_fast/T1_brain_WM_mask
++ /opt/fsl/bin/convert_xfm -omat /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/transforms/T1_to_rawDTI.mat -inverse /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/transforms/rawDTI_to_T1.mat
++ /opt/fsl/bin/applywarp -i /scratch/jwangbay/amsterdam/sub-0001/T1/T1_brain_mask -r /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/DWI_B0 -o /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/rawDTI_B0_brain_mask --premat=/scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/transforms/T1_to_rawDTI.mat --interp=nn
++ indx=
+++ /opt/fsl/bin/fslval /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/DWI.nii.gz dim4
++ n='33 '
++ (( i=1 ))
++ (( i <= 33  ))
++ indx=' 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1 1 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1 1 1 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1 1 1 1 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1 1 1 1 1 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ indx=' 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1'
++ (( i++ ))
++ (( i <= 33  ))
++ echo 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
++ '[' -z 0.1 ']'
++ cat /dev/null
++ printf '0 -1 0 0.1\n'
++ . /home/jwangbay/software/amsterdam/tvb-ukbb/bb_pipeline_tools/bb_set_footer
+++ set +x

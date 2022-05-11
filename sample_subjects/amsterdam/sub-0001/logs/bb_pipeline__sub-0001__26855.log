@@ -1,7 +1,0 @@
-2022-05-03 01:13:11,883 - bb_pipeline - INFO - Starting the subject processing: Tue May  3 01:13:11 2022 
-2022-05-03 01:13:11,884 - bb_pipeline - INFO - Subject received as input: sub-0001 
-2022-05-03 01:13:11,884 - bb_pipeline - INFO - Running file manager 
-2022-05-03 01:13:51,761 - bb_pipeline - INFO - File configuration before QC: {'T1': 'T1/T1.nii.gz', 'rfMRI': 'fMRI/rfMRI.nii.gz', 'rfMRI_SBRef': 'fMRI/rfMRI_SBREF.nii.gz', 'tfMRI': 'fMRI/tfMRI.nii.gz', 'tfMRI_SBRef': 'fMRI/tfMRI_SBREF.nii.gz', 'dwi': 'dMRI/raw/dwi.nii.gz', 'dwi_bvec': 'dMRI/raw/dwi.bvec', 'dwi_bval': 'dMRI/raw/dwi.bval'} 
-2022-05-03 01:13:51,788 - bb_pipeline - INFO - File configuration after running file manager: {'T1': 'T1/T1.nii.gz', 'rfMRI': 'fMRI/rfMRI.nii.gz', 'rfMRI_SBRef': 'fMRI/rfMRI_SBREF.nii.gz', 'tfMRI': 'fMRI/tfMRI.nii.gz', 'tfMRI_SBRef': 'fMRI/tfMRI_SBREF.nii.gz', 'dwi': 'dMRI/raw/dwi.nii.gz', 'dwi_bvec': 'dMRI/raw/dwi.bvec', 'dwi_bval': 'dMRI/raw/dwi.bval'} 
-2022-05-03 01:13:51,823 - bb_pipeline - WARNING - There is no proper AP/PA data. Thus, TOPUP will not be run 
-2022-05-03 04:49:35,080 - bb_pipeline - INFO - Main processing file finished at: Tue May  3 04:49:35 2022 

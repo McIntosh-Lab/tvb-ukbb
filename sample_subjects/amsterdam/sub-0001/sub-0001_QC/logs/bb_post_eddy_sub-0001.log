@@ -1,0 +1,21 @@
+STANDARD OUT:
+HOST INFO: Linux cdr345.int.cedar.computecanada.ca 3.10.0-1160.53.1.el7.x86_64 #1 SMP Fri Jan 14 13:59:45 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+COMMAND RUN: /home/jwangbay/software/amsterdam/tvb-ukbb/bb_diffusion_pipeline/bb_eddy/bb_post_eddy
+Starting time: Wed May 11 01:47:48 PDT 2022
+FLIRT pre-alignment
+Running BBR
+0.183661 0.999976 0.001623 -0.006785 0.000000 -0.001566 0.999963 0.008416 0.000000 0.006798 -0.008405 0.999942 0.000000 -0.091386 1.202716 0.670804 1.000000 
+The command /home/jwangbay/software/amsterdam/tvb-ukbb/bb_diffusion_pipeline/bb_eddy/bb_post_eddy took 92 seconds
+Ending time: Wed May 11 01:49:20 PDT 2022
+
+
+STANDARD ERROR:
++ baseDir=/scratch/jwangbay/amsterdam/sub-0001
++ /opt/fsl/bin/fslroi /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/data.nii.gz /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/data_B0.nii.gz 0 1
++ /home/jwangbay/software/amsterdam/tvb-ukbb/bb_structural_pipeline/bb_epi_reg --epi=/scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/data_B0.nii.gz --t1=/scratch/jwangbay/amsterdam/sub-0001/T1/T1.nii.gz --t1brain=/scratch/jwangbay/amsterdam/sub-0001/T1/T1_brain.nii.gz --out=/scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/transforms/DTI_to_T1 --wmseg=/scratch/jwangbay/amsterdam/sub-0001/T1/T1_fast/T1_brain_WM_mask.nii.gz
++ /opt/fsl/bin/convert_xfm -omat /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/transforms/T1_to_DTI.mat -inverse /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/transforms/DTI_to_T1.mat
++ /opt/fsl/bin/applywarp -i /scratch/jwangbay/amsterdam/sub-0001/T1/T1_brain_mask -r /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/data_B0 -o /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/nodif_brain_mask --premat=/scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/transforms/T1_to_DTI.mat --interp=nn
++ /opt/fsl/bin/fslmaths /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/data_B0 -mas /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/nodif_brain_mask /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/nodif_brain
++ /home/jwangbay/software/amsterdam/tvb-ukbb/bb_diffusion_pipeline/bb_select_dwi_vols /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/data.nii.gz /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/bvals /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/data_1_shell 1000 1 /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/bvecs
++ . /home/jwangbay/software/amsterdam/tvb-ukbb/bb_pipeline_tools/bb_set_footer
+++ set +x

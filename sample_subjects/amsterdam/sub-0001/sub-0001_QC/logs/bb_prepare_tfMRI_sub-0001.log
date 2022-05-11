@@ -1,0 +1,49 @@
+STANDARD OUT:
+HOST INFO: Linux cdr345.int.cedar.computecanada.ca 3.10.0-1160.53.1.el7.x86_64 #1 SMP Fri Jan 14 13:59:45 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+COMMAND RUN: /home/jwangbay/software/amsterdam/tvb-ukbb/bb_functional_pipeline/bb_prepare_tfMRI
+Starting time: Wed May 11 00:23:05 PDT 2022
+The command /home/jwangbay/software/amsterdam/tvb-ukbb/bb_functional_pipeline/bb_prepare_tfMRI took 1 seconds
+Ending time: Wed May 11 00:23:06 PDT 2022
+
+
+STANDARD ERROR:
++ nameDir=/scratch/jwangbay/amsterdam/sub-0001
++ cp /home/jwangbay/software/amsterdam/tvb-ukbb/bb_data/design_TASK.fsf sub-0001/fMRI/tfMRI.fsf
+++ cat sub-0001/fMRI/tfMRI.fsf
+++ grep -oP '_--_\K.*?(?=_-_)'
+++ sort
+++ uniq
++ for elem in `cat $1/fMRI/tfMRI.fsf | grep -oP '_--_\K.*?(?=_-_)' | sort | uniq`
+++ echo /home/jwangbay/software/amsterdam/tvb-ukbb
+++ sed 's|/|\\/|g'
++ val='\/home\/jwangbay\/software\/amsterdam\/tvb-ukbb'
++ sed -i 's/_--_BB_BIN_DIR_-_/\/home\/jwangbay\/software\/amsterdam\/tvb-ukbb/g' sub-0001/fMRI/tfMRI.fsf
++ for elem in `cat $1/fMRI/tfMRI.fsf | grep -oP '_--_\K.*?(?=_-_)' | sort | uniq`
+++ echo /opt/fsl
+++ sed 's|/|\\/|g'
++ val='\/opt\/fsl'
++ sed -i 's/_--_FSLDIR_-_/\/opt\/fsl/g' sub-0001/fMRI/tfMRI.fsf
+++ /opt/fsl/bin/fslval sub-0001/fMRI/tfMRI.nii.gz dim4
++ fmriNumVol='160 '
+++ /opt/fsl/bin/fslval sub-0001/fMRI/tfMRI.nii.gz pixdim4
++ fmriTR='2.000000 '
+++ /opt/fsl/bin/fslval sub-0001/fMRI/tfMRI.nii.gz descrip
++ descrip='5.0.10 '
++ descrip=(`echo $descrip | tr ';' ' '`)
+++ echo 5.0.10
+++ tr ';' ' '
++ fmriTE=.10
+++ bb_get_dwell_time sub-0001/fMRI/tfMRI.nii.gz
++ fmriDwell='[]'
++ echo 'set fmri(outputdir)     "/scratch/jwangbay/amsterdam/sub-0001/fMRI/tfMRI.feat"'
++ echo 'set fmri(regunwarp_yn) 0'
++ echo 'set feat_files(1)       "/scratch/jwangbay/amsterdam/sub-0001/fMRI/tfMRI.nii.gz"'
++ echo 'set alt_ex_func(1)      "/scratch/jwangbay/amsterdam/sub-0001/fMRI/tfMRI_SBREF.nii.gz"'
++ echo 'set highres_files(1)    "/scratch/jwangbay/amsterdam/sub-0001/fMRI/symlink/T1_brain.nii.gz"'
++ echo 'set fmri(tr) 2.000000 '
++ echo 'set fmri(npts) 160 '
++ echo 'set fmri(dwell) []'
++ echo 'set fmri(te) .10'
++ echo 'set fmri(poststats_yn) 0'
++ . /home/jwangbay/software/amsterdam/tvb-ukbb/bb_pipeline_tools/bb_set_footer
+++ set +x

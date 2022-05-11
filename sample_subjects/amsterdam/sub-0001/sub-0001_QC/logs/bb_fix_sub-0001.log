@@ -1,0 +1,71 @@
+STANDARD OUT:
+HOST INFO: Linux cdr345.int.cedar.computecanada.ca 3.10.0-1160.53.1.el7.x86_64 #1 SMP Fri Jan 14 13:59:45 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+COMMAND RUN: /home/jwangbay/software/amsterdam/tvb-ukbb/bb_functional_pipeline/bb_fix
+Starting time: Wed May 11 00:13:14 PDT 2022
+FIX Feature extraction for Melodic output directory: .
+ create edge masks
+ run FAST
+ registration of standard space masks
+ extract features
+FIX Classifying components in Melodic directory: . using training file: /home/jwangbay/software/amsterdam/tvb-ukbb/bb_functional_pipeline/bb_fix_dir/training_files/Standard.RData and threshold 30
+FIX Applying cleanup using cleanup file: ./fix4melview_Standard_thr30.txt and motion cleanup set to 1
+The command /home/jwangbay/software/amsterdam/tvb-ukbb/bb_functional_pipeline/bb_fix took 577 seconds
+Ending time: Wed May 11 00:22:51 PDT 2022
+
+
+STANDARD ERROR:
++ . /home/jwangbay/software/amsterdam/tvb-ukbb/bb_functional_pipeline/bb_fix_dir/settings.sh
+++ FIXFEATUREVERSION=1.06
++++ uname -s
+++ FSL_FIX_OS=Linux
++++ uname -m
+++ FSL_FIX_ARCH=x86_64
+++ '[' -z /home/jwangbay/software/amsterdam/tvb-ukbb/bb_functional_pipeline/bb_fix_dir ']'
++++ cat /home/jwangbay/software/amsterdam/tvb-ukbb/bb_functional_pipeline/bb_fix_dir/fixversion
+++ FIXVERSION=1.06.15
++++ set -o
++++ grep errexit
++++ awk '{ print $2 }'
+++ cur_errexit=on
+++ '[' on = on ']'
+++ set +o errexit
+++ '[' -z '' ']'
+++ FSL_FIX_MATLAB_MODE=0
+++ '[' 0 -eq 0 ']'
+++ '[' -z '' ']'
+++ FSL_FIX_MCRROOT=/opt/mcr
+++ '[' '!' -x /opt/mcr ']'
+++ '[' -z '' ']'
+++ FSL_FIX_MLCDIR=/home/jwangbay/software/amsterdam/tvb-ukbb/bb_functional_pipeline/bb_fix_dir/compiled/Linux/x86_64
+++ '[' -z '' ']'
+++ '[' -f /home/jwangbay/software/amsterdam/tvb-ukbb/bb_functional_pipeline/bb_fix_dir/compiled/Linux/x86_64/MCR.version ']'
+++ FSL_FIX_MCRV=v93
+++ '[' '!' -z v93 -a -z '' ']'
+++ FSL_FIX_MCR=/opt/mcr/v93
+++ '[' 0 -eq 1 ']'
+++ '[' 0 -eq 2 ']'
+++ '[' -z '' ']'
+++ FSL_FIX_R_CMD=/usr/lib/R/bin/R
+++ '[' '!' -x /usr/lib/R/bin/R ']'
+++ '[' -z /usr/lib/R/bin/R ']'
+++ '[' -z '' ']'
+++ FSL_FIX_CIFTIRW=/opt/fmrib/matlab_ciftireadwrite/
+++ '[' -z /opt/fsl ']'
+++ FSL_FIX_FSLMATLAB=/opt/fsl/etc/matlab
+++ '[' on = on ']'
+++ set -o errexit
+++ pwd
++ origDir=/scratch/jwangbay/amsterdam
++ '[' sub-0001 = '' ']'
++ '[' -d sub-0001/fMRI/rfMRI.ica ']'
++ cd sub-0001/fMRI/rfMRI.ica
++ /opt/fsl/bin/imcp /scratch/jwangbay/amsterdam/sub-0001/T1/T1_fast/T1_brain_pveseg reg/highres_pveseg
++ /opt/fsl/bin/invwarp --ref=reg/example_func -w reg/example_func2standard_warp -o reg/standard2example_func_warp
++ /home/jwangbay/software/amsterdam/tvb-ukbb/bb_functional_pipeline/bb_fix_dir/fix . /home/jwangbay/software/amsterdam/tvb-ukbb/bb_functional_pipeline/bb_fix_dir/training_files/Standard.RData 30 -m -h 100
++ mkdir -p reg_standard
++ /opt/fsl/bin/applywarp --ref=reg/standard --in=filtered_func_data_clean --out=reg_standard/filtered_func_data_clean --warp=reg/example_func2standard_warp --interp=spline
++ /opt/fsl/bin/fslmaths reg_standard/filtered_func_data_clean -mas /home/jwangbay/software/amsterdam/tvb-ukbb/templates/MNI152_T1_2mm_brain_mask_bin reg_standard/filtered_func_data_clean
++ /opt/fsl/bin/fslmaths reg_standard/filtered_func_data_clean -Tstd -bin reg_standard/filtered_func_data_clean_stdmask
++ cd /scratch/jwangbay/amsterdam
++ . /home/jwangbay/software/amsterdam/tvb-ukbb/bb_pipeline_tools/bb_set_footer
+++ set +x

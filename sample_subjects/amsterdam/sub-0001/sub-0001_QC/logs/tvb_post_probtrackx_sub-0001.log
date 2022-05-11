@@ -1,0 +1,82 @@
+STANDARD OUT:
+HOST INFO: Linux cdr345.int.cedar.computecanada.ca 3.10.0-1160.53.1.el7.x86_64 #1 SMP Fri Jan 14 13:59:45 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+COMMAND RUN: /home/jwangbay/software/amsterdam/tvb-ukbb/bb_diffusion_pipeline/tvb_probtrackx2/tvb_post_probtrackx2
+Starting time: Wed May 11 02:32:50 PDT 2022
+subjectdir is /scratch/jwangbay/amsterdam/sub-0001
+  adding: structural_inputs/ (stored 0%)
+  adding: structural_inputs/weights.txt (deflated 91%)
+  adding: structural_inputs/centres.txt (deflated 60%)
+  adding: structural_inputs/cortical.txt (deflated 98%)
+  adding: structural_inputs/tract_lengths.txt (deflated 87%)
+  adding: structural_inputs/hemisphere.txt (deflated 98%)
+/scratch/jwangbay/amsterdam
+  adding: sub-0001_TVBSchaeferTian420_tvb_inputs/ (stored 0%)
+  adding: sub-0001_TVBSchaeferTian420_tvb_inputs/functional_inputs/ (stored 0%)
+  adding: sub-0001_TVBSchaeferTian420_tvb_inputs/functional_inputs/rfMRI.ica/ (stored 0%)
+  adding: sub-0001_TVBSchaeferTian420_tvb_inputs/functional_inputs/rfMRI.ica/rfMRI.ica_time_series.txt (deflated 69%)
+  adding: sub-0001_TVBSchaeferTian420_tvb_inputs/functional_inputs/rfMRI.ica/rfMRI.ica_functional_connectivity.txt (deflated 57%)
+  adding: sub-0001_TVBSchaeferTian420_tvb_inputs/structural_inputs.zip (stored 0%)
+  adding: sub-0001_TVBSchaeferTian420_tvb_inputs/misc_inputs/ (stored 0%)
+/scratch/jwangbay/amsterdam
+The command /home/jwangbay/software/amsterdam/tvb-ukbb/bb_diffusion_pipeline/tvb_probtrackx2/tvb_post_probtrackx2 took 22 seconds
+Ending time: Wed May 11 02:33:12 PDT 2022
+
+
+STANDARD ERROR:
++ set +e
+++ fsl_abspath sub-0001
++ subjdir=/scratch/jwangbay/amsterdam/sub-0001
+++ echo /scratch/jwangbay/amsterdam/sub-0001
+++ sed 's/\/$/$/g'
++ subjdir=/scratch/jwangbay/amsterdam/sub-0001
++ echo subjectdir is /scratch/jwangbay/amsterdam/sub-0001
++ python /home/jwangbay/software/amsterdam/tvb-ukbb/bb_diffusion_pipeline/tvb_probtrackx2/tvb_concat_probtrackx2.py /scratch/jwangbay/amsterdam/sub-0001 TVBSchaeferTian420 true
+/home/jwangbay/software/amsterdam/tvb-ukbb/bb_diffusion_pipeline/tvb_probtrackx2/tvb_concat_probtrackx2.py:98: RuntimeWarning: invalid value encountered in true_divide
+  tract_lengths = np.divide(mtx, mat_sum)
++ mkdir /scratch/jwangbay/amsterdam/sub-0001/tvb_inputs
++ mkdir /scratch/jwangbay/amsterdam/sub-0001/tvb_inputs/structural_inputs
++ mkdir /scratch/jwangbay/amsterdam/sub-0001/tvb_inputs/misc_inputs
++ mkdir /scratch/jwangbay/amsterdam/sub-0001/tvb_inputs/functional_inputs
++ cp /scratch/jwangbay/amsterdam/sub-0001/dMRI/sc_TVBSchaeferTian420.txt /scratch/jwangbay/amsterdam/sub-0001/dMRI/distance_TVBSchaeferTian420.txt /scratch/jwangbay/amsterdam/sub-0001/T2_FLAIR/lesions/volume.txt /scratch/jwangbay/amsterdam/sub-0001/tvb_inputs
+cp: cannot stat '/scratch/jwangbay/amsterdam/sub-0001/T2_FLAIR/lesions/volume.txt': No such file or directory
++ mv /scratch/jwangbay/amsterdam/sub-0001/tvb_inputs/sc_TVBSchaeferTian420.txt /scratch/jwangbay/amsterdam/sub-0001/tvb_inputs/structural_inputs/weights.txt
++ mv /scratch/jwangbay/amsterdam/sub-0001/tvb_inputs/distance_TVBSchaeferTian420.txt /scratch/jwangbay/amsterdam/sub-0001/tvb_inputs/structural_inputs/tract_lengths.txt
++ mv /scratch/jwangbay/amsterdam/sub-0001/tvb_inputs/volume.txt /scratch/jwangbay/amsterdam/sub-0001/tvb_inputs/misc_inputs/lesion_volume.txt
+mv: cannot stat '/scratch/jwangbay/amsterdam/sub-0001/tvb_inputs/volume.txt': No such file or directory
++ array=()
++ IFS=
++ read -r -d ''
+++ find /scratch/jwangbay/amsterdam/sub-0001/fMRI -maxdepth 1 -type d -name '*.ica' -print0
++ array+=("$REPLY")
++ IFS=
++ read -r -d ''
++ for t in ${array[@]}
+++ basename /scratch/jwangbay/amsterdam/sub-0001/fMRI/rfMRI.ica
++ mkdir /scratch/jwangbay/amsterdam/sub-0001/tvb_inputs/functional_inputs/rfMRI.ica
+++ basename /scratch/jwangbay/amsterdam/sub-0001/fMRI/rfMRI.ica
++ cp /scratch/jwangbay/amsterdam/sub-0001/fMRI/rfMRI.ica/fc_TVBSchaeferTian420.txt /scratch/jwangbay/amsterdam/sub-0001/fMRI/rfMRI.ica/ts_TVBSchaeferTian420.txt /scratch/jwangbay/amsterdam/sub-0001/tvb_inputs/functional_inputs/rfMRI.ica
+++ basename /scratch/jwangbay/amsterdam/sub-0001/fMRI/rfMRI.ica
+++ basename /scratch/jwangbay/amsterdam/sub-0001/fMRI/rfMRI.ica
+++ basename /scratch/jwangbay/amsterdam/sub-0001/fMRI/rfMRI.ica
++ mv /scratch/jwangbay/amsterdam/sub-0001/tvb_inputs/functional_inputs/rfMRI.ica/fc_TVBSchaeferTian420.txt /scratch/jwangbay/amsterdam/sub-0001/tvb_inputs/functional_inputs/rfMRI.ica/rfMRI.ica_functional_connectivity.txt
+++ basename /scratch/jwangbay/amsterdam/sub-0001/fMRI/rfMRI.ica
+++ basename /scratch/jwangbay/amsterdam/sub-0001/fMRI/rfMRI.ica
+++ basename /scratch/jwangbay/amsterdam/sub-0001/fMRI/rfMRI.ica
++ mv /scratch/jwangbay/amsterdam/sub-0001/tvb_inputs/functional_inputs/rfMRI.ica/ts_TVBSchaeferTian420.txt /scratch/jwangbay/amsterdam/sub-0001/tvb_inputs/functional_inputs/rfMRI.ica/rfMRI.ica_time_series.txt
++ python /home/jwangbay/software/amsterdam/tvb-ukbb/bb_diffusion_pipeline/tvb_probtrackx2/tvb_generate_centres_cortical.py /scratch/jwangbay/amsterdam/sub-0001 /home/jwangbay/software/amsterdam/tvb-ukbb/templates/parcellations/TVB_SchaeferTian/TVB_SchaeferTian_420_LUT.tsv TVBSchaeferTian420
++ subj=sub-0001
++ [[ sub-0001 =~ /$ ]]
+++ basename sub-0001
++ subj=sub-0001
++ cd /scratch/jwangbay/amsterdam/sub-0001/tvb_inputs
++ zip -r ./structural_inputs.zip ./structural_inputs
++ cd -
++ rm -rf /scratch/jwangbay/amsterdam/sub-0001/tvb_inputs/structural_inputs
++ mv /scratch/jwangbay/amsterdam/sub-0001/tvb_inputs /scratch/jwangbay/amsterdam/sub-0001/sub-0001_TVBSchaeferTian420_tvb_inputs
++ cd /scratch/jwangbay/amsterdam/sub-0001
++ zip -r ./sub-0001_TVBSchaeferTian420_tvb_inputs.zip ./sub-0001_TVBSchaeferTian420_tvb_inputs
++ cd -
++ rm -rf /scratch/jwangbay/amsterdam/sub-0001/sub-0001_TVBSchaeferTian420_tvb_inputs
++ set -e
++ . /home/jwangbay/software/amsterdam/tvb-ukbb/bb_pipeline_tools/bb_set_footer
+++ set +x

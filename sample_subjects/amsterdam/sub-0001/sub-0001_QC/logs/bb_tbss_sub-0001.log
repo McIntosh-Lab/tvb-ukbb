@@ -1,0 +1,32 @@
+STANDARD OUT:
+HOST INFO: Linux cdr345.int.cedar.computecanada.ca 3.10.0-1160.53.1.el7.x86_64 #1 SMP Fri Jan 14 13:59:45 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+COMMAND RUN: /home/jwangbay/software/amsterdam/tvb-ukbb/bb_diffusion_pipeline/bb_tbss/bb_tbss_general
+Starting time: Wed May 11 01:49:24 PDT 2022
+[Wed May 11 01:49:24 PDT 2022] [cdr345.int.cedar.computecanada.ca] [Linux cdr345.int.cedar.computecanada.ca 3.10.0-1160.53.1.el7.x86_64 #1 SMP Fri Jan 14 13:59:45 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux] [/scratch/jwangbay/amsterdam/sub-0001/dMRI/TBSS] [/home/jwangbay/software/amsterdam/tvb-ukbb/bb_diffusion_pipeline/bb_tbss/bb_tbss_1_preproc dti_FA]
+processing dti_FA
+Now running "slicesdir" to generate report of all input images
+Finished. To view, point your web browser at
+file:/scratch/jwangbay/amsterdam/sub-0001/dMRI/TBSS/FA/slicesdir/index.html
+[Wed May 11 02:13:10 PDT 2022] [cdr345.int.cedar.computecanada.ca] [Linux cdr345.int.cedar.computecanada.ca 3.10.0-1160.53.1.el7.x86_64 #1 SMP Fri Jan 14 13:59:45 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux] [/scratch/jwangbay/amsterdam/sub-0001/dMRI/TBSS] [/home/jwangbay/software/amsterdam/tvb-ukbb/bb_diffusion_pipeline/bb_tbss/bb_tbss_3_postreg -T]
+merging all upsampled FA images into single 4D image
+creating valid mask and mean FA
+[Wed May 11 02:13:16 PDT 2022] [cdr345.int.cedar.computecanada.ca] [Linux cdr345.int.cedar.computecanada.ca 3.10.0-1160.53.1.el7.x86_64 #1 SMP Fri Jan 14 13:59:45 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux] [/scratch/jwangbay/amsterdam/sub-0001/dMRI/TBSS] [/home/jwangbay/software/amsterdam/tvb-ukbb/bb_diffusion_pipeline/bb_tbss/bb_tbss_4_prestats 2000]
+creating skeleton mask using threshold 2000
+The command /home/jwangbay/software/amsterdam/tvb-ukbb/bb_diffusion_pipeline/bb_tbss/bb_tbss_general took 1498 seconds
+Ending time: Wed May 11 02:14:22 PDT 2022
+
+
+STANDARD ERROR:
++ direc=/scratch/jwangbay/amsterdam/sub-0001
++ TBSSDir=/scratch/jwangbay/amsterdam/sub-0001/dMRI/TBSS
++ mkdir /scratch/jwangbay/amsterdam/sub-0001/dMRI/TBSS
++ cd /scratch/jwangbay/amsterdam/sub-0001/dMRI/TBSS
++ ln ../dMRI/dti_FA.nii.gz dti_FA.nii.gz
++ /home/jwangbay/software/amsterdam/tvb-ukbb/bb_diffusion_pipeline/bb_tbss/bb_tbss_1_preproc dti_FA
++ /home/jwangbay/software/amsterdam/tvb-ukbb/bb_diffusion_pipeline/bb_tbss/bb_tbss_2_reg -T
++ /home/jwangbay/software/amsterdam/tvb-ukbb/bb_diffusion_pipeline/bb_tbss/bb_tbss_3_postreg -T
++ /home/jwangbay/software/amsterdam/tvb-ukbb/bb_diffusion_pipeline/bb_tbss/bb_tbss_4_prestats 2000
++ /home/jwangbay/software/amsterdam/tvb-ukbb/bb_diffusion_pipeline/bb_tbss/bb_tbss_non_FA
++ cd /scratch/jwangbay/amsterdam/sub-0001
++ . /home/jwangbay/software/amsterdam/tvb-ukbb/bb_pipeline_tools/bb_set_footer
+++ set +x

@@ -1,0 +1,1141 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<title>MELODIC-FIX IMAGE REPORT</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/w3.css">
+<script src="./togglesMELODIC_FIX.js" type="text/javascript" charset="utf-8"></script>
+<script src="./sidebartoggles.js" type="text/javascript" charset="utf-8"></script>
+
+<body class="w3-main" style="background-color:black; " onload="updateTitle();updateImage();updateTitle();">
+<!--document.getElementById('image_link').innerHTML = document.getElementById('ex_a').src;-->
+
+
+<!-- Header -->
+<header class="w3-display-container  w3-center" style="max-height:1000px; ">
+  <img class="w3-image" src="images/1.jpg" alt="Me" width=100% style="max-height:1000px;object-fit: cover;">
+   
+    <div class="w3-display-middle w3-padding-large w3-border w3-wide w3-text-light-grey w3-center" style="background-color:rgba(0, 0, 0, 0.75);">
+
+      <h1 class="w3-hide-medium w3-hide-small w3-xxxlarge">MELODIC-FIX IMAGE REPORT</h1>
+      <h5 class="w3-hide-large" style="white-space:nowrap">MELODIC-FIX IMAGE REPORT</h5>
+      
+      <h3 class="w3-hide-medium w3-hide-small">sub-0001</h3>
+      <h5 class="w3-hide-medium w3-hide-small">Parcellation - TVBSchaeferTian420</h5>
+      
+    </div>
+ 
+
+  <!-- Sidebar -->
+
+  <div id="mySidebar" class="sidebar" style="width: 0; margin-left: 0; font-size: 12px">
+    <a href="file:notes/" class="w3-center">open notes.txt file in local system to make changes</a>
+    <br>
+    <iframe src="notes/notes.txt" style="background: #FFFFFF; height: 90%"></iframe>
+
+  </div>
+
+  <!-- Sidebar button -->
+   <div id="main" align="left" >
+    <button id="togglebutton" class="openbtn sticky" onclick="toggNav()">NOTES</button>  
+  </div>
+
+
+
+
+  <!-- Navbar (placed at the bottom of the header image) -->
+  <div class="w3-bar w3-light-grey w3-round w3-display-bottommiddle w3-hide-small w3-hide-medium" style="bottom:65px">
+    <a href="report.html" class="w3-bar-item w3-button">Home</a>
+    <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
+    <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
+    <a href="MELODIC_FIX.html" class="w3-bar-item w3-button">MELODIC-FIX</a>
+    <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
+    <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+    <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
+  </div>
+</header>
+
+<!-- Navbar on small screens -->
+<div class="w3-center w3-black w3-padding-16 w3-hide-large ">
+<div class="w3-bar w3-light-grey w3-round ">
+  <a href="report.html" class="w3-bar-item w3-button">Home</a>
+    <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
+    <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
+    <a href="MELODIC_FIX.html" class="w3-bar-item w3-button">MELODIC-FIX</a>
+    <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
+    <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+    <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
+</div>
+</div>
+
+
+<!-- Page content -->
+<div class="w3-content w3-padding-large w3-margin-top" id="portfolio" style="color:white; text-align: center; height: 900px">
+
+
+  <!-- Images (Portfolio) -->
+
+
+  <br>______<br><br>
+  <h1> sub-0001 <div id="analysis_title_0" style="display: inline;"></div> 
+  <h1>
+    <div style="font-size: 20px" > Parcellation: <select name="menu1" id="menu1" onkeydown="IgnoreAlpha(event);">
+      <option selected="selected">TVBSchaeferTian420</option>
+      <option id="option_placeholder">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</option>
+      <!-- DO NOT REMOVE. PLACEHOLDER FOR SCRIPTS TO INSERT NEW PARC LINKS -->
+      
+      </select>
+      </div>
+      <script type="text/javascript">
+     var urlmenu = document.getElementById( 'menu1' );
+     urlmenu.onchange = function() {
+          if (this.options[ this.selectedIndex ].value != ""){
+            window.open( this.options[ this.selectedIndex ].value, '_self');
+          }
+     };
+    </script></h1>
+</h1>
+  <br>
+
+
+
+
+
+<!-------------- OPTIONS -------------->
+
+<!-- ICAs -->
+  <label for="ICA" style="white-space:nowrap;">ICA <i>(q/e)</i>:
+  <select name="ICA" id="ICA" onchange="updateTitle();updateImage();" onkeydown="IgnoreAlpha(event);">
+    
+
+
+<option value="rfMRI.ica" id="rfMRI.ica">rfMRI.ica</option>
+
+
+  </select></label>
+  &nbsp&nbsp&nbsp&nbsp
+
+
+
+<!-- Component -->
+
+  <label for="rfMRI.ica" id="rfMRI.ica_label" style="white-space:nowrap; display: none;">Component <i>(a/d)</i>:
+  <select name="rfMRI.ica" id="rfMRI.ica_select" onchange="updateTitle();updateImage();" onkeydown="IgnoreAlpha(event);">
+
+    <optgroup label="Signal">
+      <option value="1" id="1">SIGNAL: IC_1</option>
+      <option value="2" id="2">SIGNAL: IC_2</option>
+      <option value="4" id="4">SIGNAL: IC_4</option>
+      <option value="8" id="8">SIGNAL: IC_8</option>
+      <option value="11" id="11">SIGNAL: IC_11</option>
+      <option value="13" id="13">SIGNAL: IC_13</option>
+      <option value="14" id="14">SIGNAL: IC_14</option>
+      <option value="17" id="17">SIGNAL: IC_17</option>
+      <option value="19" id="19">SIGNAL: IC_19</option>
+      <option value="20" id="20">SIGNAL: IC_20</option>
+      <option value="25" id="25">SIGNAL: IC_25</option>
+      <option value="29" id="29">SIGNAL: IC_29</option>
+      <option value="33" id="33">SIGNAL: IC_33</option>
+      <option value="34" id="34">SIGNAL: IC_34</option>
+      <option value="35" id="35">SIGNAL: IC_35</option>
+      <option value="36" id="36">SIGNAL: IC_36</option>
+      <option value="37" id="37">SIGNAL: IC_37</option>
+      <option value="38" id="38">SIGNAL: IC_38</option>
+      <option value="41" id="41">SIGNAL: IC_41</option>
+      <option value="43" id="43">SIGNAL: IC_43</option>
+      <option value="44" id="44">SIGNAL: IC_44</option>
+      <option value="45" id="45">SIGNAL: IC_45</option>
+      <option value="46" id="46">SIGNAL: IC_46</option>
+      <option value="47" id="47">SIGNAL: IC_47</option>
+      <option value="48" id="48">SIGNAL: IC_48</option>
+      <option value="49" id="49">SIGNAL: IC_49</option>
+    </optgroup>
+    <optgroup label="Noise">
+      <option value="3" id="3">NOISE: IC_3</option>
+      <option value="5" id="5">NOISE: IC_5</option>
+      <option value="6" id="6">NOISE: IC_6</option>
+      <option value="7" id="7">NOISE: IC_7</option>
+      <option value="9" id="9">NOISE: IC_9</option>
+      <option value="10" id="10">NOISE: IC_10</option>
+      <option value="12" id="12">NOISE: IC_12</option>
+      <option value="15" id="15">NOISE: IC_15</option>
+      <option value="16" id="16">NOISE: IC_16</option>
+      <option value="18" id="18">NOISE: IC_18</option>
+      <option value="21" id="21">NOISE: IC_21</option>
+      <option value="22" id="22">NOISE: IC_22</option>
+      <option value="23" id="23">NOISE: IC_23</option>
+      <option value="24" id="24">NOISE: IC_24</option>
+      <option value="26" id="26">NOISE: IC_26</option>
+      <option value="27" id="27">NOISE: IC_27</option>
+      <option value="28" id="28">NOISE: IC_28</option>
+      <option value="30" id="30">NOISE: IC_30</option>
+      <option value="31" id="31">NOISE: IC_31</option>
+      <option value="32" id="32">NOISE: IC_32</option>
+      <option value="39" id="39">NOISE: IC_39</option>
+      <option value="40" id="40">NOISE: IC_40</option>
+      <option value="42" id="42">NOISE: IC_42</option>
+      <option value="50" id="50">NOISE: IC_50</option>
+    </optgroup>
+    <optgroup label="Unknown">
+      <option value="43" id="43">UNKNOWN: IC_43</option>
+      <option value="44" id="44">UNKNOWN: IC_44</option>
+      <option value="45" id="45">UNKNOWN: IC_45</option>
+      <option value="48" id="48">UNKNOWN: IC_48</option>
+    </optgroup>
+  </select></label>
+
+
+
+<br>
+<br>
+  <!-- Analyses -->
+  <label for="Analysis" style="white-space:nowrap;">Analysis <i>(z/c)</i>:
+  <select name="Analysis" id="Analysis" onchange="updateTitle();updateImage();" onkeydown="IgnoreAlpha(event);">
+    
+      
+      <option value="ic" id="ic">IC</option>
+      <option value="mm" id="mm">IC Mixture Model Fit</option>
+      <option value="ev" id="ev">Eigenspectrum Analysis</option>
+  </select></label>
+  &nbsp&nbsp&nbsp&nbsp
+
+
+<!-------------- OVERLAYS -------------->
+
+
+  <br> <br> 
+
+______<br><br>
+<div id="analysis_title_1" style="display: inline; font-size: 28px"></div>
+
+
+
+
+
+<div class="c_1_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_1.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_1_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_1_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="1" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_1_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_1_thresh.png" class="1" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_1_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t1.png" class="1" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_1_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f1.png" class="1" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_1_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_1.png" class="1" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_1_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_1_prob.png" class="1" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_1_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_1_MMfit.png" class="1" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_2_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_2.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_2_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_2_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="2" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_2_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_2_thresh.png" class="2" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_2_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t2.png" class="2" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_2_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f2.png" class="2" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_2_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_2.png" class="2" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_2_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_2_prob.png" class="2" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_2_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_2_MMfit.png" class="2" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_3_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_3.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_3_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_3_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="3" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_3_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_3_thresh.png" class="3" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_3_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t3.png" class="3" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_3_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f3.png" class="3" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_3_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_3.png" class="3" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_3_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_3_prob.png" class="3" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_3_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_3_MMfit.png" class="3" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_4_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_4.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_4_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_4_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="4" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_4_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_4_thresh.png" class="4" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_4_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t4.png" class="4" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_4_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f4.png" class="4" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_4_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_4.png" class="4" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_4_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_4_prob.png" class="4" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_4_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_4_MMfit.png" class="4" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_5_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_5.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_5_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_5_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="5" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_5_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_5_thresh.png" class="5" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_5_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t5.png" class="5" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_5_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f5.png" class="5" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_5_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_5.png" class="5" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_5_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_5_prob.png" class="5" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_5_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_5_MMfit.png" class="5" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_6_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_6.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_6_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_6_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="6" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_6_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_6_thresh.png" class="6" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_6_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t6.png" class="6" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_6_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f6.png" class="6" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_6_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_6.png" class="6" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_6_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_6_prob.png" class="6" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_6_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_6_MMfit.png" class="6" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_7_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_7.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_7_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_7_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="7" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_7_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_7_thresh.png" class="7" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_7_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t7.png" class="7" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_7_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f7.png" class="7" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_7_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_7.png" class="7" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_7_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_7_prob.png" class="7" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_7_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_7_MMfit.png" class="7" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_8_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_8.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_8_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_8_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="8" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_8_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_8_thresh.png" class="8" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_8_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t8.png" class="8" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_8_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f8.png" class="8" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_8_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_8.png" class="8" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_8_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_8_prob.png" class="8" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_8_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_8_MMfit.png" class="8" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_9_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_9.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_9_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_9_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="9" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_9_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_9_thresh.png" class="9" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_9_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t9.png" class="9" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_9_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f9.png" class="9" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_9_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_9.png" class="9" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_9_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_9_prob.png" class="9" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_9_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_9_MMfit.png" class="9" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_10_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_10.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_10_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_10_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="10" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_10_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_10_thresh.png" class="10" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_10_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t10.png" class="10" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_10_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f10.png" class="10" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_10_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_10.png" class="10" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_10_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_10_prob.png" class="10" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_10_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_10_MMfit.png" class="10" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_11_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_11.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_11_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_11_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="11" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_11_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_11_thresh.png" class="11" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_11_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t11.png" class="11" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_11_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f11.png" class="11" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_11_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_11.png" class="11" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_11_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_11_prob.png" class="11" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_11_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_11_MMfit.png" class="11" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_12_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_12.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_12_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_12_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="12" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_12_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_12_thresh.png" class="12" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_12_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t12.png" class="12" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_12_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f12.png" class="12" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_12_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_12.png" class="12" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_12_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_12_prob.png" class="12" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_12_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_12_MMfit.png" class="12" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_13_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_13.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_13_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_13_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="13" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_13_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_13_thresh.png" class="13" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_13_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t13.png" class="13" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_13_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f13.png" class="13" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_13_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_13.png" class="13" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_13_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_13_prob.png" class="13" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_13_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_13_MMfit.png" class="13" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_14_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_14.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_14_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_14_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="14" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_14_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_14_thresh.png" class="14" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_14_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t14.png" class="14" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_14_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f14.png" class="14" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_14_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_14.png" class="14" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_14_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_14_prob.png" class="14" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_14_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_14_MMfit.png" class="14" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_15_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_15.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_15_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_15_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="15" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_15_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_15_thresh.png" class="15" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_15_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t15.png" class="15" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_15_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f15.png" class="15" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_15_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_15.png" class="15" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_15_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_15_prob.png" class="15" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_15_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_15_MMfit.png" class="15" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_16_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_16.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_16_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_16_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="16" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_16_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_16_thresh.png" class="16" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_16_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t16.png" class="16" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_16_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f16.png" class="16" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_16_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_16.png" class="16" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_16_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_16_prob.png" class="16" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_16_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_16_MMfit.png" class="16" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_17_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_17.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_17_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_17_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="17" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_17_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_17_thresh.png" class="17" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_17_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t17.png" class="17" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_17_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f17.png" class="17" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_17_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_17.png" class="17" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_17_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_17_prob.png" class="17" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_17_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_17_MMfit.png" class="17" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_18_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_18.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_18_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_18_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="18" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_18_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_18_thresh.png" class="18" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_18_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t18.png" class="18" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_18_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f18.png" class="18" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_18_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_18.png" class="18" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_18_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_18_prob.png" class="18" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_18_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_18_MMfit.png" class="18" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_19_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_19.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_19_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_19_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="19" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_19_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_19_thresh.png" class="19" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_19_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t19.png" class="19" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_19_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f19.png" class="19" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_19_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_19.png" class="19" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_19_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_19_prob.png" class="19" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_19_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_19_MMfit.png" class="19" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_20_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_20.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_20_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_20_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="20" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_20_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_20_thresh.png" class="20" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_20_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t20.png" class="20" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_20_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f20.png" class="20" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_20_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_20.png" class="20" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_20_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_20_prob.png" class="20" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_20_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_20_MMfit.png" class="20" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_21_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_21.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_21_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_21_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="21" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_21_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_21_thresh.png" class="21" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_21_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t21.png" class="21" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_21_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f21.png" class="21" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_21_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_21.png" class="21" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_21_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_21_prob.png" class="21" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_21_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_21_MMfit.png" class="21" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_22_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_22.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_22_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_22_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="22" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_22_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_22_thresh.png" class="22" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_22_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t22.png" class="22" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_22_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f22.png" class="22" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_22_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_22.png" class="22" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_22_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_22_prob.png" class="22" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_22_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_22_MMfit.png" class="22" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_23_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_23.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_23_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_23_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="23" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_23_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_23_thresh.png" class="23" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_23_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t23.png" class="23" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_23_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f23.png" class="23" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_23_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_23.png" class="23" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_23_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_23_prob.png" class="23" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_23_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_23_MMfit.png" class="23" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_24_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_24.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_24_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_24_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="24" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_24_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_24_thresh.png" class="24" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_24_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t24.png" class="24" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_24_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f24.png" class="24" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_24_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_24.png" class="24" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_24_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_24_prob.png" class="24" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_24_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_24_MMfit.png" class="24" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_25_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_25.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_25_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_25_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="25" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_25_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_25_thresh.png" class="25" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_25_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t25.png" class="25" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_25_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f25.png" class="25" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_25_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_25.png" class="25" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_25_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_25_prob.png" class="25" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_25_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_25_MMfit.png" class="25" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_26_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_26.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_26_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_26_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="26" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_26_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_26_thresh.png" class="26" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_26_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t26.png" class="26" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_26_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f26.png" class="26" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_26_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_26.png" class="26" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_26_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_26_prob.png" class="26" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_26_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_26_MMfit.png" class="26" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_27_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_27.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_27_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_27_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="27" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_27_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_27_thresh.png" class="27" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_27_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t27.png" class="27" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_27_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f27.png" class="27" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_27_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_27.png" class="27" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_27_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_27_prob.png" class="27" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_27_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_27_MMfit.png" class="27" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_28_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_28.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_28_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_28_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="28" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_28_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_28_thresh.png" class="28" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_28_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t28.png" class="28" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_28_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f28.png" class="28" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_28_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_28.png" class="28" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_28_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_28_prob.png" class="28" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_28_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_28_MMfit.png" class="28" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_29_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_29.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_29_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_29_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="29" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_29_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_29_thresh.png" class="29" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_29_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t29.png" class="29" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_29_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f29.png" class="29" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_29_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_29.png" class="29" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_29_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_29_prob.png" class="29" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_29_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_29_MMfit.png" class="29" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_30_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_30.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_30_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_30_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="30" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_30_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_30_thresh.png" class="30" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_30_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t30.png" class="30" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_30_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f30.png" class="30" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_30_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_30.png" class="30" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_30_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_30_prob.png" class="30" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_30_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_30_MMfit.png" class="30" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_31_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_31.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_31_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_31_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="31" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_31_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_31_thresh.png" class="31" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_31_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t31.png" class="31" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_31_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f31.png" class="31" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_31_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_31.png" class="31" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_31_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_31_prob.png" class="31" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_31_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_31_MMfit.png" class="31" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_32_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_32.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_32_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_32_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="32" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_32_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_32_thresh.png" class="32" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_32_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t32.png" class="32" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_32_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f32.png" class="32" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_32_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_32.png" class="32" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_32_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_32_prob.png" class="32" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_32_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_32_MMfit.png" class="32" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_33_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_33.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_33_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_33_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="33" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_33_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_33_thresh.png" class="33" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_33_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t33.png" class="33" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_33_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f33.png" class="33" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_33_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_33.png" class="33" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_33_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_33_prob.png" class="33" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_33_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_33_MMfit.png" class="33" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_34_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_34.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_34_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_34_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="34" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_34_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_34_thresh.png" class="34" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_34_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t34.png" class="34" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_34_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f34.png" class="34" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_34_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_34.png" class="34" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_34_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_34_prob.png" class="34" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_34_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_34_MMfit.png" class="34" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_35_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_35.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_35_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_35_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="35" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_35_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_35_thresh.png" class="35" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_35_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t35.png" class="35" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_35_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f35.png" class="35" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_35_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_35.png" class="35" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_35_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_35_prob.png" class="35" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_35_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_35_MMfit.png" class="35" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_36_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_36.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_36_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_36_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="36" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_36_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_36_thresh.png" class="36" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_36_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t36.png" class="36" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_36_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f36.png" class="36" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_36_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_36.png" class="36" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_36_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_36_prob.png" class="36" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_36_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_36_MMfit.png" class="36" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_37_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_37.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_37_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_37_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="37" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_37_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_37_thresh.png" class="37" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_37_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t37.png" class="37" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_37_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f37.png" class="37" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_37_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_37.png" class="37" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_37_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_37_prob.png" class="37" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_37_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_37_MMfit.png" class="37" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_38_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_38.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_38_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_38_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="38" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_38_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_38_thresh.png" class="38" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_38_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t38.png" class="38" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_38_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f38.png" class="38" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_38_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_38.png" class="38" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_38_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_38_prob.png" class="38" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_38_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_38_MMfit.png" class="38" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_39_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_39.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_39_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_39_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="39" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_39_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_39_thresh.png" class="39" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_39_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t39.png" class="39" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_39_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f39.png" class="39" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_39_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_39.png" class="39" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_39_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_39_prob.png" class="39" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_39_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_39_MMfit.png" class="39" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_40_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_40.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_40_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_40_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="40" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_40_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_40_thresh.png" class="40" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_40_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t40.png" class="40" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_40_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f40.png" class="40" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_40_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_40.png" class="40" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_40_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_40_prob.png" class="40" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_40_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_40_MMfit.png" class="40" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_41_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_41.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_41_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_41_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="41" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_41_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_41_thresh.png" class="41" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_41_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t41.png" class="41" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_41_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f41.png" class="41" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_41_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_41.png" class="41" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_41_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_41_prob.png" class="41" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_41_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_41_MMfit.png" class="41" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_42_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_42.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_42_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_42_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="42" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_42_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_42_thresh.png" class="42" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_42_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t42.png" class="42" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_42_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f42.png" class="42" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_42_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_42.png" class="42" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_42_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_42_prob.png" class="42" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_42_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_42_MMfit.png" class="42" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_43_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_43.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_43_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_43_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="43" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_43_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_43_thresh.png" class="43" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_43_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t43.png" class="43" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_43_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f43.png" class="43" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_43_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_43.png" class="43" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_43_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_43_prob.png" class="43" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_43_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_43_MMfit.png" class="43" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_44_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_44.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_44_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_44_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="44" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_44_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_44_thresh.png" class="44" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_44_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t44.png" class="44" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_44_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f44.png" class="44" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_44_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_44.png" class="44" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_44_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_44_prob.png" class="44" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_44_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_44_MMfit.png" class="44" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_45_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_45.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_45_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_45_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="45" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_45_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_45_thresh.png" class="45" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_45_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t45.png" class="45" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_45_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f45.png" class="45" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_45_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_45.png" class="45" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_45_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_45_prob.png" class="45" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_45_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_45_MMfit.png" class="45" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_46_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_46.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_46_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_46_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="46" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_46_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_46_thresh.png" class="46" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_46_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t46.png" class="46" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_46_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f46.png" class="46" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_46_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_46.png" class="46" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_46_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_46_prob.png" class="46" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_46_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_46_MMfit.png" class="46" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_47_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_47.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_47_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_47_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="47" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_47_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_47_thresh.png" class="47" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_47_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t47.png" class="47" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_47_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f47.png" class="47" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_47_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_47.png" class="47" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_47_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_47_prob.png" class="47" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_47_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_47_MMfit.png" class="47" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_48_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_48.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_48_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_48_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="48" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_48_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_48_thresh.png" class="48" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_48_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t48.png" class="48" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_48_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f48.png" class="48" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_48_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_48.png" class="48" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_48_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_48_prob.png" class="48" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_48_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_48_MMfit.png" class="48" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_49_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_49.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_49_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_49_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="49" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_49_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_49_thresh.png" class="49" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_49_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t49.png" class="49" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_49_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f49.png" class="49" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_49_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_49.png" class="49" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_49_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_49_prob.png" class="49" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_49_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_49_MMfit.png" class="49" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+<div class="c_50_rfMRI.ica" style="display: none;">
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/00index.html">MEDLODIC ICA Home</a><br>
+&nbsp&nbsp<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_50.html">IC Report</a> &nbsp&nbsp-&nbsp&nbsp  
+<a href="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_50_MM.html">IC MM report</a><br>
+
+<br>
+<img name="rfMRI.ica_50_ev" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/EVplot.png" class="50" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_50_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_50_thresh.png" class="50" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_50_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/t50.png" class="50" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_50_ic" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/f50.png" class="50" width="1000" style="padding: 10px" >
+<img name="rfMRI.ica_50_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_50.png" class="50" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_50_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_50_prob.png" class="50" width="1000" style="padding: 30px" >
+<img name="rfMRI.ica_50_mm" src="../../fMRI/rfMRI.ica/filtered_func_data.ica/report/IC_50_MMfit.png" class="50" width="1000" style="padding-top: 30px" >
+</div>
+
+
+
+
+ <br> <br>
+ 
+
+
+<div style="text-align: left; font-size: 12px" >
+IMAGE 1 FILE:<br> <a id="image_link_0" href="../images/T1_extraction_masked/sub-CC520055_T1_extraction_masked_axial.png">N/A</a>
+<br>
+IMAGE 2 FILE:<br> <a id="image_link_1" href="../images/T1_extraction_masked/sub-CC520055_T1_extraction_masked_axial.png">N/A</a>
+<br>
+IMAGE 3 FILE:<br> <a id="image_link_2" href="../images/T1_extraction_masked/sub-CC520055_T1_extraction_masked_axial.png">N/A</a>
+<br><br><br>
+</div>
+<!-- End page content -->
+</div>
+
+</body>
+
+<script>
+ updateTitle();updateImage();
+</script>
+
+
+
+</html>
+

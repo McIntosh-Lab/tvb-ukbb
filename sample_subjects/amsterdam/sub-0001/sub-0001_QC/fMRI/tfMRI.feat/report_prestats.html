@@ -1,0 +1,17 @@
+<HTML><HEAD><link REL=stylesheet TYPE=text/css href=.files/fsl.css>
+<TITLE>FSL</TITLE></HEAD><BODY><OBJECT data=report.html></OBJECT>
+<h2>Pre-stats</h2>
+<!--prestatspsstart-->
+<hr><p><b>Analysis methods</b><br>FMRI data processing was carried out using FEAT (FMRI Expert Analysis Tool) Version 6.00, part of FSL (FMRIB's Software Library, www.fmrib.ox.ac.uk/fsl). The following pre-statistics processing was applied; motion correction using MCFLIRT [Jenkinson 2002]; non-brain removal using BET [Smith 2002]; spatial smoothing using a Gaussian kernel of FWHM 5mm; grand-mean intensity normalisation of the entire 4D dataset by a single multiplicative factor; highpass temporal filtering (Gaussian-weighted least-squares straight line fitting, with sigma=50.0s).
+<!--prestatspsstop-->
+<!--prestatsrsstart-->
+<p><b>References</b><br>[<a href=http://www.fmrib.ox.ac.uk/analysis/techrep/#TR02MJ1>Jenkinson 2002</a>] M. Jenkinson and P. Bannister and M. Brady and S. Smith. Improved optimisation for the robust and accurate linear registration and motion correction of brain images. NeuroImage 17:2(825-841) 2002.<br>
+    [<a href=http://www.fmrib.ox.ac.uk/analysis/techrep/#TR00SMS2>Smith 2002</a>] S. Smith. Fast Robust Automated Brain Extraction. Human Brain Mapping 17:3(143-155) 2002.<br>
+    
+<!--prestatsrsstop-->
+<hr><p><b>MCFLIRT Motion correction</b><br>Mean displacements: absolute=0.23mm, relative=0.06mm
+<p><IMG BORDER=0 SRC=mc/rot.png>
+<p><IMG BORDER=0 SRC=mc/trans.png>
+<p><IMG BORDER=0 SRC=mc/disp.png>
+
+</BODY></HTML>

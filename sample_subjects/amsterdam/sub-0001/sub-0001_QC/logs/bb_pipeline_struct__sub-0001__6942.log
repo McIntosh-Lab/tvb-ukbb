@@ -1,0 +1,258 @@
+2022-05-10 22:43:02,756 - bb_pipeline_struct - INFO - Starting the subject processing: Tue May 10 22:43:02 2022 
+2022-05-10 22:43:02,757 - bb_pipeline_struct - INFO - Subject received as input: sub-0001 
+2022-05-10 22:43:02,780 - bb_pipeline_struct - INFO - COMMAND TO RUN: 	${BB_BIN_DIR}/bb_structural_pipeline/bb_struct_init sub-0001 
+2022-05-11 00:00:49,387 - bb_pipeline_struct - INFO - COMMAND OUTPUT: 	+ cd sub-0001/T1
+++ /opt/fsl/bin/imtest T1
++ '[' 1 = 0 ']'
+++ /opt/fsl/bin/imtest T1_orig
++ '[' 0 = 0 ']'
++ /opt/fsl/bin/immv T1 T1_orig
++ cp T1_orig.nii.gz T1_orig_ud.nii.gz
+++ /opt/fsl/bin/robustfov -i T1_orig_ud
+++ grep -v Final
+++ head -n 1
+++ awk '{print $5}'
++ head_top=13.000000
++ /opt/fsl/bin/fslmaths T1_orig_ud -roi 0 -1 0 -1 13.000000 170 0 1 T1_tmp
++ /opt/fsl/bin/bet T1_tmp T1_tmp_brain -R
++ /opt/fsl/bin/standard_space_roi T1_tmp_brain T1_tmp2 -maskNONE -ssref /opt/fsl/data/standard/MNI152_T1_1mm_brain -altinput T1_orig_ud -d
++ /opt/fsl/bin/immv T1_tmp2 T1
++ /opt/fsl/bin/flirt -in T1 -ref T1_orig_ud -omat T1_to_T1_orig_ud.mat -schedule /opt/fsl/etc/flirtsch/xyztrans.sch
++ /opt/fsl/bin/convert_xfm -omat T1_orig_ud_to_T1.mat -inverse T1_to_T1_orig_ud.mat
++ /opt/fsl/bin/convert_xfm -omat T1_to_MNI_linear.mat -concat T1_tmp2_tmp_to_std.mat T1_to_T1_orig_ud.mat
++ /opt/fsl/bin/fnirt --in=T1 --ref=/opt/fsl/data/standard/MNI152_T1_1mm --aff=T1_to_MNI_linear.mat --config=/home/jwangbay/software/amsterdam/tvb-ukbb/bb_data/bb_fnirt.cnf --refmask=/home/jwangbay/software/amsterdam/tvb-ukbb/templates/MNI152_T1_1mm_brain_mask_dil_GD7 --logout=../logs/bb_T1_to_MNI_fnirt.log --cout=T1_to_MNI_warp_coef --fout=T1_to_MNI_warp --jout=T1_to_MNI_warp_jac --iout=T1_brain_to_MNI.nii.gz --interp=spline
++ /opt/fsl/bin/invwarp --ref=T1 -w T1_to_MNI_warp_coef -o T1_to_MNI_warp_coef_inv
++ /opt/fsl/bin/applywarp --rel --interp=nn --in=/home/jwangbay/software/amsterdam/tvb-ukbb/templates/MNI152_T1_1mm_brain_mask --ref=T1 -w T1_to_MNI_warp_coef_inv -o T1_brain_mask
++ /opt/fsl/bin/fslmaths T1 -mul T1_brain_mask T1_brain
++ /opt/fsl/bin/fslmaths T1_brain_to_MNI -mul /home/jwangbay/software/amsterdam/tvb-ukbb/templates/MNI152_T1_1mm_brain_mask T1_brain_to_MNI
++ /opt/fsl/bin/applywarp --rel --interp=nn --in=/home/jwangbay/software/amsterdam/tvb-ukbb/templates/cerebellum --ref=T1 -w T1_to_MNI_warp_coef_inv -o cerebellum_to_T1
++ /opt/fsl/bin/applywarp --rel --interp=nn --in=/home/jwangbay/software/amsterdam/tvb-ukbb/templates/brainstem --ref=T1 -w T1_to_MNI_warp_coef_inv -o brainstem_to_T1
++ /opt/fsl/bin/convert_xfm -omat grot.mat -concat T1_to_MNI_linear.mat T1_orig_ud_to_T1.mat
++ /opt/fsl/bin/convert_xfm -omat grot.mat -concat /home/jwangbay/software/amsterdam/tvb-ukbb/templates/MNI_to_MNI_BigFoV_facemask.mat grot.mat
++ /opt/fsl/bin/convert_xfm -omat grot.mat -inverse grot.mat
++ /opt/fsl/bin/flirt -in /home/jwangbay/software/amsterdam/tvb-ukbb/templates/MNI152_T1_1mm_BigFoV_facemask -ref T1_orig -out grot -applyxfm -init grot.mat
++ /opt/fsl/bin/fslmaths grot -binv -mul T1_orig T1_orig_defaced
++ cp T1.nii.gz T1_not_defaced_tmp.nii.gz
++ /opt/fsl/bin/convert_xfm -omat grot.mat -concat /home/jwangbay/software/amsterdam/tvb-ukbb/templates/MNI_to_MNI_BigFoV_facemask.mat T1_to_MNI_linear.mat
++ /opt/fsl/bin/convert_xfm -omat grot.mat -inverse grot.mat
++ /opt/fsl/bin/flirt -in /home/jwangbay/software/amsterdam/tvb-ukbb/templates/MNI152_T1_1mm_BigFoV_facemask -ref T1 -out grot -applyxfm -init grot.mat
++ /opt/fsl/bin/fslmaths grot -binv -mul T1 T1
++ /opt/fsl/bin/fslmaths T1_brain_mask -thr 0.5 -bin grot_brain_mask
++ /opt/fsl/bin/fslmaths grot -thr 0.5 -bin -add grot_brain_mask -thr 2 grot_QC
++ awk '{print $ 1}'
++ /opt/fsl/bin/fslstats grot_QC.nii.gz -V
++ rm grot.mat grot.nii.gz grot_QC.nii.gz grot_brain_mask.nii.gz
++ rm T1_not_defaced_tmp.nii.gz T1_tmp.nii.gz T1_tmp2_tmp_standard_roi.nii.gz T1_tmp2_tmp_standard_roi_to_in.nii.gz T1_tmp2_tmp_to_std.mat T1_tmp2_tmp_to_std.nii.gz T1_tmp2_tmp_to_std_inv.mat T1_tmp_brain.nii.gz
++ mkdir transforms
++ mv T1_brain_to_MNI.nii.gz T1_to_MNI_linear.mat T1_to_MNI_warp.nii.gz T1_to_MNI_warp_coef.nii.gz T1_to_MNI_warp_coef_inv.nii.gz T1_to_MNI_warp_jac.nii.gz transforms
++ mv '*warp*.*' transforms
+mv: cannot stat '*warp*.*': No such file or directory
++ true
++ mv T1_orig_ud_to_T1.mat T1_to_T1_orig_ud.mat brainstem_to_T1.nii.gz cerebellum_to_T1.nii.gz transforms
++ mv transforms/T1_brain_to_MNI.nii.gz .
++ cd ..
+++ /opt/fsl/bin/imtest T2_FLAIR/T2_FLAIR
++ '[' 0 = 0 ']'
++ echo 'WARNING: No T2 in sub-0001'
++ cd T1
++ mkdir T1_fast
++ /opt/fsl/bin/fast -b -o T1_fast/T1_brain T1_brain
++ '[' -f T1_fast/T1_brain_pveseg.nii.gz ']'
++ /opt/fsl/bin/fslmaths T1_fast/T1_brain_pve_0.nii.gz -thr 0.5 -bin T1_fast/T1_brain_CSF_mask.nii.gz
++ /opt/fsl/bin/fslmaths T1_fast/T1_brain_pve_1.nii.gz -thr 0.5 -bin T1_fast/T1_brain_GM_mask.nii.gz
++ /opt/fsl/bin/fslmaths T1_fast/T1_brain_pve_2.nii.gz -thr 0.5 -bin T1_fast/T1_brain_WM_mask.nii.gz
++ /opt/fsl/bin/fslmaths T1_fast/T1_brain_GM_mask -sub transforms/cerebellum_to_T1 -sub transforms/brainstem_to_T1 -bin T1_fast/T1_brain_GM_mask_noCerebBS
++ /opt/fsl/bin/fslmaths T1_fast/T1_brain_WM_mask -sub transforms/cerebellum_to_T1 -sub transforms/brainstem_to_T1 -bin T1_fast/T1_brain_WM_mask_noCerebBS
++ '[' -f T1_fast/T1_brain_bias.nii.gz ']'
++ /opt/fsl/bin/fslmaths T1.nii.gz -div T1_fast/T1_brain_bias.nii.gz T1_unbiased.nii.gz
++ /opt/fsl/bin/fslmaths T1_brain.nii.gz -div T1_fast/T1_brain_bias.nii.gz T1_unbiased_brain.nii.gz
++ mkdir T1_first
++ ln -s ../T1_unbiased_brain.nii.gz T1_first/T1_unbiased_brain.nii.gz
++ /opt/fsl/bin/run_first_all -i T1_first/T1_unbiased_brain -b -o T1_first/T1_first
++ /opt/fsl/bin/fslmaths T1_first/T1_first_all_fast_firstseg -uthr 15 T1_first/subcort_upperthresh_seg
++ /opt/fsl/bin/fslmaths T1_first/T1_first_all_fast_firstseg -thr 17 T1_first/subcort_lowerthresh_seg
++ /opt/fsl/bin/fslmaths T1_first/subcort_upperthresh_seg -add T1_first/subcort_lowerthresh_seg -bin T1_first/subcort_GM
++ /opt/fsl/bin/fslmaths T1_fast/T1_brain_GM_mask_noCerebBS -add T1_first/subcort_GM -bin cort_subcort_GM
+++ pwd
++ /home/jwangbay/software/amsterdam/tvb-ukbb/bb_structural_pipeline/bb_sienax /scratch/jwangbay/amsterdam/sub-0001/T1/..
+++ pwd
++ /home/jwangbay/software/amsterdam/tvb-ukbb/bb_structural_pipeline/bb_vbm /scratch/jwangbay/amsterdam/sub-0001/T1/..
++ cd ..
++ /home/jwangbay/software/amsterdam/tvb-ukbb/bb_structural_pipeline/bb_QC_COG ../sub-0001
++ referenceSubjectId=4908980
++ dirT1=../sub-0001/T1
++ '[' -d ../sub-0001/T1/unusable ']'
+++ imtest ../sub-0001/T1/T1_brain_mask
++ '[' x1 = x1 ']'
+++ imtest ../sub-0001/T1/T1
++ '[' x1 = x1 ']'
+++ fslstats ../sub-0001/T1/T1_brain_mask.nii.gz -C
++ COG_coord='86.304422 111.935664 90.063655 '
+++ echo 86.304422 111.935664 90.063655
+++ awk '{print $1}'
++ X=86.304422
+++ echo 86.304422 111.935664 90.063655
+++ awk '{print $2}'
++ Y=111.935664
+++ echo 86.304422 111.935664 90.063655
+++ awk '{print $3}'
++ Z=90.063655
+++ fslhd ../sub-0001/T1/T1.nii.gz
+++ grep qto_xyz:1
+++ awk '{print "["$2", "$3", "$4", "$5"]"}'
++ qform_row1='[-0.999564, 0.010119, -0.027749, 88.112129]'
+++ fslhd ../sub-0001/T1/T1.nii.gz
+++ grep qto_xyz:2
+++ awk '{print "["$2", "$3", "$4", "$5"]"}'
++ qform_row2='[0.009089, 0.999275, 0.036978, -116.180847]'
+++ fslhd ../sub-0001/T1/T1.nii.gz
+++ grep qto_xyz:3
+++ awk '{print "["$2", "$3", "$4", "$5"]"}'
++ qform_row3='[-0.028103, -0.036710, 0.998931, -56.265854]'
+++ fslhd ../sub-0001/T1/T1.nii.gz
+++ grep qto_xyz:4
+++ awk '{print "["$2", "$3", "$4", "$5"]"}'
++ qform_row4='[0.000000, 0.000000, 0.000000, 1.000000]'
++ qform_python='[[-0.999564, 0.010119, -0.027749, 88.112129], [0.009089, 0.999275, 0.036978, -116.180847], [-0.028103, -0.036710, 0.998931, -56.265854], [0.000000, 0.000000, 0.000000, 1.000000]]'
++ COG_python='[86.304422, 111.935664, 90.063655, 1]'
++ python_line='import numpy as np; a = np.array([[-0.999564, 0.010119, -0.027749, 88.112129], [0.009089, 0.999275, 0.036978, -116.180847], [-0.028103, -0.036710, 0.998931, -56.265854], [0.000000, 0.000000, 0.000000, 1.000000]]); b=np.array([86.304422, 111.935664, 90.063655, 1]); print(a.dot(b)) ;'
+++ python -c 'import numpy as np; a = np.array([[-0.999564, 0.010119, -0.027749, 88.112129], [0.009089, 0.999275, 0.036978, -116.180847], [-0.028103, -0.036710, 0.998931, -56.265854], [0.000000, 0.000000, 0.000000, 1.000000]]); b=np.array([86.304422, 111.935664, 90.063655, 1]); print(a.dot(b)) ;'
+++ awk '{print $2" "$3" "$4}'
++ newCoord='0.47883635 -0.21154163 27.16695156'
+++ echo 0.47883635 -0.21154163 27.16695156
+++ awk '{print $1}'
++ newX=0.47883635
+++ echo 0.47883635 -0.21154163 27.16695156
+++ awk '{print $3}'
++ newZ=27.16695156
++ fslmaths ../sub-0001/T1/T1_brain_mask -thr 0.5 -bin ../sub-0001/T1/grot_brain_mask_bin
++ flirt -in ../sub-0001/T1/grot_brain_mask_bin -ref /4908980/T1/ref -out ../sub-0001/T1/grot_mask -applyxfm -usesqform -interp nearestneighbour
+Image Exception : #63 :: No image files match: /4908980/T1/ref
+Image Exception : #22 :: Failed to read volume /4908980/T1/ref
+Error : No image files match: /4908980/T1/ref
+Failed to read volume /4908980/T1/ref
+Error : No image files match: /4908980/T1/ref
+++ fslstats ../sub-0001/T1/grot_mask -w
+++ awk '{print $3}'
+Image Exception : #63 :: No image files match: ../sub-0001/T1/grot_mask
+Image Exception : #22 :: Failed to read volume ../sub-0001/T1/grot_mask
+Error : No image files match: ../sub-0001/T1/grot_mask
+Failed to read volume ../sub-0001/T1/grot_mask
+Error : No image files match: ../sub-0001/T1/grot_mask
++ newY=
++ rm ../sub-0001/T1/grot_brain_mask_bin.nii.gz
++ echo 0.47883635 27.16695156
++ /home/jwangbay/software/amsterdam/tvb-ukbb/bb_structural_pipeline/bb_QC_CNR_eyes ../sub-0001
++ result=NaN
++ dir=../sub-0001/T1
++ '[' -d ../sub-0001/T1/unusable ']'
++ T1_cut=../sub-0001/T1/T1
++ T1=../sub-0001/raw/T1_notNorm
+++ imtest ../sub-0001/T1/T1
++ '[' x1 = x1 ']'
+++ imtest ../sub-0001/raw/T1_notNorm
++ '[' x0 = x1 ']'
++ /home/jwangbay/software/amsterdam/tvb-ukbb/bb_structural_pipeline/bb_QC_CNR_corners_complete ../sub-0001
++ result=NaN
++ dirT1=../sub-0001/T1
++ dirRaw=../sub-0001/raw
++ '[' -d ../sub-0001/T1/unusable ']'
++ T1_cut=../sub-0001/T1/T1
++ dirOut=../sub-0001/T1
++ for T1_input in "$dirT1/T1_orig" "$dirRaw/T1_notNorm"
+++ imtest ../sub-0001/T1/T1
++ '[' x1 = x1 ']'
+++ imtest ../sub-0001/T1/T1_orig
++ '[' x1 = x1 ']'
+++ basename ../sub-0001/T1/T1_orig
++ T1nam=T1_orig
+++ imtest ../sub-0001/T1/T1_fast/T1_brain_pveseg
++ '[' x1 = x1 ']'
++ fslroi ../sub-0001/T1/T1_orig ../sub-0001/T1/T1_orig_grot_roi_1_1_lower 1 10 1 10 0 10
++ fslroi ../sub-0001/T1/T1_orig ../sub-0001/T1/T1_orig_grot_roi_1_245_lower 1 10 245 10 0 10
++ fslroi ../sub-0001/T1/T1_orig ../sub-0001/T1/T1_orig_grot_roi_197_1_lower 197 10 1 10 0 10
++ fslroi ../sub-0001/T1/T1_orig ../sub-0001/T1/T1_orig_grot_roi_197_245_lower 197 10 245 10 0 10
++ fslmerge -x ../sub-0001/T1/T1_orig_grot_roi_x_1_lower ../sub-0001/T1/T1_orig_grot_roi_1_1_lower ../sub-0001/T1/T1_orig_grot_roi_197_1_lower
++ fslmerge -x ../sub-0001/T1/T1_orig_grot_roi_x_245_lower ../sub-0001/T1/T1_orig_grot_roi_1_245_lower ../sub-0001/T1/T1_orig_grot_roi_197_245_lower
++ fslmerge -y ../sub-0001/T1/T1_orig_grot_roi_lower ../sub-0001/T1/T1_orig_grot_roi_x_1_lower ../sub-0001/T1/T1_orig_grot_roi_x_245_lower
++ fslroi ../sub-0001/T1/T1_orig ../sub-0001/T1/T1_orig_grot_roi_1_1_higher 1 10 1 10 245 10
++ fslroi ../sub-0001/T1/T1_orig ../sub-0001/T1/T1_orig_grot_roi_1_245_higher 1 10 245 10 245 10
++ fslroi ../sub-0001/T1/T1_orig ../sub-0001/T1/T1_orig_grot_roi_197_1_higher 197 10 1 10 245 10
++ fslroi ../sub-0001/T1/T1_orig ../sub-0001/T1/T1_orig_grot_roi_197_245_higher 197 10 245 10 245 10
++ fslmerge -x ../sub-0001/T1/T1_orig_grot_roi_x_1_higher ../sub-0001/T1/T1_orig_grot_roi_1_1_higher ../sub-0001/T1/T1_orig_grot_roi_197_1_higher
++ fslmerge -x ../sub-0001/T1/T1_orig_grot_roi_x_245_higher ../sub-0001/T1/T1_orig_grot_roi_1_245_higher ../sub-0001/T1/T1_orig_grot_roi_197_245_higher
++ fslmerge -y ../sub-0001/T1/T1_orig_grot_roi_higher ../sub-0001/T1/T1_orig_grot_roi_x_1_higher ../sub-0001/T1/T1_orig_grot_roi_x_245_higher
++ subj=../sub-0001
++ '[' -f ../sub-0001/T1/T1_fast/T1_brain_GM_mask.nii.gz ']'
+++ fslstats ../sub-0001/T1/T1 -k ../sub-0001/T1/T1_fast/T1_brain_GM_mask.nii.gz -m
++ TheGrey='14797.827487 '
+++ fslstats ../sub-0001/T1/T1 -k ../sub-0001/T1/T1_fast/T1_brain_WM_mask.nii.gz -m
++ TheWhite='24949.640087 '
+++ fslstats ../sub-0001/T1/T1 -k ../sub-0001/T1/T1_fast/T1_brain_GM_mask.nii.gz -P 1
++ threshold1='9885.971680 '
+++ echo '9885.971680  / 2 '
+++ bc
++ threshold2=4942
++ fslmaths ../sub-0001/T1/T1_orig_grot_roi_lower.nii.gz -uthr 4942 ../sub-0001/T1/T1_orig_grot_roi_lower_2.nii.gz
++ fslmaths ../sub-0001/T1/T1_orig_grot_roi_higher.nii.gz -uthr 4942 ../sub-0001/T1/T1_orig_grot_roi_higher_2.nii.gz
+++ fslstats ../sub-0001/T1/T1_orig_grot_roi_lower_2.nii.gz -S
++ TheNoise_lower='0.000000 '
+++ fslstats ../sub-0001/T1/T1_orig_grot_roi_higher_2.nii.gz -S
++ TheNoise_higher='0.000000 '
+++ echo '1 k 14797.827487  24949.640087  + 2 / p'
+++ dc -
++ TheBrain=19873.7
+++ echo '10 k 0.000000  19873.7 / p'
+++ dc -
++ result_lower=0
+++ echo '10 k 0.000000  19873.7 / p'
+++ dc -
++ result_higher=0
++ rm ../sub-0001/T1/T1_orig_grot_roi_197_1_higher.nii.gz ../sub-0001/T1/T1_orig_grot_roi_197_1_lower.nii.gz ../sub-0001/T1/T1_orig_grot_roi_197_245_higher.nii.gz ../sub-0001/T1/T1_orig_grot_roi_197_245_lower.nii.gz ../sub-0001/T1/T1_orig_grot_roi_1_1_higher.nii.gz ../sub-0001/T1/T1_orig_grot_roi_1_1_lower.nii.gz ../sub-0001/T1/T1_orig_grot_roi_1_245_higher.nii.gz ../sub-0001/T1/T1_orig_grot_roi_1_245_lower.nii.gz ../sub-0001/T1/T1_orig_grot_roi_higher.nii.gz ../sub-0001/T1/T1_orig_grot_roi_higher_2.nii.gz ../sub-0001/T1/T1_orig_grot_roi_lower.nii.gz ../sub-0001/T1/T1_orig_grot_roi_lower_2.nii.gz ../sub-0001/T1/T1_orig_grot_roi_x_1_higher.nii.gz ../sub-0001/T1/T1_orig_grot_roi_x_1_lower.nii.gz ../sub-0001/T1/T1_orig_grot_roi_x_245_higher.nii.gz ../sub-0001/T1/T1_orig_grot_roi_x_245_lower.nii.gz
++ echo 0
++ echo 0
++ for T1_input in "$dirT1/T1_orig" "$dirRaw/T1_notNorm"
+++ imtest ../sub-0001/T1/T1
++ '[' x1 = x1 ']'
+++ imtest ../sub-0001/raw/T1_notNorm
++ '[' x0 = x1 ']'
+++ /opt/fsl/bin/imtest T2_FLAIR/T2_FLAIR_orig
++ '[' 0 = 0 ']'
++ echo 'WARNING: No T2 in sub-0001'
++ /opt/fsl/bin/fslmaths T1/T1_fast/T1_brain_GM_mask_noCerebBS -kernel sphere 1 -dilM T1/T1_fast/T1_brain_GM_mask_noCerebBS_dil
++ /opt/fsl/bin/fslmaths T1/T1_fast/T1_brain_GM_mask_noCerebBS_dil -add T1/T1_fast/T1_brain_WM_mask_noCerebBS -thr 2 -bin T1/interface
+++ fslstats T1/interface -R
+++ awk '{print int($2)}'
++ maskMAX=1
++ '[' 1 -lt 1 ']'
++ cd ..
++ /home/jwangbay/software/amsterdam/tvb-ukbb/bb_structural_pipeline/tvb_struct_parcellation.sh sub-0001
++ cd sub-0001/T1
++ /opt/fsl/bin/applywarp --rel --interp=nn --in=/home/jwangbay/software/amsterdam/tvb-ukbb/templates/parcellations/TVB_SchaeferTian/TVB_SchaeferTian_420.nii.gz --ref=T1 -w transforms/T1_to_MNI_warp_coef_inv -o transforms/parcel_to_T1_TVBSchaeferTian420
++ /cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Compiler/gcc9/afni/20.3.05/3dROIMaker -inset cort_subcort_GM.nii.gz -thresh 0.1 -inflate 1 -prefix labelled -refset transforms/parcel_to_T1_TVBSchaeferTian420.nii.gz -nifti -neigh_upto_vert -dump_no_labtab
+[7m*+ WARNING:[0m   If you are performing spatial transformations on an oblique dset,
+  such as /scratch/jwangbay/amsterdam/sub-0001/T1/transforms/parcel_to_T1_TVBSchaeferTian420.nii.gz,
+  or viewing/combining it with volumes of differing obliquity,
+  you should consider running: 
+     3dWarp -deoblique 
+  on this and  other oblique datasets in the same session.
+ See 3dWarp -help for details.
+++ Oblique dataset:/scratch/jwangbay/amsterdam/sub-0001/T1/transforms/parcel_to_T1_TVBSchaeferTian420.nii.gz is 2.649741 degrees from plumb.
+++ Oblique dataset:/scratch/jwangbay/amsterdam/sub-0001/T1/cort_subcort_GM.nii.gz is 2.649741 degrees from plumb.
+++ Value of threshold is: 0.100000
+++ Each subrik of refset will be applied to corresponding inset brik.
+++ GM map is done.
+++ SKEL_STOP = 0
+++ No refset labeltable for naming things.
+++ GMI map is done.
+++ Did *not* put labeltables on both the GM and GMI files (but could have)
++ mv labelled_GM.nii.gz labelled_GM_TVBSchaeferTian420.nii.gz
++ mv labelled_GMI.nii.gz labelled_GMI_TVBSchaeferTian420.nii.gz
++ /opt/fsl/bin/fslmaths labelled_GM_TVBSchaeferTian420 -mas cort_subcort_GM.nii.gz labelled_GM_TVBSchaeferTian420
++ . /home/jwangbay/software/amsterdam/tvb-ukbb/bb_pipeline_tools/bb_set_footer
+++ set +x
++ cd sub-0001
++ . /home/jwangbay/software/amsterdam/tvb-ukbb/bb_pipeline_tools/bb_set_footer
+++ set +x
+ 
+2022-05-11 00:00:49,480 - bb_pipeline_struct - ERROR - There is not enough/correct DWI data. TOPUP cannot be run. Continuing to run DWI and fMRI processing without TOPUP. 

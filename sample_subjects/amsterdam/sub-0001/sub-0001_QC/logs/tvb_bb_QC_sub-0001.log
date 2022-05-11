@@ -1,0 +1,473 @@
+STANDARD OUT:
+HOST INFO: Linux cdr345.int.cedar.computecanada.ca 3.10.0-1160.53.1.el7.x86_64 #1 SMP Fri Jan 14 13:59:45 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+COMMAND RUN: /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/tvb_bb_QC.sh
+Starting time: Wed May 11 02:35:04 PDT 2022
++ set -x
++ echo ehxB
+ehxB
++ set +e
+++ pwd
++ origDir=/scratch/jwangbay/amsterdam
+++ dirname /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/tvb_bb_QC.sh
++ dirScript=/home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC
+++ pwd
++ dirSubject=/scratch/jwangbay/amsterdam/sub-0001
++ sub=sub-0001
++ [[ /scratch/jwangbay/amsterdam/sub-0001 =~ /$ ]]
++ [[ sub-0001 == '' ]]
++ export FSLDIR=/opt/fsl
++ FSLDIR=/opt/fsl
++ rm -f /scratch/jwangbay/amsterdam/sub-0001/QC/html/image_gen_links.js
++ echo ''
+
++ echo 'STARTING T1 EXTRACTION -------'
+STARTING T1 EXTRACTION -------
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/lightbox.sh /T1/T1.nii.gz /scratch/jwangbay/amsterdam/sub-0001 T1_extraction_unmasked
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/lightbox.sh -o /T1/T1_brain_mask.nii.gz /T1/T1.nii.gz /scratch/jwangbay/amsterdam/sub-0001 T1_extraction_masked
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/image_gen_link.sh /scratch/jwangbay/amsterdam/sub-0001 ex_under ../../T1/T1.nii.gz ex_over1 ../../T1/T1_brain_mask.nii.gz NA3 NA3_link 0
++ echo ''
+
++ echo 'STARTING T1 SEGMENTATION -------'
+STARTING T1 SEGMENTATION -------
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/lightbox.sh -o /T1/T1_fast/T1_brain_WM_mask.nii.gz /T1/T1.nii.gz /scratch/jwangbay/amsterdam/sub-0001 T1_segmentation_unlabelled_WM
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/image_gen_link.sh /scratch/jwangbay/amsterdam/sub-0001 uw_under ../../T1/T1.nii.gz uw_over1 ../../T1/T1_fast/T1_brain_WM_mask.nii.gz NA4 NA4_link 0
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/lightbox.sh -a 45.0 -o /T1/T1_fast/T1_brain_GM_mask.nii.gz /T1/T1.nii.gz /scratch/jwangbay/amsterdam/sub-0001 T1_segmentation_unlabelled_GM
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/image_gen_link.sh /scratch/jwangbay/amsterdam/sub-0001 ug_under ../../T1/T1.nii.gz ug_over1 ../../T1/T1_fast/T1_brain_GM_mask.nii.gz NA5 NA5_link 0
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/ortho_appended.sh -o /T1/T1_first/subcort_GM.nii.gz -x 28 -y 28 -z 28 /T1/T1.nii.gz /scratch/jwangbay/amsterdam/sub-0001 T1_segmentation_unlabelled_subcort_GM
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/image_gen_link.sh /scratch/jwangbay/amsterdam/sub-0001 us_under ../../T1/T1.nii.gz us_over1 ../../T1/T1_first/subcort_GM.nii.gz NA7 NA7_link 0
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/lightbox.sh -o /T1/labelled_GM_TVBSchaeferTian420.nii.gz -a 75.0 -p random_big -j label /T1/T1.nii.gz /scratch/jwangbay/amsterdam/sub-0001 T1_segmentation_labelled_cortex
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/image_gen_link.sh /scratch/jwangbay/amsterdam/sub-0001 lc_under ../../T1/T1.nii.gz lc_over1 ../../T1/labelled_GM_TVBSchaeferTian420.nii.gz NA8 NA8_link 0
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/ortho_appended.sh -o /T1/T1_first/T1_first_all_fast_firstseg.nii.gz -p random_big -a 40.0 -x 28 -y 28 -z 28 -j label /T1/T1.nii.gz /scratch/jwangbay/amsterdam/sub-0001 T1_segmentation_labelled_subcort_GM
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/image_gen_link.sh /scratch/jwangbay/amsterdam/sub-0001 ls_under ../../T1/T1.nii.gz ls_over1 ../../T1/T1_first/T1_first_all_fast_firstseg.nii.gz NA9 NA9_link 0
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/ortho_appended.sh -x 28 -y 28 -z 28 /T1/T1.nii.gz /scratch/jwangbay/amsterdam/sub-0001 T1_segmentation_unmasked_subcort
++ echo ''
+
++ echo 'STARTING T1 REGISTRATION -------'
+STARTING T1 REGISTRATION -------
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/edges.sh -s /opt/fsl/data/standard -l 10 /MNI152_T1_1mm.nii.gz /T1/T1_brain_to_MNI.nii.gz /scratch/jwangbay/amsterdam/sub-0001 T1_registration
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/image_gen_link.sh /scratch/jwangbay/amsterdam/sub-0001 re_under_1 ../../T1/T1_brain_to_MNI.nii.gz re_over1_1 /opt/fsl/data/standard/MNI152_T1_1mm.nii.gz NA12 NA12_link 0
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/image_gen_link.sh /scratch/jwangbay/amsterdam/sub-0001 re_under_2 /opt/fsl/data/standard/MNI152_T1_1mm.nii.gz re_over1_2 ../../T1/T1_brain_to_MNI.nii.gz NA34 NA34_link 0
++ '[' -e /scratch/jwangbay/amsterdam/sub-0001/T2_FLAIR/T2_FLAIR_brain_to_MNI.nii.gz ']'
++ '[' -e /scratch/jwangbay/amsterdam/sub-0001/T2_FLAIR/T2_FLAIR_unbiased.nii.gz ']'
++ echo ''
+
++ echo 'STARTING dMRI ORIENTATION -------'
+STARTING dMRI ORIENTATION -------
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/ortho_appended.sh -o /dMRI/dMRI/dti_V1.nii.gz -j linevector -x 19 -y 32 -z 19 -X 950.0 -Y 850.0 -Z 800.0 /dMRI/dMRI/dti_FA.nii.gz /scratch/jwangbay/amsterdam/sub-0001 dMRI_orientation_with_FA
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/image_gen_link.sh /scratch/jwangbay/amsterdam/sub-0001 dorf_under ../../dMRI/dMRI/dti_FA.nii.gz dorf_over1 ../../dMRI/dMRI/dti_V1.nii.gz NA19 NA19_link 0
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/ortho_appended.sh -x 19 -y 32 -z 19 -X 950.0 -Y 850.0 -Z 800.0 /dMRI/dMRI/dti_FA.nii.gz /scratch/jwangbay/amsterdam/sub-0001 dMRI_orientation_range_FA
++ echo ''
+
++ echo 'STARTING dMRI EXTRACTION -------'
+STARTING dMRI EXTRACTION -------
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/lightbox.sh -b 62.718401747457314 -c 96.08735171986915 /dMRI/dMRI/data_B0.nii.gz /scratch/jwangbay/amsterdam/sub-0001 dMRI_extraction_unmasked
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/lightbox.sh -b 62.718401747457314 -c 96.08735171986915 -o /dMRI/dMRI/nodif_brain_mask.nii.gz /dMRI/dMRI/data_B0.nii.gz /scratch/jwangbay/amsterdam/sub-0001 dMRI_extraction_masked
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/image_gen_link.sh /scratch/jwangbay/amsterdam/sub-0001 dex_under ../../dMRI/dMRI/data_B0.nii.gz dex_over1 ../../dMRI/dMRI/nodif_brain_mask.nii.gz NA24 NA24_link 0
++ echo ''
+
++ echo 'STARTING dMRI REGISTRATION -------'
+STARTING dMRI REGISTRATION -------
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/edges.sh -l 10 /dMRI/dMRI/transforms/DTI_to_T1.nii.gz /T1/T1.nii.gz /scratch/jwangbay/amsterdam/sub-0001 dMRI_registration
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/image_gen_link.sh /scratch/jwangbay/amsterdam/sub-0001 dre_under_1 ../../T1/T1.nii.gz dre_over1_1 ../../dMRI/dMRI/transforms/DTI_to_T1.nii.gz NA25 NA25_link 0
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/image_gen_link.sh /scratch/jwangbay/amsterdam/sub-0001 dre_under_2 ../../dMRI/dMRI/transforms/DTI_to_T1.nii.gz dre_over1_2 ../../T1/T1.nii.gz NA26 NA26_link 0
++ echo ''
+
++ echo 'STARTING DWI SynB0 WARPING -------'
+STARTING DWI SynB0 WARPING -------
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/edges.sh -l 10 /dMRI/dMRI/DWI_B0.nii.gz /dMRI/dMRI/SynB0/b0_u.nii.gz /scratch/jwangbay/amsterdam/sub-0001 DWI_warping
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/image_gen_link.sh /scratch/jwangbay/amsterdam/sub-0001 wa_under_1 ../../dMRI/dMRI/SynB0/b0_u.nii.gz wa_over1_1 ../../dMRI/dMRI/DWI_B0.nii.gz NA13 NA13_link 0
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/image_gen_link.sh /scratch/jwangbay/amsterdam/sub-0001 wa_under_2 ../../dMRI/dMRI/DWI_B0.nii.gz wa_over1_2 ../../dMRI/dMRI/SynB0/b0_u.nii.gz NA33 NA33_link 0
++ echo ''
+
++ echo 'STARTING dMRI TRACTOGRAPHY -------'
+STARTING dMRI TRACTOGRAPHY -------
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/lightbox.sh /dMRI/dMRI/dti_FA.nii.gz /scratch/jwangbay/amsterdam/sub-0001 dMRI_tractography_FA
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/lightbox.sh -o /dMRI/probtrackx_TVBSchaeferTian420/exclude.nii.gz -p red-yellow -a 25.0 /dMRI/dMRI/dti_FA.nii.gz /scratch/jwangbay/amsterdam/sub-0001 dMRI_tractography_exclude
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/image_gen_link.sh /scratch/jwangbay/amsterdam/sub-0001 dxc_under ../../dMRI/dMRI/dti_FA.nii.gz dxc_over1 ../../dMRI/probtrackx_TVBSchaeferTian420/exclude.nii.gz NA29 NA29_link 0
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/lightbox.sh -o /dMRI/probtrackx_TVBSchaeferTian420/labelledWM_GM_TVBSchaeferTian420.nii.gz -p blue-lightblue -a 100.0 /dMRI/dMRI/dti_FA.nii.gz /scratch/jwangbay/amsterdam/sub-0001 dMRI_tractography_seeds
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/image_gen_link.sh /scratch/jwangbay/amsterdam/sub-0001 dfs_under ../../dMRI/dMRI/dti_FA.nii.gz dfs_over1 ../../dMRI/probtrackx_TVBSchaeferTian420/labelledWM_GM_TVBSchaeferTian420.nii.gz NA30 NA30_link 0
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/lightbox.sh -o /dMRI/probtrackx_TVBSchaeferTian420/labelledWM_GM_TVBSchaeferTian420.nii.gz -a 100.0 -p random_big -j label /dMRI/dMRI/dti_FA.nii.gz /scratch/jwangbay/amsterdam/sub-0001 dMRI_tractography_seeds_rb
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/image_gen_link.sh /scratch/jwangbay/amsterdam/sub-0001 dfsrb_under ../../dMRI/dMRI/dti_FA.nii.gz dfsrb_over1 ../../dMRI/probtrackx_TVBSchaeferTian420/labelledWM_GM_TVBSchaeferTian420.nii.gz NA31 NA31_link 0
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/lightbox.sh -o /dMRI/probtrackx_TVBSchaeferTian420/exclude.nii.gz -p red-yellow -a 25.0 -s /dMRI/probtrackx_TVBSchaeferTian420/labelledWM_GM_TVBSchaeferTian420.nii.gz -h blue-lightblue -i 100.0 /dMRI/dMRI/dti_FA.nii.gz /scratch/jwangbay/amsterdam/sub-0001 dMRI_tractography_exclude_seeds
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/image_gen_link.sh /scratch/jwangbay/amsterdam/sub-0001 dxs_under ../../dMRI/dMRI/dti_FA.nii.gz dxs_over1 ../../dMRI/probtrackx_TVBSchaeferTian420/exclude.nii.gz dxs_over2 ../../dMRI/probtrackx_TVBSchaeferTian420/labelledWM_GM_TVBSchaeferTian420.nii.gz 1
++ echo ''
+
++ echo 'STARTING EDDY QUAD -------'
+STARTING EDDY QUAD -------
++ eddy_quad_list=/scratch/jwangbay/amsterdam/eddy_quad_list.txt
++ '[' '!' -e /scratch/jwangbay/amsterdam/eddy_quad_list.txt ']'
++ EDDY_QUAD_output_folder=/scratch/jwangbay/amsterdam/sub-0001/QC/eddyQUAD/data.qc
++ rm -rf /scratch/jwangbay/amsterdam/sub-0001/QC/eddyQUAD/data.qc
++ /opt/fsl/bin/eddy_quad /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/data -idx /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/eddy_index.txt -par /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/acqparams.txt -m /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/nodif_brain_mask.nii.gz -b /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/bvals -o /scratch/jwangbay/amsterdam/sub-0001/QC/eddyQUAD/data.qc
+found b-shell of 1 orientations with b-value 0.000000
+found b-shell of 32 orientations with b-value 1000.000000
+Running $FSLDIR/bin/slicer /scratch/jwangbay/amsterdam/sub-0001/QC/eddyQUAD/data.qc/avg_b0 -i 0 14471.0 -a /scratch/jwangbay/amsterdam/sub-0001/QC/eddyQUAD/data.qc/avg_b0.png
+Running $FSLDIR/bin/slicer /scratch/jwangbay/amsterdam/sub-0001/QC/eddyQUAD/data.qc/avg_b1000 -i 0 3398.0 -a /scratch/jwangbay/amsterdam/sub-0001/QC/eddyQUAD/data.qc/avg_b1000.png
+Running $FSLDIR/bin/fslsplit /scratch/jwangbay/amsterdam/sub-0001/dMRI/dMRI/data.eddy_cnr_maps.nii.gz /scratch/jwangbay/amsterdam/sub-0001/QC/eddyQUAD/data.qc/cnr
+Running $FSLDIR/bin/slicer /scratch/jwangbay/amsterdam/sub-0001/QC/eddyQUAD/data.qc/cnr0000.nii.gz -i 0 0.0 -a /scratch/jwangbay/amsterdam/sub-0001/QC/eddyQUAD/data.qc/cnr0000.nii.gz.png
+ WARNING: input image is empty 
+Running $FSLDIR/bin/slicer /scratch/jwangbay/amsterdam/sub-0001/QC/eddyQUAD/data.qc/cnr0001.nii.gz -i 0 4.93 -a /scratch/jwangbay/amsterdam/sub-0001/QC/eddyQUAD/data.qc/cnr0001.nii.gz.png
++ '[' 0 -eq 0 ']'
++ grep -Fxq /scratch/jwangbay/amsterdam/sub-0001/QC/eddyQUAD/data.qc /scratch/jwangbay/amsterdam/eddy_quad_list.txt
++ '[' 0 '!=' 0 ']'
++ echo ''
+
++ echo 'STARTING FC SC -------'
+STARTING FC SC -------
++ python /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/SC_FC.py /scratch/jwangbay/amsterdam/sub-0001 sub-0001 TVBSchaeferTian420
+QStandardPaths: XDG_RUNTIME_DIR points to non-existing path '/run/user/3110244', please create it with 0700 permissions.
+/home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/SC_FC.py:180: RuntimeWarning: divide by zero encountered in log10
+  SC_log = np.log10(SC)
+/opt/tvb-pipeline/software/env/lib/python3.7/site-packages/numpy/lib/histograms.py:839: RuntimeWarning: invalid value encountered in greater_equal
+  keep = (tmp_a >= first_edge)
+/opt/tvb-pipeline/software/env/lib/python3.7/site-packages/numpy/lib/histograms.py:840: RuntimeWarning: invalid value encountered in less_equal
+  keep &= (tmp_a <= last_edge)
++ python /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/new_IDP_gen.py /scratch/jwangbay/amsterdam/sub-0001 /home/jwangbay/software/amsterdam/tvb-ukbb/templates/parcellations/TVB_SchaeferTian/TVB_SchaeferTian_420_LUT.tsv /home/jwangbay/software/amsterdam/tvb-ukbb TVBSchaeferTian420 /opt/fsl
+rm: cannot remove 'IDP_files/susc_parc_to_T1_space.nii.gz': No such file or directory
+rm: cannot remove 'IDP_files/susc_parc_to_T1_space.nii.gz': No such file or directory
+rm: cannot remove 'IDP_files/susc_parc_to_T1_space.nii.gz': No such file or directory
+rm: cannot remove 'IDP_files/susc_parc_to_T1_space.nii.gz': No such file or directory
+rm: cannot remove 'IDP_files/susc_parc_to_T1_space.nii.gz': No such file or directory
+rm: cannot remove 'IDP_files/susc_parc_to_T1_space.nii.gz': No such file or directory
+---------
+T2_FLAIR_all_align_to_T1
+---------
+NaN
+---------
+dMRI_all_align_to_T1
+---------
+0.94694
+---------
+SWI_all_align_to_T1
+---------
+NaN
+---------
+rfMRI.ica_all_align_to_T1
+---------
+0.979217
+---------
+rfMRI.ica_fieldmap_all_align_to_T1
+---------
+NaN
+---------
+tfMRI.feat_all_align_to_T1
+---------
+0.978942
+---------
+tfMRI.feat_fieldmap_all_align_to_T1
+---------
+NaN
+---------
+rfMRI.ica_fieldmap_align_to_func
+---------
+NaN
+---------
+tfMRI.feat_fieldmap_align_to_func
+---------
+NaN
+---------
+rfMRI.ica_SNR_num_vol
+---------
+175.622467
+229.764420
+240
+---------
+tfMRI.feat_SNR_num_vol
+---------
+186.907425
+160
+---------
+rfMRI.ica_IDP_files/inv_binmask_SusceptibilityROIs_SchaeferTian_420.nii.gz_susceptibility_SNR
+---------
+208.788696
+260.352020
+---------
+tfMRI.feat_IDP_files/inv_binmask_SusceptibilityROIs_SchaeferTian_420.nii.gz_susceptibility_SNR
+---------
+223.225616
+---------
+rfMRI.ica_IDP_files/binmask_SusceptibilityROIs_SchaeferTian_420.nii.gz_susceptibility_SNR
+---------
+124.472488
+181.916687
+---------
+tfMRI.feat_IDP_files/binmask_SusceptibilityROIs_SchaeferTian_420.nii.gz_susceptibility_SNR
+---------
+129.078491
+---------
+MCFLIRT
+rfMRI.ica
+---------
+0.0167597
+0.218604
+0.0866334
+0.08910112170212765
+0.2018443
+0.0
+0
+0.050195
+0.41371
+0.2731305
+0.258372406779661
+0.36351500000000003
+0.0
+0
+---------
+MCFLIRT
+tfMRI.feat
+---------
+0.00858396
+0.148274
+0.0628264
+0.06623300603773584
+0.13969004
+0.0
+0
+0.00100444
+0.39946
+0.245685
+0.2360162953125
+0.39845556
+0.0
+0
+---------
+MELODIC SNR
+rfMRI.ica
+/scratch/jwangbay/amsterdam/sub-0001/fMRI/rfMRI.ica/fix4melview_Standard_thr30.txt
+---------
+0.08
+0.44
+0.48
+---------
+rfMRI.ica_rfMRI_FD_DVARS
+---------
+0.015209355927966102
+5.685013220338984
+---------
+FC
+rfMRI.ica
+---------
+-0.5214882658097256
+0.9611004815484182
+0.23770234386206185
+0.24203862909085397
+0.7190618524575643
+0.7233981376863563
+1.4825887473581438
+0.1042618479372656
+0.0
+[   4    0    2    6    4   12   16   16   20   30   48   74   80  124
+  166  134  160  214  248  290  356  374  482  562  608  754  814  924
+ 1068 1296 1540 1492 1792 2066 2138 2548 2864 2958 3414 3572 3712 4250
+ 4434 4548 4752 5084 5280 5266 5354 5384 5496 5328 5160 5276 5360 5006
+ 4976 4616 4448 4216 4084 3892 3514 3422 2880 2942 2604 2316 2094 1968
+ 1810 1664 1500 1348 1130  910  954  868  698  678  548  442  398  358
+  312  282  202  200  162  152  126   90   72   62   32   14   18   12
+    4    2]
+[-0.51407532 -0.49924943 -0.48442355 -0.46959766 -0.45477177 -0.43994588
+ -0.42512    -0.41029411 -0.39546822 -0.38064233 -0.36581645 -0.35099056
+ -0.33616467 -0.32133878 -0.3065129  -0.29168701 -0.27686112 -0.26203524
+ -0.24720935 -0.23238346 -0.21755757 -0.20273169 -0.1879058  -0.17307991
+ -0.15825402 -0.14342814 -0.12860225 -0.11377636 -0.09895047 -0.08412459
+ -0.0692987  -0.05447281 -0.03964692 -0.02482104 -0.00999515  0.00483074
+  0.01965663  0.03448251  0.0493084   0.06413429  0.07896018  0.09378606
+  0.10861195  0.12343784  0.13826373  0.15308961  0.1679155   0.18274139
+  0.19756728  0.21239316  0.22721905  0.24204494  0.25687083  0.27169671
+  0.2865226   0.30134849  0.31617438  0.33100026  0.34582615  0.36065204
+  0.37547793  0.39030381  0.4051297   0.41995559  0.43478148  0.44960736
+  0.46443325  0.47925914  0.49408503  0.50891091  0.5237368   0.53856269
+  0.55338858  0.56821446  0.58304035  0.59786624  0.61269213  0.62751801
+  0.6423439   0.65716979  0.67199568  0.68682156  0.70164745  0.71647334
+  0.73129923  0.74612511  0.760951    0.77577689  0.79060278  0.80542866
+  0.82025455  0.83508044  0.84990633  0.86473221  0.8795581   0.89438399
+  0.90920988  0.92403576  0.93886165  0.95368754]
+[0.00000000e+00 2.16196871e-04 4.97050427e-04 8.59699698e-04
+ 1.32513858e-03 1.91888310e-03 2.67169992e-03 3.62038663e-03
+ 4.80858949e-03 6.28763804e-03 8.11736968e-03 1.03669099e-02
+ 1.31153667e-02 1.64523902e-02 2.04785420e-02 2.53054133e-02
+ 3.10554264e-02 3.78612522e-02 4.58647795e-02 5.52155738e-02
+ 6.60687749e-02 7.85823936e-02 9.29139881e-02 1.09216720e-01
+ 1.27634824e-01 1.48298538e-01 1.71318606e-01 1.96780462e-01
+ 2.24738263e-01 2.55208963e-01 2.88166653e-01 3.23537394e-01
+ 3.61194809e-01 4.00956681e-01 4.42582800e-01 4.85774288e-01
+ 5.30174581e-01 5.75372205e-01 6.20905424e-01 6.66268769e-01
+ 7.10921378e-01 7.54296991e-01 7.95815389e-01 8.34894958e-01
+ 8.70966027e-01 9.03484545e-01 9.31945666e-01 9.55896746e-01
+ 9.74949302e-01 9.88789494e-01 9.97186718e-01 1.00000000e+00
+ 9.97181932e-01 9.88780002e-01 9.74935262e-01 9.55878391e-01
+ 9.31923298e-01 9.03458522e-01 8.70936758e-01 8.34862893e-01
+ 7.95781003e-01 7.54260776e-01 7.10883830e-01 6.66230379e-01
+ 6.20866663e-01 5.75333521e-01 5.30136386e-01 4.85736954e-01
+ 4.42546655e-01 4.00922004e-01 3.61161830e-01 3.23506292e-01
+ 2.88137558e-01 2.55181961e-01 2.24713395e-01 1.96757733e-01
+ 1.71297983e-01 1.48279961e-01 1.27618208e-01 1.09201963e-01
+ 9.29009718e-02 7.85709909e-02 6.60588529e-02 5.52069977e-02
+ 4.58574156e-02 3.78549705e-02 3.10501025e-02 2.53009302e-02
+ 2.04747910e-02 1.64492717e-02 1.31127904e-02 1.03647949e-02
+ 8.11564417e-03 6.28623905e-03 4.80746226e-03 3.61948396e-03
+ 2.67098150e-03 1.91831482e-03 1.32469180e-03 8.59350575e-04]
+------
+FC_dist rfMRI.ica
+dist: norm
+squared error: 0.0007698714416375621
+---------
+HOMOTOPIC
+rfMRI.ica
+---------
+0.5466790466392061
+---------
+eddy_num_outliers
+---------
+2
+---------
+eddy_percent_outliers
+---------
+0.10416666666666667
+---------
+SNR_CNR
+---------
+ERROR: SNR_CNR error
+---------
+SC
+---------
+-5.421942676023789
+-0.199704971438005
+-3.6344789812395177
+-3.4090252730502733
+3.2093203016122684
+3.434774009801513
+5.222237704585784
+1.0
+0
+nan
+0.0
+[  4  32  20  72  86 162 296 310 568 442 616 492 686 648 652 748 608 692
+ 524 554 530 606 580 486 546 518 562 530 556 506 514 524 560 484 428 468
+ 436 464 480 480 416 418 412 426 426 406 414 396 406 396 354 372 356 334
+ 328 322 316 272 274 280 256 260 222 246 228 164 208 182 172 172 146 148
+ 150 142 124 126 116 116 116 106  98 124 138 114 128 182 116 154 190 138
+ 180 180 144 154 124  76  82  52  16   4]
+[-5.39583149 -5.34360911 -5.29138673 -5.23916436 -5.18694198 -5.1347196
+ -5.08249723 -5.03027485 -4.97805247 -4.92583009 -4.87360772 -4.82138534
+ -4.76916296 -4.71694059 -4.66471821 -4.61249583 -4.56027345 -4.50805108
+ -4.4558287  -4.40360632 -4.35138395 -4.29916157 -4.24693919 -4.19471682
+ -4.14249444 -4.09027206 -4.03804968 -3.98582731 -3.93360493 -3.88138255
+ -3.82916018 -3.7769378  -3.72471542 -3.67249304 -3.62027067 -3.56804829
+ -3.51582591 -3.46360354 -3.41138116 -3.35915878 -3.30693641 -3.25471403
+ -3.20249165 -3.15026927 -3.0980469  -3.04582452 -2.99360214 -2.94137977
+ -2.88915739 -2.83693501 -2.78471264 -2.73249026 -2.68026788 -2.6280455
+ -2.57582313 -2.52360075 -2.47137837 -2.419156   -2.36693362 -2.31471124
+ -2.26248886 -2.21026649 -2.15804411 -2.10582173 -2.05359936 -2.00137698
+ -1.9491546  -1.89693223 -1.84470985 -1.79248747 -1.74026509 -1.68804272
+ -1.63582034 -1.58359796 -1.53137559 -1.47915321 -1.42693083 -1.37470845
+ -1.32248608 -1.2702637  -1.21804132 -1.16581895 -1.11359657 -1.06137419
+ -1.00915182 -0.95692944 -0.90470706 -0.85248468 -0.80026231 -0.74803993
+ -0.69581755 -0.64359518 -0.5913728  -0.53915042 -0.48692805 -0.43470567
+ -0.38248329 -0.33026091 -0.27803854 -0.22581616]
+[0.         0.03176256 0.07186994 0.11981747 0.1746296  0.23499818
+ 0.29942213 0.36633155 0.43418818 0.50155991 0.5671707  0.62992938
+ 0.68894144 0.74350809 0.79311612 0.83742201 0.87623257 0.90948412
+ 0.93722166 0.95957887 0.97675963 0.98902141 0.99666061 1.
+ 0.99937805 0.99514011 0.98763119 0.97719029 0.96414591 0.94881274
+ 0.93148921 0.91245593 0.89197462 0.87028773 0.8476183  0.82417034
+ 0.80012927 0.77566271 0.75092131 0.72603965 0.70113732 0.67631988
+ 0.65167991 0.62729804 0.60324391 0.57957714 0.55634822 0.53359942
+ 0.51136551 0.48967459 0.46854876 0.44800477 0.42805464 0.40870616
+ 0.38996346 0.37182741 0.35429607 0.33736505 0.32102787 0.30527625
+ 0.29010038 0.27548919 0.26143057 0.24791155 0.23491846 0.22243714
+ 0.21045302 0.19895128 0.18791692 0.17733488 0.16719011 0.15746764
+ 0.14815263 0.13923043 0.13068662 0.12250704 0.11467784 0.10718548
+ 0.10001675 0.09315879 0.08659912 0.08032563 0.07432657 0.06859059
+ 0.06310669 0.05786427 0.0528531  0.04806332 0.04348544 0.03911031
+ 0.03492915 0.0309335  0.02711526 0.02346663 0.01998016 0.01664866
+ 0.01346528 0.01042342 0.00751679 0.00473935]/home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/new_IDP_gen.py:182: RuntimeWarning: divide by zero encountered in log10
+  SC = np.log10(SC)
+/home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/new_IDP_gen.py:206: RuntimeWarning: invalid value encountered in less
+  SC_proportion_neg=np.count_nonzero(SC<0)/np.count_nonzero(~np.isnan(SC))
+/home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/new_IDP_gen.py:353: RuntimeWarning: invalid value encountered in less
+  TL_proportion_neg=np.count_nonzero(TL<0)/np.count_nonzero(~np.isnan(TL))
+
+------
+SC_dist
+dist: lognorm
+squared error: 0.019571915125100304
+---------
+TL
+---------
+0.2040779083399828
+2.2807490500644776
+1.7662639030976002
+1.6421914317209636
+0.638557618343514
+0.5144851469668774
+2.076671141724495
+0.0
+0
+nan
+0.0
+[  2   2   2  12  16   8  10  22  34  22  48  30  60  42  46  64  66  72
+  70 116  76  88  70  86  84  84  80  80 110 118  96  92  80  66  72  78
+  90  48  66  60  52  60  64  58  50  78  68  76  68  74  62 104  70  74
+  98  98 102 146 142 146 126 144 176 218 278 320 294 342 364 404 454 466
+ 526 608 618 630 630 666 688 714 704 644 690 574 560 472 476 434 364 316
+ 266 264 160  96  92  70 100  74  32  20]
+[0.21446126 0.23522798 0.25599469 0.2767614  0.29752811 0.31829482
+ 0.33906153 0.35982824 0.38059496 0.40136167 0.42212838 0.44289509
+ 0.4636618  0.48442851 0.50519522 0.52596194 0.54672865 0.56749536
+ 0.58826207 0.60902878 0.62979549 0.6505622  0.67132892 0.69209563
+ 0.71286234 0.73362905 0.75439576 0.77516247 0.79592918 0.8166959
+ 0.83746261 0.85822932 0.87899603 0.89976274 0.92052945 0.94129616
+ 0.96206288 0.98282959 1.0035963  1.02436301 1.04512972 1.06589643
+ 1.08666314 1.10742985 1.12819657 1.14896328 1.16972999 1.1904967
+ 1.21126341 1.23203012 1.25279683 1.27356355 1.29433026 1.31509697
+ 1.33586368 1.35663039 1.3773971  1.39816381 1.41893053 1.43969724
+ 1.46046395 1.48123066 1.50199737 1.52276408 1.54353079 1.56429751
+ 1.58506422 1.60583093 1.62659764 1.64736435 1.66813106 1.68889777
+ 1.70966449 1.7304312  1.75119791 1.77196462 1.79273133 1.81349804
+ 1.83426475 1.85503147 1.87579818 1.89656489 1.9173316  1.93809831
+ 1.95886502 1.97963173 2.00039845 2.02116516 2.04193187 2.06269858
+ 2.08346529 2.104232   2.12499871 2.14576543 2.16653214 2.18729885
+ 2.20806556 2.22883227 2.24959898 2.27036569]
+[0.00000000e+00 4.77746578e-04 1.03671317e-03 1.68889289e-03
+ 2.44771382e-03 3.32815246e-03 4.34684658e-03 5.52220506e-03
+ 6.87451274e-03 8.42602754e-03 1.02010669e-02 1.22260806e-02
+ 1.45297058e-02 1.71428018e-02 2.00984599e-02 2.34319834e-02
+ 2.71808363e-02 3.13845539e-02 3.60846128e-02 4.13242562e-02
+ 4.71482714e-02 5.36027157e-02 6.07345886e-02 6.85914494e-02
+ 7.72209775e-02 8.66704771e-02 9.69863255e-02 1.08213370e-01
+ 1.20394271e-01 1.33568807e-01 1.47773132e-01 1.63039010e-01
+ 1.79393019e-01 1.96855748e-01 2.15440995e-01 2.35154967e-01
+ 2.55995519e-01 2.77951421e-01 3.01001690e-01 3.25114985e-01
+ 3.50249091e-01 3.76350509e-01 4.03354147e-01 4.31183160e-01
+ 4.59748911e-01 4.88951101e-01 5.18678041e-01 5.48807110e-01
+ 5.79205360e-01 6.09730310e-01 6.40230893e-01 6.70548574e-01
+ 7.00518614e-01 7.29971476e-01 7.58734357e-01 7.86632831e-01
+ 8.13492564e-01 8.39141112e-01 8.63409741e-01 8.86135263e-01
+ 9.07161860e-01 9.26342855e-01 9.43542417e-01 9.58637158e-01
+ 9.71517614e-01 9.82089560e-01 9.90275163e-01 9.96013934e-01
+ 9.99263476e-01 1.00000000e+00 9.98218621e-01 9.93933407e-01
+ 9.87177194e-01 9.78001173e-01 9.66474235e-01 9.52682120e-01
+ 9.36726348e-01 9.18722980e-01 8.98801214e-01 8.77101843e-01
+ 8.53775603e-01 8.28981438e-01 8.02884704e-01 7.75655353e-01
+ 7.47466105e-01 7.18490658e-01 6.88901942e-01 6.58870450e-01
+ 6.28562672e-01 5.98139635e-01 5.67755587e-01 5.37556817e-01
+ 5.07680635e-01 4.78254518e-01 4.49395415e-01 4.21209225e-01
+ 3.93790438e-01 3.67221936e-01 3.41574949e-01 3.16909151e-01]
+------
+TL_dist
+dist: lognorm
+squared error: 0.10674726088976963
++ python /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/IDP_postprocessing.py /scratch/jwangbay/amsterdam/sub-0001 /home/jwangbay/software/amsterdam/tvb-ukbb/bb_IDP/ukbb_IDP_list.tsv /home/jwangbay/software/amsterdam/tvb-ukbb/bb_IDP/IDPoi.txt /home/jwangbay/software/amsterdam/tvb-ukbb/bb_IDP/thresholds.tsv
++ python /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/IDP_html_gen.py /scratch/jwangbay/amsterdam/sub-0001 TVBSchaeferTian420
++ /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/html_gen.sh /scratch/jwangbay/amsterdam/sub-0001 sub-0001
+rfMRI.ica
++ mv /scratch/jwangbay/amsterdam/sub-0001/QC /scratch/jwangbay/amsterdam/sub-0001/QC_TVBSchaeferTian420
++ mv /scratch/jwangbay/amsterdam/sub-0001/IDP_files /scratch/jwangbay/amsterdam/sub-0001/IDP_files_TVBSchaeferTian420
++ set -e
++ . /home/jwangbay/software/amsterdam/tvb-ukbb/bb_pipeline_tools/bb_set_footer
+++ set +x
+The command /home/jwangbay/software/amsterdam/tvb-ukbb/tvb_bb_QC/tvb_bb_QC.sh took 1705 seconds
+Ending time: Wed May 11 03:03:29 PDT 2022
+
+
+STANDARD ERROR:

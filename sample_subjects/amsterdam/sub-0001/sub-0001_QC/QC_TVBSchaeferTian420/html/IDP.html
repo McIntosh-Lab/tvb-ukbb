@@ -1,0 +1,1106 @@
+
+
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <title>IDP IMAGE REPORT</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/w3.css">
+
+    <script src="./togglesIDP.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./sidebartoggles.js" type="text/javascript" charset="utf-8"></script>
+    <style>
+      th, td {
+      padding: 5px;
+    }
+    </style>
+    <body class="w3-main" style="background-color:black; " onload="updateTitle();updateImage();updateTitle();">
+    <!--document.getElementById('image_link').innerHTML = document.getElementById('ex_a').src;-->
+
+
+    <!-- Header -->
+    <header class="w3-display-container  w3-center" style="max-height:1000px; ">
+      <img class="w3-image" src="images/1.jpg" alt="Me" width=100% style="max-height:1000px;object-fit: cover;">
+      
+        <div class="w3-display-middle w3-padding-large w3-border w3-wide w3-text-light-grey w3-center" style="background-color:rgba(0, 0, 0, 0.75);">
+
+          <h1 class="w3-hide-medium w3-hide-small w3-xxxlarge">IDP IMAGE REPORT</h1>
+          <h5 class="w3-hide-large" style="white-space:nowrap">IDP IMAGE REPORT</h5>
+          
+          <h3 class="w3-hide-medium w3-hide-small">sub-0001</h3>
+          <h5 class="w3-hide-medium w3-hide-small">Parcellation - TVBSchaeferTian420</h5>
+          
+        </div>
+     
+
+      <!-- Sidebar -->
+
+      <div id="mySidebar" class="sidebar" style="width: 0; margin-left: 0; font-size: 12px">
+        <a href="file:notes/" class="w3-center">open notes.txt file in local system to make changes</a>
+        <br>
+        <iframe src="notes/notes.txt" style="background: #FFFFFF; height: 90%"></iframe>
+
+      </div>
+
+      <!-- Sidebar button -->
+       <div id="main" align="left" >
+        <button id="togglebutton" class="openbtn sticky" onclick="toggNav()">NOTES</button>  
+      </div>
+
+
+
+
+      <!-- Navbar (placed at the bottom of the header image) -->
+      <div class="w3-bar w3-light-grey w3-round w3-display-bottommiddle w3-hide-small w3-hide-medium" style="bottom:65px">
+        <a href="report.html" class="w3-bar-item w3-button">Home</a>
+        <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
+        <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
+        <a href="MELODIC_FIX.html" class="w3-bar-item w3-button">MELODIC-FIX</a>
+        <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
+        <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+        <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
+      </div>
+    </header>
+
+    <!-- Navbar on small screens -->
+    <div class="w3-center w3-black w3-padding-16 w3-hide-large ">
+    <div class="w3-bar w3-light-grey w3-round ">
+      <a href="report.html" class="w3-bar-item w3-button">Home</a>
+        <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
+        <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
+        <a href="MELODIC_FIX.html" class="w3-bar-item w3-button">MELODIC-FIX</a>
+        <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
+        <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
+        <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
+    </div>
+    </div>
+
+
+    <!-- Page content -->
+    <div class="w3-content w3-padding-large w3-margin-top" id="portfolio" style="color:white; text-align: center; >
+
+
+
+	  <!-- Images (Portfolio) -->
+
+	<br><br><a name="fMRI_REPORTS">______</a><br><br>
+	  <h1> IDP REPORTS </h1>
+      <h1>
+    <div style="font-size: 20px" > Parcellation: <select name="menu1" id="menu1" onkeydown="IgnoreAlpha(event);">
+      <option selected="selected">TVBSchaeferTian420</option>
+      <option id="option_placeholder">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</option>
+      <!-- DO NOT REMOVE. PLACEHOLDER FOR SCRIPTS TO INSERT NEW PARC LINKS -->
+
+      
+      </select>
+      </div>
+      <script type="text/javascript">
+     var urlmenu = document.getElementById( 'menu1' );
+     urlmenu.onchange = function() {
+          if (this.options[ this.selectedIndex ].value != ""){
+            window.open( this.options[ this.selectedIndex ].value, '_self');
+          }
+     };
+    </script></h1>
+	  ______<br><br><br>
+
+	
+        <label for="IDPs" style="white-space:nowrap;">IDPs <i>(q/e)</i>:
+  <select name="IDPs" id="IDPs" onchange="updateTitle();updateImage();" onkeydown="IgnoreAlpha(event);">
+    
+
+
+<option value="High-priority IDPs" id="High-priority IDPs">High-priority IDPs</option>
+<option value="New TVB IDPs" id="New TVB IDPs">New TVB IDPs</option>
+
+
+<option value="Low-priority IDPs" id="Low-priority IDPs">Low-priority IDPs</option>
+
+<option value="All IDPs" id="All IDPs">All Significant IDPs</option>
+
+
+  </select></label>
+  &nbsp&nbsp&nbsp&nbsp
+
+<br><br>
+
+    
+  <div style="font-size: 10px">
+      <table style="  margin-left: auto;
+      margin-right: auto; text-align: left;">
+        <tr>
+          <th>IDP Name (short)</th>
+          <th>Category</th>
+          <th>Value</th>
+          <th>Unit</th>
+        </tr>
+
+
+	
+			<tr style="display: none; " name="High-priority IDPs">
+
+			  <td>T1_l_align_to_std_diff</td>
+			  <td>bb_IDP_T1_align_to_std</td>
+			  <td>6.325330e-01</td>
+			  <td>AU</td>
+			</tr>
+			
+			
+			<tr style="display: none; " name="High-priority IDPs">
+
+			  <td>T1_nl_align_to_std_diff</td>
+			  <td>bb_IDP_T1_align_to_std</td>
+			  <td>4.667700e-01</td>
+			  <td>AU</td>
+			</tr>
+			
+			
+			<tr style="display: none; " name="High-priority IDPs">
+
+			  <td>T1_nl_align_to_std_warp</td>
+			  <td>bb_IDP_T1_align_to_std</td>
+			  <td>8.763200e-02</td>
+			  <td>AU</td>
+			</tr>
+			
+			
+			<tr style="display: none; " name="High-priority IDPs">
+
+			  <td>T1_inverse_SNR</td>
+			  <td>bb_IDP_T1_noise_ratio</td>
+			  <td>2.890942e-02</td>
+			  <td>ratio</td>
+			</tr>
+			
+			
+			<tr style="display: none; " name="High-priority IDPs">
+
+			  <td>T1_inverse_CNR</td>
+			  <td>bb_IDP_T1_noise_ratio</td>
+			  <td>4.981382e-02</td>
+			  <td>ratio</td>
+			</tr>
+			
+			
+			<tr style="display: none; " name="High-priority IDPs">
+
+			  <td>dMRI_eddy_outlier</td>
+			  <td>bb_IDP_diff_eddy_outliers</td>
+			  <td>2.000000e+00</td>
+			  <td>count</td>
+			</tr>
+			
+			
+			<tr style="display: none; " name="High-priority IDPs">
+
+			  <td>T1_FIRST_left_thalamus</td>
+			  <td>bb_IDP_T1_FIRST_vols</td>
+			  <td>8.487000e+03</td>
+			  <td>mm3</td>
+			</tr>
+			
+			
+			<tr style="display: none; " name="High-priority IDPs">
+
+			  <td>T1_FIRST_right_thalamus</td>
+			  <td>bb_IDP_T1_FIRST_vols</td>
+			  <td>8.728000e+03</td>
+			  <td>mm3</td>
+			</tr>
+			
+			
+			<tr style="display: none; " name="High-priority IDPs">
+
+			  <td>T1_FIRST_left_caudate</td>
+			  <td>bb_IDP_T1_FIRST_vols</td>
+			  <td>3.911000e+03</td>
+			  <td>mm3</td>
+			</tr>
+			
+			
+			<tr style="display: none; " name="High-priority IDPs">
+
+			  <td>T1_FIRST_right_caudate</td>
+			  <td>bb_IDP_T1_FIRST_vols</td>
+			  <td>4.418000e+03</td>
+			  <td>mm3</td>
+			</tr>
+			
+			
+			<tr style="display: none; " name="High-priority IDPs">
+
+			  <td>T1_FIRST_left_putamen</td>
+			  <td>bb_IDP_T1_FIRST_vols</td>
+			  <td>5.972000e+03</td>
+			  <td>mm3</td>
+			</tr>
+			
+			
+			<tr style="display: none; " name="High-priority IDPs">
+
+			  <td>T1_FIRST_right_putamen</td>
+			  <td>bb_IDP_T1_FIRST_vols</td>
+			  <td>5.786000e+03</td>
+			  <td>mm3</td>
+			</tr>
+			
+			
+			<tr style="display: none; " name="High-priority IDPs">
+
+			  <td>T1_FIRST_left_pallidum</td>
+			  <td>bb_IDP_T1_FIRST_vols</td>
+			  <td>1.832000e+03</td>
+			  <td>mm3</td>
+			</tr>
+			
+			
+			<tr style="display: none; " name="High-priority IDPs">
+
+			  <td>T1_FIRST_right_pallidum</td>
+			  <td>bb_IDP_T1_FIRST_vols</td>
+			  <td>1.956000e+03</td>
+			  <td>mm3</td>
+			</tr>
+			
+			
+			<tr style="display: none; " name="High-priority IDPs">
+
+			  <td>T1_FIRST_left_hippocampus</td>
+			  <td>bb_IDP_T1_FIRST_vols</td>
+			  <td>4.383000e+03</td>
+			  <td>mm3</td>
+			</tr>
+			
+			
+			<tr style="display: none; " name="High-priority IDPs">
+
+			  <td>T1_FIRST_right_hippocampus</td>
+			  <td>bb_IDP_T1_FIRST_vols</td>
+			  <td>4.703000e+03</td>
+			  <td>mm3</td>
+			</tr>
+			
+			
+			<tr style="display: none; " name="High-priority IDPs">
+
+			  <td>T1_FIRST_left_amygdala</td>
+			  <td>bb_IDP_T1_FIRST_vols</td>
+			  <td>1.224000e+03</td>
+			  <td>mm3</td>
+			</tr>
+			
+			
+			<tr style="display: none; " name="High-priority IDPs">
+
+			  <td>T1_FIRST_right_amygdala</td>
+			  <td>bb_IDP_T1_FIRST_vols</td>
+			  <td>1.315000e+03</td>
+			  <td>mm3</td>
+			</tr>
+			
+			
+			<tr style="display: none; " name="High-priority IDPs">
+
+			  <td>T1_FIRST_left_accumbens</td>
+			  <td>bb_IDP_T1_FIRST_vols</td>
+			  <td>6.660000e+02</td>
+			  <td>mm3</td>
+			</tr>
+			
+			
+			<tr style="display: none; " name="High-priority IDPs">
+
+			  <td>T1_FIRST_right_accumbens</td>
+			  <td>bb_IDP_T1_FIRST_vols</td>
+			  <td>4.950000e+02</td>
+			  <td>mm3</td>
+			</tr>
+			
+			
+			<tr style="display: none; " name="High-priority IDPs">
+
+			  <td>T1_FIRST_brain_stem+4th_ventricle</td>
+			  <td>bb_IDP_T1_FIRST_vols</td>
+			  <td>2.473100e+04</td>
+			  <td>mm3</td>
+			</tr>
+			
+			
+			<tr style="display: none; " name="High-priority IDPs">
+
+			  <td>T2_FLAIR_WMH_volume</td>
+			  <td>bb_IDP_T2_FLAIR_WMH</td>
+			  <td>nan</td>
+			  <td>mm3</td>
+			</tr>
+			
+			
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>T2_FLAIR_align_to_T1</td>
+              <td>tvb_IDP_all_align_to_T1</td>
+              <td>nan</td>
+              <td>AU</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>dMRI_align_to_T1</td>
+              <td>tvb_IDP_all_align_to_T1</td>
+              <td>0.94694</td>
+              <td>AU</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>SWI_align_to_T1</td>
+              <td>tvb_IDP_all_align_to_T1</td>
+              <td>nan</td>
+              <td>AU</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>rfMRI.ica_align_to_T1</td>
+              <td>tvb_IDP_all_align_to_T1</td>
+              <td>0.979217</td>
+              <td>AU</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>rfMRI.ica_fieldmap_align_to_T1</td>
+              <td>tvb_IDP_all_align_to_T1</td>
+              <td>nan</td>
+              <td>AU</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>tfMRI.feat_align_to_T1</td>
+              <td>tvb_IDP_all_align_to_T1</td>
+              <td>0.978942</td>
+              <td>AU</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>tfMRI.feat_fieldmap_align_to_T1</td>
+              <td>tvb_IDP_all_align_to_T1</td>
+              <td>nan</td>
+              <td>AU</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>rfMRI.ica_fieldmap_align_to_func</td>
+              <td>tvb_IDP_fieldmap_align_to_func</td>
+              <td>nan</td>
+              <td>AU</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>tfMRI.feat_fieldmap_align_to_func</td>
+              <td>tvb_IDP_fieldmap_align_to_func</td>
+              <td>nan</td>
+              <td>AU</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>tSNR_rfMRI.ica</td>
+              <td>tvb_IDP_func_tSNR</td>
+              <td>175.6225</td>
+              <td>ratio</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>cleaned_tSNR_rfMRI.ica</td>
+              <td>tvb_IDP_func_tSNR</td>
+              <td>229.7644</td>
+              <td>ratio</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>num_vol_rfMRI.ica</td>
+              <td>tvb_IDP_func_tSNR</td>
+              <td>240.0</td>
+              <td>volumes</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>tSNR_tfMRI.feat</td>
+              <td>tvb_IDP_func_tSNR</td>
+              <td>186.9074</td>
+              <td>ratio</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>num_vol_tfMRI.feat</td>
+              <td>tvb_IDP_func_tSNR</td>
+              <td>160.0</td>
+              <td>volumes</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>non-susceptible_tSNR_rfMRI.ica</td>
+              <td>tvb_IDP_func_susceptibility_SNR</td>
+              <td>208.7887</td>
+              <td>ratio</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>non-susceptible_cleaned_tSNR_rfMRI.ica</td>
+              <td>tvb_IDP_func_susceptibility_SNR</td>
+              <td>260.352</td>
+              <td>ratio</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>non-susceptible_tSNR_tfMRI.feat</td>
+              <td>tvb_IDP_func_susceptibility_SNR</td>
+              <td>223.2256</td>
+              <td>ratio</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>susceptible_tSNR_rfMRI.ica</td>
+              <td>tvb_IDP_func_susceptibility_SNR</td>
+              <td>124.4725</td>
+              <td>ratio</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>susceptible_cleaned_tSNR_rfMRI.ica</td>
+              <td>tvb_IDP_func_susceptibility_SNR</td>
+              <td>181.9167</td>
+              <td>ratio</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>susceptible_tSNR_tfMRI.feat</td>
+              <td>tvb_IDP_func_susceptibility_SNR</td>
+              <td>129.0785</td>
+              <td>ratio</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>MCFLIRT_rel_disp_min_rfMRI.ica</td>
+              <td>tvb_IDP_MCFLIRT_disp</td>
+              <td>0.0167597</td>
+              <td>mm</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>MCFLIRT_rel_disp_max_rfMRI.ica</td>
+              <td>tvb_IDP_MCFLIRT_disp</td>
+              <td>0.218604</td>
+              <td>mm</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>MCFLIRT_rel_disp_median_rfMRI.ica</td>
+              <td>tvb_IDP_MCFLIRT_disp</td>
+              <td>0.0866334</td>
+              <td>mm</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>MCFLIRT_rel_disp_mean_rfMRI.ica</td>
+              <td>tvb_IDP_MCFLIRT_disp</td>
+              <td>0.08910112</td>
+              <td>mm</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>MCFLIRT_rel_disp_range_rfMRI.ica</td>
+              <td>tvb_IDP_MCFLIRT_disp</td>
+              <td>0.2018443</td>
+              <td>mm</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>MCFLIRT_rel_disp_proportion_gt_one_rfMRI.ica</td>
+              <td>tvb_IDP_MCFLIRT_disp</td>
+              <td>0.0</td>
+              <td>proportion out of 1</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>MCFLIRT_rel_disp_num_gt_one_rfMRI.ica</td>
+              <td>tvb_IDP_MCFLIRT_disp</td>
+              <td>0.0</td>
+              <td>time (seconds?)</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>MCFLIRT_abs_disp_min_rfMRI.ica</td>
+              <td>tvb_IDP_MCFLIRT_disp</td>
+              <td>0.050195</td>
+              <td>mm</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>MCFLIRT_abs_disp_max_rfMRI.ica</td>
+              <td>tvb_IDP_MCFLIRT_disp</td>
+              <td>0.41371</td>
+              <td>mm</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>MCFLIRT_abs_disp_median_rfMRI.ica</td>
+              <td>tvb_IDP_MCFLIRT_disp</td>
+              <td>0.2731305</td>
+              <td>mm</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>MCFLIRT_abs_disp_mean_rfMRI.ica</td>
+              <td>tvb_IDP_MCFLIRT_disp</td>
+              <td>0.2583724</td>
+              <td>mm</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>MCFLIRT_abs_disp_range_rfMRI.ica</td>
+              <td>tvb_IDP_MCFLIRT_disp</td>
+              <td>0.363515</td>
+              <td>mm</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>MCFLIRT_abs_disp_proportion_gt_one_rfMRI.ica</td>
+              <td>tvb_IDP_MCFLIRT_disp</td>
+              <td>0.0</td>
+              <td>proportion out of 1</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>MCFLIRT_abs_disp_num_gt_one_rfMRI.ica</td>
+              <td>tvb_IDP_MCFLIRT_disp</td>
+              <td>0.0</td>
+              <td>time (seconds?)</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>MCFLIRT_rel_disp_min_tfMRI.feat</td>
+              <td>tvb_IDP_MCFLIRT_disp</td>
+              <td>0.00858396</td>
+              <td>mm</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>MCFLIRT_rel_disp_max_tfMRI.feat</td>
+              <td>tvb_IDP_MCFLIRT_disp</td>
+              <td>0.148274</td>
+              <td>mm</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>MCFLIRT_rel_disp_median_tfMRI.feat</td>
+              <td>tvb_IDP_MCFLIRT_disp</td>
+              <td>0.0628264</td>
+              <td>mm</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>MCFLIRT_rel_disp_mean_tfMRI.feat</td>
+              <td>tvb_IDP_MCFLIRT_disp</td>
+              <td>0.06623301</td>
+              <td>mm</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>MCFLIRT_rel_disp_range_tfMRI.feat</td>
+              <td>tvb_IDP_MCFLIRT_disp</td>
+              <td>0.13969</td>
+              <td>mm</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>MCFLIRT_rel_disp_proportion_gt_one_tfMRI.feat</td>
+              <td>tvb_IDP_MCFLIRT_disp</td>
+              <td>0.0</td>
+              <td>proportion out of 1</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>MCFLIRT_rel_disp_num_gt_one_tfMRI.feat</td>
+              <td>tvb_IDP_MCFLIRT_disp</td>
+              <td>0.0</td>
+              <td>time (seconds?)</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>MCFLIRT_abs_disp_min_tfMRI.feat</td>
+              <td>tvb_IDP_MCFLIRT_disp</td>
+              <td>0.00100444</td>
+              <td>mm</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>MCFLIRT_abs_disp_max_tfMRI.feat</td>
+              <td>tvb_IDP_MCFLIRT_disp</td>
+              <td>0.39946</td>
+              <td>mm</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>MCFLIRT_abs_disp_median_tfMRI.feat</td>
+              <td>tvb_IDP_MCFLIRT_disp</td>
+              <td>0.245685</td>
+              <td>mm</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>MCFLIRT_abs_disp_mean_tfMRI.feat</td>
+              <td>tvb_IDP_MCFLIRT_disp</td>
+              <td>0.2360163</td>
+              <td>mm</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>MCFLIRT_abs_disp_range_tfMRI.feat</td>
+              <td>tvb_IDP_MCFLIRT_disp</td>
+              <td>0.3984556</td>
+              <td>mm</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>MCFLIRT_abs_disp_proportion_gt_one_tfMRI.feat</td>
+              <td>tvb_IDP_MCFLIRT_disp</td>
+              <td>0.0</td>
+              <td>proportion out of 1</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>MCFLIRT_abs_disp_num_gt_one_tfMRI.feat</td>
+              <td>tvb_IDP_MCFLIRT_disp</td>
+              <td>0.0</td>
+              <td>time (seconds?)</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>FIX_prop_IC_unknown_rfMRI.ica</td>
+              <td>tvb_IDP_FIX_classes</td>
+              <td>0.08</td>
+              <td>proportion out of 1</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>FIX_prop_IC_signal_rfMRI.ica</td>
+              <td>tvb_IDP_FIX_classes</td>
+              <td>0.44</td>
+              <td>proportion out of 1</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>FIX_prop_IC_noise_rfMRI.ica</td>
+              <td>tvb_IDP_FIX_classes</td>
+              <td>0.48</td>
+              <td>proportion out of 1</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>FD_rfMRI.ica</td>
+              <td>tvb_IDP_rfMRI_FD_DVARS</td>
+              <td>0.01520936</td>
+              <td>mm</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>DVARS_rfMRI.ica</td>
+              <td>tvb_IDP_rfMRI_FD_DVARS</td>
+              <td>5.685013</td>
+              <td>AU</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>FC_distribution_min_rfMRI.ica</td>
+              <td>tvb_IDP_FC_distribution</td>
+              <td>-0.5214883</td>
+              <td>pearson correlation coefficient</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>FC_distribution_max_rfMRI.ica</td>
+              <td>tvb_IDP_FC_distribution</td>
+              <td>0.9611005</td>
+              <td>pearson correlation coefficient</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>FC_distribution_median_rfMRI.ica</td>
+              <td>tvb_IDP_FC_distribution</td>
+              <td>0.2377023</td>
+              <td>pearson correlation coefficient</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>FC_distribution_mean_rfMRI.ica</td>
+              <td>tvb_IDP_FC_distribution</td>
+              <td>0.2420386</td>
+              <td>pearson correlation coefficient</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>FC_distribution_mean_to_max_rfMRI.ica</td>
+              <td>tvb_IDP_FC_distribution</td>
+              <td>0.7190619</td>
+              <td>pearson correlation coefficient</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>FC_distribution_median_to_max_rfMRI.ica</td>
+              <td>tvb_IDP_FC_distribution</td>
+              <td>0.7233981</td>
+              <td>pearson correlation coefficient</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>FC_distribution_range_rfMRI.ica</td>
+              <td>tvb_IDP_FC_distribution</td>
+              <td>1.482589</td>
+              <td>pearson correlation coefficient</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>FC_distribution_proportion_neg_rfMRI.ica</td>
+              <td>tvb_IDP_FC_distribution</td>
+              <td>0.1042618</td>
+              <td>proportion of non-nan and non-inf connections</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>FC_distribution_proportion_zero_rfMRI.ica</td>
+              <td>tvb_IDP_FC_distribution</td>
+              <td>0.0</td>
+              <td>proportion of non-nan and non-inf connections</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>FC_norm_MSE_rfMRI.ica</td>
+              <td>tvb_IDP_FC_distribution</td>
+              <td>0.0007698714</td>
+              <td>pearson correlation coefficient 2</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>FC_homotopic_mean_rfMRI.ica</td>
+              <td>tvb_IDP_homotopic</td>
+              <td>0.546679</td>
+              <td>pearson correlation coefficient</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>eddy_num_outliers</td>
+              <td>tvb_IDP_diff_eddy_outliers</td>
+              <td>2.0</td>
+              <td>number of slices</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>eddy_percent_outliers</td>
+              <td>tvb_IDP_diff_eddy_outliers</td>
+              <td>0.1041667</td>
+              <td>%</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>SC_distribution_min</td>
+              <td>tvb_IDP_SC_distribution</td>
+              <td>-5.421943</td>
+              <td>pearson correlation coefficient (log 10)</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>SC_distribution_max</td>
+              <td>tvb_IDP_SC_distribution</td>
+              <td>-0.199705</td>
+              <td>pearson correlation coefficient (log 10)</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>SC_distribution_median</td>
+              <td>tvb_IDP_SC_distribution</td>
+              <td>-3.634479</td>
+              <td>pearson correlation coefficient (log 10)</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>SC_distribution_mean</td>
+              <td>tvb_IDP_SC_distribution</td>
+              <td>-3.409025</td>
+              <td>pearson correlation coefficient (log 10)</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>SC_distribution_mean_to_max</td>
+              <td>tvb_IDP_SC_distribution</td>
+              <td>3.20932</td>
+              <td>pearson correlation coefficient (log 10)</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>SC_distribution_median_to_max</td>
+              <td>tvb_IDP_SC_distribution</td>
+              <td>3.434774</td>
+              <td>pearson correlation coefficient (log 10)</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>SC_distribution_range</td>
+              <td>tvb_IDP_SC_distribution</td>
+              <td>5.222238</td>
+              <td>pearson correlation coefficient (log 10)</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>SC_distribution_proportion_neg</td>
+              <td>tvb_IDP_SC_distribution</td>
+              <td>1.0</td>
+              <td>proportion of non-nan and non-inf connections</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>SC_nan_lines</td>
+              <td>tvb_IDP_SC_distribution</td>
+              <td>nan</td>
+              <td>line number</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>SC_num_nan</td>
+              <td>tvb_IDP_SC_distribution</td>
+              <td>0.0</td>
+              <td>number of lines</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>SC_distribution_proportion_zero</td>
+              <td>tvb_IDP_SC_distribution</td>
+              <td>0.0</td>
+              <td>proportion of non-nan and non-inf connections</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>SC_lognorm_MSE</td>
+              <td>tvb_IDP_SC_distribution</td>
+              <td>0.01957192</td>
+              <td>pearon correlation coefficient 2 (log 10)</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>TL_distribution_min</td>
+              <td>tvb_IDP_TL_distribution</td>
+              <td>0.2040779</td>
+              <td>mm (log 10)</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>TL_distribution_max</td>
+              <td>tvb_IDP_TL_distribution</td>
+              <td>2.280749</td>
+              <td>mm (log 10)</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>TL_distribution_median</td>
+              <td>tvb_IDP_TL_distribution</td>
+              <td>1.766264</td>
+              <td>mm (log 10)</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>TL_distribution_mean</td>
+              <td>tvb_IDP_TL_distribution</td>
+              <td>1.642191</td>
+              <td>mm (log 10)</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>TL_distribution_mean_to_max</td>
+              <td>tvb_IDP_TL_distribution</td>
+              <td>0.6385576</td>
+              <td>mm (log 10)</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>TL_distribution_median_to_max</td>
+              <td>tvb_IDP_TL_distribution</td>
+              <td>0.5144851</td>
+              <td>mm (log 10)</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>TL_distribution_range</td>
+              <td>tvb_IDP_TL_distribution</td>
+              <td>2.076671</td>
+              <td>mm (log 10)</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>TL_distribution_proportion_neg</td>
+              <td>tvb_IDP_TL_distribution</td>
+              <td>0.0</td>
+              <td>proportion of non-nan  and non-inf tracts</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>TL_nan_lines</td>
+              <td>tvb_IDP_TL_distribution</td>
+              <td>nan</td>
+              <td>line number</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>TL_num_nan</td>
+              <td>tvb_IDP_TL_distribution</td>
+              <td>0.0</td>
+              <td>number of lines</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>TL_distribution_proportion_zero</td>
+              <td>tvb_IDP_TL_distribution</td>
+              <td>0.0</td>
+              <td>proportion of non-nan  and non-inf tracts</td>
+            </tr>
+
+            
+            <tr style="display: none; " name="New TVB IDPs">
+              <td>TL_lognorm_MSE</td>
+              <td>tvb_IDP_TL_distribution</td>
+              <td>0.1067473</td>
+              <td>pearon correlation coefficient 2 (log 10)</td>
+            </tr>
+
+             </table>
+
+
+    <br>
+
+    <br>
+
+    <br>
+    <a href="../../IDP_files_TVBSchaeferTian420/" id="hi_IDP" class="w3-bar-item w3-button">High-Priority IDPs: /scratch/jwangbay/amsterdam/sub-0001/IDP_files_TVBSchaeferTian420/priority_IDPs.tsv</a>
+    <br>
+    <a href="../../IDP_files_TVBSchaeferTian420/" id="new_IDP" class="w3-bar-item w3-button">New TVB IDPs: /scratch/jwangbay/amsterdam/sub-0001/IDP_files_TVBSchaeferTian420/tvb_new_IDPs.tsv</a>
+    <br>
+    <a href="../../IDP_files_TVBSchaeferTian420/" id="low_IDP" class="w3-bar-item w3-button">Lower-priority IDPs: /scratch/jwangbay/amsterdam/sub-0001/IDP_files_TVBSchaeferTian420/non_priority_IDPs.tsv</a>
+    <br>
+
+    <a href="../../IDP_files_TVBSchaeferTian420/" id="combo_IDP" class="w3-bar-item w3-button">Combination of the above IDPs: /scratch/jwangbay/amsterdam/sub-0001/IDP_files_TVBSchaeferTian420/significant_IDPs.tsv</a>
+
+        <br>
+        <br>
+        </div>
+
+
+	<!-- End page content -->
+	</div>
+
+	</body>
+
+	<script>
+	updateTitle();updateImage();
+    
+    document.getElementById("hi_IDP").innerHTML = document.getElementById("hi_IDP").href;
+    document.getElementById("hi_IDP").innerHTML = document.getElementById("hi_IDP").innerHTML + "priority_IDPs.tsv"
+
+    document.getElementById("new_IDP").innerHTML = document.getElementById("new_IDP").href;
+    document.getElementById("new_IDP").innerHTML = document.getElementById("new_IDP").href + "tvb_new_IDPs.tsv";
+
+    document.getElementById("low_IDP").innerHTML = document.getElementById("low_IDP").href;
+    document.getElementById("low_IDP").innerHTML = document.getElementById("low_IDP").href + "non_priority_IDPs.tsv";
+
+    document.getElementById("combo_IDP").innerHTML = document.getElementById("combo_IDP").href;
+    document.getElementById("combo_IDP").innerHTML = document.getElementById("combo_IDP").href + "significant_IDPs.tsv";
+
+	</script>
+
+
+
+	</html>
+
+	 
