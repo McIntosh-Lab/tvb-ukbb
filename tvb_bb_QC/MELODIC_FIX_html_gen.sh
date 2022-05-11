@@ -100,12 +100,13 @@ cat > $MELODIC_FIX_HTML << EOF
   <br>______<br><br>
   <h1> $sub_upper <div id="analysis_title_0" style="display: inline;"></div> 
   <h1>
-    <select name="menu1" id="menu1" onkeydown="IgnoreAlpha(event);">
+    <div style="font-size: 20px" > Parcellation: <select name="menu1" id="menu1" onkeydown="IgnoreAlpha(event);">
       <option selected="selected">${PARC_NAME}</option>
       <option id="option_placeholder">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</option>
       <!-- DO NOT REMOVE. PLACEHOLDER FOR SCRIPTS TO INSERT NEW PARC LINKS -->
       
       </select>
+      </div>
       <script type="text/javascript">
      var urlmenu = document.getElementById( 'menu1' );
      urlmenu.onchange = function() {
