@@ -18,7 +18,7 @@ mkdir -p $gradEchoDir
 
 modes=("rest" "movie" "smt")
 
-deltaTE=2.46
+
 
 fmap_erode_size=3
 
