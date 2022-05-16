@@ -82,7 +82,7 @@ if [ -z ${topupValue} ]; then
 		topupValue="0"`echo "scale=4;("$dtiDwell" * ("$EPIfactor" -1.0)) / 1000.0 "| bc` #aka Total Readout Time;
 	fi
 
-	
+	#TODO handle no topupvalue default defined, and missing dtidwell or epifactor - error message
 fi
 
 cat /dev/null > $direc/dMRI/dMRI/acqparams.txt 
