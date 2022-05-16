@@ -76,7 +76,7 @@ if [ -z ${topupValue} ]; then
 	
 
 	#set topupvalue to default if dtidwell is empty and topupValue_default has been set in init_vars, otherwise compute
-	if [[ ${topupValue_default} != "" && (${dtiDwell} == "[]"  ||  ${dtiDwell} == "") ]]; then
+	if [[ ${topupValue_default} != "" && (${dtiDwell} == "[]"  ||  ${dtiDwell} == "" ||   -z ${EPIfactor} ) ]]; then
 		topupValue=${topupValue_default}
 	else
 		topupValue="0"`echo "scale=4;("$dtiDwell" * ("$EPIfactor" -1.0)) / 1000.0 "| bc` #aka Total Readout Time;
