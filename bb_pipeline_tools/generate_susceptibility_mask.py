@@ -9,8 +9,8 @@ np.set_printoptions(threshold=sys.maxsize)
 
 
 def generate_susceptiblity_mask(new_parc, orig_suscep, new_PARC_LUT, new_suscept_name):
-	
-	datafile = open(PARC_LUT, 'r')
+    
+    datafile = open(new_PARC_LUT, 'r')
     datareader = csv.reader(datafile, delimiter = "\t")
     ROI_list = []
     for row in datareader:
@@ -27,10 +27,11 @@ def generate_susceptiblity_mask(new_parc, orig_suscep, new_PARC_LUT, new_suscept
     new_suscept = 0*suscept_mask
     for row in ROI_list:
         ROI_num = row[0]
-        roi_match = np.where(new_data==ROI_num)
+        roi_match = np.where(new_data==ROI_num,new_data,0)
+
         percent_ROI_masked = np.count_nonzero(roi_match*suscept_data)/np.count_nonzero(roi_match)
         if percent_ROI_masked>=0.25:
-            new_suscept=new_suscept+(roi_match*ROI_num)
+            new_suscept=new_suscept+roi_match
 
     clipped_img = nib.Nifti1Image(new_suscept, new_img.affine, new_img.header)
     nib.save(clipped_img, os.path.join(os.path.dirname(orig_suscep),new_suscept_name))
