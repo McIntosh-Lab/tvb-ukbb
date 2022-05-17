@@ -6,33 +6,31 @@
 
 import os
 import re
+import sys
 # subj 
 
 def html_reparcellation(subjdir, PARC_NAME):
 
-	landmark_string="<option >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</option>"
+	landmark_string='<option id="option_placeholder">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</option>'
 
 
 
 	#grab existing QCs
-	QC_subdirs = filter(os.path.isdir, os.listdir(subjdir))
+	QC_subdirs = os.listdir(subjdir)
 	QC_subdirs = [os.path.join(subjdir, f) for f in QC_subdirs if f[0:2]=="QC"] # add path to each file
 	QC_subdirs.sort(key=lambda x: os.path.getmtime(x))
-
 
 	#iterate through QC parcellations
 	for QC in QC_subdirs:
 
 		#current parcellation
-		parc=QC_subdirs[3:]
-		
+		parc=os.path.basename(QC)[3:]
 		#only interested in non-new parcellations
 		if not PARC_NAME==parc:
 			
 			#iterate through html pages
-			htmlfile_list=["anat.html","fMRI.html","dMRI.html","IDP.html","MELODIC_FIX.html","SCFC.html"]
+			htmlfile_list=["anat.html","fMRI.html","dMRI.html","IDP.html","MELODIC_FIX.html","SCFC.html","report.html"]
 			for htmlfile in htmlfile_list:
-				
 				#list to contain dictionaries
 				mydictlist=[]
 
@@ -57,10 +55,13 @@ def html_reparcellation(subjdir, PARC_NAME):
 				for dict_item in mydictlist:
 
 					with open(dict_item["file"], 'r+') as f:
+
 						a = [x.rstrip() for x in f]
 						index = 0
 						for item in a:
+
 							if re.search(landmark_string, item):
+
 								a.insert(index, dict_item["insert_string"]) # Inserts "Hello everyone" into `a`
 								break
 							index += 1
