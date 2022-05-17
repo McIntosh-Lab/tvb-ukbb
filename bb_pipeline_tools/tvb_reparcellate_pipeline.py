@@ -16,7 +16,7 @@ import json
 
 sys.path.insert(1, os.path.dirname(__file__) + "/..")
 import bb_pipeline_tools.bb_logging_tool as LT
-from tvb_bb_QC.html_reparcellation import html_reparcellation
+# from tvb_bb_QC.html_reparcellation import html_reparcellation
 #EXPORT PARC stuff
 
 def tvb_reparcellate_pipeline(subject, fileConfiguration, PARC_NAME):
@@ -182,12 +182,25 @@ def tvb_reparcellate_pipeline(subject, fileConfiguration, PARC_NAME):
 
 
     print("Beginning QC html reparcellation dropdown...")
-    html_reparcellation(subject,PARC_NAME)
+    jobHTML_reparc = LT.runCommand(
+        logger,
+        " python $BB_BIN_DIR/tvb_bb_QC/html_reparcellation.py "  # -s '-screen 0 640x480x24'
+        + subject
+        + " "
+        + PARC_NAME,
+        "html_reparcellation_"
+        + subname
+        + "_"
+        + PARC_NAME
+        + "_"
+        + "reparcellation"
+    )
+    # html_reparcellation(subject,PARC_NAME)
     print("QC html reparcellation dropdown complete.")
 
     LT.finishLogging(logger)
 
-    return jobQC
+    return jobHTML_reparc
 
 
 if __name__ == "__main__":
