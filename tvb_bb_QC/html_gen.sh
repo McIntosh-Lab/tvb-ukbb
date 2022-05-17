@@ -109,13 +109,14 @@ cat > $subjdir$html_output_dir"/report.html" << EOF
 <!-- Page content -->
 <div class="w3-content w3-padding-large w3-margin-top" id="portfolio" style="color:white; text-align: center;">
 <h1>
-    <select name="menu1" id="menu1" onkeydown="IgnoreAlpha(event);">
+    <div style="font-size: 20px" > Parcellation: <select name="menu1" id="menu1" onkeydown="IgnoreAlpha(event);">
       <option selected="selected">${PARC_NAME}</option>
       <option id="option_placeholder">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</option>
       <!-- DO NOT REMOVE. PLACEHOLDER FOR SCRIPTS TO INSERT NEW PARC LINKS -->
 
       
       </select>
+      </div>
       <script type="text/javascript">
      var urlmenu = document.getElementById( 'menu1' );
      urlmenu.onchange = function() {
@@ -231,13 +232,14 @@ cat > $subjdir$html_output_dir"/anat.html" << EOF
   <h1> $sub_upper 
   <br>
   <div id="analysis_title" style="display: inline; font-size: 28px">EXTRACTION</div><br>    
-    <select name="menu1" id="menu1" onkeydown="IgnoreAlpha(event);">
+    <div style="font-size: 20px" > Parcellation: <select name="menu1" id="menu1" onkeydown="IgnoreAlpha(event);">
       <option selected="selected">${PARC_NAME}</option>
       <option id="option_placeholder">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</option>
       <!-- DO NOT REMOVE. PLACEHOLDER FOR SCRIPTS TO INSERT NEW PARC LINKS -->
 
       
       </select>
+      </div>
       <script type="text/javascript">
      var urlmenu = document.getElementById( 'menu1' );
      urlmenu.onchange = function() {
@@ -267,7 +269,7 @@ cat > $subjdir$html_output_dir"/anat.html" << EOF
     <optgroup label="T1 Segmentation">
       <option value="uw">T1 Unlabelled WM</option>
       <option value="ug">T1 Unlabelled GM</option>
-      <option value="lc">T1 Labelled cortex</option>
+      <option value="lc">T1 Labelled GM</option>
       <option value="us">T1 Unlabelled subcort GM</option>
       <option value="ls">T1 Labelled subcort GM</option>
     </optgroup>
@@ -533,13 +535,14 @@ cat > $subjdir$html_output_dir"/dMRI.html" << EOF
   <h1> $sub_upper dMRI 
   <br>
   <div id="analysis_title" style="display: inline; font-size: 28px">DW</div><br>    
-    <select name="menu1" id="menu1" onkeydown="IgnoreAlpha(event);">
+    <div style="font-size: 20px" > Parcellation: <select name="menu1" id="menu1" onkeydown="IgnoreAlpha(event);">
       <option selected="selected">${PARC_NAME}</option>
       <option id="option_placeholder">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</option>
       <!-- DO NOT REMOVE. PLACEHOLDER FOR SCRIPTS TO INSERT NEW PARC LINKS -->
 
       
       </select>
+      </div>
       <script type="text/javascript">
      var urlmenu = document.getElementById( 'menu1' );
      urlmenu.onchange = function() {
@@ -866,13 +869,14 @@ cat > $subjdir$html_output_dir"/fMRI.html" << EOF
   <h1> fMRI REPORTS </h1>
 
   <h1>
-    <select name="menu1" id="menu1" onkeydown="IgnoreAlpha(event);">
+    <div style="font-size: 20px" > Parcellation: <select name="menu1" id="menu1" onkeydown="IgnoreAlpha(event);">
       <option selected="selected">${PARC_NAME}</option>
       <option id="option_placeholder">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</option>
       <!-- DO NOT REMOVE. PLACEHOLDER FOR SCRIPTS TO INSERT NEW PARC LINKS -->
 
       
       </select>
+      </div>
       <script type="text/javascript">
      var urlmenu = document.getElementById( 'menu1' );
      urlmenu.onchange = function() {
@@ -1028,13 +1032,14 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
   <h1> $sub_upper SC/FC 
   <br>
   <div id="analysis_title" style="display: inline; font-size: 28px">STRUCTURAL CONNECTIVITY</div><br>    
-    <select name="menu1" id="menu1" onkeydown="IgnoreAlpha(event);">
+    <div style="font-size: 20px" > Parcellation: <select name="menu1" id="menu1" onkeydown="IgnoreAlpha(event);">
       <option selected="selected">${PARC_NAME}</option>
       <option id="option_placeholder">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</option>
       <!-- DO NOT REMOVE. PLACEHOLDER FOR SCRIPTS TO INSERT NEW PARC LINKS -->
 
       
       </select>
+      </div>
       <script type="text/javascript">
      var urlmenu = document.getElementById( 'menu1' );
      urlmenu.onchange = function() {
