@@ -12,7 +12,7 @@ from scipy.stats.stats import pearsonr
 	
 def connectivity_correlation(first_matrix, second_matrix, load):
 
-    if load ==True:
+    if load ==True or load == "True":
         #load and flatten
         first=np.loadtxt(first_matrix)
         second=np.loadtxt(second_matrix)
@@ -36,7 +36,7 @@ def connectivity_correlation(first_matrix, second_matrix, load):
     first=np.compress(bad, first)  # array([  5.,   1.,   6.,  10.,   1.,   1.])
     second=np.compress(bad, second)  # array([ 4.,  4.,  5.,  6.,  1.,  8.])
 
-    # print(str(pearsonr(second,first))) 
+    print(str(pearsonr(second,first))) 
     return pearsonr(second,first)
 
 if __name__ == "__main__":
@@ -56,4 +56,4 @@ if __name__ == "__main__":
 
     """
     # try:
-    connectivity_correlation(sys.argv[1], sys.argv[2], sys.argv[2])
+    connectivity_correlation(sys.argv[1], sys.argv[2], sys.argv[3])
