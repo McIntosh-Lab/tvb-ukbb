@@ -18,8 +18,11 @@ def generate_centres_cortical(subjdir, PARC_LUT, PARC_NAME):
 		ROI_list.append(row)
 
 	#ROI_list=sorted(ROI_list,key=lambda l:l[0])
-
-	label_image = os.path.join(subjdir,"T1/labelled_GM_"+PARC_NAME+".nii.gz")
+	
+	if PARC_NAME != "":
+		PARC_NAME="_"+PARC_NAME
+		
+	label_image = os.path.join(subjdir,"T1/labelled_GM"+PARC_NAME+".nii.gz")
 	img = nib.load(label_image)
 	data = img.get_fdata()
 	#print(t1_data[np.nonzero(t1_data)])
@@ -48,7 +51,8 @@ def generate_centres_cortical(subjdir, PARC_LUT, PARC_NAME):
 		f.write(str(row[1])+"\t"+str(x_cog)+"\t"+str(y_cog)+"\t"+str(z_cog)+"\n")
 
 		#todo find pattern for subcort/cort
-		if ROI_num > 400:
+		# if ROI_num > 400:
+		if "lh" in ROI_name or "rh" in ROI_name:
 			g.write("0\n")
 		else:
 			g.write("1\n")

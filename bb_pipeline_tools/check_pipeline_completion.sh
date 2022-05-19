@@ -12,8 +12,11 @@
 
 
 #iterate through subjlist
+PARC_NAME=${2}
+
 while IFS= read -r subjname; do
     if [ -d $subjname ]
+
     then
         cd $subjname
         #array of ica dirs
@@ -27,38 +30,38 @@ while IFS= read -r subjname; do
         #for each .ica file, check ts and fc
         for t in ${array[@]}; do
             rfMRI_ver=`basename $t`
-            if [ -f "fMRI/$rfMRI_ver/ts.txt" ]; then
+            if [ -f "fMRI/$rfMRI_ver/ts_${PARC_NAME}.txt" ]; then
                 :
             else
-                echo "$subjname is missing ts.txt" |& tee -a ../feb10_raw_complete_check.txt
+                echo "$subjname is missing ts_${PARC_NAME}.txt"
             fi
 
-            if [ -f "fMRI/$rfMRI_ver/fc.txt" ]; then
+            if [ -f "fMRI/$rfMRI_ver/fc_${PARC_NAME}.txt" ]; then
                 :
             else
-                echo "$subjname is missing fc.txt" |& tee -a ../feb10_raw_complete_check.txt
+                echo "$subjname is missing fc_${PARC_NAME}.txt"
             fi
         done
 
         #check sc.txt
-        if [ -f "dMRI/sc.txt" ]; then
+        if [ -f "dMRI/sc_${PARC_NAME}.txt" ]; then
                 :
         else
-                echo "$subjname is missing sc.txt" |& tee -a ../feb10_raw_complete_check.txt
+                echo "$subjname is missing sc_${PARC_NAME}.txt"
         fi
 
         #check QC HTML generation
-        if [ -f "QC/html/IDP.html" ]; then
+        if [ -f "QC_${PARC_NAME}/html/IDP.html" ]; then
                 :
         else
-                echo "$subjname has incomplete QC report" |& tee -a ../feb10_raw_complete_check.txt
+                echo "$subjname has incomplete QC report"
         fi
 
         #check IDP generation
-        if [ -f "IDP_files/significant_IDPs.tsv" ]; then
+        if [ -f "IDP_files_${PARC_NAME}/significant_IDPs.tsv" ]; then
                 :
         else
-                echo "$subjname has incomplete IDP processing" |& tee -a ../feb10_raw_complete_check.txt
+                echo "$subjname has incomplete IDP processing"
         fi
 
         cd ..

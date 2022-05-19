@@ -230,13 +230,47 @@ def consistency_thresholding(zip_dir, threshold, subject_list, PARC_NAME, PARC_L
                     np.savetxt(SC_path, SC)
 
                     #load TL, remove ROIS, threshold, and save
-                    TL_path=os.path.join(end_dir,"structural_inputs","distance.txt")
+                    TL_path=os.path.join(end_dir,"structural_inputs","tract_lengths.txt")
                     if os.path.exists(TL_path):
                         TL=np.loadtxt(TL_path)
                         TL = np.delete(TL, ROIs_to_remove, axis=0)
                         TL = np.delete(TL, ROIs_to_remove, axis=1)
                         TL=consistency_mask*TL
                         np.savetxt(TL_path, TL)
+
+
+                    #load rest of struct tvb_input files to have ROIs removed and saved
+                    cent_path=os.path.join(end_dir,"structural_inputs","centres.txt")
+                    cort_path=os.path.join(end_dir,"structural_inputs","cortical.txt")
+                    hemi_path=os.path.join(end_dir,"structural_inputs","hemisphere.txt")
+
+                    single_row_ROI_remove=[cent_path,cort_path,hemi_path]
+                    
+                    for input_file in single_row_ROI_remove:
+                        if os.path.exists(input_file):
+                            loaded_input = np.genfromtxt(input_file,delimiter='\n', dtype='str')
+                            loaded_input = np.delete(loaded_input, ROIs_to_remove)
+                            # np.savetxt(input_file, loaded_input)
+                            np.savetxt(input_file,loaded_input, delimiter="\n", fmt="%s")
+                    #load fc and ts files to remove ROIs
+                    for file in os.listdir(os.path.join(end_dir,"functional_inputs")):
+                        if file.endswith(".ica"):
+                            FC_path=os.path.join(end_dir,"functional_inputs",file,file+"_functional_connectivity.txt")
+                            TS_path=os.path.join(end_dir,"functional_inputs",file,file+"_time_series.txt")
+
+                            if os.path.exists(FC_path):
+                                FC=np.loadtxt(FC_path)
+                                FC = np.delete(FC, ROIs_to_remove, axis=0)
+                                FC = np.delete(FC, ROIs_to_remove, axis=1)
+                                np.savetxt(FC_path, FC)
+
+                            if os.path.exists(TS_path):
+                                TS=np.loadtxt(TS_path)
+                                TS = np.delete(TS, ROIs_to_remove, axis=1)
+                                np.savetxt(TS_path, TS)
+
+                    
+
                     #zip and clean up
                     # if os.path.exists(os.path.join(end_dir,"structural_inputs")):
                     #removed if statement because implied by existenc of sc path    
@@ -257,11 +291,12 @@ def consistency_thresholding(zip_dir, threshold, subject_list, PARC_NAME, PARC_L
 
                     shutil.rmtree(end_dir_thresh)
                 else:
-                    print("deleted",SC_path)
+                    print("sub has nans - deleted",end_dir)
                     shutil.rmtree(end_dir)
             else:
-                print("deleted",SC_path)
-                shutil.rmtree(end_dir)
+                print("SC not found - deleted",end_dir)
+                if os.path.exists(end_dir):
+                    shutil.rmtree(end_dir)
 
 
 if __name__ == "__main__":

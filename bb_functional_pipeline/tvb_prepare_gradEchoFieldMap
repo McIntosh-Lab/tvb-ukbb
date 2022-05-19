@@ -18,7 +18,7 @@ mkdir -p $gradEchoDir
 
 modes=("rest" "movie" "smt")
 
-deltaTE=2.46
+
 
 fmap_erode_size=3
 
@@ -46,9 +46,9 @@ fi
 for mode in ${modes[@]}; do
 
     #TODO: put these in init_vars
-    gradEcho_fmap_phase=${subjDir}/rawdata/fmap_${mode}/${subjName}_fmap_${mode}.nii.gz
-    gradEcho_fmap_mag1=${subjDir}/rawdata/fmap_${mode}/${subjName}_run-01_fmap_${mode}
-    gradEcho_fmap_mag2=${subjDir}/rawdata/fmap_${mode}/${subjName}_run-02_fmap_${mode}
+    gradEcho_fmap_phase=${subjDir}/fMRI/fmap_phase.nii.gz
+    gradEcho_fmap_mag1=${subjDir}/fMRI/fmap_mag1
+    gradEcho_fmap_mag2=${subjDir}/fMRI/fmap_mag2
 
     ln -s $gradEcho_fmap_phase ${gradEchoDir}/fmap_phase_${mode}.nii.gz
 

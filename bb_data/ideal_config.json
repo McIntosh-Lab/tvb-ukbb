@@ -28,5 +28,8 @@
     "rfMRI":                        "fMRI/rfMRI.nii.gz",
     "rfMRI_SBRef":                  "fMRI/rfMRI_SBREF.nii.gz",
     "tfMRI":                        "fMRI/tfMRI.nii.gz",
-    "tfMRI_SBRef":                  "fMRI/tfMRI_SBREF.nii.gz"
+    "tfMRI_SBRef":                  "fMRI/tfMRI_SBREF.nii.gz",
+    "fmap_phase":                   "fMRI/fmap_phase.nii.gz",
+    "fmap_mag1":                    "fMRI/fmap_mag1.nii.gz",
+    "fmap_mag2":                    "fMRI/fmap_mag2.nii.gz"
 }

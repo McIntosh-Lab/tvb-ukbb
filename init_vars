@@ -51,6 +51,8 @@ export QUEUE_PARALLEL="parallel.q"
 #           use for systems without CUDA GPU
 export PROBTRACKX_GPU="true"
 
+export REPARCELLATE="false" #TO BE MODIFIED BY USER
+
 #SETUP AFNI
 # export AFNIDIR=/opt/afni                                                        #TO BE MODIFIED BY USER
 export AFNIDIR="/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Compiler/gcc9/afni/20.3.05"
@@ -107,6 +109,11 @@ export SUSCEPT_ROIS="$templ/parcellations/TVB_SchaeferTian/SusceptibilityROIs_Sc
 export TRAINING_FILE="Cam-CAN_Training.RData"                                            				#TO BE MODIFIED BY USER
 export SynB0="y"                                            								#TO BE MODIFIED BY USER
 export PE_direction="0 -1 0"                                            						#TO BE MODIFIED BY USER 
+export topupValue=""					#TO BE MODIFIED BY USER - leave empty "" for no value
+export topupValue_default="0.1"					#TO BE MODIFIED BY USER - leave empty "" for no value
+export EPIfactor="96"					#TO BE MODIFIED BY USER 
+export deltaTE="2.46"					#TO BE MODIFIED BY USER
+
 
 # set to 1 for single shell diffusion data and 2 for multi-shell
 export DIFF_SHELL_TYPE="2"
