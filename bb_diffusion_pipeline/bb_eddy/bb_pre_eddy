@@ -67,10 +67,23 @@ done
 echo $indx > $direc/dMRI/dMRI/eddy_index.txt
 
 
-# Creation of acqparam file, borrowed from TOPUP prep in bb_prepare_struct_field
-EPIfactor=50 #aka Echo Train Length, number of lines
-dtiDwell=`$BB_BIN_DIR/bb_pipeline_tools/bb_get_dwell_time $direc/dMRI/raw/dwi.nii.gz`
-topupValue="0"`echo "scale=4;("$dtiDwell" * ("$EPIfactor" -1.0)) / 1000.0 "| bc` #aka Total Readout Time
+# check if topupValue has been set in init_vars; if unset, compute it
+if [ -z ${topupValue} ]; then
+
+	# Creation of acqparam file, borrowed from TOPUP prep in bb_prepare_struct_field
+	# EPIfactor=50 #aka Echo Train Length, number of lines
+	dtiDwell=`$BB_BIN_DIR/bb_pipeline_tools/bb_get_dwell_time $direc/dMRI/raw/dwi.nii.gz`
+	
+
+	#set topupvalue to default if dtidwell is empty and topupValue_default has been set in init_vars, otherwise compute
+	if [[ ${topupValue_default} != "" && (${dtiDwell} == "[]"  ||  ${dtiDwell} == "" ||   -z ${EPIfactor} ) ]]; then
+		topupValue=${topupValue_default}
+	else
+		topupValue="0"`echo "scale=4;("$dtiDwell" * ("$EPIfactor" -1.0)) / 1000.0 "| bc` #aka Total Readout Time;
+	fi
+
+	#TODO handle no topupvalue default defined, and missing dtidwell or epifactor - error message
+fi
 
 cat /dev/null > $direc/dMRI/dMRI/acqparams.txt 
 

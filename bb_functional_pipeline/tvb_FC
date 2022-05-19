@@ -11,18 +11,19 @@
 
 subjdir="$PWD/$1"
 
-ts_rois=${subjdir}/fMRI/rfMRI.ica/ts_roied.txt
-stats_sum=${subjdir}/fMRI/rfMRI.ica/stats.sum
+ts_rois=${subjdir}/fMRI/rfMRI.ica/ts_roied_${PARC_NAME}.txt
+stats_sum=${subjdir}/fMRI/rfMRI.ica/stats_${PARC_NAME}.sum
 touch $stats_sum
 
 ### register parcellation (labelled GM) to fMRI
 # create inverse warp
 ${FSLDIR}/bin/convert_xfm -omat ${subjdir}/fMRI/rfMRI.ica/reg/highres2example_func.mat -inverse ${subjdir}/fMRI/rfMRI.ica/reg/example_func2highres.mat
 # apply it to labelled GM
-${FSLDIR}/bin/applywarp -i ${subjdir}/T1/labelled_GM -r ${subjdir}/fMRI/rfMRI.ica/example_func -o ${subjdir}/fMRI/rfMRI.ica/parcellation --premat=${subjdir}/fMRI/rfMRI.ica/reg/highres2example_func.mat --interp=nn
+${FSLDIR}/bin/applywarp -i ${subjdir}/T1/labelled_GM_${PARC_NAME} -r ${subjdir}/fMRI/rfMRI.ica/example_func -o ${subjdir}/fMRI/rfMRI.ica/parcellation_${PARC_NAME} --premat=${subjdir}/fMRI/rfMRI.ica/reg/highres2example_func.mat --interp=nn
 
 ### segstate
-mri_segstats --avgwf ${ts_rois} --i ${subjdir}/fMRI/rfMRI.ica/filtered_func_data_clean.nii.gz --seg ${subjdir}/fMRI/rfMRI.ica/parcellation.nii.gz  --sum ${stats_sum}
+mri_segstats --avgwf ${ts_rois} --i ${subjdir}/fMRI/rfMRI.ica/filtered_func_data_clean.nii.gz --seg ${subjdir}/fMRI/rfMRI.ica/parcellation_${PARC_NAME}.nii.gz  --sum ${stats_sum}
 
 ### FC coumpute
-${BB_BIN_DIR}/bb_functional_pipeline/tvb_FC_compute -stat ${stats_sum} -ts $ts_rois -od ${subjdir}/fMRI/rfMRI.ica -LUT ${PARC_LUT}
+${BB_BIN_DIR}/bb_functional_pipeline/tvb_FC_compute -stat ${stats_sum} -ts $ts_rois -od ${subjdir}/fMRI/rfMRI.ica -LUT ${PARC_LUT} -parcname ${PARC_NAME}
+

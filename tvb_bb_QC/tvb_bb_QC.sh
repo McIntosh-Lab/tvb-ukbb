@@ -82,9 +82,9 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 	#T1 segmentation labelled cortex 3D/4D volume cort
 
 		#label random big 
-		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /T1/labelled_GM.nii.gz -a 75.0 -p random_big -j label /T1/T1.nii.gz $dirSubject  T1_segmentation_labelled_cortex
+		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /T1/labelled_GM_${PARC_NAME}.nii.gz -a 75.0 -p random_big -j label /T1/T1.nii.gz $dirSubject  T1_segmentation_labelled_cortex
 
-		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "lc_under" "../../T1/T1.nii.gz" "lc_over1" "../../T1/labelled_GM.nii.gz" "NA8" "NA8_link" 0
+		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "lc_under" "../../T1/T1.nii.gz" "lc_over1" "../../T1/labelled_GM_${PARC_NAME}.nii.gz" "NA8" "NA8_link" 0
 
 
 	#T1 segmentation labelled subcort GM volume subcort
@@ -190,11 +190,13 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh /dMRI/dMRI/data_B0.nii.gz $dirSubject dMRI_extraction_unmasked
 
 
+
 		#$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "uw_under" "../../dMRI/dMRI/data_B0.nii.gz" "NA22" "NA22_link" "NA23" "NA23_link" 0
 
 
 	#dMRI extraction masked
 		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/dMRI/nodif_brain_mask.nii.gz /dMRI/dMRI/data_B0.nii.gz $dirSubject dMRI_extraction_masked
+
 
 
 		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dex_under" "../../dMRI/dMRI/data_B0.nii.gz" "dex_over1" "../../dMRI/dMRI/nodif_brain_mask.nii.gz" "NA24" "NA24_link" 0
@@ -246,30 +248,30 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 
 	#dMRI tractography exclude without seed
 
-		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/probtrackx/exclude.nii.gz -p red-yellow -a 25.0 /dMRI/dMRI/dti_FA.nii.gz $dirSubject  dMRI_tractography_exclude
+		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/probtrackx_${PARC_NAME}/exclude.nii.gz -p red-yellow -a 25.0 /dMRI/dMRI/dti_FA.nii.gz $dirSubject  dMRI_tractography_exclude
 
-		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dxc_under" "../../dMRI/dMRI/dti_FA.nii.gz" "dxc_over1" "../../dMRI/probtrackx/exclude.nii.gz" "NA29" "NA29_link" 0
+		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dxc_under" "../../dMRI/dMRI/dti_FA.nii.gz" "dxc_over1" "../../dMRI/probtrackx_${PARC_NAME}/exclude.nii.gz" "NA29" "NA29_link" 0
 
 
 	#dMRI tractography seed only
 
-		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/probtrackx/labelledWM_GM.nii.gz -p blue-lightblue -a 100.0  /dMRI/dMRI/dti_FA.nii.gz $dirSubject  dMRI_tractography_seeds
+		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/probtrackx_${PARC_NAME}/labelledWM_GM_${PARC_NAME}.nii.gz -p blue-lightblue -a 100.0  /dMRI/dMRI/dti_FA.nii.gz $dirSubject  dMRI_tractography_seeds
 
-		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dfs_under" "../../dMRI/dMRI/dti_FA.nii.gz" "dfs_over1" "../../dMRI/probtrackx/labelledWM_GM.nii.gz" "NA30" "NA30_link" 0
+		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dfs_under" "../../dMRI/dMRI/dti_FA.nii.gz" "dfs_over1" "../../dMRI/probtrackx_${PARC_NAME}/labelledWM_GM_${PARC_NAME}.nii.gz" "NA30" "NA30_link" 0
 
 	#dMRI tractography seed only random big
 
-		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/probtrackx/labelledWM_GM.nii.gz -a 100.0 -p random_big -j label /dMRI/dMRI/dti_FA.nii.gz $dirSubject  dMRI_tractography_seeds_rb
+		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/probtrackx_${PARC_NAME}/labelledWM_GM_${PARC_NAME}.nii.gz -a 100.0 -p random_big -j label /dMRI/dMRI/dti_FA.nii.gz $dirSubject  dMRI_tractography_seeds_rb
 
-		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dfsrb_under" "../../dMRI/dMRI/dti_FA.nii.gz" "dfsrb_over1" "../../dMRI/probtrackx/labelledWM_GM.nii.gz" "NA31" "NA31_link" 0
+		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dfsrb_under" "../../dMRI/dMRI/dti_FA.nii.gz" "dfsrb_over1" "../../dMRI/probtrackx_${PARC_NAME}/labelledWM_GM_${PARC_NAME}.nii.gz" "NA31" "NA31_link" 0
 
 
 
 	#exclude with seed masks
 
-		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/probtrackx/exclude.nii.gz -p red-yellow -a 25.0 -s /dMRI/probtrackx/labelledWM_GM.nii.gz -h blue-lightblue -i 100.0 /dMRI/dMRI/dti_FA.nii.gz $dirSubject  dMRI_tractography_exclude_seeds
+		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/probtrackx_${PARC_NAME}/exclude.nii.gz -p red-yellow -a 25.0 -s /dMRI/probtrackx_${PARC_NAME}/labelledWM_GM_${PARC_NAME}.nii.gz -h blue-lightblue -i 100.0 /dMRI/dMRI/dti_FA.nii.gz $dirSubject  dMRI_tractography_exclude_seeds
 
-		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dxs_under" "../../dMRI/dMRI/dti_FA.nii.gz" "dxs_over1" "../../dMRI/probtrackx/exclude.nii.gz" "dxs_over2" "dMRI/probtrackx/labelledWM_GM.nii.gz" 1
+		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "dxs_under" "../../dMRI/dMRI/dti_FA.nii.gz" "dxs_over1" "../../dMRI/probtrackx_${PARC_NAME}/exclude.nii.gz" "dxs_over2" "../../dMRI/probtrackx_${PARC_NAME}/labelledWM_GM_${PARC_NAME}.nii.gz" 1
 
 
 #export FSLDIR=/opt/HCPpipelines-4.1.3/fsl
@@ -314,24 +316,29 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 
 	#FC SC PDF
 
-		python $BB_BIN_DIR/tvb_bb_QC/SC_FC.py $dirSubject $sub
+		python $BB_BIN_DIR/tvb_bb_QC/SC_FC.py $dirSubject $sub ${PARC_NAME}
 
 
 
 ### IDP REPORT GEN ###
 	
-	python $BB_BIN_DIR/tvb_bb_QC/new_IDP_gen.py $dirSubject $PARC_LUT $BB_BIN_DIR
+	python $BB_BIN_DIR/tvb_bb_QC/new_IDP_gen.py $dirSubject $PARC_LUT $BB_BIN_DIR ${PARC_NAME} $FSLDIR
 	#python $BB_BIN_DIR/tvb_bb_QC/IDP_postprocessing.py $dirSubject $PARC_LUT $BB_BIN_DIR/bb_IDP/thresholds.txt
 	python $BB_BIN_DIR/tvb_bb_QC/IDP_postprocessing.py $dirSubject $BB_BIN_DIR/bb_IDP/ukbb_IDP_list.tsv $BB_BIN_DIR/bb_IDP/IDPoi.txt $BB_BIN_DIR/bb_IDP/thresholds.tsv
 	#TODO: only give $BB_BIN_DIR as arg for above and resolve relative pathing in script
 	
-	python $BB_BIN_DIR/tvb_bb_QC/IDP_html_gen.py $dirSubject
+	python $BB_BIN_DIR/tvb_bb_QC/IDP_html_gen.py $dirSubject ${PARC_NAME}
 
 
 
 ### HTML REPORT GEN ###
 
 	$BB_BIN_DIR/tvb_bb_QC/html_gen.sh  $dirSubject $sub
+
+### RENAME QC AND IDP DIRS TO BE PARC SPECIFIC ###
+
+	mv ${dirSubject}/QC ${dirSubject}/QC_${PARC_NAME}
+	mv ${dirSubject}/IDP_files ${dirSubject}/IDP_files_${PARC_NAME}
 
 
 set -e

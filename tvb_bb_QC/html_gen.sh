@@ -17,7 +17,7 @@ mkdir -p $subjdir$html_output_dir"/css"
 cp $BB_BIN_DIR/tvb_bb_QC/resources/sidebartoggles.js $subjdir$html_output_dir
 cp $BB_BIN_DIR/tvb_bb_QC/resources/toggles.js $subjdir$html_output_dir
 cp $BB_BIN_DIR/tvb_bb_QC/resources/togglesSCFC.js $subjdir$html_output_dir
-cp $BB_BIN_DIR/tvb_bb_QC/resources/togglesMELODIC.js $subjdir$html_output_dir
+cp $BB_BIN_DIR/tvb_bb_QC/resources/togglesMELODIC_FIX.js $subjdir$html_output_dir
 cp $BB_BIN_DIR/tvb_bb_QC/resources/togglesIDP.js $subjdir$html_output_dir
 cp $BB_BIN_DIR/tvb_bb_QC/resources/zoomer.js $subjdir$html_output_dir
 cp $BB_BIN_DIR/tvb_bb_QC/resources/notes.txt $subjdir$html_output_dir"/notes"
@@ -60,6 +60,7 @@ cat > $subjdir$html_output_dir"/report.html" << EOF
       <h5 class="w3-hide-large" style="white-space:nowrap">QC IMAGE REPORT</h5>
       
       <h3 class="w3-hide-medium w3-hide-small">$sub_upper</h3>
+      <h5 class="w3-hide-medium w3-hide-small">Parcellation - ${PARC_NAME}</h5>
       
     </div>
  
@@ -86,7 +87,7 @@ cat > $subjdir$html_output_dir"/report.html" << EOF
     <a href="report.html" class="w3-bar-item w3-button">Home</a>
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
-    <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
+    <a href="MELODIC_FIX.html" class="w3-bar-item w3-button">MELODIC-FIX</a>
     <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
@@ -99,7 +100,7 @@ cat > $subjdir$html_output_dir"/report.html" << EOF
   <a href="report.html" class="w3-bar-item w3-button">Home</a>
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
-    <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
+    <a href="MELODIC_FIX.html" class="w3-bar-item w3-button">MELODIC-FIX</a>
     <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
@@ -107,7 +108,25 @@ cat > $subjdir$html_output_dir"/report.html" << EOF
 </div>
 <!-- Page content -->
 <div class="w3-content w3-padding-large w3-margin-top" id="portfolio" style="color:white; text-align: center;">
+<h1>
+    <div style="font-size: 20px" > Parcellation: <select name="menu1" id="menu1" onkeydown="IgnoreAlpha(event);">
+      <option selected="selected">${PARC_NAME}</option>
+      <option id="option_placeholder">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</option>
+      <!-- DO NOT REMOVE. PLACEHOLDER FOR SCRIPTS TO INSERT NEW PARC LINKS -->
 
+      
+      </select>
+      </div>
+      <script type="text/javascript">
+     var urlmenu = document.getElementById( 'menu1' );
+     urlmenu.onchange = function() {
+          if (this.options[ this.selectedIndex ].value != ""){
+            window.open( this.options[ this.selectedIndex ].value, '_self');
+          }
+     };
+    </script></h1>  
+<br>
+<br>
 
 
 <!-- End page content -->
@@ -157,7 +176,7 @@ cat > $subjdir$html_output_dir"/anat.html" << EOF
       <h5 class="w3-hide-large" style="white-space:nowrap">ANATOMICAL IMAGE REPORT</h5>
       
       <h3 class="w3-hide-medium w3-hide-small">$sub_upper</h3>
-      
+      <h5 class="w3-hide-medium w3-hide-small">Parcellation - ${PARC_NAME}</h5>
     </div>
  
 
@@ -183,7 +202,7 @@ cat > $subjdir$html_output_dir"/anat.html" << EOF
     <a href="report.html" class="w3-bar-item w3-button">Home</a>
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
-    <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
+    <a href="MELODIC_FIX.html" class="w3-bar-item w3-button">MELODIC-FIX</a>
     <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
@@ -196,7 +215,7 @@ cat > $subjdir$html_output_dir"/anat.html" << EOF
   <a href="report.html" class="w3-bar-item w3-button">Home</a>
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
-    <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
+    <a href="MELODIC_FIX.html" class="w3-bar-item w3-button">MELODIC-FIX</a>
     <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
@@ -212,7 +231,24 @@ cat > $subjdir$html_output_dir"/anat.html" << EOF
   <br>______<br><br>
   <h1> $sub_upper 
   <br>
-  <div id="analysis_title" style="display: inline; font-size: 28px">EXTRACTION</div></h1>
+  <div id="analysis_title" style="display: inline; font-size: 28px">EXTRACTION</div><br>    
+    <div style="font-size: 20px" > Parcellation: <select name="menu1" id="menu1" onkeydown="IgnoreAlpha(event);">
+      <option selected="selected">${PARC_NAME}</option>
+      <option id="option_placeholder">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</option>
+      <!-- DO NOT REMOVE. PLACEHOLDER FOR SCRIPTS TO INSERT NEW PARC LINKS -->
+
+      
+      </select>
+      </div>
+      <script type="text/javascript">
+     var urlmenu = document.getElementById( 'menu1' );
+     urlmenu.onchange = function() {
+          if (this.options[ this.selectedIndex ].value != ""){
+            window.open( this.options[ this.selectedIndex ].value, '_self');
+          }
+     };
+    </script>
+    </h1>
   ______<br><br>
 
 
@@ -233,7 +269,7 @@ cat > $subjdir$html_output_dir"/anat.html" << EOF
     <optgroup label="T1 Segmentation">
       <option value="uw">T1 Unlabelled WM</option>
       <option value="ug">T1 Unlabelled GM</option>
-      <option value="lc">T1 Labelled cortex</option>
+      <option value="lc">T1 Labelled GM</option>
       <option value="us">T1 Unlabelled subcort GM</option>
       <option value="ls">T1 Labelled subcort GM</option>
     </optgroup>
@@ -440,6 +476,7 @@ cat > $subjdir$html_output_dir"/dMRI.html" << EOF
       <h5 class="w3-hide-large" style="white-space:nowrap">dMRI IMAGE REPORT</h5>
       
       <h3 class="w3-hide-medium w3-hide-small">$sub_upper</h3>
+      <h5 class="w3-hide-medium w3-hide-small">Parcellation - ${PARC_NAME}</h5>
       
     </div>
  
@@ -466,7 +503,7 @@ cat > $subjdir$html_output_dir"/dMRI.html" << EOF
     <a href="report.html" class="w3-bar-item w3-button">Home</a>
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
-    <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
+    <a href="MELODIC_FIX.html" class="w3-bar-item w3-button">MELODIC-FIX</a>
     <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
@@ -479,7 +516,7 @@ cat > $subjdir$html_output_dir"/dMRI.html" << EOF
   <a href="report.html" class="w3-bar-item w3-button">Home</a>
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
-    <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
+    <a href="MELODIC_FIX.html" class="w3-bar-item w3-button">MELODIC-FIX</a>
     <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
@@ -497,7 +534,24 @@ cat > $subjdir$html_output_dir"/dMRI.html" << EOF
   <br>______<br><br>
   <h1> $sub_upper dMRI 
   <br>
-  <div id="analysis_title" style="display: inline; font-size: 28px">DW</div></h1>
+  <div id="analysis_title" style="display: inline; font-size: 28px">DW</div><br>    
+    <div style="font-size: 20px" > Parcellation: <select name="menu1" id="menu1" onkeydown="IgnoreAlpha(event);">
+      <option selected="selected">${PARC_NAME}</option>
+      <option id="option_placeholder">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</option>
+      <!-- DO NOT REMOVE. PLACEHOLDER FOR SCRIPTS TO INSERT NEW PARC LINKS -->
+
+      
+      </select>
+      </div>
+      <script type="text/javascript">
+     var urlmenu = document.getElementById( 'menu1' );
+     urlmenu.onchange = function() {
+          if (this.options[ this.selectedIndex ].value != ""){
+            window.open( this.options[ this.selectedIndex ].value, '_self');
+          }
+     };
+    </script>
+    </h1>
   ______<br><br>
 
 
@@ -725,6 +779,8 @@ array=()
 while IFS=  read -r -d $'\0'; do
     array+=("$REPLY")
 done < <(find $subjdir/fMRI -maxdepth 1 -type d -name "*.ica" -print0)
+IFS=$'\n' array=($(sort <<<"${array[*]}")); unset IFS
+
 
 
 
@@ -755,6 +811,7 @@ cat > $subjdir$html_output_dir"/fMRI.html" << EOF
       <h5 class="w3-hide-large" style="white-space:nowrap">fMRI IMAGE REPORT</h5>
       
       <h3 class="w3-hide-medium w3-hide-small">$sub_upper</h3>
+      <h5 class="w3-hide-medium w3-hide-small">Parcellation - ${PARC_NAME}</h5>
       
     </div>
  
@@ -781,7 +838,7 @@ cat > $subjdir$html_output_dir"/fMRI.html" << EOF
     <a href="report.html" class="w3-bar-item w3-button">Home</a>
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
-    <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
+    <a href="MELODIC_FIX.html" class="w3-bar-item w3-button">MELODIC-FIX</a>
     <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
@@ -794,7 +851,7 @@ cat > $subjdir$html_output_dir"/fMRI.html" << EOF
   <a href="report.html" class="w3-bar-item w3-button">Home</a>
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
-    <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
+    <a href="MELODIC_FIX.html" class="w3-bar-item w3-button">MELODIC-FIX</a>
     <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
@@ -810,6 +867,24 @@ cat > $subjdir$html_output_dir"/fMRI.html" << EOF
 
 <br><br><a name="fMRI_REPORTS">______</a><br><br>
   <h1> fMRI REPORTS </h1>
+
+  <h1>
+    <div style="font-size: 20px" > Parcellation: <select name="menu1" id="menu1" onkeydown="IgnoreAlpha(event);">
+      <option selected="selected">${PARC_NAME}</option>
+      <option id="option_placeholder">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</option>
+      <!-- DO NOT REMOVE. PLACEHOLDER FOR SCRIPTS TO INSERT NEW PARC LINKS -->
+
+      
+      </select>
+      </div>
+      <script type="text/javascript">
+     var urlmenu = document.getElementById( 'menu1' );
+     urlmenu.onchange = function() {
+          if (this.options[ this.selectedIndex ].value != ""){
+            window.open( this.options[ this.selectedIndex ].value, '_self');
+          }
+     };
+    </script></h1>
   ______
 
 EOF
@@ -898,6 +973,7 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
       <h5 class="w3-hide-large" style="white-space:nowrap">SC/FC IMAGE REPORT</h5>
       
       <h3 class="w3-hide-medium w3-hide-small">$sub_upper</h3>
+      <h5 class="w3-hide-medium w3-hide-small">Parcellation - ${PARC_NAME}</h5>
       
     </div>
  
@@ -924,7 +1000,7 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
     <a href="report.html" class="w3-bar-item w3-button">Home</a>
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
-    <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
+    <a href="MELODIC_FIX.html" class="w3-bar-item w3-button">MELODIC-FIX</a>
     <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
@@ -937,7 +1013,7 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
   <a href="report.html" class="w3-bar-item w3-button">Home</a>
     <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
     <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
-    <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
+    <a href="MELODIC_FIX.html" class="w3-bar-item w3-button">MELODIC-FIX</a>
     <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
     <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
     <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
@@ -955,7 +1031,24 @@ cat > $subjdir$html_output_dir"/SCFC.html" << EOF
   <br>______<br><br>
   <h1> $sub_upper SC/FC 
   <br>
-  <div id="analysis_title" style="display: inline; font-size: 28px">STRUCTURAL CONNECTIVITY</div></h1>
+  <div id="analysis_title" style="display: inline; font-size: 28px">STRUCTURAL CONNECTIVITY</div><br>    
+    <div style="font-size: 20px" > Parcellation: <select name="menu1" id="menu1" onkeydown="IgnoreAlpha(event);">
+      <option selected="selected">${PARC_NAME}</option>
+      <option id="option_placeholder">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</option>
+      <!-- DO NOT REMOVE. PLACEHOLDER FOR SCRIPTS TO INSERT NEW PARC LINKS -->
+
+      
+      </select>
+      </div>
+      <script type="text/javascript">
+     var urlmenu = document.getElementById( 'menu1' );
+     urlmenu.onchange = function() {
+          if (this.options[ this.selectedIndex ].value != ""){
+            window.open( this.options[ this.selectedIndex ].value, '_self');
+          }
+     };
+    </script>
+    </h1>
   ______<br><br>
 
 
@@ -1126,4 +1219,4 @@ IMAGE 3 FILE:<br> <a id="im3" href="" >N/A</a>
 EOF
 
 
-$BB_BIN_DIR/tvb_bb_QC/MELODIC_html_gen.sh $subjdir $sub
+$BB_BIN_DIR/tvb_bb_QC/MELODIC_FIX_html_gen.sh $subjdir $sub

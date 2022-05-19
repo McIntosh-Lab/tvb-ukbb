@@ -42,7 +42,7 @@ if [ -f $direc/T1/transforms/T1_to_MNI_warp_coef_inv.nii.gz ] ; then
         ${FSLDIR}/bin/applywarp -i $templ/GMatlas/GMatlas -o $direc/T1/GMatlas_to_T1 -r $direc/T1/T1 -w $direc/T1/transforms/T1_to_MNI_warp_coef_inv.nii.gz --interp=nn
         #result=`${FSLDIR}/bin/fslstats -K $direc/T1/GMatlas_to_T1.nii.gz $direc/T1/T1_fast/T1_brain_pve_1.nii.gz -m -v | xargs -n 3 | awk '{print "("$1"*"$2")"}' | bc `
 	#result=`${FSLDIR}/bin/fslstats -K $direc/T1/transforms/parcel_to_T1.nii.gz $direc/T1/T1_fast/T1_brain_pve_1.nii.gz -m -v | xargs -n 3 | awk '{print "("$1"*"$2")"}' | bc `
-		python $BB_BIN_DIR/bb_IDP/scripts/IDP_T1_GM_parc_gen.py $PARC_LUT $direc/IDP_files/$scriptName.txt $direc/T1/transforms/parcel_to_T1.nii.gz $direc/T1/T1_fast/T1_brain_pve_1.nii.gz
+		python $BB_BIN_DIR/bb_IDP/scripts/IDP_T1_GM_parc_gen.py $PARC_LUT $direc/IDP_files/${scriptName}_${PARC_NAME}.txt $direc/T1/transforms/parcel_to_T1_${PARC_NAME}.nii.gz $direc/T1/T1_fast/T1_brain_pve_1.nii.gz
 
     fi
 fi 

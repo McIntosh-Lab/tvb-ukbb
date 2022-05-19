@@ -15,7 +15,7 @@ subjdir=`echo ${subjdir} | sed 's/\/$/$/g'`
 echo subjectdir is $subjdir
 
 
-python $BB_BIN_DIR/bb_diffusion_pipeline/tvb_probtrackx2/tvb_concat_probtrackx2.py $subjdir $PROBTRACKX_GPU
+python $BB_BIN_DIR/bb_diffusion_pipeline/tvb_probtrackx2/tvb_concat_probtrackx2.py $subjdir ${PARC_NAME} $PROBTRACKX_GPU
 
 # move probtrackx logs to subject log directory
 # mv bb_probtrackx_${1}.e* $subjdir/logs/.
@@ -30,15 +30,12 @@ mkdir $subjdir/tvb_inputs/functional_inputs
 
 
 
-cp $subjdir/dMRI/sc.txt $subjdir/dMRI/distance.txt $subjdir/T2_FLAIR/lesions/volume.txt $subjdir/tvb_inputs
+cp $subjdir/dMRI/sc_${PARC_NAME}.txt $subjdir/dMRI/distance_${PARC_NAME}.txt $subjdir/T2_FLAIR/lesions/volume.txt $subjdir/tvb_inputs
 
-mv $subjdir/tvb_inputs/sc.txt $subjdir/tvb_inputs/structural_inputs/weights.txt
-mv $subjdir/tvb_inputs/distance.txt $subjdir/tvb_inputs/structural_inputs/tract_lengths.txt
+mv $subjdir/tvb_inputs/sc_${PARC_NAME}.txt $subjdir/tvb_inputs/structural_inputs/weights.txt
+mv $subjdir/tvb_inputs/distance_${PARC_NAME}.txt $subjdir/tvb_inputs/structural_inputs/tract_lengths.txt
 mv $subjdir/tvb_inputs/volume.txt $subjdir/tvb_inputs/misc_inputs/lesion_volume.txt
 
-
-python $BB_BIN_DIR/bb_general_tools/replace_nans.py $subjdir/tvb_inputs/structural_inputs/weights.txt
-python $BB_BIN_DIR/bb_general_tools/replace_nans.py $subjdir/tvb_inputs/structural_inputs/tract_lengths.txt
 
 
 array=()
@@ -49,17 +46,16 @@ done < <(find $subjdir/fMRI -maxdepth 1 -type d -name "*.ica" -print0)
 #for each .ica file
 for t in ${array[@]}; do
 	mkdir $subjdir/tvb_inputs/functional_inputs/`basename $t`
-	cp $t/fc.txt $t/ts.txt $subjdir/tvb_inputs/functional_inputs/`basename $t`
-	mv $subjdir/tvb_inputs/functional_inputs/`basename $t`/fc.txt $subjdir/tvb_inputs/functional_inputs/`basename $t`/`basename $t`_functional_connectivity.txt
-	mv $subjdir/tvb_inputs/functional_inputs/`basename $t`/ts.txt $subjdir/tvb_inputs/functional_inputs/`basename $t`/`basename $t`_time_series.txt
+	cp $t/fc_${PARC_NAME}.txt $t/ts_${PARC_NAME}.txt $subjdir/tvb_inputs/functional_inputs/`basename $t`
+	mv $subjdir/tvb_inputs/functional_inputs/`basename $t`/fc_${PARC_NAME}.txt $subjdir/tvb_inputs/functional_inputs/`basename $t`/`basename $t`_functional_connectivity.txt
+	mv $subjdir/tvb_inputs/functional_inputs/`basename $t`/ts_${PARC_NAME}.txt $subjdir/tvb_inputs/functional_inputs/`basename $t`/`basename $t`_time_series.txt
 
-	python $BB_BIN_DIR/bb_general_tools/replace_nans.py $subjdir/tvb_inputs/functional_inputs/`basename $t`/`basename $t`_functional_connectivity.txt
-
+	
 done
 
 
 #generate cortical.txt and centres.txt
-python $BB_BIN_DIR/bb_diffusion_pipeline/tvb_probtrackx2/tvb_generate_centres_cortical.py $subjdir $PARC_LUT
+python $BB_BIN_DIR/bb_diffusion_pipeline/tvb_probtrackx2/tvb_generate_centres_cortical.py $subjdir $PARC_LUT ${PARC_NAME}
 
 
 subj=$1
@@ -68,13 +64,14 @@ if [[ "$subj" =~ '/'$ ]]; then
 fi
 subj=`basename $subj`
 
-cd $subjdir/tvb_inputs && zip -r ./${subj}_tvb_structural_inputs.zip ./structural_inputs && cd -
+cd $subjdir/tvb_inputs && zip -r ./structural_inputs.zip ./structural_inputs && cd -
 
 rm -rf $subjdir/tvb_inputs/structural_inputs
 
-cd $subjdir && zip -r ./${subj}_tvb_inputs.zip ./tvb_inputs && cd -
+mv ${subjdir}/tvb_inputs ${subjdir}/${subj}_${PARC_NAME}_tvb_inputs
+cd $subjdir && zip -r ./${subj}_${PARC_NAME}_tvb_inputs.zip ./${subj}_${PARC_NAME}_tvb_inputs && cd -
 
-rm -rf $subjdir/tvb_inputs
+rm -rf $subjdir/${subj}_${PARC_NAME}_tvb_inputs
 
 
 set -e

@@ -18,24 +18,25 @@ import scipy
 from numpy import inf
 import scipy.stats
 import subprocess
+import nibabel as nib
 # increasing font size for plots
 font = {"size": 100}
 matplotlib.rc("font", **font)
 
 IDP_num_counter = 1
 
-def FC_distribution(subj):
+def FC_distribution(subj, PARC_NAME):
 
     #import data and generate graphs for fMRI
     #for each ica folder in fMRI
     try:
         num_in_cat=1
-        for file in os.listdir(subj + "/fMRI/"):
+        for file in sorted(os.listdir(subj + "/fMRI/")):
             if file.endswith(".ica"):
 
                 #import FC and TS data
-                fc_path = os.path.join(subj + "/fMRI/", file, "fc.txt")
-                ts_path = os.path.join(subj + "/fMRI/", file, "ts.txt")
+                fc_path = os.path.join(subj + "/fMRI/", file, "fc_"+PARC_NAME+".txt")
+                ts_path = os.path.join(subj + "/fMRI/", file, "ts_"+PARC_NAME+".txt")
 
                 FC = ""
                 norm_ts = ""
@@ -49,6 +50,9 @@ def FC_distribution(subj):
                     print("ERROR: fc, ts file not found")
 
 
+                #removing diagonal
+                FC=FC[~np.eye(FC.shape[0],dtype=bool)].reshape(FC.shape[0],-1)
+
                 #get this in the for loop
                 FC_min=np.amin(FC)
                 FC_max=np.amax(FC)
@@ -57,7 +61,8 @@ def FC_distribution(subj):
                 FC_mean_to_max=FC_max-FC_mean
                 FC_median_to_max=FC_max-FC_median
                 FC_range=np.ptp(FC)
-                FC_proportion_neg=np.count_nonzero(FC<0)/(FC.shape[0] * FC.shape[1])
+                FC_proportion_neg=np.count_nonzero(FC<0)/np.count_nonzero(~np.isnan(FC))
+                FC_distribution_proportion_zero=np.count_nonzero(FC==0)/np.count_nonzero(~np.isnan(FC))
 
                 #https://stackoverflow.com/questions/6620471/fitting-empirical-distribution-to-theoretical-ones-with-scipy-python
 
@@ -73,6 +78,7 @@ def FC_distribution(subj):
                 print(FC_median_to_max)
                 print(FC_range)
                 print(FC_proportion_neg)
+                print(FC_distribution_proportion_zero)
 
                 write_to_IDP_file(subj, "FC_distribution_min_"+file, "tvb_IDP_FC_distribution", str(num_in_cat), "FC_distribution_min_"+file, "pearson correlation coefficient", "float", "Functional connectivity minimum for "+file, str(FC_min))
                 num_in_cat+=1
@@ -88,7 +94,9 @@ def FC_distribution(subj):
                 num_in_cat+=1
                 write_to_IDP_file(subj, "FC_distribution_range_"+file, "tvb_IDP_FC_distribution", str(num_in_cat), "FC_distribution_range_"+file, "pearson correlation coefficient", "float", "Functional connectivity range for "+file, str(FC_range))
                 num_in_cat+=1
-                write_to_IDP_file(subj, "FC_distribution_proportion_neg_"+file, "tvb_IDP_FC_distribution", str(num_in_cat), "FC_distribution_proportion_neg_"+file, "proportion out of 1", "float", "Functional connectivity proportion negative for "+file, str(FC_proportion_neg))
+                write_to_IDP_file(subj, "FC_distribution_proportion_neg_"+file, "tvb_IDP_FC_distribution", str(num_in_cat), "FC_distribution_proportion_neg_"+file, "proportion of non-nan and non-inf connections", "float", "Functional connectivity - proportion of non-nan and non-inf connections with 0 value for "+file, str(FC_proportion_neg))
+                num_in_cat+=1
+                write_to_IDP_file(subj, "FC_distribution_proportion_zero_"+file, "tvb_IDP_FC_distribution", str(num_in_cat), "FC_distribution_proportion_zeroes_"+file, "proportion of non-nan and non-inf connections", "float", "Functional connectivity - proportion of non-nan and non-inf connections with 0 value for "+file, str(FC_distribution_proportion_zero))
                 num_in_cat+=1
 
 
@@ -125,7 +133,7 @@ def FC_distribution(subj):
 
                     squared_error = mean_squared_error(pdf_fitted,y)
                     print("------")
-                    print("SC_dist")
+                    print("FC_dist",file)
 
                     print("dist: "+dist_name)
                     print("squared error: "+str(squared_error))
@@ -140,12 +148,12 @@ def FC_distribution(subj):
 
 
 
-def SC_distribution(subj):
+def SC_distribution(subj, PARC_NAME):
 
     
     #import SC data
     SC = ""
-    SC_path=subj + "/dMRI/sc.txt"
+    SC_path=subj + "/dMRI/sc_"+PARC_NAME+".txt"
     try:
         SC = np.loadtxt(SC_path)
     except:
@@ -185,6 +193,8 @@ def SC_distribution(subj):
     SC[SC == -inf] = "nan"
     SC[SC == inf] = "nan"
 
+    SC=SC[~np.eye(SC.shape[0],dtype=bool)].reshape(SC.shape[0],-1)
+
 
     SC_min=np.nanmin(SC) 
     SC_max=np.nanmax(SC) 
@@ -193,8 +203,8 @@ def SC_distribution(subj):
     SC_mean_to_max=SC_max-SC_mean 
     SC_median_to_max=SC_max-SC_median 
     SC_range=SC_max-SC_min 
-    SC_proportion_neg=np.count_nonzero(SC<0)/(SC.shape[0] * SC.shape[1]) 
-
+    SC_proportion_neg=np.count_nonzero(SC<0)/np.count_nonzero(~np.isnan(SC))
+    SC_distribution_proportion_zero=np.count_nonzero(SC==0)/np.count_nonzero(~np.isnan(SC))
 
     #https://stackoverflow.com/questions/6620471/fitting-empirical-distribution-to-theoretical-ones-with-scipy-python
     #https://github.com/cokelaer/fitter/blob/master/src/fitter/fitter.py#L264
@@ -214,6 +224,7 @@ def SC_distribution(subj):
     print(SC_proportion_neg)
     print(SC_num_nan)
     print(SC_nan_lines)
+    print(SC_distribution_proportion_zero)
 
     num_in_cat=1
     write_to_IDP_file(subj, "SC_distribution_min", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_distribution_min", "pearson correlation coefficient (log 10)", "float", "Structural connectivity minimum", str(SC_min))
@@ -230,11 +241,13 @@ def SC_distribution(subj):
     num_in_cat+=1
     write_to_IDP_file(subj, "SC_distribution_range", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_distribution_range", "pearson correlation coefficient (log 10)", "float", "Structural connectivity range", str(SC_range))
     num_in_cat+=1
-    write_to_IDP_file(subj, "SC_distribution_proportion_neg", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_distribution_proportion_neg", "proportion out of 1", "float", "Structural connectivity proportion negative", str(SC_proportion_neg))
+    write_to_IDP_file(subj, "SC_distribution_proportion_neg", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_distribution_proportion_neg", "proportion of non-nan and non-inf connections", "float", "Structural connectivity - proportion of non-nan and non-inf  connections with negative value", str(SC_proportion_neg))
     num_in_cat+=1
     write_to_IDP_file(subj, "SC_nan_lines", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_nan_lines", "line number", "float", "Structural connectivity - line numbers of rows with all NaNs", str(SC_nan_lines))
     num_in_cat+=1
     write_to_IDP_file(subj, "SC_num_nan", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_number_of_nan_lines", "number of lines", "float", "Structural connectivity - number of all NaN rows", str(SC_num_nan))
+    num_in_cat+=1
+    write_to_IDP_file(subj, "SC_distribution_proportion_zero", "tvb_IDP_SC_distribution", str(num_in_cat), "SC_distribution_proportion_zeroes", "proportion of non-nan and non-inf connections", "float", "Structural connectivity - proportion of non-nan and non-inf connections with 0 value", str(SC_distribution_proportion_zero))
     num_in_cat+=1
 
 
@@ -280,6 +293,153 @@ def SC_distribution(subj):
         num_in_cat+=1
 
 
+
+
+def TL_distribution(subj, PARC_NAME):
+
+    
+    #import TL data
+    TL = ""
+    TL_path=subj + "/dMRI/distance_"+PARC_NAME+".txt"
+    try:
+        TL = np.loadtxt(TL_path)
+    except:
+        print("ERROR: tl file not found")
+
+    
+    nanlines=""
+    with open(TL_path) as f:
+        lines = f.read().splitlines()
+        counter1=1
+        counter=0
+        for x in lines:
+
+            x = x.split()
+
+            nan_row=True
+            for y in x:
+                if y != "nan":
+                    nan_row=False
+            if nan_row == True:
+                counter +=1
+                nanlines = nanlines + str(counter1) + ", "
+            counter1 +=1
+
+    #TL is log scale now
+    TL = np.log10(TL)
+
+
+    TL_num_nan=counter
+
+    if nanlines == "":
+        TL_nan_lines = "nan"
+    else:
+        TL_nan_lines=nanlines[:-2]
+
+
+    TL[TL == -inf] = "nan"
+    TL[TL == inf] = "nan"
+
+    TL=TL[~np.eye(TL.shape[0],dtype=bool)].reshape(TL.shape[0],-1)
+
+
+    TL_min=np.nanmin(TL) 
+    TL_max=np.nanmax(TL) 
+    TL_median=np.nanmedian(TL) 
+    TL_mean=np.nanmean(TL) 
+    TL_mean_to_max=TL_max-TL_mean 
+    TL_median_to_max=TL_max-TL_median 
+    TL_range=TL_max-TL_min 
+    TL_proportion_neg=np.count_nonzero(TL<0)/np.count_nonzero(~np.isnan(TL))
+    TL_distribution_proportion_zero=np.count_nonzero(TL==0)/np.count_nonzero(~np.isnan(TL))
+
+    #https://stackoverflow.com/questions/6620471/fitting-empirical-distribution-to-theoretical-ones-with-scipy-python
+    #https://github.com/cokelaer/fitter/blob/master/src/fitter/fitter.py#L264
+
+    #TO DO: distribution analysis WITH TL AND TS^^^ 
+
+    print("---------")
+    print("TL")
+    print("---------")
+    print(TL_min)
+    print(TL_max)
+    print(TL_median)
+    print(TL_mean)
+    print(TL_mean_to_max)
+    print(TL_median_to_max)
+    print(TL_range)
+    print(TL_proportion_neg)
+    print(TL_num_nan)
+    print(TL_nan_lines)
+    print(TL_distribution_proportion_zero)
+
+    num_in_cat=1
+    write_to_IDP_file(subj, "TL_distribution_min", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_min", "mm (log 10)", "float", "Tract length distance minimum", str(TL_min))
+    num_in_cat+=1
+    write_to_IDP_file(subj, "TL_distribution_max", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_max", "mm (log 10)", "float", "Tract length distance maximum", str(TL_max))
+    num_in_cat+=1
+    write_to_IDP_file(subj, "TL_distribution_median", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_median", "mm (log 10)", "float", "Tract length distance median", str(TL_median))
+    num_in_cat+=1
+    write_to_IDP_file(subj, "TL_distribution_mean", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_mean", "mm (log 10)", "float", "Tract length distance mean", str(TL_mean))
+    num_in_cat+=1
+    write_to_IDP_file(subj, "TL_distribution_mean_to_max", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_mean_to_max", "mm (log 10)", "float", "Tract length distance from mean to max", str(TL_mean_to_max))
+    num_in_cat+=1
+    write_to_IDP_file(subj, "TL_distribution_median_to_max", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_median_to_max", "mm (log 10)", "float", "Tract length distance from median to max", str(TL_median_to_max))
+    num_in_cat+=1
+    write_to_IDP_file(subj, "TL_distribution_range", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_range", "mm (log 10)", "float", "Tract length distance range", str(TL_range))
+    num_in_cat+=1
+    write_to_IDP_file(subj, "TL_distribution_proportion_neg", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_proportion_neg", "proportion of non-nan  and non-inf tracts", "float", "Tract length distance - proportion of non-nan  and non-inf tracts with negative distance", str(TL_proportion_neg))
+    num_in_cat+=1
+    write_to_IDP_file(subj, "TL_nan_lines", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_nan_lines", "line number", "float", "Tract length distance - line numbers of rows with all NaNs", str(TL_nan_lines))
+    num_in_cat+=1
+    write_to_IDP_file(subj, "TL_num_nan", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_number_of_nan_lines", "number of lines", "float", "Tract length distance - number of all NaN rows", str(TL_num_nan))
+    num_in_cat+=1
+    write_to_IDP_file(subj, "TL_distribution_proportion_zero", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_distribution_proportion_zeroes", "proportion of non-nan  and non-inf tracts", "float", "Tract length distance - proportion of non-nan  and non-inf tracts with 0 distance", str(TL_distribution_proportion_zero))
+    num_in_cat+=1
+
+
+    TL = TL.flatten()
+
+    y, x = np.histogram(TL[~np.isnan(TL)], bins=100)
+    for index, value in enumerate(x[0:-1]):
+        x[index] = (value + x[index + 1]) / 2 
+    x=x[0:-1]
+    
+    total=np.sum(y)
+
+    dist_names = [
+"lognorm"
+]
+    print(y)
+    print(x)
+    #h = plt.hist(y, bins=range(100))
+    for dist_name in dist_names:
+        dist = getattr(scipy.stats, dist_name)
+        params = dist.fit(TL[~np.isnan(TL)])
+        pdf_fitted = dist.pdf(x, *params) #* total
+
+        
+        y=y - np.min(y)
+
+        y=y / np.max(y)
+
+        
+        pdf_fitted=pdf_fitted - np.min(pdf_fitted)
+        pdf_fitted=pdf_fitted / np.max(pdf_fitted)
+        print(pdf_fitted)
+
+        squared_error = mean_squared_error(pdf_fitted,y)
+        print("------")
+        print("TL_dist")
+
+        print("dist: "+dist_name)
+        print("squared error: "+str(squared_error))
+        #plt.plot(pdf_fitted, label=dist_name)    
+    #plt.show()
+        write_to_IDP_file(subj, "TL_"+dist_name+"_MSE", "tvb_IDP_TL_distribution", str(num_in_cat), "TL_"+dist_name+"_Mean_Squared_Error", "pearon correlation coefficient 2 (log 10)", "float", "Structural connectivity - mean squared error for "+dist_name+" distribution fit", str(squared_error))
+        num_in_cat+=1
+
+
 def mean_squared_error(y,y_fit):
      squared_error = np.sum(np.square(np.subtract(y,y_fit)))
      mean_squared_error = squared_error/y.size
@@ -291,7 +451,7 @@ def MELODIC_SNR(subj,fix4melviewtxt):
     #for each ica folder in fMRI
     try:
         num_in_cat=1
-        for file in os.listdir(subj + "/fMRI/"):
+        for file in sorted(os.listdir(subj + "/fMRI/")):
             if file.endswith(".ica"):
 
                 #TODO: might have to replace this with string + concat if the asterisk doesnt work properly in os path join
@@ -348,11 +508,11 @@ def MELODIC_SNR(subj,fix4melviewtxt):
                             print (p_signal)
                             print (p_noise)
 
-                            write_to_IDP_file(subj, "MELODIC_SNR_prop_IC_unknown_"+str(os.path.basename(name))+"_"+file, "tvb_IDP_MELODIC_SNR", str(num_in_cat), "MELODIC_SNR_proportion_IC_unknown_"+str(os.path.basename(name))+"_"+file, "proportion out of 1", "float", "MELODIC signal to noise ratio - proportion of ICs that are unknown in "+str(os.path.basename(name))+" for "+file, str(p_unknown))
+                            write_to_IDP_file(subj, "FIX_prop_IC_unknown_"+file, "tvb_IDP_FIX_classes", str(num_in_cat), "FIX_proportion_IC_unknown_"+file, "proportion out of 1", "float", "Proportion of MELODIC ICs that are classified as unknown by FIX for "+file, str(p_unknown))
                             num_in_cat+=1
-                            write_to_IDP_file(subj, "MELODIC_SNR_prop_IC_signal_"+str(os.path.basename(name))+"_"+file, "tvb_IDP_MELODIC_SNR", str(num_in_cat), "MELODIC_SNR_proportion_IC_signal_"+str(os.path.basename(name))+"_"+file, "proportion out of 1", "float", "MELODIC signal to noise ratio - proportion of ICs that are signal in "+str(os.path.basename(name))+" for "+file, str(p_signal))
+                            write_to_IDP_file(subj, "FIX_prop_IC_signal_"+file, "tvb_IDP_FIX_classes", str(num_in_cat), "FIX_proportion_IC_signal_"+file, "proportion out of 1", "float", "Proportion of MELODIC ICs that are classified as signal by FIX for "+file, str(p_signal))
                             num_in_cat+=1
-                            write_to_IDP_file(subj, "MELODIC_SNR_prop_IC_noise_"+str(os.path.basename(name))+"_"+file, "tvb_IDP_MELODIC_SNR", str(num_in_cat), "MELODIC_SNR_proportion_IC_noise_"+str(os.path.basename(name))+"_"+file, "proportion out of 1", "float", "MELODIC signal to noise ratio - proportion of ICs that are noise in "+str(os.path.basename(name))+" for "+file, str(p_noise))
+                            write_to_IDP_file(subj, "FIX_prop_IC_noise_"+file, "tvb_IDP_FIX_classes", str(num_in_cat), "FIX_proportion_IC_noise_"+file, "proportion out of 1", "float", "Proportion of MELODIC ICs that are classified as noise by FIX for "+file, str(p_noise))
                             num_in_cat+=1
 
 
@@ -366,7 +526,7 @@ def MELODIC_SNR(subj,fix4melviewtxt):
 def MCFLIRT_displacement(subj):
     try:
         num_in_cat=1
-        for file in os.listdir(subj + "/fMRI/"):
+        for file in sorted(os.listdir(subj + "/fMRI/")):
             if file.endswith(".ica") or file.endswith(".feat"):
                 rel_displacement_file = os.path.join(subj + "/fMRI/", file, "mc", "prefiltered_func_data_mcf_rel.rms")
                 abs_displacement_file = os.path.join(subj + "/fMRI/", file, "mc", "prefiltered_func_data_mcf_abs.rms")
@@ -454,7 +614,7 @@ def MCFLIRT_displacement(subj):
 
 
 
-def homotopic(subj,LUT_txt):
+def homotopic(subj,LUT_txt,PARC_NAME):
     #get indices of homotopic pairs
     #get the fc value for each pair
     #get distribution of these fc values  
@@ -496,12 +656,12 @@ def homotopic(subj,LUT_txt):
 
     try:
         num_in_cat=1
-        for file in os.listdir(subj + "/fMRI/"):
+        for file in sorted(os.listdir(subj + "/fMRI/")):
             if file.endswith(".ica"):
 
                 #import FC and TS data
-                fc_path = os.path.join(subj + "/fMRI/", file, "fc.txt")
-                ts_path = os.path.join(subj + "/fMRI/", file, "ts.txt")
+                fc_path = os.path.join(subj + "/fMRI/", file, "fc_"+PARC_NAME+".txt")
+                ts_path = os.path.join(subj + "/fMRI/", file, "ts_"+PARC_NAME+".txt")
 
                 FC = ""
                 norm_ts = ""
@@ -540,7 +700,7 @@ def homotopic(subj,LUT_txt):
 def fmri_SNR_numvol(subj, BB_BIN_DIR):
     try:
         num_in_cat=1
-        for file in os.listdir(subj + "/fMRI/"):
+        for file in sorted(os.listdir(subj + "/fMRI/")):
             if file.endswith(".ica"):
                 SNR_result = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_SNR_IDP_gen.sh'), subj, file, os.path.join(subj, "fMRI", file, "filtered_func_data")],  stdout=subprocess.PIPE)
                 SNR_result = SNR_result.stdout.decode('utf-8').strip()
@@ -558,13 +718,13 @@ def fmri_SNR_numvol(subj, BB_BIN_DIR):
                 print (clean_SNR_result)
                 print (numvol_result)
 
-                write_to_IDP_file(subj, file+"_TSNR", "tvb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the pre-processed "+file+" - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
+                write_to_IDP_file(subj, "tSNR_"+file, "tvb_IDP_func_tSNR", str(num_in_cat), "QC_tSNR_"+file, "ratio", "float", "Temporal signal-to-noise ratio in the pre-processed "+file+" - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
                 num_in_cat +=1
 
-                write_to_IDP_file(subj, file+"_cleaned_TSNR", "tvb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_cleaned_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the artefact-cleaned pre-processed "+file+" - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(clean_SNR_result))
+                write_to_IDP_file(subj, "cleaned_tSNR_"+file, "tvb_IDP_func_tSNR", str(num_in_cat), "QC_cleaned_tSNR_"+file, "ratio", "float", "Temporal signal-to-noise ratio in the artefact-cleaned pre-processed "+file+" - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(clean_SNR_result))
                 num_in_cat +=1
 
-                write_to_IDP_file(subj, file+"_num_vol", "tvb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_num_vol", "volumes", "int", "Number of volumes in "+file+" scan", str(numvol_result))
+                write_to_IDP_file(subj, "num_vol_"+file, "tvb_IDP_func_tSNR", str(num_in_cat), "QC_num_vol_"+file, "volumes", "int", "Number of volumes in "+file+" scan", str(numvol_result))
                 num_in_cat +=1
 
                 
@@ -581,10 +741,10 @@ def fmri_SNR_numvol(subj, BB_BIN_DIR):
                 print (SNR_result)
                 print (numvol_result)
 
-                write_to_IDP_file(subj, file+"_TSNR", "tvb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the pre-processed "+file+" - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
+                write_to_IDP_file(subj, "tSNR_"+file, "tvb_IDP_func_tSNR", str(num_in_cat), "QC_tSNR_"+file, "ratio", "float", "Temporal signal-to-noise ratio in the pre-processed "+file+" - reciprocal of median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
                 num_in_cat +=1
                 
-                write_to_IDP_file(subj, file+"_num_vol", "tvb_IDP_func_TSNR", str(num_in_cat), "QC_"+file+"_num_vol", "volumes", "int", "Number of volumes in "+file+" scan", str(numvol_result))
+                write_to_IDP_file(subj, "num_vol_"+file, "tvb_IDP_func_tSNR", str(num_in_cat), "QC_num_vol_"+file, "volumes", "int", "Number of volumes in "+file+" scan", str(numvol_result))
                 num_in_cat +=1
     except:
         print("ERROR: fmri SNR or numvol error")
@@ -600,7 +760,7 @@ def susceptibility_SNR(subj, BB_BIN_DIR):
 
         parclist_dict={non_susc_mask:"non-susceptible",susc_mask:"susceptible"}
         for susceptibility_parc in susceptibility_parc_list:    
-            for file in os.listdir(subj + "/fMRI/"):
+            for file in sorted(os.listdir(subj + "/fMRI/")):
                 if file.endswith(".ica"):
                     SNR_result = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_susceptibility_SNR_IDP_gen.sh'), subj, os.path.join("fMRI", file, "filtered_func_data"), susceptibility_parc, file, "ica", parclist_dict[susceptibility_parc]],  stdout=subprocess.PIPE)
                     SNR_result = SNR_result.stdout.decode('utf-8').strip()
@@ -615,10 +775,10 @@ def susceptibility_SNR(subj, BB_BIN_DIR):
                     print (SNR_result)
                     print (clean_SNR_result)
 
-                    write_to_IDP_file(subj, file+"_"+parclist_dict[susceptibility_parc]+"_TSNR", "tvb_IDP_func_susceptibility_SNR", str(num_in_cat), "QC_"+file+"_"+parclist_dict[susceptibility_parc]+"_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the pre-processed "+file+" "+parclist_dict[susceptibility_parc]+" regions - median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
+                    write_to_IDP_file(subj, parclist_dict[susceptibility_parc]+"_tSNR_"+file, "tvb_IDP_func_susceptibility_SNR", str(num_in_cat), "QC_"+parclist_dict[susceptibility_parc]+"_tSNR_"+file, "ratio", "float", "Temporal signal-to-noise ratio in the pre-processed "+file+" "+parclist_dict[susceptibility_parc]+" regions - median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
                     num_in_cat +=1
 
-                    write_to_IDP_file(subj, file+"_"+parclist_dict[susceptibility_parc]+"_cleaned_TSNR", "tvb_IDP_func_susceptibility_SNR", str(num_in_cat), "QC_"+file+"_"+parclist_dict[susceptibility_parc]+"_cleaned_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the artefact-cleaned pre-processed "+file+" "+parclist_dict[susceptibility_parc]+" regions - median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(clean_SNR_result))
+                    write_to_IDP_file(subj, parclist_dict[susceptibility_parc]+"_cleaned_tSNR_"+file, "tvb_IDP_func_susceptibility_SNR", str(num_in_cat), "QC_"+parclist_dict[susceptibility_parc]+"_cleaned_tSNR_"+file, "ratio", "float", "Temporal signal-to-noise ratio in the artefact-cleaned pre-processed "+file+" "+parclist_dict[susceptibility_parc]+" regions - median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(clean_SNR_result))
                     num_in_cat +=1
 
                     
@@ -632,7 +792,7 @@ def susceptibility_SNR(subj, BB_BIN_DIR):
                     print("---------")
                     print (SNR_result)
 
-                    write_to_IDP_file(subj, file+"_"+parclist_dict[susceptibility_parc]+"_TSNR", "tvb_IDP_func_susceptibility_SNR", str(num_in_cat), "QC_"+file+"_"+parclist_dict[susceptibility_parc]+"_tSNR", "ratio", "float", "Temporal signal-to-noise ratio in the pre-processed  "+file+" "+parclist_dict[susceptibility_parc]+" regions  - median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
+                    write_to_IDP_file(subj, parclist_dict[susceptibility_parc]+"_tSNR_"+file, "tvb_IDP_func_susceptibility_SNR", str(num_in_cat), "QC_"+parclist_dict[susceptibility_parc]+"_tSNR_"+file, "ratio", "float", "Temporal signal-to-noise ratio in the pre-processed "+file+" "+parclist_dict[susceptibility_parc]+" regions - median (across brain voxels) of voxelwise mean intensity divided by voxelwise timeseries standard deviation", str(SNR_result))
                     num_in_cat +=1
                 
     except:
@@ -641,25 +801,25 @@ def susceptibility_SNR(subj, BB_BIN_DIR):
 
 
 
-def func_head_motion(subj, BB_BIN_DIR):
-    try:
-        num_in_cat=1
-        for file in os.listdir(subj + "/fMRI/"):
-            if file.endswith(".ica") or file.endswith(".feat"):
-                head_motion = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_IDP_func_head_motion.sh'), subj, os.path.join(subj, "fMRI", file, "mc/prefiltered_func_data_mcf_rel_mean.rms")],  stdout=subprocess.PIPE)
-                head_motion = head_motion.stdout.decode('utf-8').strip()
+# def func_head_motion(subj, BB_BIN_DIR):
+#     try:
+#         num_in_cat=1
+#         for file in sorted(os.listdir(subj + "/fMRI/")):
+#             if file.endswith(".ica") or file.endswith(".feat"):
+#                 head_motion = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_IDP_func_head_motion.sh'), subj, os.path.join(subj, "fMRI", file, "mc/prefiltered_func_data_mcf_rel_mean.rms")],  stdout=subprocess.PIPE)
+#                 head_motion = head_motion.stdout.decode('utf-8').strip()
 
-                print("---------")
-                print(file + "_func_head_motion")
-                print("---------")
-                print (head_motion)
+#                 print("---------")
+#                 print(file + "_func_head_motion")
+#                 print("---------")
+#                 print (head_motion)
 
-                write_to_IDP_file(subj, file+"_head_motion", "tvb_IDP_func_head_motion", str(num_in_cat), "IDP_"+file+"_head_motion", "mm", "float", "Mean "+file+" head motion, averaged across space and timepoints", str(head_motion))
-                num_in_cat +=1
+#                 write_to_IDP_file(subj, "head_motion_"+file, "tvb_IDP_func_head_motion", str(num_in_cat), "IDP_"+file+"_head_motion", "mm", "float", "Mean "+file+" head motion, averaged across space and timepoints", str(head_motion))
+#                 num_in_cat +=1
 
                 
-    except:
-        print("ERROR: func_head_motion error")
+#     except:
+#         print("ERROR: func_head_motion error")
 
 
 
@@ -667,7 +827,7 @@ def func_head_motion(subj, BB_BIN_DIR):
 def func_task_activation(subj, BB_BIN_DIR):
     try:
         num_in_cat=1
-        for file in os.listdir(subj + "/fMRI/"):
+        for file in sorted(os.listdir(subj + "/fMRI/")):
             if file.endswith(".feat"):
                 task_activation = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_IDP_func_task_activation.sh'), subj, file],  stdout=subprocess.PIPE)
                 task_activation = task_activation.stdout.decode('utf-8').strip()
@@ -678,52 +838,52 @@ def func_task_activation(subj, BB_BIN_DIR):
                 print (task_activation)
 
 
-                write_to_IDP_file(subj, file+"_median_shapes", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_median_BOLD_shapes", "%", "float", "Median BOLD effect (in group-defined mask) for shapes activation (in task fMRI data)", str(task_activation[0]))
+                write_to_IDP_file(subj, "median_shapes_"+file, "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_median_BOLD_shapes_"+file, "%", "float", "Median BOLD effect (in group-defined mask) for shapes activation (in task fMRI data)", str(task_activation[0]))
                 num_in_cat +=1
 
-                write_to_IDP_file(subj, file+"_p90_shapes", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_90th-percentile_BOLD_shapes", "%", "float", "90th percentile of the BOLD effect (in group-defined mask) for shapes activation (in task fMRI data) ", str(task_activation[1]))
+                write_to_IDP_file(subj, "p90_shapes_"+file, "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_90th-percentile_BOLD_shapes_"+file, "%", "float", "90th percentile of the BOLD effect (in group-defined mask) for shapes activation (in task fMRI data) ", str(task_activation[1]))
                 num_in_cat +=1
 
-                write_to_IDP_file(subj, file+"_median_zstat_shapes", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_median_zstat_shapes", "Z", "float", "Median z-statistic (in group-defined mask) for shapes activation (in task fMRI data)", str(task_activation[2]))
+                write_to_IDP_file(subj, "median_zstat_shapes_"+file, "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_median_zstat_shapes_"+file, "Z", "float", "Median z-statistic (in group-defined mask) for shapes activation (in task fMRI data)", str(task_activation[2]))
                 num_in_cat +=1
 
-                write_to_IDP_file(subj, file+"_p90_zstat_shapes", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_90th-percentile_zstat_shapes", "Z", "float", "90th percentile of the z-statistic (in group-defined mask) for shapes activation (in task fMRI data)", str(task_activation[3]))
+                write_to_IDP_file(subj, "p90_zstat_shapes_"+file, "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_90th-percentile_zstat_shapes_"+file, "Z", "float", "90th percentile of the z-statistic (in group-defined mask) for shapes activation (in task fMRI data)", str(task_activation[3]))
                 num_in_cat +=1
 
-                write_to_IDP_file(subj, file+"_median_faces", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_median_BOLD_faces", "%", "float", "Median BOLD effect (in group-defined mask) for faces activation (in task fMRI data)", str(task_activation[4]))
+                write_to_IDP_file(subj, "median_faces_"+file, "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_median_BOLD_faces_"+file, "%", "float", "Median BOLD effect (in group-defined mask) for faces activation (in task fMRI data)", str(task_activation[4]))
                 num_in_cat +=1
 
-                write_to_IDP_file(subj, file+"_p90_faces", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_90th-percentile_BOLD_faces", "%", "float", "90th percentile of the BOLD effect (in group-defined mask) for faces activation (in task fMRI data)", str(task_activation[5]))
+                write_to_IDP_file(subj, "p90_faces_"+file, "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_90th-percentile_BOLD_faces_"+file, "%", "float", "90th percentile of the BOLD effect (in group-defined mask) for faces activation (in task fMRI data)", str(task_activation[5]))
                 num_in_cat +=1
 
-                write_to_IDP_file(subj, file+"_median_zstat_faces", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_median_zstat_faces", "Z", "float", "Median z-statistic (in group-defined mask) for faces activation (in task fMRI data)", str(task_activation[6]))
+                write_to_IDP_file(subj, "median_zstat_faces_"+file, "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_median_zstat_faces_"+file, "Z", "float", "Median z-statistic (in group-defined mask) for faces activation (in task fMRI data)", str(task_activation[6]))
                 num_in_cat +=1
 
-                write_to_IDP_file(subj, file+"_p90_zstat_faces", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_90th-percentile_zstat_faces", "Z", "float", "90th percentile of the z-statistic (in group-defined mask) for faces activation (in task fMRI data)", str(task_activation[7]))
+                write_to_IDP_file(subj, "p90_zstat_faces_"+file, "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_90th-percentile_zstat_faces_"+file, "Z", "float", "90th percentile of the z-statistic (in group-defined mask) for faces activation (in task fMRI data)", str(task_activation[7]))
                 num_in_cat +=1
 
-                write_to_IDP_file(subj, file+"_median_faces-shapes", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_median_BOLD_faces-shapes", "%", "float", "Median BOLD effect (in group-defined mask) for faces-shapes contrast (in task fMRI data)", str(task_activation[8]))
+                write_to_IDP_file(subj, "median_faces-shapes_"+file, "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_median_BOLD_faces-shapes_"+file, "%", "float", "Median BOLD effect (in group-defined mask) for faces-shapes contrast (in task fMRI data)", str(task_activation[8]))
                 num_in_cat +=1
 
-                write_to_IDP_file(subj, file+"_p90_faces-shapes", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_90th-percentile_BOLD_faces-shapes", "%", "float", "90th percentile of the BOLD effect (in group-defined mask) for faces-shapes contrast (in task fMRI data)", str(task_activation[9]))
+                write_to_IDP_file(subj, "p90_faces-shapes_"+file, "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_90th-percentile_BOLD_faces-shapes_"+file, "%", "float", "90th percentile of the BOLD effect (in group-defined mask) for faces-shapes contrast (in task fMRI data)", str(task_activation[9]))
                 num_in_cat +=1
 
-                write_to_IDP_file(subj, file+"_median_zstat_faces-shapes", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_median_zstat_faces-shapes", "Z", "float", "Median z-statistic (in group-defined mask) for faces-shapes contrast (in task fMRI data)", str(task_activation[10]))
+                write_to_IDP_file(subj, "median_zstat_faces-shapes_"+file, "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_median_zstat_faces-shapes_"+file, "Z", "float", "Median z-statistic (in group-defined mask) for faces-shapes contrast (in task fMRI data)", str(task_activation[10]))
                 num_in_cat +=1
 
-                write_to_IDP_file(subj, file+"_p90_zstat_faces-shapes", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_90th-percentile_zstat_faces-shapes", "Z", "float", "90th percentile of the z-statistic (in group-defined mask) for faces-shapes contrast (in task fMRI data)", str(task_activation[11]))
+                write_to_IDP_file(subj, "p90_zstat_faces-shapes_"+file, "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_90th-percentile_zstat_faces-shapes_"+file, "Z", "float", "90th percentile of the z-statistic (in group-defined mask) for faces-shapes contrast (in task fMRI data)", str(task_activation[11]))
                 num_in_cat +=1
 
-                write_to_IDP_file(subj, file+"_median_faces-shapes_amygdala", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_median_BOLD_faces-shapes_amygdala", "%", "float", "Median BOLD effect (in group-defined amygdala activation mask) for faces-shapes contrast (in task fMRI data)", str(task_activation[12]))
+                write_to_IDP_file(subj, "median_faces-shapes_amygdala_"+file, "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_median_BOLD_faces-shapes_amygdala_"+file, "%", "float", "Median BOLD effect (in group-defined amygdala activation mask) for faces-shapes contrast (in task fMRI data)", str(task_activation[12]))
                 num_in_cat +=1
 
-                write_to_IDP_file(subj, file+"_p90_faces-shapes_amygdala", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_90th-percentile_BOLD_faces-shapes_amygdala", "%", "float", "90th percentile of the BOLD effect (in group-defined amygdala activation mask) for faces-shapes contrast (in task fMRI data)", str(task_activation[13]))
+                write_to_IDP_file(subj, "p90_faces-shapes_amygdala_"+file, "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_90th-percentile_BOLD_faces-shapes_amygdala_"+file, "%", "float", "90th percentile of the BOLD effect (in group-defined amygdala activation mask) for faces-shapes contrast (in task fMRI data)", str(task_activation[13]))
                 num_in_cat +=1
 
-                write_to_IDP_file(subj, file+"_median_zstat_faces-shapes_amygdala", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_median_zstat_faces-shapes_amygdala", "Z", "float", "Median z-statistic (in group-defined amygdala activation mask) for faces-shapes contrast (in task fMRI data)", str(task_activation[14]))
+                write_to_IDP_file(subj, "median_zstat_faces-shapes_amygdala_"+file, "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_median_zstat_faces-shapes_amygdala_"+file, "Z", "float", "Median z-statistic (in group-defined amygdala activation mask) for faces-shapes contrast (in task fMRI data)", str(task_activation[14]))
                 num_in_cat +=1
 
-                write_to_IDP_file(subj, file+"_p90_zstat_faces-shapes_amygdala", "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_"+file+"_90th-percentile_zstat_faces-shapes_amygdala", "Z", "float", "90th percentile of the z-statistic (in group-defined amygdala activation mask) for faces-shapes contrast (in task fMRI data)", str(task_activation[15]))
+                write_to_IDP_file(subj, "p90_zstat_faces-shapes_amygdala_"+file, "tvb_IDP_func_task_activation", str(num_in_cat), "IDP_90th-percentile_zstat_faces-shapes_amygdala_"+file, "Z", "float", "90th percentile of the z-statistic (in group-defined amygdala activation mask) for faces-shapes contrast (in task fMRI data)", str(task_activation[15]))
                 num_in_cat +=1
 
 
@@ -755,7 +915,7 @@ def all_align_to_T1(subj, BB_BIN_DIR):
             write_to_IDP_file(subj, baseDict[file]+"_align_to_T1", "tvb_IDP_all_align_to_T1", str(num_in_cat), "QC_"+baseDict[file]+"-to-T1_linear_alignment_discrepancy", "AU", "float", "Discrepancy between the "+baseDict[file]+" brain image (linearly-aligned to the T1) and the T1 brain image", str(align_to_T1))
             num_in_cat +=1
 
-        for file in os.listdir(subj + "/fMRI/"):
+        for file in sorted(os.listdir(subj + "/fMRI/")):
             if file.endswith(".ica") or file.endswith(".feat"):
 
 
@@ -792,28 +952,148 @@ def all_align_to_T1(subj, BB_BIN_DIR):
         print("ERROR: all_align_to_T1 error")
 
 
-def fieldmap_func_align(subj, BB_BIN_DIR):
+def fieldmap_align_to_func(subj, BB_BIN_DIR):
     try:
         num_in_cat=1
 
-        for file in os.listdir(subj + "/fMRI/"):
+        for file in sorted(os.listdir(subj + "/fMRI/")):
             if file.endswith(".ica") or file.endswith(".feat"):
 
 
-                fieldmap_func_align = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/fieldmap_func_align.sh'), os.path.join(subj,"fMRI",file)],  stdout=subprocess.PIPE)
-                fieldmap_func_align = fieldmap_func_align.stdout.decode('utf-8').strip()
+                fieldmap_align_to_func = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/fieldmap_align_to_func.sh'), os.path.join(subj,"fMRI",file)],  stdout=subprocess.PIPE)
+                fieldmap_align_to_func = fieldmap_align_to_func.stdout.decode('utf-8').strip()
 
                 print("---------")
-                print(file +"_fieldmap_func_align")
+                print(file +"_fieldmap_align_to_func")
                 print("---------")
-                print (fieldmap_func_align)
+                print (fieldmap_align_to_func)
 
-                write_to_IDP_file(subj, file+"_fieldmap_func_align", "tvb_IDP_fieldmap_func_align", str(num_in_cat), "QC_"+file+"-fieldmap-to-func_linear_alignment_discrepancy", "AU", "float", "Discrepancy between the "+file+" field map brain image and the "+file+" func image", str(fieldmap_func_align))
+                write_to_IDP_file(subj, file+"_fieldmap_align_to_func", "tvb_IDP_fieldmap_align_to_func", str(num_in_cat), "QC_"+file+"-fieldmap-to-func_linear_alignment_discrepancy", "AU", "float", "Discrepancy between the "+file+" field map brain image and the "+file+" func image", str(fieldmap_align_to_func))
                 num_in_cat +=1
 
                 
     except:
-        print("ERROR: fieldmap_func_align error")
+        print("ERROR: fieldmap_align_to_func error")
+
+
+def eddy_outliers(subj, BB_BIN_DIR):
+    try:
+        num_in_cat = 1
+
+        outlier_report=os.path.join(subj,"dMRI","dMRI","data.eddy_outlier_report")
+        eddy_num_outliers = sum(1 for line in open(outlier_report))
+
+        print("---------")
+        print("eddy_num_outliers")
+        print("---------")
+        print (eddy_num_outliers)
+
+        write_to_IDP_file(subj, "eddy_num_outliers", "tvb_IDP_diff_eddy_outliers", str(num_in_cat), "eddy_number_of_outlier_slices", "number of slices", "int", "Number of diffusion slices that have been classified as outliers by eddy", str(eddy_num_outliers))
+        num_in_cat +=1
+
+
+
+        bvalsFile=os.path.join(subj,"dMRI","dMRI","bvals")
+        bvals=np.genfromtxt(bvalsFile, dtype=float) 
+        no_dw_vols=(bvals > 100).sum()
+
+
+        olMapFile = os.path.join(subj,"dMRI","dMRI","data.eddy_outlier_map")  
+        olMap = np.genfromtxt(olMapFile,dtype=None, delimiter=" ", skip_header=1)   
+
+        eddyFile=os.path.join(subj,"dMRI","dMRI","data.nii.gz")  #"$dirSubject/dMRI/dMRI/data.nii.gz"#TODO
+        eddy_epi = nib.load(eddyFile) 
+        vol_size = eddy_epi.shape
+        eddy_percent_outliers = 100*np.count_nonzero(olMap)/(no_dw_vols*vol_size[2])
+
+        print("---------")
+        print("eddy_percent_outliers")
+        print("---------")
+        print(eddy_percent_outliers)
+
+
+        write_to_IDP_file(subj, "eddy_percent_outliers", "tvb_IDP_diff_eddy_outliers", str(num_in_cat), "eddy_percent_slice_outliers", "%", "float", "Percent of diffusion slices that have been classified as outliers by eddy", str(eddy_percent_outliers))
+        num_in_cat +=1
+
+                
+    except:
+        print("ERROR: tvb_IDP_diff_eddy_outliers error")
+
+
+
+def SNR_CNR(subj, BB_BIN_DIR):
+    try:
+        num_in_cat = 1
+
+        print("---------")
+        print("SNR_CNR")
+        print("---------")
+
+        qcjson=os.path.join(subj,"QC","eddyQUAD","data.qc","qc.json")
+
+        
+        if os.path.exists(qcjson):
+            with open(qcjson, 'r') as d:
+                data = json.load(d)
+
+            num_shells=(data["data_no_shells"])
+            
+
+            SNR=(data["qc_cnr_avg"][0])
+            print(SNR)
+
+            write_to_IDP_file(subj, "eddy_quad_SNR", "tvb_IDP_eddy_quad_SNR_CNR", str(num_in_cat), "eddy_quad_whole_brain_mean_signal_to_noise_ratio", "ratio", "float", "Whole-brain mean signal-to-noise ratio", str(SNR))
+            num_in_cat +=1
+
+
+            for i in range(int(num_shells)):
+                CNR=data["qc_cnr_avg"][i+1]
+                shell=data["data_unique_bvals"][i]
+                print(shell)   
+                print(CNR)
+
+                write_to_IDP_file(subj, "eddy_quad_CNR_b"+str(shell), "tvb_IDP_eddy_quad_SNR_CNR", str(num_in_cat), "eddy_quad_whole_brain_mean_constrast_to_noise_ratio_for_shell_b"+str(shell), "ratio", "float", "Whole-brain mean contrast-to-noise ratio for shell b"+str(shell), str(CNR))
+                num_in_cat +=1
+
+    except:
+        print("ERROR: SNR_CNR error")
+
+
+
+def rfMRI_FD_DVARS(subj, BB_BIN_DIR, FSLDIR):
+    try:
+        num_in_cat=1
+        for file in sorted(os.listdir(subj + "/fMRI/")):
+            if file.endswith(".ica"):
+                # SNR_result = subprocess.run([os.path.join(BB_BIN_DIR, 'tvb_bb_QC/tvb_SNR_IDP_gen.sh'), subj, file, os.path.join(subj, "fMRI", file, "filtered_func_data")],  stdout=subprocess.PIPE)
+                # SNR_result = SNR_result.stdout.decode('utf-8').strip()
+
+                FD = subprocess.run([os.path.join(FSLDIR, 'bin','fsl_motion_outliers'), "-i", os.path.join(subj, "fMRI", file, "filtered_func_data_clean"), "-o", os.path.join(subj, "IDP_files", "FD_confound_mat_"+file+".txt"), "-s", os.path.join(subj, "IDP_files", "FD_"+file+".txt"), "-p", os.path.join(subj, "IDP_files", "FD_"+file+".png"), "--fd"],  stdout=subprocess.PIPE)
+
+
+                DVARS = subprocess.run([os.path.join(FSLDIR, 'bin','fsl_motion_outliers'), "-i", os.path.join(subj, "fMRI", file, "filtered_func_data_clean"), "-o", os.path.join(subj, "IDP_files", "DVARS_confound_mat_"+file+".txt"), "-s", os.path.join(subj, "IDP_files", "DVARS_"+file+".txt"), "-p", os.path.join(subj, "IDP_files", "DVARS_"+file+".png"), "--dvars"],  stdout=subprocess.PIPE)
+
+
+                FD=np.average(np.loadtxt(os.path.join(subj, "IDP_files", "FD_"+file+".txt")))
+                DVARS=np.average(np.loadtxt(os.path.join(subj, "IDP_files", "DVARS_"+file+".txt")))
+
+                print("---------")
+                print(file + "_rfMRI_FD_DVARS")
+                print("---------")
+                print (FD)
+                print (DVARS)
+
+                write_to_IDP_file(subj, "FD_"+file, "tvb_IDP_rfMRI_FD_DVARS", str(num_in_cat), "QC_FD_"+file, "mm", "float", "Mean framewise displacement (FD) in the artefact-cleaned pre-processed "+file+" func image", str(FD))
+                num_in_cat +=1
+
+                write_to_IDP_file(subj, "DVARS_"+file, "tvb_IDP_rfMRI_FD_DVARS", str(num_in_cat), "QC_DVARS_"+file, "AU", "float", "Mean derivative of root mean square variance over voxels (DVARS) in the artefact-cleaned pre-processed "+file+" func image", str(DVARS))
+                num_in_cat +=1
+
+
+                
+    except:
+        print("ERROR: rfMRI_FD_DVARS error")
+
 
 
 
@@ -837,7 +1117,7 @@ def write_to_IDP_file(subj,short,category,num_in_cat,long_var,unit,dtype,descrip
 
 
 
-def new_IDP_gen(subj,LUT_txt,BB_BIN_DIR):      #,fix4melviewtxt
+def new_IDP_gen(subj,LUT_txt,BB_BIN_DIR,PARC_NAME,FSLDIR):      #,fix4melviewtxt
     """Function that generates new IDPs for a subject.
 
     TODO: more error handling here and in function def to deal with 
@@ -888,17 +1168,23 @@ def new_IDP_gen(subj,LUT_txt,BB_BIN_DIR):      #,fix4melviewtxt
 
     fix4melviewtxt=""
 
-    FC_distribution(subj)
-    SC_distribution(subj)
-    MELODIC_SNR(subj,fix4melviewtxt)
-    MCFLIRT_displacement(subj)       
-
-    homotopic(subj,LUT_txt)
+    all_align_to_T1(subj, BB_BIN_DIR)
+    fieldmap_align_to_func(subj, BB_BIN_DIR)
+    # func_head_motion(subj, BB_BIN_DIR)
     fmri_SNR_numvol(subj, BB_BIN_DIR)
     susceptibility_SNR(subj, BB_BIN_DIR)
-    func_head_motion(subj, BB_BIN_DIR)
-    all_align_to_T1(subj, BB_BIN_DIR)
-    fieldmap_func_align(subj, BB_BIN_DIR)
+    MCFLIRT_displacement(subj)       
+    MELODIC_SNR(subj,fix4melviewtxt)
+    rfMRI_FD_DVARS(subj, PARC_NAME, FSLDIR)
+    
+    FC_distribution(subj, PARC_NAME)
+    homotopic(subj,LUT_txt,PARC_NAME)
+
+    eddy_outliers(subj, BB_BIN_DIR)
+    SNR_CNR(subj, BB_BIN_DIR)
+    SC_distribution(subj, PARC_NAME)
+    TL_distribution(subj, PARC_NAME)
+
     #func_task_activation(subj, BB_BIN_DIR) #not implemented in our pipeline
 
 
@@ -933,6 +1219,6 @@ if __name__ == "__main__":
 
     #TODO: use argparse https://stackoverflow.com/questions/32761999/how-to-pass-an-entire-list-as-command-line-argument-in-python/32763023
     # try:
-    new_IDP_gen(sys.argv[1],sys.argv[2],sys.argv[3]) #,sys.argv[3])
+    new_IDP_gen(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4],sys.argv[5]) #,sys.argv[3])
 
     

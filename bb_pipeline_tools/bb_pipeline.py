@@ -30,6 +30,7 @@ import sys, argparse, os.path
 import bb_logging_tool as LT
 from bb_file_manager import bb_file_manager
 from bb_basic_QC import bb_basic_QC
+from tvb_reparcellate_pipeline import tvb_reparcellate_pipeline
 from bb_structural_pipeline.bb_pipeline_struct import bb_pipeline_struct
 from bb_functional_pipeline.bb_pipeline_func import bb_pipeline_func
 from bb_diffusion_pipeline.bb_pipeline_diff import bb_pipeline_diff
@@ -69,74 +70,83 @@ def main(cli_args=None):
 
     logger = LT.initLogging(__file__, subject)
 
-    logger.info("Running file manager")
-    fileConfig = bb_file_manager(subject)
+    REPARCELLATE=os.environ['REPARCELLATE']
+    PARC_NAME=os.environ['PARC_NAME']
+    
 
-    logger.info("File configuration before QC: " + str(fileConfig))
+    if REPARCELLATE=="true":
+        tvb_reparcellate_pipeline(subject, "none", PARC_NAME)
 
-    fileConfig = bb_basic_QC(subject, fileConfig)
+    if REPARCELLATE=="false":
 
-    logger.info("File configuration after running file manager: " + str(fileConfig))
+        logger.info("Running file manager")
+        fileConfig = bb_file_manager(subject)
 
-    # runTopup ==> Having fieldmap
-    if not (
-        (("AP" in fileConfig) and (fileConfig["AP"] != ""))
-        and (("PA" in fileConfig) and (fileConfig["PA"] != ""))
-    ):
-        logger.warn("There is no proper AP/PA data. Thus, TOPUP will not be run")
-        runTopup = False
-        print("NO TOPUP")
-    else:
-        runTopup = True
+        logger.info("File configuration before QC: " + str(fileConfig))
 
-    # set for now
-    # runTopup = True
+        fileConfig = bb_basic_QC(subject, fileConfig)
 
-    # Default value for job id. SGE does not wait for a job with this id.
-    jobSTEP1 = "-1"
-    jobSTEP2 = "-1"
-    jobSTEP3 = "-1"
-    jobSTEP4 = "-1"
-    jobSTEP5 = "-1"
+        logger.info("File configuration after running file manager: " + str(fileConfig))
 
-    # jobSTEP1 = bb_pipeline_struct(subject, runTopup, fileConfig)
-    bb_pipeline_struct(subject, runTopup, fileConfig)
-    #handle cases: when jobstep1 would typically trigger the following
-    if isinstance(jobSTEP1, int):
-        if jobSTEP1 == -1:
-            print(
-                "This subject could not be run. Please check the logs for more information."
-            )
-            return -1
-    if jobSTEP1[-3:] == ",-1":
-        jobSTEP1 = jobSTEP1[:-3]
+        # runTopup ==> Having fieldmap
+        if not (
+            (("AP" in fileConfig) and (fileConfig["AP"] != ""))
+            and (("PA" in fileConfig) and (fileConfig["PA"] != ""))
+        ):
+            logger.warn("There is no proper AP/PA data. Thus, TOPUP will not be run")
+            runTopup = False
+            print("NO TOPUP")
+        else:
+            runTopup = True
 
-    # print(f"jobSTEP1: {jobSTEP1}")
-    # jobSTEP1 = int(jobSTEP1)
+        # set for now
+        # runTopup = True
 
-    # if runTopup:
-    # jobSTEP2 = bb_pipeline_func(subject, fileConfig)
-    # jobSTEP3 = bb_pipeline_diff(subject, fileConfig)
+        # Default value for job id. SGE does not wait for a job with this id.
+        jobSTEP1 = "-1"
+        jobSTEP2 = "-1"
+        jobSTEP3 = "-1"
+        jobSTEP4 = "-1"
+        jobSTEP5 = "-1"
 
-    # jobSTEP4 = bb_IDP(
-    #     subject, fileConfig
-    # )
+        # jobSTEP1 = bb_pipeline_struct(subject, runTopup, fileConfig)
+        bb_pipeline_struct(subject, runTopup, fileConfig)
+        #handle cases: when jobstep1 would typically trigger the following
+        if isinstance(jobSTEP1, int):
+            if jobSTEP1 == -1:
+                print(
+                    "This subject could not be run. Please check the logs for more information."
+                )
+                return -1
+        if jobSTEP1[-3:] == ",-1":
+            jobSTEP1 = jobSTEP1[:-3]
 
-    # jobSTEP5 = tvb_bb_QC(
-    #     subject,
-    #     fileConfig
-    # )
-    bb_pipeline_func(subject, fileConfig)
-    bb_pipeline_diff(subject, fileConfig)
+        # print(f"jobSTEP1: {jobSTEP1}")
+        # jobSTEP1 = int(jobSTEP1)
 
-    bb_IDP(
-        subject, fileConfig
-    )
+        # if runTopup:
+        # jobSTEP2 = bb_pipeline_func(subject, fileConfig)
+        # jobSTEP3 = bb_pipeline_diff(subject, fileConfig)
 
-    tvb_bb_QC(
-        subject,
-        fileConfig
-    )
+        # jobSTEP4 = bb_IDP(
+        #     subject, fileConfig
+        # )
+
+        # jobSTEP5 = tvb_bb_QC(
+        #     subject,
+        #     fileConfig
+        # )
+        bb_pipeline_func(subject, fileConfig)
+        bb_pipeline_diff(subject, fileConfig)
+
+        bb_IDP(
+            subject, fileConfig
+        )
+
+        tvb_bb_QC(
+            subject,
+            fileConfig
+        )
 
     LT.finishLogging(logger)
     # return jobSTEP5
