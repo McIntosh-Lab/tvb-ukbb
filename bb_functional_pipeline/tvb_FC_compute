@@ -23,6 +23,7 @@ def main():
     parser.add_argument('-ts', dest="ts_rois", type=str, nargs=1, help='ts roied')
     parser.add_argument('-LUT', dest='LUT', type=str, nargs=1, help='LUT file')
     parser.add_argument('-od', dest='output_dir',type=str, nargs=1,help='output directory')
+    parser.add_argument('-parcname', dest='PARC_NAME',type=str, nargs=1,help='parcellation name')
    
     
     argsa = parser.parse_args()
@@ -43,6 +44,8 @@ def main():
     ts_rois = argsa.ts_rois[0]
     LUT_file = argsa.LUT[0]
     out_dir = argsa.output_dir[0]
+    PARC_NAME = argsa.PARC_NAME[0]
+    
 
     TS_old = np.loadtxt(ts_rois)
     
@@ -68,8 +71,8 @@ def main():
         else:
             TS[:,i]=np.reshape(TS_old[:,0],(TS_old.shape[0],))
     FC=np.corrcoef(TS.T)
-    np.savetxt(out_dir+'/ts.txt',TS)
-    np.savetxt(out_dir+ '/fc.txt',FC)
+    np.savetxt(out_dir+'/ts_'+PARC_NAME+'.txt',TS)
+    np.savetxt(out_dir+ '/fc_'+PARC_NAME+'.txt',FC)
     
 if __name__ == "__main__":
     main()

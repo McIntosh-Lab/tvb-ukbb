@@ -5,7 +5,7 @@
 # Description: Script to generate QC tars for portability 
 #
 # Usage: 
-#         While in subjects folder:  QC_tar.sh subject_name 
+#         While in subjects folder:  QC_tar.sh subject_name group
 #
 ## Author: Justin Wang
 
@@ -15,22 +15,29 @@ echo "$-"
 set +e
 
 
-origDir=`pwd`
 
 if [[ -d "$2" ]]; then
-    dirSubject=$2/$1
+    origDir="`pwd`/$2"
 else
-    dirSubject=`pwd`$1
+    origDir=`pwd`
 fi
 
-dirScript=`dirname $0`
 
 sub=$1
 
-if [[ "$dirSubject" =~ '/'$ ]]; then 
-  dirSubject=${dirSubject%?}
+if [[ "$sub" =~ '/'$ ]]; then 
   sub=${sub%?}
 fi
+
+
+if [[ "$origDir" =~ '/'$ ]]; then 
+  origDir=${origDir%?}
+fi
+
+
+sub_original=${sub}
+sub=${sub}_QC
+mv ${origDir}/${sub_original} ${origDir}/${sub}
 
 
 if [[ "$1" == "" ]] ; then
@@ -47,7 +54,7 @@ fMRI_files=""
 ica_array=()
 while IFS=  read -r -d $'\0'; do
     ica_array+=("$REPLY")
-done < <(find $sub/fMRI -maxdepth 1 -type d -name "*.ica" -print0)
+done < <(find ${origDir}/$sub/fMRI -maxdepth 1 -type d -name "*.ica" -print0)
 
 
 
@@ -65,7 +72,7 @@ done
 feat_array=()
 while IFS=  read -r -d $'\0'; do
     feat_array+=("$REPLY")
-done < <(find $sub/fMRI -maxdepth 1 -type d -name "*.feat" -print0)
+done < <(find ${origDir}/$sub/fMRI -maxdepth 1 -type d -name "*.feat" -print0)
 
 
 
@@ -77,10 +84,19 @@ for t in ${feat_array[@]}; do
 
 done
 
+if [[ -d "$2" ]]; then
+    cd ${2}
+fi
 
 
-tar -cf $origDir/${sub}_QC.tar $sub/QC $sub/logs$fMRI_files $sub/IDP_files/*.txt $sub/IDP_files/*.tsv
+tar -cf $origDir/${sub}.tar $sub/QC* $sub/logs$fMRI_files $sub/IDP_files*/*.txt $sub/IDP_files*/*.tsv
 #may need --ignore-failed-read option for non existent files/folders
+
+if [[ -d "$2" ]]; then
+    cd ..
+fi
+
+mv ${origDir}/${sub} ${origDir}/${sub_original}
 
 
 set -e

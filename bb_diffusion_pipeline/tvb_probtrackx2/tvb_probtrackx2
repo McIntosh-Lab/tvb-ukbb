@@ -12,27 +12,30 @@ echo subjectdir is $subjdir
 
 
 ### save results at this folder for probtrackx
-mkdir -p ${subjdir}/dMRI/probtrackx
+mkdir -p ${subjdir}/dMRI/probtrackx_${PARC_NAME}
 
 ### link merged files from bedpostx
-ln -s ${subjdir}/dMRI/bedpostx.bedpostX/merged* ${subjdir}/dMRI/probtrackx
+ln -s ${subjdir}/dMRI/bedpostx.bedpostX/merged* ${subjdir}/dMRI/probtrackx_${PARC_NAME}
 
 # apply previously generated inverse warp to get inflated parcellation, interface and exclude masks in DTI space
-${FSLDIR}/bin/applywarp -i $subjdir/T1/labelled_GMI -r $subjdir/dMRI/dMRI/data_B0 -o $subjdir/dMRI/dMRI/parcellation --premat=$subjdir/dMRI/dMRI/transforms/T1_to_DTI.mat --interp=nn
+${FSLDIR}/bin/applywarp -i $subjdir/T1/labelled_GMI_${PARC_NAME} -r $subjdir/dMRI/dMRI/data_B0 -o $subjdir/dMRI/dMRI/parcellation_${PARC_NAME} --premat=$subjdir/dMRI/dMRI/transforms/T1_to_DTI.mat --interp=nn
 ${FSLDIR}/bin/applywarp -i $subjdir/T1/interface -r $subjdir/dMRI/dMRI/data_B0 -o $subjdir/dMRI/dMRI/interface --premat=$subjdir/dMRI/dMRI/transforms/T1_to_DTI.mat --interp=nn
-${FSLDIR}/bin/applywarp -i $subjdir/T1/T1_fast/T1_brain_GM_mask -r $subjdir/dMRI/dMRI/data_B0 -o $subjdir/dMRI/probtrackx/exclude --premat=$subjdir/dMRI/dMRI/transforms/T1_to_DTI.mat --interp=nn
+${FSLDIR}/bin/applywarp -i $subjdir/T1/T1_fast/T1_brain_GM_mask -r $subjdir/dMRI/dMRI/data_B0 -o $subjdir/dMRI/probtrackx_${PARC_NAME}/exclude --premat=$subjdir/dMRI/dMRI/transforms/T1_to_DTI.mat --interp=nn
 
 
 
 # label the interface with inflated parcellation
-${AFNIDIR}/3dROIMaker -inset ${subjdir}/dMRI/dMRI/interface.nii.gz -thresh 0.1 -prefix ${subjdir}/dMRI/probtrackx/labelledWM -refset ${subjdir}/dMRI/dMRI/parcellation.nii.gz -nifti -neigh_upto_vert -dump_no_labtab
+${AFNIDIR}/3dROIMaker -inset ${subjdir}/dMRI/dMRI/interface.nii.gz -thresh 0.1 -prefix ${subjdir}/dMRI/probtrackx_${PARC_NAME}/labelledWM -refset ${subjdir}/dMRI/dMRI/parcellation_${PARC_NAME}.nii.gz -nifti -neigh_upto_vert -dump_no_labtab
+
+#rename labelledWMGM to include parcellation
+mv ${subjdir}/dMRI/probtrackx_${PARC_NAME}/labelledWM_GM.nii.gz ${subjdir}/dMRI/probtrackx_${PARC_NAME}/labelledWM_GM_${PARC_NAME}.nii.gz
 
 # get masks of ROIs and make a list of seeds
-${BB_BIN_DIR}/bb_diffusion_pipeline/tvb_probtrackx2/tvb_createDTImasks.py -i ${subjdir}/dMRI/dMRI/interface.nii.gz -LUT ${PARC_LUT} -ri ${subjdir}/dMRI/probtrackx/labelledWM_GM.nii.gz -od ${subjdir}/dMRI/probtrackx
+${BB_BIN_DIR}/bb_diffusion_pipeline/tvb_probtrackx2/tvb_createDTImasks.py -i ${subjdir}/dMRI/dMRI/interface.nii.gz -LUT ${PARC_LUT} -ri ${subjdir}/dMRI/probtrackx_${PARC_NAME}/labelledWM_GM_${PARC_NAME}.nii.gz -od ${subjdir}/dMRI/probtrackx_${PARC_NAME}
 
 
-output_dir=$subjdir/dMRI/probtrackx/
-seeds=$subjdir/dMRI/probtrackx/seeds.txt
+output_dir=$subjdir/dMRI/probtrackx_${PARC_NAME}/
+seeds=$subjdir/dMRI/probtrackx_${PARC_NAME}/seeds.txt
 
 
 DTI_mask=$subjdir/dMRI/bedpostx.bedpostX/nodif_brain_mask.nii.gz
@@ -46,17 +49,17 @@ if [ $PROBTRACKX_GPU == "gpu_batch" ]; then
     for ((i = 1 ; i < 11 ; i++)); do
  	
         batch=batch_$i
-        output_dir=$subjdir/dMRI/probtrackx/$batch/
+        output_dir=$subjdir/dMRI/probtrackx_${PARC_NAME}/$batch/
  	mkdir $output_dir
  	
  
- 	seeds=$subjdir/dMRI/probtrackx/seeds.txt
- 	commands=$subjdir/dMRI/probtrackx/probtrackx_commands_$i.txt
+ 	seeds=$subjdir/dMRI/probtrackx_${PARC_NAME}/seeds.txt
+ 	commands=$subjdir/dMRI/probtrackx_${PARC_NAME}/probtrackx_commands_$i.txt
  
  
  	#if [ $i -eq 0 ]; then
  
-        probtrackx2_gpu --rseed=$i --network --ompl --seed=${seeds} --loopcheck --onewaycondition --cthr=0.2 --nsteps=2000 --steplength=0.5 --nsamples=500 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --avoid=$subjdir/dMRI/probtrackx/exclude.nii.gz --forcedir --opd --samples=$subjdir/dMRI/bedpostx.bedpostX/merged --mask=${DTI_mask} --dir=${output_dir}
+        probtrackx2_gpu --rseed=$i --network --omatrix1 --ompl --seed=${seeds} --loopcheck --onewaycondition --cthr=0.2 --nsteps=2000 --steplength=0.5 --nsamples=500 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --avoid=$subjdir/dMRI/probtrackx_${PARC_NAME}/exclude.nii.gz --forcedir --opd --samples=$subjdir/dMRI/bedpostx.bedpostX/merged --mask=${DTI_mask} --dir=${output_dir}
 
     done
 
@@ -70,17 +73,17 @@ elif [ $PROBTRACKX_GPU == "false" ]; then
     for ((i = 1 ; i < 11 ; i++)); do
  	
         batch=batch_$i
-        output_dir=$subjdir/dMRI/probtrackx/$batch/
+        output_dir=$subjdir/dMRI/probtrackx_${PARC_NAME}/$batch/
  	mkdir $output_dir
  	
  
- 	seeds=$subjdir/dMRI/probtrackx/seeds.txt
- 	commands=$subjdir/dMRI/probtrackx/probtrackx_commands_$i.txt
+ 	seeds=$subjdir/dMRI/probtrackx_${PARC_NAME}/seeds.txt
+ 	commands=$subjdir/dMRI/probtrackx_${PARC_NAME}/probtrackx_commands_$i.txt
  
  
  	#if [ $i -eq 0 ]; then
  
-        probtrackx2_gpu --rseed=$i --network --ompl --seed=${seeds} --loopcheck --onewaycondition --cthr=0.2 --nsteps=2000 --steplength=0.5 --nsamples=500 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --avoid=$subjdir/dMRI/probtrackx/exclude.nii.gz --forcedir --opd --samples=$subjdir/dMRI/bedpostx.bedpostX/merged --mask=${DTI_mask} --dir=${output_dir}
+        probtrackx2 --rseed=$i --network --omatrix1 --ompl --seed=${seeds} --loopcheck --onewaycondition --cthr=0.2 --nsteps=2000 --steplength=0.5 --nsamples=500 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --avoid=$subjdir/dMRI/probtrackx_${PARC_NAME}/exclude.nii.gz --forcedir --opd --samples=$subjdir/dMRI/bedpostx.bedpostX/merged --mask=${DTI_mask} --dir=${output_dir}
 
     done
 
@@ -91,7 +94,7 @@ elif [ $PROBTRACKX_GPU == "false" ]; then
 # the above two keywords will trigger this just to be safe
 else
 
-    probtrackx2_gpu -V 2 --network --ompl --seed=${seeds} --loopcheck --onewaycondition --cthr=0.2 --nsteps=2000 --steplength=0.5 --nsamples=5000 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --avoid=${subjdir}/dMRI/probtrackx/exclude.nii.gz --forcedir --opd --samples=${subjdir}/dMRI/bedpostx.bedpostX/merged --mask=${DTI_mask} --dir=${output_dir}
+    probtrackx2_gpu -V 2 --network --omatrix1 --ompl --seed=${seeds} --loopcheck --onewaycondition --cthr=0.2 --nsteps=2000 --steplength=0.5 --nsamples=5000 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --avoid=${subjdir}/dMRI/probtrackx_${PARC_NAME}/exclude.nii.gz --forcedir --opd --samples=${subjdir}/dMRI/bedpostx.bedpostX/merged --mask=${DTI_mask} --dir=${output_dir}
 
 fi
 # 

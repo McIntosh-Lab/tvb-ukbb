@@ -2,7 +2,7 @@
 #
 # Script name: tvb_susceptibility_SNR_IDP_gen
 #
-# Description: Script to generate the IDPs related to TSNR for susceptible vs non-susceptible ROIs
+# Description: Script to generate the IDPs related to tSNR for susceptible vs non-susceptible ROIs
 
 
 
