@@ -42,6 +42,15 @@ export QUEUE_STANDARD="all.q"                                                   
 export QUEUE_MORE_MEM="bigmem_16.q"                                             #TO BE MODIFIED BY USER
 export QUEUE_MAX_MEM="bigmem_64.q"                                              #TO BE MODIFIED BY USER
 
+# option 1: true; use full-GPU probtrackx call. default.
+# option 2: gpu_batch; split GPU probtrackx into 10 smaller batches.
+#           for low-memory systems.
+# option 3: false: use CPU probtrackx split into 10 smaller batches.
+#           use for systems without CUDA GPU
+export PROBTRACKX_GPU="true"
+
+export REPARCELLATE="false" #TO BE MODIFIED BY USER
+
 #SETUP AFNI
 # export AFNIDIR=/opt/afni                                                        #TO BE MODIFIED BY USER
 export AFNIDIR="/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Compiler/gcc9/afni/20.3.05"
@@ -99,6 +108,7 @@ export BRAINSTEM_MASK="brainstem_to_nihpd_dil1.nii.gz"               #TO BE MODI
 export PYTHONPATH="$SOFTDIR/software/env/bin/python"
 
 export FSL_FIXDIR="$BB_BIN_DIR/bb_functional_pipeline/bb_fix_dir"
+
 export PARC_IMG="$templ/parcellations/TVB_SchaeferTian/TVB_SchaeferTian_220_to_nihpd.nii.gz"                      #TO BE MODIFIED BY USER
 export PARC_LUT="$templ/parcellations/TVB_SchaeferTian/TVB_SchaeferTian_220_LUT.tsv"                     #TO BE MODIFIED BY USER
 #export SUSCEPT_ROIS="$templ/parcellations/TVB_SchaeferTian/SusceptibilityROIs_SchaeferTian_420.nii.gz"                     		#TO BE MODIFIED BY USER
@@ -111,6 +121,7 @@ export PE_direction="0 -1 0"                                            #TO BE M
 export topupValue="0.1"					#TO BE MODIFIED BY USER - leave empty "" for no value
 export topupValue_default=""					#TO BE MODIFIED BY USER - leave empty "" for no value
 #export EPIfactor="50"					#TO BE MODIFIED BY USER
+export PARC_NAME="TVBSchaeferTian220"				#TO BE MODIFIED BY USER
 
 # set to 1 for single shell diffusion data and 2 for multi-shell
 export DIFF_SHELL_TYPE="2"

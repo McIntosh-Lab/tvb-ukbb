@@ -14,8 +14,8 @@ import os
 
 
 
-def IDP_html_gen(subj):
 
+def IDP_html_gen(subj,PARC_NAME):
     """Function that generates the IDP page of the QC report for a
     subject. 
 
@@ -83,6 +83,7 @@ def IDP_html_gen(subj):
           <h5 class="w3-hide-large" style="white-space:nowrap">IDP IMAGE REPORT</h5>
           
           <h3 class="w3-hide-medium w3-hide-small">"""+subjname+"""</h3>
+          <h5 class="w3-hide-medium w3-hide-small">Parcellation - """+PARC_NAME+"""</h5>
           
         </div>
      
@@ -109,7 +110,7 @@ def IDP_html_gen(subj):
         <a href="report.html" class="w3-bar-item w3-button">Home</a>
         <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
         <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
-        <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
+        <a href="MELODIC_FIX.html" class="w3-bar-item w3-button">MELODIC-FIX</a>
         <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
         <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
         <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
@@ -122,7 +123,7 @@ def IDP_html_gen(subj):
       <a href="report.html" class="w3-bar-item w3-button">Home</a>
         <a href="anat.html" class="w3-bar-item w3-button">Anatomical</a>
         <a href="fMRI.html" class="w3-bar-item w3-button">fMRI</a>
-        <a href="MELODIC.html" class="w3-bar-item w3-button">MELODIC</a>
+        <a href="MELODIC_FIX.html" class="w3-bar-item w3-button">MELODIC-FIX</a>
         <a href="dMRI.html" class="w3-bar-item w3-button">dMRI</a>
         <a href="SCFC.html" class="w3-bar-item w3-button">SC/FC</a>
         <a href="IDP.html" class="w3-bar-item w3-button">IDP</a>
@@ -139,6 +140,23 @@ def IDP_html_gen(subj):
 
 	<br><br><a name="fMRI_REPORTS">______</a><br><br>
 	  <h1> IDP REPORTS </h1>
+      <h1>
+    <div style="font-size: 20px" > Parcellation: <select name="menu1" id="menu1" onkeydown="IgnoreAlpha(event);">
+      <option selected="selected">"""+PARC_NAME+"""</option>
+      <option id="option_placeholder">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</option>
+      <!-- DO NOT REMOVE. PLACEHOLDER FOR SCRIPTS TO INSERT NEW PARC LINKS -->
+
+      
+      </select>
+      </div>
+      <script type="text/javascript">
+     var urlmenu = document.getElementById( 'menu1' );
+     urlmenu.onchange = function() {
+          if (this.options[ this.selectedIndex ].value != ""){
+            window.open( this.options[ this.selectedIndex ].value, '_self');
+          }
+     };
+    </script></h1>
 	  ______<br><br><br>
 
 	
@@ -305,25 +323,33 @@ def IDP_html_gen(subj):
     <br>
 
     <br>
-    <a href="../../IDP_files/" class="w3-bar-item w3-button">High-Priority IDPs: """
-        + str(IDP_dir)
-        + "priority_IDPs.tsv"
+    <a href="../../IDP_files_"""+PARC_NAME+"""/" id="hi_IDP" class="w3-bar-item w3-button">High-Priority IDPs: """
+        + str(IDP_dir)[:-1]
+        + "_"
+        + PARC_NAME
+        + "/priority_IDPs.tsv"
         + """</a>
     <br>
-    <a href="../../IDP_files/" class="w3-bar-item w3-button">New TVB IDPs: """
-        + str(IDP_dir)
-        + "tvb_new_IDPs.tsv"
+    <a href="../../IDP_files_"""+PARC_NAME+"""/" id="new_IDP" class="w3-bar-item w3-button">New TVB IDPs: """
+        + str(IDP_dir)[:-1]
+        + "_"
+        + PARC_NAME
+        + "/tvb_new_IDPs.tsv"
         + """</a>
     <br>
-    <a href="../../IDP_files/" class="w3-bar-item w3-button">Lower-priority IDPs: """
-        + str(IDP_dir)
-        + "non_priority_IDPs.tsv"
+    <a href="../../IDP_files_"""+PARC_NAME+"""/" id="low_IDP" class="w3-bar-item w3-button">Lower-priority IDPs: """
+        + str(IDP_dir)[:-1]
+        + "_"
+        + PARC_NAME
+        + "/non_priority_IDPs.tsv"
         + """</a>
     <br>
 
-    <a href="../../IDP_files/" class="w3-bar-item w3-button">Combination of the above IDPs: """
-        + str(IDP_dir)
-        + "significant_IDPs.tsv"
+    <a href="../../IDP_files_"""+PARC_NAME+"""/" id="combo_IDP" class="w3-bar-item w3-button">Combination of the above IDPs: """
+        + str(IDP_dir)[:-1]
+        + "_"
+        + PARC_NAME
+        + "/significant_IDPs.tsv"
         + """</a>
 
         <br>
@@ -337,7 +363,20 @@ def IDP_html_gen(subj):
 	</body>
 
 	<script>
-	 updateTitle();updateImage();
+	updateTitle();updateImage();
+    
+    document.getElementById("hi_IDP").innerHTML = document.getElementById("hi_IDP").href;
+    document.getElementById("hi_IDP").innerHTML = document.getElementById("hi_IDP").innerHTML + "priority_IDPs.tsv"
+
+    document.getElementById("new_IDP").innerHTML = document.getElementById("new_IDP").href;
+    document.getElementById("new_IDP").innerHTML = document.getElementById("new_IDP").href + "tvb_new_IDPs.tsv";
+
+    document.getElementById("low_IDP").innerHTML = document.getElementById("low_IDP").href;
+    document.getElementById("low_IDP").innerHTML = document.getElementById("low_IDP").href + "non_priority_IDPs.tsv";
+
+    document.getElementById("combo_IDP").innerHTML = document.getElementById("combo_IDP").href;
+    document.getElementById("combo_IDP").innerHTML = document.getElementById("combo_IDP").href + "significant_IDPs.tsv";
+
 	</script>
 
 
@@ -374,5 +413,4 @@ if __name__ == "__main__":
 
     """
     # try:
-    IDP_html_gen(sys.argv[1])
-
+    IDP_html_gen(sys.argv[1],sys.argv[2])
