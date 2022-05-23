@@ -195,7 +195,7 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 
 
 	#dMRI extraction masked
-		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -b 62.718401747457314 -c 96.08735171986915 -o /dMRI/dMRI/nodif_brain_mask.nii.gz /dMRI/dMRI/data_B0.nii.gz $dirSubject dMRI_extraction_masked
+		$BB_BIN_DIR/tvb_bb_QC/lightbox.sh -o /dMRI/dMRI/nodif_brain_mask.nii.gz -b 62.718401747457314 -c 96.08735171986915 /dMRI/dMRI/data_B0.nii.gz $dirSubject dMRI_extraction_masked
 
 
 
