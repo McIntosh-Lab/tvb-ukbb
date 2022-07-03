@@ -57,10 +57,10 @@ export REPARCELLATE="false" #TO BE MODIFIED BY USER
 export AFNIDIR=/opt/afnibinary/21.0.06
 #SETUP FREESURFER 
 # export FREESURFER_HOME=/cvmfs/soft.computecanada.ca/easybuild/software/2020/Core/freesurfer/5.3.0/bin/freesurfer                                          #TO BE MODIFIED BY USER
-export FREESURFER_HOME=/freesurfer/7.1.1
+export FREESURFER_HOME=/opt/freesurfer/7.1.1
 #SET PATH FOR FREESURFER
-source $FREESURFER_HOME/FreeSurferEnv.sh
-export PATH="$FREESURFER_HOME/bin:$PATH"
+# source $FREESURFER_HOME/FreeSurferEnv.sh > /dev/null
+export PATH=$FREESURFER_HOME/bin:$PATH
 # source $FREESURFER_HOME/SetUpFreeSurfer.sh  > /dev/null
 
 
