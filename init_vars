@@ -38,32 +38,42 @@ export FSLOUTPUTTYPE="NIFTI_GZ"
 export FSLGECUDAQ=cuda.q                                                        #TO BE MODIFIED BY USER
 
 #TODO implement this in the files
-export QUEUE_STANDARD="all.q"                                                   #TO BE MODIFIED BY USER
-export QUEUE_MORE_MEM="bigmem_16.q"                                             #TO BE MODIFIED BY USER
-export QUEUE_MAX_MEM="bigmem_64.q"                                              #TO BE MODIFIED BY USER
+export QUEUE_STANDARD="normal"                                                   #TO BE MODIFIED BY USER
+export QUEUE_MORE_MEM="normal"                                             #TO BE MODIFIED BY USER
+export QUEUE_MAX_MEM="normal"                                              #TO BE MODIFIED BY USER
 
 # option 1: true; use full-GPU probtrackx call. default.
 # option 2: gpu_batch; split GPU probtrackx into 10 smaller batches.
 #           for low-memory systems.
 # option 3: false: use CPU probtrackx split into 10 smaller batches.
 #           use for systems without CUDA GPU
-export PROBTRACKX_GPU="true"
+export PROBTRACKX_GPU="false"
 
 export REPARCELLATE="false" #TO BE MODIFIED BY USER
 
 #SETUP AFNI
 # export AFNIDIR=/opt/afni                                                        #TO BE MODIFIED BY USER
-export AFNIDIR="/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Compiler/gcc9/afni/20.3.05"
-
+# export AFNIDIR="/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Compiler/gcc9/afni/20.3.05"
+export AFNIDIR=/opt/afnibinary/21.0.06
 #SETUP FREESURFER 
 # export FREESURFER_HOME=/cvmfs/soft.computecanada.ca/easybuild/software/2020/Core/freesurfer/5.3.0/bin/freesurfer                                          #TO BE MODIFIED BY USER
-
-# if usin on Compute Canada, load module first
-source $EBROOTFREESURFER/FreeSurferEnv.sh
+export FREESURFER_HOME=/freesurfer/7.1.1
+#SET PATH FOR FREESURFER
+source $FREESURFER_HOME/FreeSurferEnv.sh
+export PATH="$FREESURFER_HOME/bin:$PATH"
 # source $FREESURFER_HOME/SetUpFreeSurfer.sh  > /dev/null
 
+
+# if usin on Compute Canada, load module first
+#source $EBROOTFREESURFER/FreeSurferEnv.sh
+
+
 #SETUP ANTS
-export ANTSPATH="/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Compiler/gcc9/ants/2.3.5/bin"
+#export ANTSPATH="/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Compiler/gcc9/ants/2.3.5/bin"
+export ANTSPATH=/opt/ANTs/bin
+export PATH=${ANTSPATH}:$PATH
+
+
 
 export SOFTDIR="/opt/tvb-pipeline"						#TO BE MODIFIED BY USER (DEFAULT FOR SINGULARITY)
 
@@ -86,7 +96,7 @@ export R_DIR="/usr/lib/R"							#TO BE MODIFIED BY USER (DEFAULT FOR SINGULARITY
 export LC_ALL=C
 
 #ENV VARIABLES FOR BIOBANK
-export BB_BIN_DIR="$BBDIR/tvb-ukbb"
+export BB_BIN_DIR="/opt/tvb-ukbb"
 export FSLGPUDIR="$BB_BIN_DIR/bb_diffusion_pipeline/bb_bedpostx"
 export MNI="$FSLDIR/data/standard/MNI152_T1_1mm.nii.gz"
 export MNI_mask="$FSLDIR/data/standard/MNI152_T1_1mm_brain_mask.nii.gz"
