@@ -70,7 +70,7 @@ export PATH=$FREESURFER_HOME/bin:$PATH
 
 #SETUP ANTS
 #export ANTSPATH="/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Compiler/gcc9/ants/2.3.5/bin"
-export ANTSPATH=/opt/ANTs/bin
+export ANTSPATH=/work/08008/yilewang/ls6/ANTs/bin
 export PATH=${ANTSPATH}:$PATH
 
 
@@ -123,6 +123,9 @@ export DIFF_SHELL_TYPE="1"
 
 #INCLUDE 3 MAIN BIOBANK DIRECTORIES IN PATH
 export PATH="$BB_BIN_DIR/bb_pipeline_tools/:$BB_BIN_DIR/bb_general_tools/:$PATH"
+
+#INCLUDE LIBRARIES
+export LD_LIBRARY_PATH=/opt/tvb-pipeline/software/env/lib:$LD_LIBRARY_PATH
 
 
 #SET PATH FOR MCR
