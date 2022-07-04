@@ -126,7 +126,7 @@ export PATH="$BB_BIN_DIR/bb_pipeline_tools/:$BB_BIN_DIR/bb_general_tools/:$PATH"
 
 #INCLUDE LIBRARIES
 export LD_LIBRARY_PATH=/opt/tvb-pipeline/software/env/lib:$LD_LIBRARY_PATH
-export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libexpat.so
+
 
 #SET PATH FOR MCR
 export LD_LIBRARY_PATH="/usr/lib/x86_64-linux-gnu:$MCROOT/$MCRV/runtime/glnxa64:$MCROOT/$MCRV/bin/glnxa64:$MCROOT/$MCRV/sys/os/glnxa64:$MCROOT/$MCRV/sys/opengl/lib/glnxa64:$LD_LIBRARY_PATH"
@@ -137,3 +137,9 @@ export XAPPLRESDIR="$MCROOT/$MCRV/X11/app-defaults"
 
 # source activate $SOFTDIR/software/env
 source activate $SOFTDIR/software/env
+
+
+# fix vim error
+export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libexpat.so
+
+
