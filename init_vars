@@ -70,7 +70,7 @@ source $FREESURFER_HOME/SetUpFreeSurfer.sh  > /dev/null
 
 #SETUP ANTS
 #export ANTSPATH="/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Compiler/gcc9/ants/2.3.5/bin"
-export ANTSPATH=/opt/ANTs/bin
+export ANTSPATH=/opt/antsbinary/bin
 export PATH=${ANTSPATH}:$PATH
 
 
