@@ -47,7 +47,7 @@ export QUEUE_MAX_MEM="normal"                                              #TO B
 #           for low-memory systems.
 # option 3: false: use CPU probtrackx split into 10 smaller batches.
 #           use for systems without CUDA GPU
-export PROBTRACKX_GPU="false"
+export PROBTRACKX_GPU="true"
 
 export REPARCELLATE="false" #TO BE MODIFIED BY USER
 
