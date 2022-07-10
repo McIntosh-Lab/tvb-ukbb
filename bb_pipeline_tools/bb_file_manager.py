@@ -383,7 +383,7 @@ def manage_fMRI(listFiles, flag):
     # Get the dimensions for all the fMRI images
     for fileName in listFiles:
         epi_img = nib.load(fileName)
-        dim.append(epi_img.get_header()["dim"][4])
+        dim.append(epi_img.header["dim"][4])
 
     if numFiles == 0:
         logger.warn("There was no " + flag + " FMRI data")
@@ -529,7 +529,7 @@ def manage_DWI(listFiles):
 
                 for fileName in imageFiles:
                     epi_img = nib.load(fileName)
-                    dim.append(epi_img.get_header()["dim"][4])
+                    dim.append(epi_img.header["dim"][4])
 
                 numImageFiles = len(imageFiles)
                 # print("HEEERE")
