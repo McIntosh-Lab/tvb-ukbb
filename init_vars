@@ -96,7 +96,7 @@ export R_DIR="/usr/lib/R"							#TO BE MODIFIED BY USER (DEFAULT FOR SINGULARITY
 export LC_ALL=C
 
 #ENV VARIABLES FOR BIOBANK
-export BB_BIN_DIR="/opt/tvb-ukbb"
+export BB_BIN_DIR="$BBDIR/tvb-ukbb"
 export FSLGPUDIR="$BB_BIN_DIR/bb_diffusion_pipeline/bb_bedpostx"
 export MNI="$FSLDIR/data/standard/MNI152_T1_1mm.nii.gz"
 export MNI_mask="$FSLDIR/data/standard/MNI152_T1_1mm_brain_mask.nii.gz"
