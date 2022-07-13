@@ -146,14 +146,6 @@ source activate $SOFTDIR/software/env
 
 # fix vim error
 export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libexpat.so
-# define cuda
-### if ls6:
-# export cuda_path="/opt/apps/cuda/11.3/lib64"
-### if gtx 970:
-export cuda_path="/usr/local/cuda/lib64/stubs"
-
-export LD_LIBRARY_PATH="$cuda_path:$LD_LIBRARY_PATH"
-ln -s $cuda_path/libcuda.so $BBDIR/lib/libcuda.so.1
 
 
 
