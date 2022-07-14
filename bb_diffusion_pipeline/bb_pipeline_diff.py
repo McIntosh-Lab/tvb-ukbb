@@ -126,10 +126,10 @@ def bb_pipeline_diff(subject, fileConfiguration):
     print("Running pre_bedpostx...")
     jobPREBEDPOSTX = LT.runCommand(
         logger,
-        "$BB_BIN_DIR/bb_diffusion_pipeline/bb_bedpostx/bb_pre_bedpostx_gpu "
+        "$BB_BIN_DIR/bb_diffusion_pipeline/bb_bedpostx/bb_pre_bedpostx "
         + baseDir
         + "/dMRI",
-        "bb_pre_bedpostx_gpu_"
+        "bb_pre_bedpostx_"
         + subname
     )
     print("pre_bedpostx completed.")
@@ -137,10 +137,10 @@ def bb_pipeline_diff(subject, fileConfiguration):
     print("Running bedpostx...")
     jobBEDPOSTX = LT.runCommand(
         logger,
-        "$BB_BIN_DIR/bb_diffusion_pipeline/bb_bedpostx/bb_bedpostx_gpu "
+        "$BB_BIN_DIR/bb_diffusion_pipeline/bb_bedpostx/bb_bedpostx "
         + baseDir
         + "/dMRI",
-        "bb_bedpostx_gpu_"
+        "bb_bedpostx_"
         + subname
     )
     print("bedpostx completed.")
