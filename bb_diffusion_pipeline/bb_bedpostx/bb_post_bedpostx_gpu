@@ -31,7 +31,7 @@ if [ -d $subjdir/ ] ; then
 
         opts="--nf=3 --fudge=1 --bi=3000 --nj=1250 --se=25 --model=2 --cnonlinear"
         nvox=`cat $subjdir.bedpostX/nvox.txt`
-        ${FSLDIR}/bin/bedpostx_postproc_gpu.sh --data=${subjdir}/data_ud --mask=$subjdir.bedpostX/nodif_brain_mask -b ${subjdir}.bedpostX/bvals -r ${subjdir}.bedpostX/bvecs  --forcedir --logdir=$subjdir.bedpostX/diff_parts $opts $nvox 1 ${subjdir} "$FSLDIR"        
+        ${FSLDIR}/bin/bedpostx_postproc.sh --data=${subjdir}/data_ud --mask=$subjdir.bedpostX/nodif_brain_mask -b ${subjdir}.bedpostX/bvals -r ${subjdir}.bedpostX/bvecs  --forcedir --logdir=$subjdir.bedpostX/diff_parts $opts $nvox 1 ${subjdir} "$FSLDIR"        
         rm ${subjdir}.bedpostX/data_0
 
     fi
