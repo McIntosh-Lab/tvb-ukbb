@@ -30,7 +30,7 @@ if [ -d $1/fMRI/rfMRI.ica ] ; then
     mkdir -p reg_standard
     ${FSLDIR}/bin/applywarp --ref=reg/standard --in=filtered_func_data_clean --out=reg_standard/filtered_func_data_clean --warp=reg/example_func2standard_warp --interp=spline
 
-    ${FSLDIR}/bin/fslmaths reg_standard/filtered_func_data_clean -mas $templ/MNI152_T1_2mm_brain_mask_bin reg_standard/filtered_func_data_clean
+    ${FSLDIR}/bin/fslmaths reg_standard/filtered_func_data_clean -mas $templ/$TEMPLATE_MASK_2mm reg_standard/filtered_func_data_clean
     ${FSLDIR}/bin/fslmaths reg_standard/filtered_func_data_clean -Tstd -bin reg_standard/filtered_func_data_clean_stdmask
 
     cd $origDir

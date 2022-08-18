@@ -31,7 +31,7 @@ for D in 25 100 ; do
  
   if [ -f rfMRI.ica/reg_standard/filtered_func_data_clean.nii.gz ] ; then
     mkdir -p rfMRI_${D}.dr
-    fsl_glm -i rfMRI.ica/reg_standard/filtered_func_data_clean -d $templ/group/melodic_IC_${D} -o rfMRI_${D}.dr/dr_stage1.txt --demean -m $FSLDIR/data/standard/MNI152_T1_2mm_brain_mask
+    fsl_glm -i rfMRI.ica/reg_standard/filtered_func_data_clean -d $templ/group/melodic_IC_${D} -o rfMRI_${D}.dr/dr_stage1.txt --demean -m $templ/$TEMPLATE_MASK_2mm
   fi
 done
 

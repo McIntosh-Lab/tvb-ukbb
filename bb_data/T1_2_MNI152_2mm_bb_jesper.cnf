@@ -1,6 +1,6 @@
 # 	name of reference image
 # --ref=/usr/local/fsl/data/standard/MNI152_T1_2mm.nii.gz
---ref=MNI152_T1_2mm
+--ref=$TEMPLATE_T1_2mm
 #	name of file with mask in reference space
 # --refmask=/usr/local/fsl/data/standard/MNI152_T1_2mm_brain_mask_dil.nii.gz
 #--refmask=MNI152_T1_2mm_brain_mask_dil

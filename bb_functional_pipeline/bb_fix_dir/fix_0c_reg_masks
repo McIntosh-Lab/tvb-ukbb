@@ -18,7 +18,7 @@ else
   if [ -f ${folders}/reg/standard2example_func.mat ] ; then
     /bin/cp ${folders}/reg/standard2example_func.mat $folders/fix/std2exfunc.mat
   else
-    flirt -in $folders/reg/highres -ref $FSLDIR/data/standard/MNI152_T1_1mm_brain -omat $folders/fix/highres2std.mat
+    flirt -in $folders/reg/highres -ref $templ/$TEMPLATE_BRAIN -omat $folders/fix/highres2std.mat
     convert_xfm -omat $folders/fix/std2highres.mat -inverse $folders/fix/highres2std.mat
     convert_xfm -omat $folders/fix/std2exfunc.mat -concat $folders/reg/highres2example_func.mat $folders/fix/std2highres.mat
   fi

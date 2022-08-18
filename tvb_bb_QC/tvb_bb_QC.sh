@@ -110,10 +110,12 @@ rm -f $dirSubject"/QC/html/image_gen_links.js"
 	echo "STARTING T1 REGISTRATION -------"
 
 	#T1 registration edges
-		$BB_BIN_DIR/tvb_bb_QC/edges.sh -s ${FSLDIR}/data/standard -l 10 /MNI152_T1_1mm.nii.gz /T1/T1_brain_to_MNI.nii.gz $dirSubject  T1_registration 
-
-		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "re_under_1" "../../T1/T1_brain_to_MNI.nii.gz" "re_over1_1" "${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz" "NA12" "NA12_link" 0
-		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "re_under_2" "${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz" "re_over1_2" "../../T1/T1_brain_to_MNI.nii.gz" "NA34" "NA34_link" 0
+		#$BB_BIN_DIR/tvb_bb_QC/edges.sh -s ${FSLDIR}/data/standard -l 10 /MNI152_T1_1mm.nii.gz /T1/T1_brain_to_MNI.nii.gz $dirSubject  T1_registration 
+		$BB_BIN_DIR/tvb_bb_QC/edges.sh -s $templ -l 10 /$TEMPLATE_T1 /T1/T1_brain_to_template.nii.gz $dirSubject  T1_registration
+		#$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "re_under_1" "../../T1/T1_brain_to_MNI.nii.gz" "re_over1_1" "${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz" "NA12" "NA12_link" 0
+		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "re_under_1" "../../T1/T1_brain_to_template.nii.gz" "re_over1_1" "$TEMPLATE_T1" "NA12" "NA12_link" 0
+		#$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "re_under_2" "${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz" "re_over1_2" "../../T1/T1_brain_to_MNI.nii.gz" "NA34" "NA34_link" 0
+		$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "re_under_2" "$TEMPLATE_T1" "re_over1_2" "../../T1/T1_brain_to_template.nii.gz" "NA34" "NA34_link" 0
 		#$BB_BIN_DIR/tvb_bb_QC/image_gen_link.sh $dirSubject "re_under" "${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz" "re_over1" "../../T1/T1_brain_to_MNI.nii.gz" "NA13" "NA13_link" 0
 
 

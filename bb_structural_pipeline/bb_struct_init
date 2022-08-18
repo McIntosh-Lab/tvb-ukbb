@@ -40,74 +40,83 @@ fi
 cp T1_orig.nii.gz T1_orig_ud.nii.gz
 
 #Calculate where does the brain start in the z dimension and then extract the roi
-head_top=`${FSLDIR}/bin/robustfov -i T1_orig_ud | grep -v Final | head -n 1 | awk '{print $5}'`
-${FSLDIR}/bin/fslmaths T1_orig_ud -roi 0 -1 0 -1 $head_top 170 0 1 T1_tmp
-
+head_top=`${FSLDIR}/bin/robustfov -i T1_orig_ud -b 220 | grep -v Final | head -n 1 | awk '{print $5}'`
+${FSLDIR}/bin/fslmaths T1_orig_ud -roi 0 -1 0 -1 $head_top 220 0 1 T1_tmp
+#cp T1_orig_ud.nii.gz T1_tmp.nii.gz
+$BB_BIN_DIR/bb_pipeline_tools/tvb_optiBET.sh -i ./T1_tmp.nii.gz -f -d
+cp ./T1_tmp_optiBET_brain.nii.gz ./T1_tmp_brain.nii.gz
 #Run a (Recursive) brain extraction on the roi
-${FSLDIR}/bin/bet T1_tmp T1_tmp_brain -R
+#${FSLDIR}/bin/bet T1_tmp T1_tmp_brain -R
+#cp ../T1_ants_be.nii.gz ./T1_tmp_brain.nii.gz
 
 #Reduces the FOV of T1_orig_ud by calculating a registration from T1_tmp_brain to ssref and applies it to T1_orig_ud. Keeps intermediate outputs for concatenation in next step (T1_tmp2_tmp_to_std.mat)
-${FSLDIR}/bin/standard_space_roi T1_tmp_brain T1_tmp2 -maskNONE -ssref $FSLDIR/data/standard/MNI152_T1_1mm_brain -altinput T1_orig_ud -d
-
+#${FSLDIR}/bin/standard_space_roi T1_tmp_brain T1_tmp2 -maskNONE -ssref $FSLDIR/data/standard/MNI152_T1_1mm_brain -altinput T1_orig_ud -d
+${FSLDIR}/bin/standard_space_roi T1_tmp_brain T1_tmp2 -maskNONE -ssref $templ/$TEMPLATE_BRAIN -altinput T1_orig_ud -d
 ${FSLDIR}/bin/immv T1_tmp2 T1
 
 #Generate the actual affine from the orig_ud volume to the cut version we have now and combine it to have an affine matrix from orig_ud to MNI
 ${FSLDIR}/bin/flirt -in T1 -ref T1_orig_ud -omat T1_to_T1_orig_ud.mat -schedule $FSLDIR/etc/flirtsch/xyztrans.sch 
 ${FSLDIR}/bin/convert_xfm -omat T1_orig_ud_to_T1.mat -inverse T1_to_T1_orig_ud.mat
-${FSLDIR}/bin/convert_xfm -omat T1_to_MNI_linear.mat -concat T1_tmp2_tmp_to_std.mat T1_to_T1_orig_ud.mat
+${FSLDIR}/bin/convert_xfm -omat T1_to_template_linear.mat -concat T1_tmp2_tmp_to_std.mat T1_to_T1_orig_ud.mat
 
 #Non-linear registration of T1 to MNI using the previously calculated alignment
-${FSLDIR}/bin/fnirt --in=T1 --ref=$FSLDIR/data/standard/MNI152_T1_1mm --aff=T1_to_MNI_linear.mat \
-  --config=$BB_BIN_DIR/bb_data/bb_fnirt.cnf --refmask=$templ/MNI152_T1_1mm_brain_mask_dil_GD7 \
-  --logout=../logs/bb_T1_to_MNI_fnirt.log --cout=T1_to_MNI_warp_coef --fout=T1_to_MNI_warp \
-  --jout=T1_to_MNI_warp_jac --iout=T1_brain_to_MNI.nii.gz --interp=spline
+#${FSLDIR}/bin/fnirt --in=T1 --ref=$FSLDIR/data/standard/MNI152_T1_1mm --aff=T1_to_MNI_linear.mat \
+#  --config=$BB_BIN_DIR/bb_data/bb_fnirt.cnf --refmask=$templ/MNI152_T1_1mm_brain_mask_dil_GD7 \
+#  --logout=../logs/bb_T1_to_MNI_fnirt.log --cout=T1_to_MNI_warp_coef --fout=T1_to_MNI_warp \
+#  --jout=T1_to_MNI_warp_jac --iout=T1_brain_to_MNI.nii.gz --interp=spline
 
+${FSLDIR}/bin/fnirt --in=T1 --ref=$templ/$TEMPLATE_T1 --aff=T1_to_template_linear.mat \
+  --config=$BB_BIN_DIR/bb_data/bb_fnirt.cnf --refmask=$templ/$TEMPLATE_MASK \
+  --logout=../logs/bb_T1_to_template_fnirt.log --cout=T1_to_template_warp_coef --fout=T1_to_template_warp \
+  --jout=T1_to_template_warp_jac --iout=T1_brain_to_template.nii.gz --interp=spline
 #Combine both transforms (Gradient Distortion Unwarp and T1 to MNI) into one and then apply it. ###NO GDC###
 # ${FSLDIR}/bin/convertwarp --ref=$FSLDIR/data/standard/MNI152_T1_1mm --warp1=T1_orig_ud_warp --midmat=T1_orig_ud_to_T1.mat --warp2=T1_to_MNI_warp --out=T1_orig_to_MNI_warp
 # ${FSLDIR}/bin/applywarp --rel -i T1_orig -r $FSLDIR/data/standard/MNI152_T1_1mm -w T1_orig_to_MNI_warp -o T1_brain_to_MNI --interp=spline
 
 #Create brain mask and mask T1
-${FSLDIR}/bin/invwarp --ref=T1 -w T1_to_MNI_warp_coef -o T1_to_MNI_warp_coef_inv
-${FSLDIR}/bin/applywarp --rel --interp=nn --in=$templ/MNI152_T1_1mm_brain_mask --ref=T1 -w T1_to_MNI_warp_coef_inv -o T1_brain_mask
+${FSLDIR}/bin/invwarp --ref=T1 -w T1_to_template_warp_coef -o T1_to_template_warp_coef_inv
+#${FSLDIR}/bin/applywarp --rel --interp=nn --in=$templ/MNI152_T1_1mm_brain_mask --ref=T1 -w T1_to_MNI_warp_coef_inv -o T1_brain_mask
+${FSLDIR}/bin/applywarp --rel --interp=nn --in=$templ/$TEMPLATE_MASK --ref=T1 -w T1_to_template_warp_coef_inv -o T1_brain_mask
 ${FSLDIR}/bin/fslmaths T1 -mul T1_brain_mask T1_brain
-${FSLDIR}/bin/fslmaths T1_brain_to_MNI -mul $templ/MNI152_T1_1mm_brain_mask T1_brain_to_MNI
+#${FSLDIR}/bin/fslmaths T1_brain_to_MNI -mul $templ/MNI152_T1_1mm_brain_mask T1_brain_to_MNI
+${FSLDIR}/bin/fslmaths T1_brain_to_template -mul $templ/$TEMPLATE_MASK T1_brain_to_template
 
 #register parcellation, cerebellar & brainstem masks to T1
-${FSLDIR}/bin/applywarp --rel --interp=nn --in=$PARC_IMG --ref=T1 -w T1_to_MNI_warp_coef_inv -o parcel_to_T1
-${FSLDIR}/bin/applywarp --rel --interp=nn --in=${templ}/cerebellum --ref=T1 -w T1_to_MNI_warp_coef_inv -o cerebellum_to_T1
-${FSLDIR}/bin/applywarp --rel --interp=nn --in=${templ}/brainstem --ref=T1 -w T1_to_MNI_warp_coef_inv -o brainstem_to_T1
+${FSLDIR}/bin/applywarp --rel --interp=nn --in=$PARC_IMG --ref=T1 -w T1_to_template_warp_coef_inv -o parcel_to_T1
+${FSLDIR}/bin/applywarp --rel --interp=nn --in=${templ}/$CEREBELLUM_MASK --ref=T1 -w T1_to_template_warp_coef_inv -o cerebellum_to_T1
+${FSLDIR}/bin/applywarp --rel --interp=nn --in=${templ}/$BRAINSTEM_MASK --ref=T1 -w T1_to_template_warp_coef_inv -o brainstem_to_T1
 
 #Defacing T1
-${FSLDIR}/bin/convert_xfm -omat grot.mat -concat T1_to_MNI_linear.mat T1_orig_ud_to_T1.mat
-${FSLDIR}/bin/convert_xfm -omat grot.mat -concat $templ/MNI_to_MNI_BigFoV_facemask.mat grot.mat
-${FSLDIR}/bin/convert_xfm -omat grot.mat -inverse grot.mat
-${FSLDIR}/bin/flirt -in $templ/MNI152_T1_1mm_BigFoV_facemask -ref T1_orig -out grot -applyxfm -init grot.mat
-#${FSLDIR}/bin/fslmaths grot -mul -1 -add 1 -mul T1_orig T1_orig_defaced
-${FSLDIR}/bin/fslmaths grot -binv -mul T1_orig T1_orig_defaced
+#${FSLDIR}/bin/convert_xfm -omat grot.mat -concat T1_to_MNI_linear.mat T1_orig_ud_to_T1.mat
+#${FSLDIR}/bin/convert_xfm -omat grot.mat -concat $templ/MNI_to_MNI_BigFoV_facemask.mat grot.mat
+#${FSLDIR}/bin/convert_xfm -omat grot.mat -inverse grot.mat
+#${FSLDIR}/bin/flirt -in $templ/MNI152_T1_1mm_BigFoV_facemask -ref T1_orig -out grot -applyxfm -init grot.mat
+##${FSLDIR}/bin/fslmaths grot -mul -1 -add 1 -mul T1_orig T1_orig_defaced
+#${FSLDIR}/bin/fslmaths grot -binv -mul T1_orig T1_orig_defaced
 
-cp T1.nii.gz T1_not_defaced_tmp.nii.gz  
-${FSLDIR}/bin/convert_xfm -omat grot.mat -concat $templ/MNI_to_MNI_BigFoV_facemask.mat T1_to_MNI_linear.mat
-${FSLDIR}/bin/convert_xfm -omat grot.mat -inverse grot.mat
-${FSLDIR}/bin/flirt -in $templ/MNI152_T1_1mm_BigFoV_facemask -ref T1 -out grot -applyxfm -init grot.mat
-${FSLDIR}/bin/fslmaths grot -binv -mul T1 T1
+#cp T1.nii.gz T1_not_defaced_tmp.nii.gz  
+#${FSLDIR}/bin/convert_xfm -omat grot.mat -concat $templ/MNI_to_MNI_BigFoV_facemask.mat T1_to_MNI_linear.mat
+#${FSLDIR}/bin/convert_xfm -omat grot.mat -inverse grot.mat
+#${FSLDIR}/bin/flirt -in $templ/MNI152_T1_1mm_BigFoV_facemask -ref T1 -out grot -applyxfm -init grot.mat
+#${FSLDIR}/bin/fslmaths grot -binv -mul T1 T1
 
 #Generation of QC value: Number of voxels in which the defacing mask goes into the brain mask
-${FSLDIR}/bin/fslmaths T1_brain_mask -thr 0.5 -bin grot_brain_mask 
-${FSLDIR}/bin/fslmaths grot -thr 0.5 -bin -add grot_brain_mask -thr 2 grot_QC
-${FSLDIR}/bin/fslstats grot_QC.nii.gz -V | awk '{print $ 1}' > T1_QC_face_mask_inside_brain_mask.txt
+#${FSLDIR}/bin/fslmaths T1_brain_mask -thr 0.5 -bin grot_brain_mask 
+#${FSLDIR}/bin/fslmaths grot -thr 0.5 -bin -add grot_brain_mask -thr 2 grot_QC
+#${FSLDIR}/bin/fslstats grot_QC.nii.gz -V | awk '{print $ 1}' > T1_QC_face_mask_inside_brain_mask.txt
 
-rm grot*
+#rm grot*
 
 
 #Clean and reorganize
 # add "|| true" to end of mv functions so rest of pipeline
 # can run if files don't exist
-rm *tmp*
+#rm *tmp*
 mkdir transforms
-mv *MNI* transforms || true
+mv *template* transforms || true
 mv *warp*.* transforms || true
 mv *_to_* transforms || true
-mv transforms/T1_brain_to_MNI.nii.gz .
+mv transforms/T1_brain_to_template.nii.gz .
 
 cd ..
 
@@ -210,17 +219,17 @@ ${FSLDIR}/bin/fslmaths T1_fast/T1_brain_GM_mask_noCerebBS -add T1_first/subcort_
 
 
 #Run Siena
-$BB_BIN_DIR/bb_structural_pipeline/bb_sienax `pwd`/..
+#$BB_BIN_DIR/bb_structural_pipeline/bb_sienax `pwd`/..
 
 #Run VBM
-$BB_BIN_DIR/bb_structural_pipeline/bb_vbm `pwd`/..
+#$BB_BIN_DIR/bb_structural_pipeline/bb_vbm `pwd`/..
 
 cd ..
 
 #Generate noise-related QC metrics
-$BB_BIN_DIR/bb_structural_pipeline/bb_QC_COG ../$1
-$BB_BIN_DIR/bb_structural_pipeline/bb_QC_CNR_eyes ../$1
-$BB_BIN_DIR/bb_structural_pipeline/bb_QC_CNR_corners_complete ../$1
+#$BB_BIN_DIR/bb_structural_pipeline/bb_QC_COG ../$1
+#$BB_BIN_DIR/bb_structural_pipeline/bb_QC_CNR_eyes ../$1
+#$BB_BIN_DIR/bb_structural_pipeline/bb_QC_CNR_corners_complete ../$1
 
 
 

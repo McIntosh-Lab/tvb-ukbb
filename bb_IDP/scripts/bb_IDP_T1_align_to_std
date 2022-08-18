@@ -39,18 +39,21 @@ result1="NaN"
 result2="NaN"
 result3="NaN"
 
-if [ -f $baseT1/T1_brain.nii.gz ] && [ -f $baseT1/transforms/T1_to_MNI_linear.mat ] ; then
-  result1=`${FSLDIR}/bin/flirt -in $baseT1/T1_brain -ref $ST/MNI152_T1_1mm_brain -refweight $ST/MNI152_T1_1mm_brain_mask -init $baseT1/transforms/T1_to_MNI_linear.mat -schedule $MC | head -1 | cut -f1 -d' '`
+if [ -f $baseT1/T1_brain.nii.gz ] && [ -f $baseT1/transforms/T1_to_template_linear.mat ] ; then
+  #result1=`${FSLDIR}/bin/flirt -in $baseT1/T1_brain -ref $ST/MNI152_T1_1mm_brain -refweight $ST/MNI152_T1_1mm_brain_mask -init $baseT1/transforms/T1_to_MNI_linear.mat -schedule $MC | head -1 | cut -f1 -d' '`
+  result1=`${FSLDIR}/bin/flirt -in $baseT1/T1_brain -ref $templ/$TEMPLATE_BRAIN -refweight $templ/$TEMPLATE_MASK -init $baseT1/transforms/T1_to_template_linear.mat -schedule $MC | head -1 | cut -f1 -d' '`
 fi
 
 if [ -f $baseT1/T1_brain_to_MNI.nii.gz ] ; then
-  result2=`${FSLDIR}/bin/flirt -in $baseT1/T1_brain_to_MNI -ref $ST/MNI152_T1_1mm_brain -refweight $ST/MNI152_T1_1mm_brain_mask -schedule $MC | head -1 | cut -f1 -d' ' `
+  #result2=`${FSLDIR}/bin/flirt -in $baseT1/T1_brain_to_MNI -ref $ST/MNI152_T1_1mm_brain -refweight $ST/MNI152_T1_1mm_brain_mask -schedule $MC | head -1 | cut -f1 -d' ' `
+  result2=`${FSLDIR}/bin/flirt -in $baseT1/T1_brain_to_template -ref $templ/$TEMPLATE_BRAIN -refweight $templ/$TEMPLATE_MASK -schedule $MC | head -1 | cut -f1 -d' ' `
 fi
 
 
-if [ -f $baseT1/transforms/T1_to_MNI_warp_jac.nii.gz ] ; then
-  ${FSLDIR}/bin/fslmaths $baseT1/transforms/T1_to_MNI_warp_jac -sub 1 -sqr /tmp/tmpjac_$1
-  result3=`${FSLDIR}/bin/fslstats /tmp/tmpjac_$1 -k $ST/MNI152_T1_1mm_brain_mask -m `
+if [ -f $baseT1/transforms/T1_to_template_warp_jac.nii.gz ] ; then
+  ${FSLDIR}/bin/fslmaths $baseT1/transforms/T1_to_template_warp_jac -sub 1 -sqr /tmp/tmpjac_$1
+  #result3=`${FSLDIR}/bin/fslstats /tmp/tmpjac_$1 -k $ST/MNI152_T1_1mm_brain_mask -m `
+  result3=`${FSLDIR}/bin/fslstats /tmp/tmpjac_$1 -k $templ/$TEMPLATE_MASK -m `
   ${FSLDIR}/bin/imrm /tmp/tmpjac_$1
 fi
 
