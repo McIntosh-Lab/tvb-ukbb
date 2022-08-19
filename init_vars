@@ -83,7 +83,7 @@ export FSLGPUDIR="$BB_BIN_DIR/bb_diffusion_pipeline/bb_bedpostx"
 #export MNI_mask="$FSLDIR/data/standard/MNI152_T1_1mm_brain_mask.nii.gz"
 #export MNI_brain="$FSLDIR/data/standard/MNI152_T1_1mm_brain.nii.gz"
 #export MNI_dir="$FSLDIR/data/standard"
-export templ="$BB_BIN_DIR/templates/"                                    #TO BE MODIFIED BY USER
+export templ="$BB_BIN_DIR/templates"                                    #TO BE MODIFIED BY USER
 #AGE-SPECIFIC TEMPLATES
 export TEMPLATE_BRAIN="nihpd_asym_04.5-08.5_brain.nii.gz"                     #TO BE MODIFIED BY USER
 export TEMPLATE_T1="nihpd_asym_04.5-08.5_t1w.nii.gz"                          #TO BE MODIFIED BY USER
