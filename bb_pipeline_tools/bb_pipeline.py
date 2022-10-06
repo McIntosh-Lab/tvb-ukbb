@@ -127,7 +127,7 @@ def main(cli_args=None):
     #     fileConfig
     # )
     bb_pipeline_func(subject, fileConfig)
-    bb_pipeline_diff(subject, fileConfig)
+#    bb_pipeline_diff(subject, fileConfig)
 
     bb_IDP(
         subject, fileConfig
