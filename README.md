@@ -17,6 +17,7 @@ Installation and Usage
 
 Check out [the wiki](https://github.com/McIntosh-Lab/tvb-ukbb/wiki) to view [installation instructions](https://github.com/McIntosh-Lab/tvb-ukbb/wiki/General-HPC-Installation-and-Usage) and [usage instructions](https://github.com/McIntosh-Lab/tvb-ukbb/wiki/Basic-Usage) for the TVB-UKBB pipeline, as well as [an overview of the pipeline](https://github.com/McIntosh-Lab/tvb-ukbb/wiki/Pipeline-Overview) and information on [how to customize the pipeline for your datasets](https://github.com/McIntosh-Lab/tvb-ukbb/wiki/Customizing-the-Pipeline).
 
+We make bugfixes and introduce new features on a rolling basis, so please be sure to pull the most recent version of the pipeline before you run your data.
 
 
 Documentation
