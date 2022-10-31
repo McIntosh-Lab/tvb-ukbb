@@ -40,8 +40,8 @@ fi
 cp T1_orig.nii.gz T1_orig_ud.nii.gz
 
 #Calculate where does the brain start in the z dimension and then extract the roi
-head_top=`${FSLDIR}/bin/robustfov -i T1_orig_ud -b 220 | grep -v Final | head -n 1 | awk '{print $5}'`
-${FSLDIR}/bin/fslmaths T1_orig_ud -roi 0 -1 0 -1 $head_top 220 0 1 T1_tmp
+head_top=`${FSLDIR}/bin/robustfov -i T1_orig_ud -b 300 | grep -v Final | head -n 1 | awk '{print $5}'`
+${FSLDIR}/bin/fslmaths T1_orig_ud -roi 0 -1 0 -1 $head_top 300 0 1 T1_tmp
 #cp T1_orig_ud.nii.gz T1_tmp.nii.gz
 $BB_BIN_DIR/bb_pipeline_tools/tvb_optiBET.sh -i ./T1_tmp.nii.gz -f -d
 cp ./T1_tmp_optiBET_brain.nii.gz ./T1_tmp_brain.nii.gz
