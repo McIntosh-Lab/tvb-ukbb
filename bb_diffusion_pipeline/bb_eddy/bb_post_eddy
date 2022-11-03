@@ -39,7 +39,7 @@ ${FSLDIR}/bin/convert_xfm -omat $baseDir/dMRI/dMRI/transforms/T1_to_DTI.mat -inv
 
 # apply warp to get brain mask for eddy-corrected DTI data
 ${FSLDIR}/bin/applywarp -i $baseDir/T1/T1_brain_mask -r $baseDir/dMRI/dMRI/data_B0 -o $baseDir/dMRI/dMRI/nodif_brain_mask --premat=$baseDir/dMRI/dMRI/transforms/T1_to_DTI.mat --interp=nn
-$BB_BIN_DIR/bb_pipeline_tools/dilate.sh $baseDir/dMRI/dMRI/nodif_brain_mask 1 3D
+$BB_BIN_DIR/bb_pipeline_tools/dilate.sh $baseDir/dMRI/dMRI/nodif_brain_mask 2 3D
 ${FSLDIR}/bin/fslmaths $baseDir/dMRI/dMRI/data_B0 -mas $baseDir/dMRI/dMRI/nodif_brain_mask $baseDir/dMRI/dMRI/nodif_brain
 
 #generate list of non-outlier volumes called data_1_shell and associated b-files
