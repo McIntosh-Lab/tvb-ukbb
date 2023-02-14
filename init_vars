@@ -60,6 +60,7 @@ export AFNIDIR=/opt/afnibinary/21.0.06
 export FREESURFER_HOME=/opt/freesurfer
 #SET PATH FOR FREESURFER
 # source $FREESURFER_HOME/FreeSurferEnv.sh > /dev/null
+export PATH=$ANFIDIR:$PATH
 export PATH=$FREESURFER_HOME/bin:$PATH
 source $FREESURFER_HOME/SetUpFreeSurfer.sh  > /dev/null
 
