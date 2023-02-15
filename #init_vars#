@@ -1,0 +1,101 @@
+#!/usr/bin/env bash
+#
+# Script name: init_vars
+#
+# Description: Script to initalise the variables needed for the pipeline.
+#
+# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+#
+# Copyright 2017 University of Oxford
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+###########################################
+#                                         #
+#   USER MUST MODIFY THE INDICATED LINES  #
+#                                         #
+###########################################
+
+# UKBB ROOT DIR LOCATION
+export BBDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && cd ..; pwd )"
+                                                       #TO BE MODIFIED BY USER
+
+#TODO implement this in the files
+export QUEUE_STANDARD="all.q"                                                   #TO BE MODIFIED BY USER
+export QUEUE_MORE_MEM="bigmem_16.q"                                             #TO BE MODIFIED BY USER
+export QUEUE_MAX_MEM="bigmem_64.q"                                              #TO BE MODIFIED BY USER
+
+#SETUP AFNI
+export AFNIDIR=/opt/afni                                                        #TO BE MODIFIED BY USER
+
+#SETUP FREESURFER 
+export FREESURFER_HOME=/opt/freesurfer                                          #TO BE MODIFIED BY USER
+source $FREESURFER_HOME/SetUpFreeSurfer.sh  > /dev/null
+
+#SETUP FSL  
+export FSLDIR=/opt/HCPpipelines-4.1.3/fsl                                       #TO BE MODIFIED BY USER
+. $FSLDIR/etc/fslconf/fsl.sh
+export FSLCONFDIR="${FSLDIR}/config"
+export FSLOUTPUTTYPE="NIFTI_GZ"
+export FSLGECUDAQ=cuda.q 
+
+# SET UP MATLAB
+export MCROOT="$BBDIR/software/MCR_2017b_glnxa64"
+export MCRV="v93"
+
+#Move $FSLDIR/bin before $FREESURFER_HOME in the path
+FSLDIRseddable=`echo $FSLDIR | sed 's|/|\\\/|g'`
+PATH=`echo $PATH | sed "s|$FSLDIR/bin||g"`
+export PATH="$FSLDIR/bin:$PATH"
+
+#SETUP EXTERNAL LIBRARIES
+export R_LIBS="$BBDIR/software/env/lib/R/library"
+export R_DIR="$BBDIR/software/env/lib/R"
+
+
+#SET LOCALE FOR FLOATING POINT FORMATTING
+export LC_ALL=C
+
+#ENV VARIABLES FOR BIOBANK
+export BB_BIN_DIR="$BBDIR/tvb-ukbb"
+export FSLGPUDIR="$BB_BIN_DIR/bb_diffusion_pipeline/bb_bedpostx"
+export MNI="$FSLDIR/data/standard/MNI152_T1_1mm.nii.gz"
+export MNI_mask="$FSLDIR/data/standard/MNI152_T1_1mm_brain_mask.nii.gz"
+export MNI_brain="$FSLDIR/data/standard/MNI152_T1_1mm_brain.nii.gz"
+export MNI_dir="$FSLDIR/data/standard"
+export templ="$BB_BIN_DIR/templates"
+export PYTHONPATH="$BBDIR/software/env/bin/python"
+export FSL_FIXDIR="$BB_BIN_DIR/bb_functional_pipeline/bb_fix_dir"
+
+#export SUBJECT_AGE_LIST="BB_BIN_DIR/bb_structural_pipeline/FAST_age_spec/subject_ages.tsv"     #TO BE MODIFIED BY USER
+#export AGE_SPECIFIC_TEMPLATE_LIST="$BB_BIN_DIR/bb_structural_pipeline/FAST_age_spec/age_specific_templates.tsv"  
+export PARC_IMG="$templ/parcellations/Schaefer2018/Schaefer2018_200Parcels_17Networks_order_FSLMNI152_1mm.nii.gz"     #TO BE MODIFIED BY USER
+export PARC_LUT="$templ/parcellations/Schaefer2018/Schaefer2018_200Parcels_17Networks_LUT.txt"                     #TO BE MODIFIED BY USE
+export numROI="100"                                                              #TO BE MODIFIED BY USER
+#export SLICE_TIMING_FILE="$BB_BIN_DIR/bb_data/slice_timing_odd_even.txt"
+export TRAINING_FILE="tvbbaby_Calgary.RData"                                            #TO BE MODIFIED BY USER
+
+#INCLUDE 3 MAIN BIOBANK DIRECTORIES IN PATH
+export PATH="$BB_BIN_DIR/bb_pipeline_tools/:$BB_BIN_DIR/bb_general_tools/:$PATH"
+
+
+#SET PATH FOR MCR
+export LD_LIBRARY_PATH="$MCROOT/$MCRV/runtime/glnxa64:$MCROOT/$MCRV/bin/glnxa64:$MCROOT/$MCRV/sys/os/glnxa64:$MCROOT/$MCRV/sys/opengl/lib/glnxa64:$LD_LIBRARY_PATH"
+
+export MATLAB_COMPILER_RUNTIME="$MCROOT/$MCRV"
+# export MATLAB_COMPILER_RUNTIME="/opt/MatlabR2017b/MATLAB_Runtime/v93"         #TO BE MODIFIED BY USER
+
+export XAPPLRESDIR="$MCROOT/$MCRV/X11/app-defaults"
+
+conda activate $BBDIR/software/env

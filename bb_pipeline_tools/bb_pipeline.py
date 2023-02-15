@@ -100,7 +100,7 @@ def main(cli_args=None):
     jobSTEP5 = "-1"
 
     # jobSTEP1 = bb_pipeline_struct(subject, runTopup, fileConfig)
-    bb_pipeline_struct(subject, runTopup, fileConfig)
+#    bb_pipeline_struct(subject, runTopup, fileConfig)
     #handle cases: when jobstep1 would typically trigger the following
     if isinstance(jobSTEP1, int):
         if jobSTEP1 == -1:
@@ -126,8 +126,8 @@ def main(cli_args=None):
     #     subject,
     #     fileConfig
     # )
-    bb_pipeline_func(subject, fileConfig)
-#    bb_pipeline_diff(subject, fileConfig)
+ #   bb_pipeline_func(subject, fileConfig)
+    bb_pipeline_diff(subject, fileConfig)
 
     bb_IDP(
         subject, fileConfig

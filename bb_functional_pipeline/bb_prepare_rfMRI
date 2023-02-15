@@ -45,6 +45,7 @@ fmriDwell=`${BB_BIN_DIR}/bb_pipeline_tools/bb_get_dwell_time $1/fMRI/rfMRI.nii.g
 #$BB_BIN_DIR/bb_pipeline_tools/bb_GDC_half_voxel --workingdir=$1/fMRI/rfMRI_SBREF_GDC --in=$1/fMRI/rfMRI_SBREF.nii.gz --out=$1/fMRI/rfMRI_SBREF_ud.nii.gz --owarp=$1/fMRI/rfMRI_SBREF_ud_warp.nii.gz
 
 # append the following to the rfMRI.fsf design file
+
 echo "set fmri(outputdir)     \""$nameDir"/fMRI/rfMRI.ica\"" >> $1/fMRI/rfMRI.fsf
 echo "set fmri(regunwarp_yn) 0" >> $1/fMRI/rfMRI.fsf
 echo "set feat_files(1)       \""$nameDir"/fMRI/rfMRI.nii.gz\"" >> $1/fMRI/rfMRI.fsf

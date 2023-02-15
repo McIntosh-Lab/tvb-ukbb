@@ -45,6 +45,7 @@ ${FSLDIR}/bin/fslmaths T1_orig_ud -roi 0 -1 0 -1 $head_top 300 0 1 T1_tmp
 #cp T1_orig_ud.nii.gz T1_tmp.nii.gz
 $BB_BIN_DIR/bb_pipeline_tools/tvb_optiBET.sh -i ./T1_tmp.nii.gz -f -d
 cp ./T1_tmp_optiBET_brain.nii.gz ./T1_tmp_brain.nii.gz
+
 #Run a (Recursive) brain extraction on the roi
 #${FSLDIR}/bin/bet T1_tmp T1_tmp_brain -R
 #cp ../T1_ants_be.nii.gz ./T1_tmp_brain.nii.gz
