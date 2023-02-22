@@ -8,9 +8,9 @@ The TVB implementation includes the addition of a user-provided parcellation for
 Paper
 -----
 
-This code supports the submitted paper "**A robust modular automated neuroimaging pipeline for model inputs to TheVirtualBrain**" by Noah Frazier-Logue, Justin Wang, Zheng Wang, Devin Sodums, Anisha Khosla, Alexandria Samson, Anthony R. McIntosh, and Kelly Shen.
+This code supports the paper "**A robust modular automated neuroimaging pipeline for model inputs to TheVirtualBrain**" by Noah Frazier-Logue, Justin Wang, Zheng Wang, Devin Sodums, Anisha Khosla, Alexandria Samson, Anthony R. McIntosh, and Kelly Shen.
 
-See here for the paper preprint: https://doi.org/10.1101/2022.02.24.481836
+See here for the paper: https://www.frontiersin.org/articles/10.3389/fninf.2022.883223/full
 
 Installation and Usage
 ----------------------
