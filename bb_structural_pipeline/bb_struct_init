@@ -45,6 +45,7 @@ ${FSLDIR}/bin/fslmaths T1_orig_ud -roi 0 -1 0 -1 $head_top 220 0 1 T1_tmp
 #cp T1_orig_ud.nii.gz T1_tmp.nii.gz
 $BB_BIN_DIR/bb_pipeline_tools/tvb_optiBET.sh -i ./T1_tmp.nii.gz -f -d
 cp ./T1_tmp_optiBET_brain.nii.gz ./T1_tmp_brain.nii.gz
+
 #Run a (Recursive) brain extraction on the roi
 #${FSLDIR}/bin/bet T1_tmp T1_tmp_brain -R
 #cp ../T1_ants_be.nii.gz ./T1_tmp_brain.nii.gz
@@ -66,7 +67,7 @@ ${FSLDIR}/bin/convert_xfm -omat T1_to_template_linear.mat -concat T1_tmp2_tmp_to
 #  --jout=T1_to_MNI_warp_jac --iout=T1_brain_to_MNI.nii.gz --interp=spline
 
 ${FSLDIR}/bin/fnirt --in=T1 --ref=$templ/$TEMPLATE_T1 --aff=T1_to_template_linear.mat \
-  --config=$BB_BIN_DIR/bb_data/bb_fnirt.cnf --refmask=$templ/$TEMPLATE_MASK \
+  --config=$BB_BIN_DIR/bb_data/bb_fnirt.cnf --refmask=$templ/$TEMPLATE_MASK_dil_1mm \
   --logout=../logs/bb_T1_to_template_fnirt.log --cout=T1_to_template_warp_coef --fout=T1_to_template_warp \
   --jout=T1_to_template_warp_jac --iout=T1_brain_to_template.nii.gz --interp=spline
 #Combine both transforms (Gradient Distortion Unwarp and T1 to MNI) into one and then apply it. ###NO GDC###
@@ -273,19 +274,19 @@ fi
 cd ../..
 
 #Run BIANCA
-$BB_BIN_DIR/bb_structural_pipeline/bb_BIANCA $1
+#$BB_BIN_DIR/bb_structural_pipeline/bb_BIANCA $1
 
 #remove BIANCA estimated lesion voxels from GM masks & add to WM mask
-cp $1/T1/T1_fast/T1_brain_GM_mask.nii.gz $1/T1/T1_fast/T1_brain_GM_mask_preBIANCA.nii.gz
-${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_GM_mask_preBIANCA -sub $1/T2_FLAIR/lesions/final_mask -bin $1/T1/T1_fast/T1_brain_GM_mask
-cp $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS.nii.gz $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS_preBIANCA.nii.gz
-${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS_preBIANCA -sub $1/T2_FLAIR/lesions/final_mask -bin $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS
-cp $1/T1/cort_subcort_GM.nii.gz $1/T1/cort_subcort_GM_preBIANCA.nii.gz
-${FSLDIR}/bin/fslmaths $1/T1/cort_subcort_GM_preBIANCA -sub $1/T2_FLAIR/lesions/final_mask -bin $1/T1/cort_subcort_GM
-cp $1/T1/T1_fast/T1_brain_WM_mask.nii.gz $1/T1/T1_fast/T1_brain_WM_mask_preBIANCA.nii.gz
-${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_WM_mask_preBIANCA -add $1/T2_FLAIR/lesions/final_mask -bin $1/T1/T1_fast/T1_brain_WM_mask
-cp $1/T1/T1_fast/T1_brain_WM_mask_noCerebBS.nii.gz $1/T1/T1_fast/T1_brain_WM_mask_noCerebBS_preBIANCA.nii.gz
-${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_WM_mask_noCerebBS_preBIANCA -add $1/T2_FLAIR/lesions/final_mask -bin $1/T1/T1_fast/T1_brain_WM_mask_noCerebBS
+#cp $1/T1/T1_fast/T1_brain_GM_mask.nii.gz $1/T1/T1_fast/T1_brain_GM_mask_preBIANCA.nii.gz
+#${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_GM_mask_preBIANCA -sub $1/T2_FLAIR/lesions/final_mask -bin $1/T1/T1_fast/T1_brain_GM_mask
+#cp $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS.nii.gz $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS_preBIANCA.nii.gz
+#${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS_preBIANCA -sub $1/T2_FLAIR/lesions/final_mask -bin $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS
+#cp $1/T1/cort_subcort_GM.nii.gz $1/T1/cort_subcort_GM_preBIANCA.nii.gz
+#${FSLDIR}/bin/fslmaths $1/T1/cort_subcort_GM_preBIANCA -sub $1/T2_FLAIR/lesions/final_mask -bin $1/T1/cort_subcort_GM
+#cp $1/T1/T1_fast/T1_brain_WM_mask.nii.gz $1/T1/T1_fast/T1_brain_WM_mask_preBIANCA.nii.gz
+#${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_WM_mask_preBIANCA -add $1/T2_FLAIR/lesions/final_mask -bin $1/T1/T1_fast/T1_brain_WM_mask
+#cp $1/T1/T1_fast/T1_brain_WM_mask_noCerebBS.nii.gz $1/T1/T1_fast/T1_brain_WM_mask_noCerebBS_preBIANCA.nii.gz
+#${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_WM_mask_noCerebBS_preBIANCA -add $1/T2_FLAIR/lesions/final_mask -bin $1/T1/T1_fast/T1_brain_WM_mask_noCerebBS
 
 #create GM-WM interface for dMRI tractography seeds
 ${FSLDIR}/bin/fslmaths $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS -kernel sphere 1 -dilM $1/T1/T1_fast/T1_brain_GM_mask_noCerebBS_dil
