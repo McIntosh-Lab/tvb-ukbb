@@ -122,7 +122,7 @@ echo "for subject $iopt use $s1 for step 1 and $mask for MNI mask"
 # this is referred to as “step 1” in the manuscript.
 
 if [[ "$s1" == "bet" ]]; then
-    echo step1 BET -B -f 0.1 subject ${i} for initial extraction
+    echo step1 BET -B -f 0.1 subject ${i} for initial extraction 
     bet ${iopt} ${i}_step1 -B -f 0.1
 else
     echo step1 AFNI 3dSkullStrip subject ${i} for initial extraction
