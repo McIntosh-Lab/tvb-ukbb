@@ -85,20 +85,21 @@ export FSLGPUDIR="$BB_BIN_DIR/bb_diffusion_pipeline/bb_bedpostx"
 #export MNI_dir="$FSLDIR/data/standard"
 export templ="$BB_BIN_DIR/templates"                                    #TO BE MODIFIED BY USER
 #AGE-SPECIFIC TEMPLATES
-export TEMPLATE_BRAIN="ANTS13-0Years3T_head_brain.nii.gz"                     #TO BE MODIFIED BY USER
-export TEMPLATE_T1="ANTS13-0Years3T_head.nii.gz"                          #TO BE MODIFIED BY USER
-export TEMPLATE_MASK="ANTS13-0Years3T_mask.nii.gz"                       #TO BE MODIFIED BY USER
-export TEMPLATE_MASK_dil_2mm="ANTS13-0Years3T_mask_dil_2mm.nii.gz"               #TO BE MODIFIED BY USER
-export TEMPLATE_BRAIN_2mm="ANTS13-0Years3T_head_brain_2mm.nii.gz"             #TO BE MODIFIED BY USER
-export TEMPLATE_T1_2mm="ANTS13-0Years3T_head_2mm.nii.gz"                  #TO BE MODIFIED BY USER
-export TEMPLATE_MASK_2mm="ANTS13-0Years3T_mask_2mm.nii.gz"               #TO BE MODIFIED BY USER
-export CEREBELLUM_MASK="cerebellum_to_ANTS13-0.nii.gz"               #TO BE MODIFIED BY USER
-export BRAINSTEM_MASK="brainstem_to_ANTS13-0.nii.gz"               #TO BE MODIFIED BY USER
+export TEMPLATE_BRAIN="ANTS4-0Years3T_head_brain.nii.gz"                     #TO BE MODIFIED BY USER
+export TEMPLATE_T1="ANTS4-0Years3T_head.nii.gz"                          #TO BE MODIFIED BY USER
+export TEMPLATE_MASK="ANTS4-0Years3T_mask.nii.gz"                       #TO BE MODIFIED BY USER
+export TEMPLATE_MASK_dil_1mm="ANTS4-0Years3T_mask_dil3_1mm.nii.gz"                     #TO BE MODIFIED BY USER
+export TEMPLATE_MASK_dil_2mm="ANTS4-0Years3T_mask_dil_2mm.nii.gz"               #TO BE MODIFIED BY USER
+export TEMPLATE_BRAIN_2mm="ANTS4-0Years3T_head_brain_2mm.nii.gz"             #TO BE MODIFIED BY USER
+export TEMPLATE_T1_2mm="ANTS4-0Years3T_head_2mm.nii.gz"                  #TO BE MODIFIED BY USER
+export TEMPLATE_MASK_2mm="ANTS4-0Years3T_mask_2mm.nii.gz"               #TO BE MODIFIED BY USER
+export CEREBELLUM_MASK="cerebellum_to_ANTS4-0.nii.gz"               #TO BE MODIFIED BY USER
+export BRAINSTEM_MASK="brainstem_to_ANTS4-0.nii.gz"               #TO BE MODIFIED BY USER
 
 export PYTHONPATH="$SOFTDIR/software/env/bin/python"
 
 export FSL_FIXDIR="$BB_BIN_DIR/bb_functional_pipeline/bb_fix_dir"
-export PARC_IMG="$templ/parcellations/TVB_SchaeferTian/TVB_SchaeferTian_220_to_ANTS13-0.nii.gz"                      #TO BE MODIFIED BY USER
+export PARC_IMG="$templ/parcellations/TVB_SchaeferTian/TVB_SchaeferTian_220_to_ANTS4-0.nii.gz"                      #TO BE MODIFIED BY USER
 export PARC_LUT="$templ/parcellations/TVB_SchaeferTian/TVB_SchaeferTian_220_LUT.tsv"                     #TO BE MODIFIED BY USER
 #export SUSCEPT_ROIS="$templ/parcellations/TVB_SchaeferTian/SusceptibilityROIs_SchaeferTian_420.nii.gz"                     		#TO BE MODIFIED BY USER
 export numROI="220"                                                              #TO BE MODIFIED BY USER

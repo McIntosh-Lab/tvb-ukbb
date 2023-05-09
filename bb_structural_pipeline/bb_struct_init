@@ -67,7 +67,7 @@ ${FSLDIR}/bin/convert_xfm -omat T1_to_template_linear.mat -concat T1_tmp2_tmp_to
 #  --jout=T1_to_MNI_warp_jac --iout=T1_brain_to_MNI.nii.gz --interp=spline
 
 ${FSLDIR}/bin/fnirt --in=T1 --ref=$templ/$TEMPLATE_T1 --aff=T1_to_template_linear.mat \
-  --config=$BB_BIN_DIR/bb_data/bb_fnirt.cnf --refmask=$templ/$TEMPLATE_MASK \
+  --config=$BB_BIN_DIR/bb_data/bb_fnirt.cnf --refmask=$templ/$TEMPLATE_MASK_dil_1mm \
   --logout=../logs/bb_T1_to_template_fnirt.log --cout=T1_to_template_warp_coef --fout=T1_to_template_warp \
   --jout=T1_to_template_warp_jac --iout=T1_brain_to_template.nii.gz --interp=spline
 #Combine both transforms (Gradient Distortion Unwarp and T1 to MNI) into one and then apply it. ###NO GDC###
