@@ -1,0 +1,38 @@
+#!/bin/bash
+#
+# Script name: tvb_despike
+#
+# Description: Script to run AFNI despiking on raw rfMRI data.
+#
+# Author: Leanne Rokos
+
+
+# Set the paths to the commands
+despike_path="$AFNIDIR/3dDespike"
+afni2nifti_path="$AFNIDIR/3dAFNItoNIFTI"
+
+# Create despiking directory
+direc=$PWD/$1
+despikeDir=$direc/fMRI/despike
+mkdir $despikeDir
+
+# Move and rename original raw rfMRI.nii.gz file to despiking directory
+mv $direc/fMRI/rfMRI.nii.gz $despikeDir/pre_despiking.nii.gz
+
+# Set the input file
+in_file="$despikeDir/pre_despiking.nii.gz"
+
+# Set the output prefix
+out_prefix="$despikeDir/rfMRI_despiked"
+
+# Run 3dDespike
+$despike_path -prefix $out_prefix -NEW $in_file
+
+# Convert output to NIFTI format
+$afni2nifti_path -prefix $out_prefix $out_prefix+orig
+
+# Convert to NIFTI_GZ format
+gzip $out_prefix.nii
+
+# Copy and rename despiked file as "rfMRI.ica"
+cp $out_prefix.nii.gz $direc/fMRI/rfMRI.nii.gz
