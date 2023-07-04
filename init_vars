@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 #
 # Script name: init_vars
 #
@@ -31,7 +31,7 @@
 export BBDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && cd ..; pwd )"
 
 #SETUP FSL  
-export FSLDIR=/opt/HCPpipelines-4.1.3/fsl                                       #TO BE MODIFIED BY USER
+export FSLDIR=/opt/fsl                                       			#TO BE MODIFIED BY USER (DEFAULT FOR SINGULARITY)
 . $FSLDIR/etc/fslconf/fsl.sh
 export FSLCONFDIR="${FSLDIR}/config"
 export FSLOUTPUTTYPE="NIFTI_GZ"
@@ -42,15 +42,34 @@ export QUEUE_STANDARD="all.q"                                                   
 export QUEUE_MORE_MEM="bigmem_16.q"                                             #TO BE MODIFIED BY USER
 export QUEUE_MAX_MEM="bigmem_64.q"                                              #TO BE MODIFIED BY USER
 
+# option 1: true; use full-GPU probtrackx call. default.
+# option 2: gpu_batch; split GPU probtrackx into 10 smaller batches.
+#           for low-memory systems.
+# option 3: false: use CPU probtrackx split into 10 smaller batches.
+#           use for systems without CUDA GPU
+export PROBTRACKX_GPU="true"
+
+export REPARCELLATE="false" #TO BE MODIFIED BY USER
+
 #SETUP AFNI
-export AFNIDIR=/opt/afni                                                        #TO BE MODIFIED BY USER
+# export AFNIDIR=/opt/afni                                                        #TO BE MODIFIED BY USER
+export AFNIDIR="/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Compiler/gcc9/afni/20.3.05"
 
 #SETUP FREESURFER 
-export FREESURFER_HOME=/opt/freesurfer                                          #TO BE MODIFIED BY USER
-source $FREESURFER_HOME/SetUpFreeSurfer.sh  > /dev/null
+# export FREESURFER_HOME=/cvmfs/soft.computecanada.ca/easybuild/software/2020/Core/freesurfer/5.3.0/bin/freesurfer                                          #TO BE MODIFIED BY USER
+
+# if usin on Compute Canada, load module first
+source $EBROOTFREESURFER/FreeSurferEnv.sh
+# source $FREESURFER_HOME/SetUpFreeSurfer.sh  > /dev/null
+
+#SETUP ANTS
+export ANTSPATH="/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Compiler/gcc9/ants/2.3.5/bin"
+
+export SOFTDIR="/opt/tvb-pipeline"						#TO BE MODIFIED BY USER (DEFAULT FOR SINGULARITY)
+
 
 # SET UP MATLAB
-export MCROOT="$BBDIR/software/MCR_2017b_glnxa64"
+export MCROOT="/opt/mcr"							#TO BE MODIFIED BY USER (DEFAULT FOR SINGULARITY)
 export MCRV="v93"
 
 #Move $FSLDIR/bin before $FREESURFER_HOME in the path
@@ -59,8 +78,8 @@ PATH=`echo $PATH | sed "s|$FSLDIR/bin||g"`
 export PATH="$FSLDIR/bin:$PATH"
 
 #SETUP EXTERNAL LIBRARIES
-export R_LIBS="$BBDIR/software/env/lib/R/library"
-export R_DIR="$BBDIR/software/env/lib/R"
+export R_LIBS="/usr/lib/R/library"						#TO BE MODIFIED BY USER (DEFAULT FOR SINGULARITY)	
+export R_DIR="/usr/lib/R"							#TO BE MODIFIED BY USER (DEFAULT FOR SINGULARITY)
 
 
 #SET LOCALE FOR FLOATING POINT FORMATTING
@@ -74,24 +93,34 @@ export MNI_mask="$FSLDIR/data/standard/MNI152_T1_1mm_brain_mask.nii.gz"
 export MNI_brain="$FSLDIR/data/standard/MNI152_T1_1mm_brain.nii.gz"
 export MNI_dir="$FSLDIR/data/standard"
 export templ="$BB_BIN_DIR/templates"
-export PYTHONPATH="$BBDIR/software/env/bin/python"
+export PYTHONPATH="$SOFTDIR/software/env/bin/python"
 
 export FSL_FIXDIR="$BB_BIN_DIR/bb_functional_pipeline/bb_fix_dir"
-export PARC_IMG="$templ/parcellations/TVB_SchaeferTian/TVB_SchaeferTian_316.nii.gz"                      #TO BE MODIFIED BY USER
-export PARC_LUT="$templ/parcellations/TVB_SchaeferTian/TVB_SchaeferTian_316_LUT.txt"                     #TO BE MODIFIED BY USER
-export numROI="316"                                                              #TO BE MODIFIED BY USER
+export PARC_IMG="$templ/parcellations/TVB_SchaeferTian/TVB_SchaeferTian_420.nii.gz"                      #TO BE MODIFIED BY USER
+export PARC_LUT="$templ/parcellations/TVB_SchaeferTian/TVB_SchaeferTian_420_LUT.tsv"                     #TO BE MODIFIED BY USER
+export PARC_NAME="TVBSchaeferTian420"				#TO BE MODIFIED BY USER
+export SUSCEPT_ROIS="$templ/parcellations/TVB_SchaeferTian/SusceptibilityROIs_SchaeferTian_420.nii.gz"                     		#TO BE MODIFIED BY USER
+# export numROI="436"                                                              #TO BE MODIFIED BY USER
 export TRAINING_FILE="ADNI3_Training.RData"                                            #TO BE MODIFIED BY USER
+export SynB0="y"                                            #TO BE MODIFIED BY USER
+export PE_direction="0 -1 0"                                            #TO BE MODIFIED BY USER
+export topupValue="0.1"					#TO BE MODIFIED BY USER - leave empty "" for no value
+export topupValue_default="0.1"					#TO BE MODIFIED BY USER - leave empty "" for no value
+export EPIfactor="50"					#TO BE MODIFIED BY USER
+
+# set to 1 for single shell diffusion data and 2 for multi-shell
+export DIFF_SHELL_TYPE="1"
 
 #INCLUDE 3 MAIN BIOBANK DIRECTORIES IN PATH
 export PATH="$BB_BIN_DIR/bb_pipeline_tools/:$BB_BIN_DIR/bb_general_tools/:$PATH"
 
 
 #SET PATH FOR MCR
-export LD_LIBRARY_PATH="$MCROOT/$MCRV/runtime/glnxa64:$MCROOT/$MCRV/bin/glnxa64:$MCROOT/$MCRV/sys/os/glnxa64:$MCROOT/$MCRV/sys/opengl/lib/glnxa64:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="/usr/lib/x86_64-linux-gnu:$MCROOT/$MCRV/runtime/glnxa64:$MCROOT/$MCRV/bin/glnxa64:$MCROOT/$MCRV/sys/os/glnxa64:$MCROOT/$MCRV/sys/opengl/lib/glnxa64:$LD_LIBRARY_PATH"
 
 export MATLAB_COMPILER_RUNTIME="$MCROOT/$MCRV"
-# export MATLAB_COMPILER_RUNTIME="/opt/MatlabR2017b/MATLAB_Runtime/v93"         #TO BE MODIFIED BY USER
 
 export XAPPLRESDIR="$MCROOT/$MCRV/X11/app-defaults"
 
-conda activate $BBDIR/software/env
+# source activate $SOFTDIR/software/env
+source activate $SOFTDIR/software/env

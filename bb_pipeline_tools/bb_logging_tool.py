@@ -24,7 +24,8 @@
 import os
 import time
 import logging
-from subprocess import check_output
+from subprocess import run
+import shlex
 
 
 def initLogging(fileName, subject, batching=False):
@@ -74,12 +75,32 @@ def finishLogging(logger):
     )
 
 
-def runCommand(logger, command):
+def runCommand(logger, command, jobname):
 
     try:
         logger.info("COMMAND TO RUN: \t" + command.strip())
-        jobOUTPUT = check_output(command, shell=True).decode("UTF-8")
-        logger.info("COMMAND OUTPUT: \t" + jobOUTPUT.strip())
+        # resolve evironment var filepaths and parse
+        command_list = shlex.split(os.path.expandvars(command))
+        jobOUTPUT = run(command_list, capture_output=True, text=True)
+        #jobOUTPUT=popen(command, stdout=PIPE, stderr=STDOUT, shell=True)
+        logfile = f"{jobname}.log"
+        logfile = os.path.join(logger.logDir, logfile)
+        f = open(logfile ,"a+")
+        f.write("STANDARD OUT:\n")
+        f.write(jobOUTPUT.stdout)
+        f.write("\n\nSTANDARD ERROR:\n")
+        f.write(jobOUTPUT.stderr)
+        f.close()
+        # logfile = f"{jobname}.e"
+        # logfile = os.path.join(logger.logDir, logfile)
+        # f = open(logfile ,"a+")
+        # f.write(jobOUTPUT.stderr)
+        # f.close()
+
+        # TODO: remove decode since there's no need to do so
+        # jobOUTPUT=jobOUTPUT.decode("UTF-8")
+        logger.info("COMMAND OUTPUT: \t" + jobOUTPUT.stderr)
+
     except Exception as e:
         logger.error("Exception raised during execution of: \t" + command.strip())
         logger.error("Exception type: \t" + str(type(e)))
@@ -87,4 +108,5 @@ def runCommand(logger, command):
         logger.error("Exception message: \t" + str(e))
 
         jobOUTPUT = ""
-    return jobOUTPUT.strip()
+    # placeholder for now until i strip out all the returns
+    return ""

@@ -28,7 +28,7 @@ import json
 import copy
 import nibabel as nib
 
-import bb_logging_tool as LT
+# import bb_logging_tool as LT
 
 import sys
 from shutil import copyfile
@@ -71,7 +71,7 @@ def generate_SBRef(origPath, outputPath):
         "The SBRef data will be generated now using the middle point of the subject"
     )
     logger.warn("Command to run: " + commandToRun)
-    LT.runCommand(logger, commandToRun)
+    LT.runCommand(logger, commandToRun, "SBRef")
 
 
 def remove_phase_info(fileName):
@@ -417,27 +417,38 @@ def manage_fMRI(listFiles, flag):
 def manage_DWI(listFiles):
 
     # listFiles = robustSort(listFiles)
-    numFiles = len(listFiles)
     listFiles = [rename_no_coil_echo_info(x) for x in listFiles]
+
+    # ignore _ADC files from ADNI3
+    for fpath in listFiles:
+        if "_ADC" in fpath:
+            listFiles.remove(fpath)
 
     subListFilesD = {}
     imageFilesD = {}
 
+    numFiles = len(listFiles)
     if numFiles == 0:
         logger.error("There was no DWI data.  There will be no DWI processing.")
 
     else:
         errorFound = False
-        encodingDirections = ["PA", "AP"]
 
-        numNifti = 0
+        # number of AP/PA directions detected
+        numAP = 0
 
+        # increment numAP if any AP/PA directions found
         for fl in listFiles:
-            if ".nii.gz" in fl:
-                numNifti += 1
+            if ".nii.gz" in fl and ("PA" in fl or "AP" in fl):
+                numAP += 1
 
-        if numNifti == 1:
+        # use single-direction if only one direction found
+        if numAP <= 1:
             encodingDirections = ["dwi"]
+            logger.info("Single-direction DWI detected.")
+        # assume AP/PA otherwise
+        else:
+            encodingDirections = ["AP", "PA"]
 
         # Code needed for the inconsistency in the file names in Diffusion over the different phases
         if listFiles[0].startswith("MB3"):
@@ -448,7 +459,7 @@ def manage_DWI(listFiles):
             subListFilesD["AP"] = [x for x in listFiles if x not in subListFilesD["PA"]]
             imageFilesD["AP"] = [x for x in subListFilesD["AP"] if bb_path.isImage(x)]
 
-        elif "dwi" in listFiles[0]:
+        elif "dwi" in listFiles[0] or "DWI" in listFiles[0]:
 
             subListFilesD["dwi"] = [x for x in listFiles if x.find("dwi") != -1]
             imageFilesD["dwi"] = [x for x in subListFilesD["dwi"] if bb_path.isImage(x)]
@@ -475,7 +486,6 @@ def manage_DWI(listFiles):
                     dim.append(epi_img.get_header()["dim"][4])
 
                 numImageFiles = len(imageFiles)
-                # print("HEEERE")
 
                 if numImageFiles == 0:
                     raise Exception(
@@ -785,3 +795,9 @@ def bb_file_manager(subject):
     fileConfigFormatted = formatFileConfig()
 
     return fileConfig
+
+
+if __name__ == "__main__":
+    # run bb_file_manager on subject
+    subject = sys.argv[1]
+    bb_file_manager(subject)
