@@ -778,9 +778,9 @@ def bb_file_manager(subject):
         [["SWI*nii.gz"], manage_SWI],
         # [["DIFF_*", "MB3_*", "*dwi*.nii.gz", "*DWI*.nii.gz"], manage_DWI],
         [["DIFF_*", "MB3_*", "*dwi*.*", "*DWI*.*"], manage_DWI],
+        [["*magnitude1*.nii*", "*magnitude2*.nii*", "*phasediff*.nii*", "*fmap*.nii*"], manage_fmap],
         [["SWI*.*"], move_to, "SWI/unclassified/"],
         [["*.[^log]"], move_to, "unclassified/"],
-        [["*magnitude1*.nii*", "*magnitude2*.nii*", "*phasediff*.nii*", "*fmap*.nii*"], manage_fmap],
         #TODO: change to be generic for cam-can esque fmap files. currently specific to openfMRI
     ]
 
