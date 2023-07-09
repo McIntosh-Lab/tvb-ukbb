@@ -44,12 +44,12 @@ def tvb_reparcellate_pipeline(subject_, file_configuration, PARC_NAME_):
     # import fileconfig from json if none given
     if file_configuration == "none":
         try:
-            fd_fileName = "logs/file_descriptor.json"
-            json_path = os.path.abspath(f"./{subject_}/{fd_fileName}")
-            with open(json_path, "r") as f:
+            fd_file_name = "logs/file_descriptor.json"
+            json_path_ = os.path.abspath(f"./{subject_}/{fd_file_name}")
+            with open(json_path_, "r") as f:
                 file_configuration = json.load(f)
         except:
-            print(f"{json_path} could not be loaded. Exiting")
+            print(f"{json_path_} could not be loaded. Exiting")
             sys.exit(1)
 
     subject_ = subject_.strip()

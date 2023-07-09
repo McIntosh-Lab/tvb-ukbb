@@ -79,42 +79,55 @@ def init_logging(file_name, subject, batching=False):
 
 
 def finish_logging(logger):
+    """
+    Completes the logging processes with a final message to the logger
+
+    Args:
+        logger: The python logger object
+    """
     logger.info(
         "Main processing file finished at: " + str(time.ctime(int(time.time())))
     )
 
 
 def run_command(logger, command, job_name):
+    """
+    Performs the specified command and logs the resulting output.
+
+    Args:
+        logger:     The python logging object.
+        command:    The command to be run.
+        job_name:   The name of the current job.
+
+    Returns:    None: Writes to corresponding log files specified by the logger object.
+    """
     try:
         logger.info("COMMAND TO RUN: \t" + command.strip())
+
         # resolve environment var filepaths and parse
         command_list = shlex.split(os.path.expandvars(command))
+
+        # perform the commands
         job_output = run(command_list, capture_output=True, text=True)
         # job_output=popen(command, stdout=PIPE, stderr=STDOUT, shell=True)
-        logfile = f"{job_name}.log"
-        logfile = os.path.join(logger.logDir, logfile)
-        f = open(logfile, "a+")
+        log_file = f"{job_name}.log"
+        log_file = os.path.join(logger.logDir, log_file)
+
+        f = open(log_file, "a+")
         f.write("STANDARD OUT:\n")
         f.write(job_output.stdout)
+
         f.write("\n\nSTANDARD ERROR:\n")
         f.write(job_output.stderr)
+
         f.close()
-        # logfile = f"{job_name}.e"
-        # logfile = os.path.join(logger.logDir, logfile)
-        # f = open(logfile ,"a+")
-        # f.write(job_output.stderr)
-        # f.close()
 
         # TODO: remove decode since there's no need to do so
         # job_output=job_output.decode("UTF-8")
         logger.info("COMMAND OUTPUT: \t" + job_output.stderr)
 
     except Exception as e:
-        logger.error("Exception raised during execution of: \t" + command.strip())
-        logger.error("Exception type: \t" + str(type(e)))
-        logger.error("Exception args: \t" + str(e.args))
-        logger.error("Exception message: \t" + str(e))
-
-        job_output = ""
-    # placeholder for now until I strip out all the returns
-    return ""
+        logger.error("Exception raised during execution of: \n\t" + command.strip())
+        logger.error("Exception type: \n\t" + str(type(e)))
+        logger.error("Exception args: \n\t" + str(e.args))
+        logger.error("Exception message: \n\t" + str(e))
