@@ -32,14 +32,14 @@ import bb_pipeline_tools.bb_logging_tool as LT
 
 def bb_IDP(subject, fileConfiguration):
 
-    logger = LT.initLogging(__file__, subject)
+    logger = LT.init_logging(__file__, subject)
     logDir = logger.logDir
     baseDir = logDir[0 : logDir.rfind("/logs/")]
 
     subname = subject.replace("/", "_")
 
     print("Running IDP pipeline...")
-    jobIDP = LT.runCommand(
+    jobIDP = LT.run_command(
         logger,
         "$BB_BIN_DIR/bb_IDP/bb_IDP "
         + subject,

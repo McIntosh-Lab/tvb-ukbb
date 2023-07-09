@@ -51,7 +51,7 @@ def generate_FS_IDP_files(
 
     # TODO: Include a pre-rquisite that python2.7 must be availble in the system
     if os.path.isfile(statsDir + "aseg.stats"):
-        LT.runCommand(
+        LT.run_command(
             logger,
             "python2.7 $FREESURFER_HOME/bin/asegstats2table  "
             + " -m volume --all-segs --tablefile "
@@ -62,7 +62,7 @@ def generate_FS_IDP_files(
             + " --skip",
             "FS_IDP_aseg_1_" + subject_ID,
         )
-        LT.runCommand(
+        LT.run_command(
             logger,
             "python2.7 $FREESURFER_HOME/bin/asegstats2table  "
             + " -m mean --all-segs --tablefile "
@@ -75,7 +75,7 @@ def generate_FS_IDP_files(
         )
 
     if os.path.isfile(statsDir + "lh.w-g.pct.stats"):
-        LT.runCommand(
+        LT.run_command(
             logger,
             "python2.7 $FREESURFER_HOME/bin/asegstats2table "
             + " -m mean --all-segs --stats=lh.w-g.pct.stats "
@@ -89,7 +89,7 @@ def generate_FS_IDP_files(
         )
 
     if os.path.isfile(statsDir + "rh.w-g.pct.stats"):
-        LT.runCommand(
+        LT.run_command(
             logger,
             "python2.7 $FREESURFER_HOME/bin/asegstats2table "
             + " -m mean --all-segs --stats=rh.w-g.pct.stats "
@@ -107,7 +107,7 @@ def generate_FS_IDP_files(
             for atlas in ["BA_exvivo", "aparc.DKTatlas", "aparc.a2009s", "aparc"]:
                 outFileName = dataDir + atlas + "_" + hemi + "_" + value + ".txt"
                 if os.path.isfile(statsDir + hemi + "." + atlas + ".stats"):
-                    LT.runCommand(
+                    LT.run_command(
                         logger,
                         "python2.7 $FREESURFER_HOME/bin/aparcstats2table "
                         + " -m "
@@ -128,7 +128,7 @@ def generate_FS_IDP_files(
     for hemi in ["lh", "rh"]:
         outFileName = dataDir + atlas + "_" + hemi + "_" + value + ".txt"
         if os.path.isfile(statsDir + hemi + ".aparc.pial.stats"):
-            LT.runCommand(
+            LT.run_command(
                 logger,
                 "python2.7 $FREESURFER_HOME/bin/aparcstats2table "
                 + " -m "
@@ -626,7 +626,7 @@ def save_headers_info(data_dict, SUBJECTS_DIR):
 
 def bb_FS_get_IDPs(subject):
 
-    logger = LT.initLogging(__file__, subject)
+    logger = LT.init_logging(__file__, subject)
     #    logger  = LT.initLogging('log', subject)
     logDir = logger.logDir
     baseDir = logDir[0 : logDir.rfind("/logs/")]
@@ -663,7 +663,7 @@ def bb_FS_get_IDPs(subject):
     check_consistency(data_dict)
     save_data(data_dict, SUBJECTS_DIR)
 
-    LT.finishLogging(logger)
+    LT.finish_logging(logger)
 
 
 def main():

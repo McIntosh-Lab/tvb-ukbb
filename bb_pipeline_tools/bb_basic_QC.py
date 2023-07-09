@@ -103,7 +103,7 @@ def bb_basic_QC(subject, fileConfig):
     keysToPop = []
     global logger
 
-    logger = LT.initLogging(__file__, subject)
+    logger = LT.init_logging(__file__, subject)
 
     idealConfigFile = os.environ["BB_BIN_DIR"] + "/bb_data/ideal_config_sizes.json"
     with open(idealConfigFile, "r") as f:
@@ -165,7 +165,7 @@ def main():
 
     if subject[-1] == "/":
         subject = subject[0 : len(subject) - 1]
-    logger = LT.initLogging(__file__, subject)
+    logger = LT.init_logging(__file__, subject)
     logger.info("Running file manager")
 
     idealConfigFile = os.environ["BB_BIN_DIR"] + "/bb_data/ideal_config.json"

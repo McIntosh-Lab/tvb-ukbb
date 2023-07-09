@@ -133,12 +133,12 @@ def main():
     if subject[-1] =='/':
         subject = subject[0:len(subject)-1]
     
-    logger = LT.initLogging(__file__, subject)
+    logger = LT.init_logging(__file__, subject)
 
     logger.info('Running UK Biobank to BIDS converter') 
     bb_UKBB_to_BIDS_converter(subject)
 
-    LT.finishLogging(logger)
+    LT.finish_logging(logger)
              
 if __name__ == "__main__":
     main()

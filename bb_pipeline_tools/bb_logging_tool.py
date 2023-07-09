@@ -28,78 +28,86 @@ from subprocess import run
 import shlex
 
 
-def initLogging(fileName, subject, batching=False):
+def init_logging(file_name, subject, batching=False):
+    """
+    initLogging initializes the logging system for the given python file and subject.
 
-    scriptName = os.path.basename(fileName)
-    scriptNameIndex = scriptName.rfind(".")
-    if scriptNameIndex != -1:
-        scriptName = scriptName[0:scriptNameIndex]
+    Args:
+        file_name:   The name of the current python file, typically supplied as '__file__'
+        subject:    The name of the subject file being run.
+        batching:   ?
+
+    Returns:
+        A python logger object
+    """
+    script_name = os.path.basename(file_name)
+    script_name_index = script_name.rfind(".")
+    if script_name_index != -1:
+        script_name = script_name[0:script_name_index]
 
     logging.basicConfig(level=logging.INFO)
-    logger = logging.getLogger(scriptName)
+    logger = logging.getLogger(script_name)
     logger.propagate = False
     if batching:
-        logDir = os.path.abspath(
+        log_dir = os.path.abspath(
             os.path.join(os.getcwd() + "/../" + subject + "/logs/")
         )
     else:
-        logDir = os.getcwd() + "/" + subject + "/logs/"
-    # logDir = "../../logs/"
-    if not os.path.isdir(logDir):
-        os.mkdir(logDir)
+        log_dir = os.getcwd() + "/" + subject + "/logs/"
+    # log_dir = "../../logs/"
+    if not os.path.isdir(log_dir):
+        os.mkdir(log_dir)
 
     subj = subject.split("/")[-1]
-    logFileName = (
-        logDir + "/" + scriptName + "__" + subject + "__" + str(os.getpid()) + ".log"
+    log_file_name = (
+            log_dir + "/" + script_name + "__" + subject + "__" + str(os.getpid()) + ".log"
     )
-    # logFileName = (
-    #    logDir + "/" + scriptName + "__" + subj + "__" + str(os.getpid()) + ".log"
+    # log_file_name = (
+    #    log_dir + "/" + script_name + "__" + subj + "__" + str(os.getpid()) + ".log"
     # )
-    logFile = logging.FileHandler(logFileName)
-    logFile.setFormatter(
+    log_file = logging.FileHandler(log_file_name)
+    log_file.setFormatter(
         logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s ")
     )
-    logger.addHandler(logFile)
+    logger.addHandler(log_file)
     logger.info("Starting the subject processing: " + str(time.ctime(int(time.time()))))
     logger.info("Subject received as input: " + subject)
 
-    logger.logDir = logDir
+    logger.logDir = log_dir
 
     return logger
 
 
-def finishLogging(logger):
-
+def finish_logging(logger):
     logger.info(
         "Main processing file finished at: " + str(time.ctime(int(time.time())))
     )
 
 
-def runCommand(logger, command, jobname):
-
+def run_command(logger, command, job_name):
     try:
         logger.info("COMMAND TO RUN: \t" + command.strip())
-        # resolve evironment var filepaths and parse
+        # resolve environment var filepaths and parse
         command_list = shlex.split(os.path.expandvars(command))
-        jobOUTPUT = run(command_list, capture_output=True, text=True)
-        #jobOUTPUT=popen(command, stdout=PIPE, stderr=STDOUT, shell=True)
-        logfile = f"{jobname}.log"
+        job_output = run(command_list, capture_output=True, text=True)
+        # job_output=popen(command, stdout=PIPE, stderr=STDOUT, shell=True)
+        logfile = f"{job_name}.log"
         logfile = os.path.join(logger.logDir, logfile)
-        f = open(logfile ,"a+")
+        f = open(logfile, "a+")
         f.write("STANDARD OUT:\n")
-        f.write(jobOUTPUT.stdout)
+        f.write(job_output.stdout)
         f.write("\n\nSTANDARD ERROR:\n")
-        f.write(jobOUTPUT.stderr)
+        f.write(job_output.stderr)
         f.close()
-        # logfile = f"{jobname}.e"
+        # logfile = f"{job_name}.e"
         # logfile = os.path.join(logger.logDir, logfile)
         # f = open(logfile ,"a+")
-        # f.write(jobOUTPUT.stderr)
+        # f.write(job_output.stderr)
         # f.close()
 
         # TODO: remove decode since there's no need to do so
-        # jobOUTPUT=jobOUTPUT.decode("UTF-8")
-        logger.info("COMMAND OUTPUT: \t" + jobOUTPUT.stderr)
+        # job_output=job_output.decode("UTF-8")
+        logger.info("COMMAND OUTPUT: \t" + job_output.stderr)
 
     except Exception as e:
         logger.error("Exception raised during execution of: \t" + command.strip())
@@ -107,6 +115,6 @@ def runCommand(logger, command, jobname):
         logger.error("Exception args: \t" + str(e.args))
         logger.error("Exception message: \t" + str(e))
 
-        jobOUTPUT = ""
-    # placeholder for now until i strip out all the returns
+        job_output = ""
+    # placeholder for now until I strip out all the returns
     return ""

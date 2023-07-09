@@ -53,14 +53,14 @@ def main():
     if subject[-1] =='/':
         subject = subject[0:len(subject)-1]
     
-    logger = LT.initLogging(__file__, subject)
+    logger = LT.init_logging(__file__, subject)
 
     logger.info('Running file manager') 
     fileConfig = bb_file_manager(subject)
 
     logger.info("File configuration after running file manager: \n" + str(fileConfig))
 
-    LT.finishLogging(logger)
+    LT.finish_logging(logger)
              
 if __name__ == "__main__":
     main()

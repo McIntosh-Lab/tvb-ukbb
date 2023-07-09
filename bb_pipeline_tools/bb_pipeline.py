@@ -68,7 +68,7 @@ def main(cli_args=None):
     if subject[-1] == "/":
         subject = subject[0 : len(subject) - 1]
 
-    logger = LT.initLogging(__file__, subject)
+    logger = LT.init_logging(__file__, subject)
 
     REPARCELLATE=os.environ['REPARCELLATE']
     PARC_NAME=os.environ['PARC_NAME']
@@ -149,7 +149,7 @@ def main(cli_args=None):
             fileConfig
         )
 
-    LT.finishLogging(logger)
+    LT.finish_logging(logger)
     # return jobSTEP5
 
 

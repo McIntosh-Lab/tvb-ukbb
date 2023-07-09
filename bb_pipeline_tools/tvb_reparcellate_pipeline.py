@@ -4,7 +4,7 @@
 #
 # Description: This script will call all the parcellation-specific subpipes required to reparcellate a processed subject.
 # 
-# Author: Justin Wang
+# Author: Justin Wang, Patrick Mahon (pmahon@sfu.ca)
 #
 # Adapted from scripts by: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
 #
@@ -16,76 +16,86 @@ import json
 
 sys.path.insert(1, os.path.dirname(__file__) + "/..")
 import bb_pipeline_tools.bb_logging_tool as LT
+
+
 # from tvb_bb_QC.html_reparcellation import html_reparcellation
-#EXPORT PARC stuff
+# EXPORT PARC stuff
 
-def tvb_reparcellate_pipeline(subject, fileConfiguration, PARC_NAME):
+def tvb_reparcellate_pipeline(subject_, file_configuration, PARC_NAME_):
+    """
+    Performs a reparcellation of the subject provided an existing run on a given parcellation has been completed.
 
-    #import fileconfig from json if none given
-    if fileConfiguration=="none":
+    Args:
+        subject_:   The subject name.
+        file_configuration: ?
+        PARC_NAME_: The name of the parcellation type to perform. E.g:
+                        - TVBSchaeferTian420
+                        - TVBSchaeferTian220
+                        - etc...
+
+    Returns:
+
+
+    """
+
+    logger = LT.init_logging(__file__, subject_)
+    log_dir = logger.logDir
+
+    # import fileconfig from json if none given
+    if file_configuration == "none":
         try:
             fd_fileName = "logs/file_descriptor.json"
-            json_path = os.path.abspath(f"./{subject}/{fd_fileName}")
+            json_path = os.path.abspath(f"./{subject_}/{fd_fileName}")
             with open(json_path, "r") as f:
-                fileConfiguration = json.load(f)
+                file_configuration = json.load(f)
         except:
             print(f"{json_path} could not be loaded. Exiting")
             sys.exit(1)
 
+    subject_ = subject_.strip()
 
+    if subject_[-1] == "/":
+        subject_ = subject_[0: len(subject_) - 1]
 
+    base_dir = log_dir[0: log_dir.rfind("/logs/")]
 
-
-    subject = subject.strip()
-
-    if subject[-1] == "/":
-        subject = subject[0 : len(subject) - 1]
-        
-    logger = LT.initLogging(__file__, subject)
-    logDir = logger.logDir
-    baseDir = logDir[0 : logDir.rfind("/logs/")]
-
-    subname = subject.replace("/", "_")
-
+    subject_name = subject_.replace("/", "_")
 
     ######
     # STRUCTURAL
     ######
     print("Running structural reparcellation pipeline...")
-    jobSTRUCTPARC = LT.runCommand(
+    LT.run_command(
         logger,
         "${BB_BIN_DIR}/bb_structural_pipeline/tvb_struct_parcellation.sh "
-        + subject,
+        + subject_,
         "tvb_struct_parcellation_"
-        + subname
+        + subject_name
         + "_"
-        + PARC_NAME
+        + PARC_NAME_
         + "_"
         + "reparcellation"
     )
     print("Structural reparcellation pipeline completed.")
-
-
-
 
     ######
     # FUNCTIONAL
     ######
     print("Beginning functional reparcellation pipeline")
 
-    if ("rfMRI" in fileConfiguration) and (fileConfiguration["rfMRI"] != ""):
+    if ("rfMRI" in file_configuration) and (file_configuration["rfMRI"] != ""):
         print("rfMRI files found. Running rfMRI subpipe reparcellation")
         print("Running FC reparcellation...")
 
         ### compute FC using parcellation
-        jobFC = LT.runCommand(
+        jobFC = LT.run_command(
             logger,
             "$BB_BIN_DIR/bb_functional_pipeline/tvb_FC "
-            + subject,
+            + subject_,
             "tvb_FC_"
-            + subname
+            + subject_name
             + "_"
-            + PARC_NAME
+            + PARC_NAME_
             + "_"
             + "reparcellation"
         )
@@ -97,9 +107,6 @@ def tvb_reparcellate_pipeline(subject, fileConfiguration, PARC_NAME):
         )
     print("Functional reparcellation pipeline complete.")
 
-
-
-
     ######
     # DIFFUSION
     ######
@@ -107,28 +114,28 @@ def tvb_reparcellate_pipeline(subject, fileConfiguration, PARC_NAME):
     print("Beginning diffusion reparcellation pipeline")
 
     print("Running tvb_probtrackx reparcellation...")
-    jobPREPROBTRACKX = LT.runCommand(
+    jobPREPROBTRACKX = LT.run_command(
         logger,
         "$BB_BIN_DIR/bb_diffusion_pipeline/tvb_probtrackx2/tvb_probtrackx2 "
-        + baseDir,
+        + base_dir,
         "tvb_probtrackx_"
-        + subname
+        + subject_name
         + "_"
-        + PARC_NAME
+        + PARC_NAME_
         + "_"
         + "reparcellation"
     )
     print("tvb_probtrackx reparcellation completed.")
 
     print("Running tvb_post_probtrackx reparcellation...")
-    jobPOSTPROBTRACKX = LT.runCommand(
+    jobPOSTPROBTRACKX = LT.run_command(
         logger,
         "$BB_BIN_DIR/bb_diffusion_pipeline/tvb_probtrackx2/tvb_post_probtrackx2 "
-        + subject,
+        + subject_,
         "tvb_post_probtrackx_"
-        + subname
+        + subject_name
         + "_"
-        + PARC_NAME
+        + PARC_NAME_
         + "_"
         + "reparcellation"
     )
@@ -136,71 +143,62 @@ def tvb_reparcellate_pipeline(subject, fileConfiguration, PARC_NAME):
 
     print("Diffusion reparcellation pipeline complete.")
 
-
-
-
     ######
     # IDP
     ######
 
     print("Running IDP reparcellation pipeline...")
-    jobIDP = LT.runCommand(
+    jobIDP = LT.run_command(
         logger,
         "$BB_BIN_DIR/bb_IDP/bb_IDP "
-        + subject,
+        + subject_,
         "bb_IDP_"
-        + subname
+        + subject_name
         + "_"
-        + PARC_NAME
+        + PARC_NAME_
         + "_"
         + "reparcellation"
     )
     print("IDP reparcellation pipeline complete.")
 
-
-
-
     ######
     # QC
     ######
 
-
     print("Beginning QC reparcellation pipeline...")
-    jobQC = LT.runCommand(
+    jobQC = LT.run_command(
         logger,
         " xvfb-run -a $BB_BIN_DIR/tvb_bb_QC/tvb_bb_QC.sh "  # -s '-screen 0 640x480x24'
-        + subject,
+        + subject_,
         "tvb_bb_QC_"
-        + subname
+        + subject_name
         + "_"
-        + PARC_NAME
+        + PARC_NAME_
         + "_"
         + "reparcellation"
     )
     print("QC reparcellation pipeline complete.")
 
-
-
     print("Beginning QC html reparcellation dropdown...")
-    jobHTML_reparc = LT.runCommand(
+    job_html_reparc = LT.run_command(
         logger,
         " python $BB_BIN_DIR/tvb_bb_QC/html_reparcellation.py "  # -s '-screen 0 640x480x24'
-        + subject
+        + subject_
         + " "
-        + PARC_NAME,
+        + PARC_NAME_,
         "html_reparcellation_"
-        + subname
+        + subject_name
         + "_"
-        + PARC_NAME
+        + PARC_NAME_
         + "_"
         + "reparcellation"
     )
     # html_reparcellation(subject,PARC_NAME)
     print("QC html reparcellation dropdown complete.")
 
-    LT.finishLogging(logger)
+    LT.finish_logging(logger)
 
-    return jobHTML_reparc
+    return job_html_reparc
 
 
 if __name__ == "__main__":

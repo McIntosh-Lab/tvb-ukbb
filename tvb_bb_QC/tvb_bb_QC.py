@@ -33,14 +33,14 @@ import bb_pipeline_tools.bb_logging_tool as LT
 
 def tvb_bb_QC(subject, fileConfiguration):
 
-    logger = LT.initLogging(__file__, subject)
+    logger = LT.init_logging(__file__, subject)
     logDir = logger.logDir
     baseDir = logDir[0 : logDir.rfind("/logs/")]
 
     subname = subject.replace("/", "_")
 
     print("Beginning QC pipeline...")
-    jobQC = LT.runCommand(
+    jobQC = LT.run_command(
         logger,
         " xvfb-run -a $BB_BIN_DIR/tvb_bb_QC/tvb_bb_QC.sh "  # -s '-screen 0 640x480x24'
         + subject,

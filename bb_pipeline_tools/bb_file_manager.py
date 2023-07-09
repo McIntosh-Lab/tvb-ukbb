@@ -71,7 +71,7 @@ def generate_SBRef(origPath, outputPath):
         "The SBRef data will be generated now using the middle point of the subject"
     )
     logger.warn("Command to run: " + commandToRun)
-    LT.runCommand(logger, commandToRun, "SBRef")
+    LT.run_command(logger, commandToRun, "SBRef")
 
 
 def remove_phase_info(fileName):
@@ -675,7 +675,7 @@ def bb_file_manager(subject):
     global logger
     global idealConfig
     global fileConfig
-    logger = LT.initLogging(__file__, subject)
+    logger = LT.init_logging(__file__, subject)
 
     idealConfigFile = os.environ["BB_BIN_DIR"] + "/bb_data/ideal_config.json"
     with open(idealConfigFile, "r") as f:
