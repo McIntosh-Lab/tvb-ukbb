@@ -75,6 +75,7 @@ def main(cli_args=None):
     
 
     if REPARCELLATE=="true":
+        logger.info("Running subject " + subject + " reparcellation.")
         tvb_reparcellate_pipeline(subject, "none", PARC_NAME)
 
     if REPARCELLATE=="false":
