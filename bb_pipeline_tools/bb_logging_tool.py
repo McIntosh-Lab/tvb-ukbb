@@ -161,6 +161,7 @@ def format_to_info(logger, message):
 
     return log_record
 
+
 def format_to_error(logger, message):
     log_record = logging.LogRecord(
         name=logger.name,
