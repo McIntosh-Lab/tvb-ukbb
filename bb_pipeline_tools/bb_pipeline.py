@@ -51,8 +51,7 @@ class Usage(Exception):
 
 
 def main(cli_args=None):
-
-    if cli_args == None:
+    if cli_args is None:
         parser = MyParser(description="BioBank Pipeline Manager")
         parser.add_argument("subjectFolder", help="Subject Folder")
 
@@ -66,53 +65,54 @@ def main(cli_args=None):
     subject = subject.strip()
 
     if subject[-1] == "/":
-        subject = subject[0 : len(subject) - 1]
+        subject = subject[0: len(subject) - 1]
 
     logger = LT.init_logging(__file__, subject)
 
-    REPARCELLATE=os.environ['REPARCELLATE']
-    PARC_NAME=os.environ['PARC_NAME']
-    
+    REPARCELLATE = os.environ['REPARCELLATE']
+    PARC_NAME = os.environ['PARC_NAME']
 
-    if REPARCELLATE=="true":
+    if REPARCELLATE == "true":
         logger.info("Running subject " + subject + " reparcellation.")
         tvb_reparcellate_pipeline(subject, "none", PARC_NAME)
 
-    if REPARCELLATE=="false":
+    if REPARCELLATE == "false":
 
         logger.info("Running file manager")
-        fileConfig = bb_file_manager(subject)
+        file_config = bb_file_manager(subject)
 
-        logger.info("File configuration before QC: " + str(fileConfig))
+        logger.info("File configuration before QC: " + str(file_config))
 
-        fileConfig = bb_basic_QC(subject, fileConfig)
+        file_config = bb_basic_QC(subject, file_config)
 
-        logger.info("File configuration after running file manager: " + str(fileConfig))
+        logger.info("File configuration after running file manager: " + str(file_config))
 
-        # runTopup ==> Having fieldmap
+        # run_top_up ==> Having fieldmap
         if not (
-            (("AP" in fileConfig) and (fileConfig["AP"] != ""))
-            and (("PA" in fileConfig) and (fileConfig["PA"] != ""))
+                (("AP" in file_config) and (file_config["AP"] != ""))
+                and (("PA" in file_config) and (file_config["PA"] != ""))
         ):
             logger.warn("There is no proper AP/PA data. Thus, TOPUP will not be run")
-            runTopup = False
+            run_top_up = False
             print("NO TOPUP")
         else:
-            runTopup = True
+            run_top_up = True
 
         # set for now
-        # runTopup = True
+        # run_top_up = True
 
         # Default value for job id. SGE does not wait for a job with this id.
         jobSTEP1 = "-1"
         jobSTEP2 = "-1"
         jobSTEP3 = "-1"
+
+
         jobSTEP4 = "-1"
         jobSTEP5 = "-1"
 
-        # jobSTEP1 = bb_pipeline_struct(subject, runTopup, fileConfig)
-        bb_pipeline_struct(subject, runTopup, fileConfig)
-        #handle cases: when jobstep1 would typically trigger the following
+        # jobSTEP1 = bb_pipeline_struct(subject, run_top_up, file_config)
+        bb_pipeline_struct(subject, run_top_up, file_config)
+        # handle cases: when jobstep1 would typically trigger the following
         if isinstance(jobSTEP1, int):
             if jobSTEP1 == -1:
                 print(
@@ -125,28 +125,28 @@ def main(cli_args=None):
         # print(f"jobSTEP1: {jobSTEP1}")
         # jobSTEP1 = int(jobSTEP1)
 
-        # if runTopup:
-        # jobSTEP2 = bb_pipeline_func(subject, fileConfig)
-        # jobSTEP3 = bb_pipeline_diff(subject, fileConfig)
+        # if run_top_up:
+        # jobSTEP2 = bb_pipeline_func(subject, file_config)
+        # jobSTEP3 = bb_pipeline_diff(subject, file_config)
 
         # jobSTEP4 = bb_IDP(
-        #     subject, fileConfig
+        #     subject, file_config
         # )
 
         # jobSTEP5 = tvb_bb_QC(
         #     subject,
-        #     fileConfig
+        #     file_config
         # )
-        bb_pipeline_func(subject, fileConfig)
-        bb_pipeline_diff(subject, fileConfig)
+        bb_pipeline_func(subject, file_config)
+        bb_pipeline_diff(subject, file_config)
 
         bb_IDP(
-            subject, fileConfig
+            subject, file_config
         )
 
         tvb_bb_QC(
             subject,
-            fileConfig
+            file_config
         )
 
     LT.finish_logging(logger)
