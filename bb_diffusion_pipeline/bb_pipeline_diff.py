@@ -38,9 +38,9 @@ def bb_pipeline_diff(subject, fileConfiguration):
 
     subname = subject.replace("/", "_")
 
-    print("Beginning diffusion pipeline")
+    logger.info("Beginning diffusion pipeline")
 
-    print("Running pre_eddy...")
+    logger.info("Running pre_eddy...")
     jobPREPARE = LT.run_command(
         logger,
         "$BB_BIN_DIR/bb_diffusion_pipeline/bb_eddy/bb_pre_eddy "
@@ -48,10 +48,10 @@ def bb_pipeline_diff(subject, fileConfiguration):
         "bb_pre_eddy_"
         + subname
     )
-    print("pre_eddy completed.")
+    logger.info("pre_eddy completed.")
 
     if os.environ["SynB0"] == "y":
-        print("Running SynB0 unwarping...")
+        logger.info("Running SynB0 unwarping...")
         LT.run_command(
             logger,
             "$BB_BIN_DIR/bb_diffusion_pipeline/tvb_SynB0/tvb_SynB0_pipeline.sh "
@@ -59,9 +59,9 @@ def bb_pipeline_diff(subject, fileConfiguration):
             "tvb_bb_SynB0_pipeline_"
             + subname
         )
-        print("SynB0 unwarping done.")
+        logger.info("SynB0 unwarping done.")
 
-    print("Running eddy..")
+    logger.info("Running eddy..")
     jobEDDY = LT.run_command(
         logger,
         "$BB_BIN_DIR/bb_diffusion_pipeline/bb_eddy/bb_eddy_wrap "
@@ -69,9 +69,9 @@ def bb_pipeline_diff(subject, fileConfiguration):
         "bb_eddy_"
         + subname
     )
-    print("eddy completed.")
+    logger.info("eddy completed.")
 
-    print("Running post_eddy...")
+    logger.info("Running post_eddy...")
     jobPOSTEDDY = LT.run_command(
         logger,
         "$BB_BIN_DIR/bb_diffusion_pipeline/bb_eddy/bb_post_eddy "
@@ -80,9 +80,9 @@ def bb_pipeline_diff(subject, fileConfiguration):
         + subname
     )
 
-    print("post_eddy completed.")
+    logger.info("post_eddy completed.")
 
-    print("Running DTIFIT...")
+    logger.info("Running DTIFIT...")
     jobDTIFIT = LT.run_command(
         logger,
         "${FSLDIR}/bin/dtifit -k "
@@ -99,9 +99,9 @@ def bb_pipeline_diff(subject, fileConfiguration):
         "bb_dtifit_"
         + subname
     )
-    print("DTIFIT completed.")
+    logger.info("DTIFIT completed.")
 
-    print("Running TBSS...")
+    logger.info("Running TBSS...")
     jobTBSS = LT.run_command(
         logger,
         "$BB_BIN_DIR/bb_diffusion_pipeline/bb_tbss/bb_tbss_general "
@@ -109,7 +109,7 @@ def bb_pipeline_diff(subject, fileConfiguration):
         "bb_tbss_"
         + subname
     )
-    print("TBSS completed.")
+    logger.info("TBSS completed.")
     # jobNODDI = LT.runCommand(
     # logger,
     ##'${FSLDIR}/bin/fsl_sub -T 100 -N "bb_NODDI_'
@@ -123,7 +123,7 @@ def bb_pipeline_diff(subject, fileConfiguration):
     # + subject,
     # )
 
-    print("Running pre_bedpostx...")
+    logger.info("Running pre_bedpostx...")
     jobPREBEDPOSTX = LT.run_command(
         logger,
         "$BB_BIN_DIR/bb_diffusion_pipeline/bb_bedpostx/bb_pre_bedpostx_gpu "
@@ -132,9 +132,9 @@ def bb_pipeline_diff(subject, fileConfiguration):
         "bb_pre_bedpostx_gpu_"
         + subname
     )
-    print("pre_bedpostx completed.")
+    logger.info("pre_bedpostx completed.")
 
-    print("Running bedpostx...")
+    logger.info("Running bedpostx...")
     jobBEDPOSTX = LT.run_command(
         logger,
         "$BB_BIN_DIR/bb_diffusion_pipeline/bb_bedpostx/bb_bedpostx_gpu "
@@ -143,7 +143,7 @@ def bb_pipeline_diff(subject, fileConfiguration):
         "bb_bedpostx_gpu_"
         + subname
     )
-    print("bedpostx completed.")
+    logger.info("bedpostx completed.")
     ##### bb_post_bedpostx_gpu not necessary if using bedpostx package rather than xfibres (gpu) #####
     # jobPOSTBEDPOSTX = LT.runCommand(
     # logger,
@@ -169,7 +169,7 @@ def bb_pipeline_diff(subject, fileConfiguration):
     # + jobTBSS,
     # )
 
-    print("Running tvb_probtrackx...")
+    logger.info("Running tvb_probtrackx...")
     jobPREPROBTRACKX = LT.run_command(
         logger,
         "$BB_BIN_DIR/bb_diffusion_pipeline/tvb_probtrackx2/tvb_probtrackx2 "
@@ -177,7 +177,7 @@ def bb_pipeline_diff(subject, fileConfiguration):
         "tvb_probtrackx_"
         + subname
     )
-    print("tvb_probtrackx completed.")
+    logger.info("tvb_probtrackx completed.")
 
     # commenting out CPU version of probtrackx for now
     # jobPROBTRACKX = LT.runCommand(
@@ -189,7 +189,7 @@ def bb_pipeline_diff(subject, fileConfiguration):
     # )
     # jobPROBTRACKX = jobPROBTRACKX.split(".")[0]
 
-    print("Running tvb_post_probtrackx...")
+    logger.info("Running tvb_post_probtrackx...")
     jobPOSTPROBTRACKX = LT.run_command(
         logger,
         "$BB_BIN_DIR/bb_diffusion_pipeline/tvb_probtrackx2/tvb_post_probtrackx2 "
@@ -197,9 +197,9 @@ def bb_pipeline_diff(subject, fileConfiguration):
         "tvb_post_probtrackx_"
         + subname
     )
-    print("post_probrackx completed.")
+    logger.info("post_probrackx completed.")
 
-    print("Diffusion pipeline complete.")
+    logger.info("Diffusion pipeline complete.")
     return jobPOSTPROBTRACKX
 
 

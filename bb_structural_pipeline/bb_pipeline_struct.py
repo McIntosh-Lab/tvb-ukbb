@@ -7,6 +7,8 @@
 #
 # Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
 #
+# Contributers: Patrick Mahon (pmahon@sfu.ca)
+#
 # Copyright 2017 University of Oxford
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,8 +43,6 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
 
     subname = subject.replace("/", "_")
 
-    print("Beginning structural pipeline")
-
     if (not "T1" in fileConfiguration) or (fileConfiguration["T1"] == ""):
         logger.error("There is no T1. Subject " + subject + " cannot be processed.")
         return -1
@@ -60,7 +60,7 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
         if runTopup:
             # if encDir in ["dwi"]:
             # pass
-            print("Running topup setup...")
+            logger.info("Running topup setup...")
             for encDir in ["AP", "PA"]:
                 bvals = np.loadtxt(subject + "/dMRI/raw/" + encDir + ".bval")
                 numVols = int(sum(bvals <= b0_threshold))
@@ -112,9 +112,9 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
                 "bb_fslmerge_"
                 + subname
             )
-            print("Topup setup completed.")
+            logger.info("Topup setup completed.")
         # Registrations - T1 to MNI - T2 to T1 - T2 to MNI (Combining the 2 previous ones)
-        print("Running bb_struct_init...")
+        logger.info("Running bb_struct_init...")
         jobSTRUCTINIT = LT.run_command(
             logger,
             "${BB_BIN_DIR}/bb_structural_pipeline/bb_struct_init "
@@ -122,7 +122,7 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
             "bb_structinit_"
             + subname
         )
-        print("bb_struct_init completed.")
+        logger.info("bb_struct_init completed.")
         # TODO: Do a better check here. This one looks arbitrary
         if "SWI_TOTAL_MAG_TE2" in fileConfiguration:
             print("Running SWI registration...")
@@ -133,10 +133,10 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
                 "bb_swi_reg_"
                 + subname
             )
-            print("SWI registration complete.")
+            logger.info("SWI registration complete.")
         # Topup
         if runTopup:
-            print("Topup enabled. Running topup...")
+            logger.info("Topup enabled. Running topup...")
             jobPREPAREFIELDMAP = LT.run_command(
                 logger,
                 "$BB_BIN_DIR/bb_structural_pipeline/bb_prepare_struct_fieldmap "
@@ -160,7 +160,7 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
                 "bb_topup_"
                 + subname
             )
-            print("Topup complete.")
+            logger.info("Topup complete.")
         else:
             logger.error(
                 "There is not enough/correct DWI data. TOPUP cannot be run. Continuing to run DWI and fMRI processing without TOPUP."
@@ -170,10 +170,10 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
         # jobHCPSTRUCT = LT.runCommand(logger, 'bb_HCP_structural ' + subject + ' ' + jobSTRUCTINIT + ' ' + str(boolT2))
 
         if not runTopup:
-            print("Structural pipeline complete. Logfiles located in subject's logs directory.")
+            logger.info("Structural pipeline complete. Logfiles located in subject's logs directory.")
             return ",".join([jobSTRUCTINIT, jobSWI])
         else:
-            print("Running post-topup...")
+            logger.info("Running post-topup...")
             jobPOSTTOPUP = LT.run_command(
                 logger,
                 "$BB_BIN_DIR/bb_structural_pipeline/bb_post_topup "
@@ -182,8 +182,8 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
                 + subname
             )
 
-            print("Post-topup complete.")
-            print("Structural pipeline complete. Logfiles located in subject's logs directory.")
+            logger.info("Post-topup complete.")
+            logger.info("Structural pipeline complete. Logfiles located in subject's logs directory.")
             return jobPOSTTOPUP
 
 

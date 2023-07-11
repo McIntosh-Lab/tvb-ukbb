@@ -149,6 +149,8 @@ def run_command(logger, command, job_name):
 
 
 def format_to_info(logger, message):
+    formatter = logger.handlers[0].formatter
+
     log_record = logging.LogRecord(
         name=logger.name,
         level=logging.INFO,
@@ -159,10 +161,12 @@ def format_to_info(logger, message):
         exc_info=None
     )
 
-    return log_record
+    return formatter.format(log_record)
 
 
 def format_to_error(logger, message):
+    formatter = logger.handlers[0].formatter
+
     log_record = logging.LogRecord(
         name=logger.name,
         level=logging.ERROR,
@@ -173,4 +177,4 @@ def format_to_error(logger, message):
         exc_info=None
     )
 
-    return log_record
+    return formatter.format(log_record)

@@ -54,9 +54,9 @@ def bb_pipeline_func(subject, fileConfiguration):
 
     # print(st)
 
-    print("Beginning functional pipeline")
+    looger.info("Beginning functional pipeline")
 
-    print("Running bb_postprocess_struct...")
+    logger.info("Running bb_postprocess_struct...")
     jobPOSTPROCESS = LT.run_command(
         logger,
         "$BB_BIN_DIR/bb_functional_pipeline/bb_postprocess_struct "
@@ -64,14 +64,14 @@ def bb_pipeline_func(subject, fileConfiguration):
         "bb_postprocess_struct_"
         + subname
     )
-    print("bb_postprocess_struct completed")
+    logger.info("bb_postprocess_struct completed")
 
 
     # TODO: Embed the checking of the fieldmap inside the independent steps -- Every step should check if the previous one has ended.
     if ("rfMRI" in fileConfiguration) and (fileConfiguration["rfMRI"] != ""):
-        print("rfMRI files found. Running rfMRI subpipe")
+        logger.info("rfMRI files found. Running rfMRI subpipe")
 
-        print("Running rfMRI prep...")
+        logger.info("Running rfMRI prep...")
         jobPREPARE_R = LT.run_command(
             logger,
             "$BB_BIN_DIR/bb_functional_pipeline/bb_prepare_rfMRI "
@@ -79,9 +79,9 @@ def bb_pipeline_func(subject, fileConfiguration):
             "bb_prepare_rfMRI_"
             + subname
         )
-        print("rfMRI prep completed.")
+        logger.info("rfMRI prep completed.")
 
-        print("Running FEAT...")
+        logger.info("Running FEAT...")
         jobFEAT_R = LT.run_command(
             logger,
             "feat "
@@ -91,9 +91,9 @@ def bb_pipeline_func(subject, fileConfiguration):
             "bb_feat_rfMRI_ns_"
             + subname
         )
-        print("FEAT completed.")
+        logger.info("FEAT completed.")
 
-        print("Running FIX...")
+        logger.info("Running FIX...")
         jobFIX = LT.run_command(
             logger,
             "$BB_BIN_DIR/bb_functional_pipeline/bb_fix "
@@ -101,9 +101,9 @@ def bb_pipeline_func(subject, fileConfiguration):
             "bb_fix_"
             + subname
         )
-        print("FIX completed.")
+        logger.info("FIX completed.")
 
-        print("Running FC...")
+        logger.info("Running FC...")
         ### compute FC using parcellation
         jobFC = LT.run_command(
             logger,
@@ -112,7 +112,7 @@ def bb_pipeline_func(subject, fileConfiguration):
             "tvb_FC_"
             + subname
         )
-        print("FC completed.")
+        logger.info("FC completed.")
         ### don't generate group-ICA RSNs
         # jobDR = LT.runCommand(
         # logger,
@@ -126,7 +126,7 @@ def bb_pipeline_func(subject, fileConfiguration):
         # + "$BB_BIN_DIR/bb_functional_pipeline/bb_ICA_dual_regression "
         # + subject,
         # )
-        print("Cleaning up rfMRI files...")
+        logger.info("Cleaning up rfMRI files...")
         jobCLEAN = LT.run_command(
             logger,
             "$BB_BIN_DIR/bb_functional_pipeline/bb_clean_fix_logs "
@@ -134,10 +134,10 @@ def bb_pipeline_func(subject, fileConfiguration):
             "bb_rfMRI_clean_"
             + subname
         )
-        print("Done.")
+        logger.info("Done.")
 
 
-        print("rfMRI subpipe complete.")
+        logger.info("rfMRI subpipe complete.")
 
         jobsToWaitFor = jobCLEAN
 
@@ -147,9 +147,9 @@ def bb_pipeline_func(subject, fileConfiguration):
         )
 
     if ("tfMRI" in fileConfiguration) and (fileConfiguration["tfMRI"] != ""):
-        print("tfMRI files found. Running tfMRI subpipe")
+        logger.info("tfMRI files found. Running tfMRI subpipe")
 
-        print("Running tfMRI prep...")
+        logger.info("Running tfMRI prep...")
         jobPREPARE_T = LT.run_command(
             logger,
             "$BB_BIN_DIR/bb_functional_pipeline/bb_prepare_tfMRI "
@@ -157,9 +157,9 @@ def bb_pipeline_func(subject, fileConfiguration):
             "bb_prepare_tfMRI_"
             + subname
         )
-        print("tfMRI prep complete.")
+        logger.info("tfMRI prep complete.")
 
-        print("Running FEAT...")
+        logger.info("Running FEAT...")
         jobFEAT_T = LT.run_command(
             logger,
             "feat  "
@@ -168,14 +168,14 @@ def bb_pipeline_func(subject, fileConfiguration):
             "bb_feat_tfMRI_"
             + subname
         )
-        print("FEAT completed.")
+        logger.info("FEAT completed.")
 
         if jobsToWaitFor != "":
             jobsToWaitFor = jobsToWaitFor + "," + jobFEAT_T
         else:
             jobsToWaitFor = "" + jobFEAT_T
 
-        print("tfMRI subpipe complete.")
+        logger.info("tfMRI subpipe complete.")
 
     else:
         logger.error(
@@ -185,7 +185,7 @@ def bb_pipeline_func(subject, fileConfiguration):
     if jobsToWaitFor == "":
         jobsToWaitFor = "-1"
 
-    print("Functional pipeline complete.")
+    logger.info("Functional pipeline complete.")
 
     return jobsToWaitFor
 
@@ -197,7 +197,7 @@ if __name__ == "__main__":
 
     # check if subject directory exists
     if not os.path.isdir(subject):
-        print(f"{subject} is not a valid directory. Exiting")
+        logger.error(f"{subject} is not a valid directory. Exiting")
         sys.exit(1)
     # attempt to open the JSON file
     try:
@@ -205,7 +205,7 @@ if __name__ == "__main__":
         with open(json_path, "r") as f:
             fileConfig = json.load(f)
     except:
-        print(f"{json_path} could not be loaded. Exiting")
+        logger.error(f"{json_path} could not be loaded. Exiting")
         sys.exit(1)
     # call pipeline
     bb_pipeline_func(subject, fileConfig)
