@@ -56,53 +56,53 @@ def bb_pipeline_func(subject, fileConfiguration):
 
     print("Beginning functional pipeline")
 
-    print("Running bb_postprocess_struct...")
-    jobPOSTPROCESS = LT.runCommand(
-        logger,
-        "$BB_BIN_DIR/bb_functional_pipeline/bb_postprocess_struct "
-        + subject,
-        "bb_postprocess_struct_"
-        + subname
-    )
-    print("bb_postprocess_struct completed")
+#    print("Running bb_postprocess_struct...")
+#    jobPOSTPROCESS = LT.runCommand(
+#        logger,
+#        "$BB_BIN_DIR/bb_functional_pipeline/bb_postprocess_struct "
+#        + subject,
+#        "bb_postprocess_struct_"
+#        + subname
+#    )
+#    print("bb_postprocess_struct completed")
 
 
     # TODO: Embed the checking of the fieldmap inside the independent steps -- Every step should check if the previous one has ended.
     if ("rfMRI" in fileConfiguration) and (fileConfiguration["rfMRI"] != ""):
         print("rfMRI files found. Running rfMRI subpipe")
 
-        print("Running AFNI despiking")
-        jobDESPIKE_R = LT.runCommand(
-            logger,
-            "$BB_BIN_DIR/bb_functional_pipeline/tvb_despike "
-            + subject,
-            "tvb_despike_"
-            + subname
-        )
-        print("Despiking completed.")
+#        print("Running AFNI despiking")
+#        jobDESPIKE_R = LT.runCommand(
+#            logger,
+#            "$BB_BIN_DIR/bb_functional_pipeline/tvb_despike "
+#            + subject,
+#            "tvb_despike_"
+#            + subname
+#        )
+#        print("Despiking completed.")
 
 
-        print("Running rfMRI prep...")
-        jobPREPARE_R = LT.runCommand(
-            logger,
-            "$BB_BIN_DIR/bb_functional_pipeline/bb_prepare_rfMRI "
-            + subject,
-            "bb_prepare_rfMRI_"
-            + subname
-        )
-        print("rfMRI prep completed.")
+#        print("Running rfMRI prep...")
+#        jobPREPARE_R = LT.runCommand(
+#            logger,
+#            "$BB_BIN_DIR/bb_functional_pipeline/bb_prepare_rfMRI "
+#            + subject,
+#            "bb_prepare_rfMRI_"
+#            + subname
+#        )
+#        print("rfMRI prep completed.")
 
-        print("Running FEAT...")
-        jobFEAT_R = LT.runCommand(
-            logger,
-            "feat "
-            + baseDir
-            + "/fMRI/rfMRI.fsf "
-            + subject,
-            "bb_feat_rfMRI_ns_"
-            + subname
-        )
-        print("FEAT completed.")
+#        print("Running FEAT...")
+#        jobFEAT_R = LT.runCommand(
+#            logger,
+#            "feat "
+#            + baseDir
+#            + "/fMRI/rfMRI.fsf "
+#            + subject,
+#            "bb_feat_rfMRI_ns_"
+#            + subname
+#        )
+#        print("FEAT completed.")
 
         print("Running FIX...")
         jobFIX = LT.runCommand(
