@@ -69,8 +69,6 @@ def main(cli_args=None):
     if subject[-1] == "/":
         subject = subject[0: len(subject) - 1]
 
-    subject_directory = os.getcwd() + "/" + subject
-
     REPARCELLATE = os.environ['REPARCELLATE']
     PARC_NAME = os.environ['PARC_NAME']
 
@@ -90,22 +88,14 @@ def main(cli_args=None):
         # Remove old intermediate data from previous runs
         retain = ["rawdata"]
 
-        dummy_logger = logging_tool.init_logging(__file__, subject)
-        
         # loop through all files/folders in subject directory
-        for item in os.listdir(subject_directory):
+        for item in os.listdir(os.getcwd()):
+            # if file/folder not in retain list, remove
             if item not in retain:
-                path_to_delete = subject_directory + "/" + item
-                
-                print(logging_tool.format_to_info(dummy_logger, "Deleting " + path_to_delete))
-                if os.path.isdir(path_to_delete):
-                    shutil.rmtree(path_to_delete)
-                else:
-                    os.remove(path_to_delete)
+                os.remove(item)
 
         # Logging initialization
         logger = logging_tool.init_logging(__file__, subject)
-        logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
         logger.info("Running file manager")
 
         # Run pipeline
@@ -132,19 +122,13 @@ def main(cli_args=None):
         # run_top_up = True
 
         # Structural pipeline
-        logger.info("Beginning structural pipeline...")
         bb_pipeline_struct(subject, run_top_up, file_config)
-        logger.info("Structural pipeline complete.")
 
         # Functional pipeline
-        logger.info("Beginning functional pipeline...")
         bb_pipeline_func(subject, file_config)
-        logger.info("Functional pipeline complete.")
 
         # Diffusion pipeline
-        logger.info("Beginning diffusion pipeline...")
         bb_pipeline_diff(subject, file_config)
-        logger.info("Diffusion pipeline complete.")
 
         # Image dependent phenotype
         bb_IDP(

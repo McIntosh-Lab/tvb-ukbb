@@ -22,66 +22,42 @@
 #
 
 import os
-import sys
+import traceback
 import time
 import logging
 from subprocess import run
 import shlex
 
 
-def init_logging(script_name, subject, batching=False):
+def init_logging(module_name, subject):
     """
     init_logging initializes the logging system for the given python file and subject. The function creates and returns
     a formatted python logger object.
 
     Args:
-        script_name:  The name of the current python file, typically supplied as '__file__'
+        module_name:  The name of the current python module, supplied as '__name__'
         subject:    The name of the subject file being run.
-        batching:   This appears to be used to direct the log directory containing the log files. If true, the logging
-                    directory is in the parent directory containing the subjects, otherwise it is in the subject
-                    directory itself.
 
     Returns:
         A python logger object
     """
 
     # By convention the logger output file will be the name
-    script_name = os.path.basename(script_name)
-    script_name_index = script_name.rfind(".")
-    if script_name_index != -1:
-        script_name = script_name[0:script_name_index]
+    module_name = os.path.basename(module_name)
 
     # Set logger defaults
-    logging.basicConfig(level=logging.INFO)
-    logger = logging.getLogger(script_name)
-    logger.propagate = False
-
-    # Create a logging directory in the subject type directory if part of a batch job
-    if batching:
-        log_dir = os.path.abspath(
-            os.path.join(os.getcwd() + "/../" + subject + "/logs/")
-        )
-    # Otherwise create the logging directory in the subject folder
-    else:
-        log_dir = os.getcwd() + "/" + subject + "/logs/"
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s ")
+    logger = logging.getLogger(module_name)
+    logger.propagate = True
 
     # Make the requisite logging directory
+    log_dir = os.getcwd() + "/" + subject + "/logs/" + module_name
     if not os.path.isdir(log_dir):
         os.mkdir(log_dir)
 
-    # The log file name is given by <script_name>_<subject_name>_<process_id_name>.log
+    # The log file name is given by <module_name>_<subject_name>_<process_id_name>.log
     log_file_name = (
-            log_dir + "/" + script_name + "__" + subject + "__" + str(os.getpid()) + ".log"
-    )
-
-    # Set handlers
-    # log_file handler prints to the log file for the supplied script name
-    log_file = logging.FileHandler(log_file_name)
-    logger.addHandler(log_file)
-
-    # Set formatting
-    log_file.setFormatter(
-        logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s ")
+            log_dir + "/" + module_name + "__" + subject + "__" + str(os.getpid()) + ".log"
     )
 
     logger.info("Starting the subject processing: " + str(time.ctime(int(time.time()))))
@@ -149,8 +125,6 @@ def run_command(logger, command, job_name):
 
 
 def format_to_info(logger, message):
-    formatter = logger.handlers[0].formatter
-
     log_record = logging.LogRecord(
         name=logger.name,
         level=logging.INFO,
@@ -161,12 +135,10 @@ def format_to_info(logger, message):
         exc_info=None
     )
 
-    return formatter.format(log_record)
+    return log_record
 
 
 def format_to_error(logger, message):
-    formatter = logger.handlers[0].formatter
-
     log_record = logging.LogRecord(
         name=logger.name,
         level=logging.ERROR,
@@ -177,4 +149,4 @@ def format_to_error(logger, message):
         exc_info=None
     )
 
-    return formatter.format(log_record)
+    return log_record

@@ -65,6 +65,7 @@ def tvb_reparcellate_pipeline(subject_, file_configuration, PARC_NAME):
     ######
     # STRUCTURAL
     ######
+    logger.ge
     print(LT.format_to_info(logger, "Running structural reparcellation pipeline..."))
 
     LT.run_command(
@@ -104,7 +105,7 @@ def tvb_reparcellate_pipeline(subject_, file_configuration, PARC_NAME):
         )
 
         print(LT.format_to_info(logger, "FC reparcellation completed."))
-        print(LT.format_to_info(logger, "rfMRI subpipe reparcellation complete."))
+        print(LT.format_to_info(logger, "rfMRI sub-pipe reparcellation complete."))
     else:
         logger.error(
             "There is no rFMRI info. Thus, the Resting State part will not be run"

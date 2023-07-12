@@ -729,6 +729,6 @@ if __name__ == "__main__":
     os.mkdir(f"{os.getcwd()}/../{subj_name}/logs")
 
     # start logger
-    logger = LT.init_logging(__file__, f"{subj_name}", batching=True)
+    logger = LT.init_logging(__file__, f"{subj_name}")
     # start queuer
     queuer(args)
