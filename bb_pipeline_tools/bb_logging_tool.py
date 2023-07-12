@@ -67,19 +67,6 @@ def init_logging(module_name, subject):
 
     return logger
 
-
-def finish_logging(logger):
-    """
-    Completes the logging processes with a final message to the logger
-
-    Args:
-        logger: The python logger object
-    """
-    logger.info(
-        "Main processing file finished at: " + str(time.ctime(int(time.time())))
-    )
-
-
 def run_command(logger, command, job_name):
     """
     Performs the specified command and logs the resulting output.
@@ -122,31 +109,3 @@ def run_command(logger, command, job_name):
         logger.error("Exception type: \n\t" + str(type(e)))
         logger.error("Exception args: \n\t" + str(e.args))
         logger.error("Exception message: \n\t" + str(e))
-
-
-def format_to_info(logger, message):
-    log_record = logging.LogRecord(
-        name=logger.name,
-        level=logging.INFO,
-        pathname=None,
-        lineno=None,
-        msg=message,
-        args=None,
-        exc_info=None
-    )
-
-    return log_record
-
-
-def format_to_error(logger, message):
-    log_record = logging.LogRecord(
-        name=logger.name,
-        level=logging.ERROR,
-        pathname=None,
-        lineno=None,
-        msg=message,
-        args=None,
-        exc_info=None
-    )
-
-    return log_record

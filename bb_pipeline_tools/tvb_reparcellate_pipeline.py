@@ -14,7 +14,8 @@
 import os.path
 import sys
 import json
-import bb_pipeline_tools.bb_logging_tool as LT
+import logging
+import bb_logging_tool as LT
 
 sys.path.insert(1, os.path.dirname(__file__) + "/..")
 
@@ -39,7 +40,7 @@ def tvb_reparcellate_pipeline(subject_, file_configuration, PARC_NAME):
 
     """
 
-    logger = LT.init_logging(__file__, subject_)
+    logger = logging.getLogger(__name__ + '.' + __file__)
     log_dir = logger.logDir
 
     # import fileconfig from json if none given
@@ -65,8 +66,7 @@ def tvb_reparcellate_pipeline(subject_, file_configuration, PARC_NAME):
     ######
     # STRUCTURAL
     ######
-    logger.ge
-    print(LT.format_to_info(logger, "Running structural reparcellation pipeline..."))
+    logger.info("Running structural reparcellation pipeline...")
 
     LT.run_command(
         logger,
@@ -80,16 +80,16 @@ def tvb_reparcellate_pipeline(subject_, file_configuration, PARC_NAME):
         + "reparcellation"
     )
 
-    print(LT.format_to_info(logger, "Structural reparcellation pipeline completed."))
+    logger.info("Structural reparcellation pipeline completed.")
 
     ######
     # FUNCTIONAL
     ######
-    print(LT.format_to_info(logger, "Beginning functional reparcellation pipeline"))
+    logger.info("Beginning functional reparcellation pipeline")
 
     if ("rfMRI" in file_configuration) and (file_configuration["rfMRI"] != ""):
-        print(LT.format_to_info(logger, "rfMRI files found. Running rfMRI subpipe reparcellation"))
-        print(LT.format_to_info(logger, "Running FC reparcellation..."))
+        logger.info("rfMRI files found. Running rfMRI subpipe reparcellation")
+        logger.info("Running FC reparcellation...")
 
         # compute FC using parcellation
         LT.run_command(
@@ -104,21 +104,21 @@ def tvb_reparcellate_pipeline(subject_, file_configuration, PARC_NAME):
             + "reparcellation"
         )
 
-        print(LT.format_to_info(logger, "FC reparcellation completed."))
-        print(LT.format_to_info(logger, "rfMRI sub-pipe reparcellation complete."))
+        logger.info("FC reparcellation completed.")
+        logger.info("rfMRI sub-pipe reparcellation complete.")
     else:
         logger.error(
             "There is no rFMRI info. Thus, the Resting State part will not be run"
         )
-    print(LT.format_to_info(logger, "Functional reparcellation pipeline complete."))
+    logger.info("Functional reparcellation pipeline complete.")
 
     ######
     # DIFFUSION
     ######
 
-    print(LT.format_to_info(logger, "Beginning diffusion reparcellation pipeline"))
+    logger.info("Beginning diffusion reparcellation pipeline")
 
-    print(LT.format_to_info(logger, "Running tvb_probtrackx reparcellation..."))
+    logger.info("Running tvb_probtrackx reparcellation...")
     LT.run_command(
         logger,
         "$BB_BIN_DIR/bb_diffusion_pipeline/tvb_probtrackx2/tvb_probtrackx2 "
@@ -130,9 +130,9 @@ def tvb_reparcellate_pipeline(subject_, file_configuration, PARC_NAME):
         + "_"
         + "reparcellation"
     )
-    print(LT.format_to_info(logger, "tvb_probtrackx reparcellation completed."))
+    logger.info("tvb_probtrackx reparcellation completed.")
 
-    print(LT.format_to_info(logger, "Running tvb_post_probtrackx reparcellation..."))
+    logger.info("Running tvb_post_probtrackx reparcellation...")
     LT.run_command(
         logger,
         "$BB_BIN_DIR/bb_diffusion_pipeline/tvb_probtrackx2/tvb_post_probtrackx2 "
@@ -144,15 +144,15 @@ def tvb_reparcellate_pipeline(subject_, file_configuration, PARC_NAME):
         + "_"
         + "reparcellation"
     )
-    print(LT.format_to_info(logger, "post_probrackx reparcellation completed."))
+    logger.info("post_probrackx reparcellation completed.")
 
-    print(LT.format_to_info(logger, "Diffusion reparcellation pipeline complete."))
+    logger.info("Diffusion reparcellation pipeline complete.")
 
     ######
     # IDP
     ######
 
-    print(LT.format_to_info(logger, "Running IDP reparcellation pipeline..."))
+    logger.info("Running IDP reparcellation pipeline...")
     LT.run_command(
         logger,
         "$BB_BIN_DIR/bb_IDP/bb_IDP "
@@ -164,13 +164,13 @@ def tvb_reparcellate_pipeline(subject_, file_configuration, PARC_NAME):
         + "_"
         + "reparcellation"
     )
-    print(LT.format_to_info(logger, "IDP reparcellation pipeline complete."))
+    logger.info("IDP reparcellation pipeline complete.")
 
     ######
     # QC
     ######
 
-    print(LT.format_to_info(logger, "Beginning QC reparcellation pipeline..."))
+    logger.info("Beginning QC reparcellation pipeline...")
     LT.run_command(
         logger,
         " xvfb-run -a $BB_BIN_DIR/tvb_bb_QC/tvb_bb_QC.sh "  # -s '-screen 0 640x480x24'
@@ -182,9 +182,9 @@ def tvb_reparcellate_pipeline(subject_, file_configuration, PARC_NAME):
         + "_"
         + "reparcellation"
     )
-    print(LT.format_to_info(logger, "QC reparcellation pipeline complete."))
+    logger.info("QC reparcellation pipeline complete.")
 
-    print(LT.format_to_info(logger, "Beginning QC html reparcellation dropdown..."))
+    logger.info("Beginning QC html reparcellation dropdown...")
     job_html_reparc = LT.run_command(
         logger,
         " python $BB_BIN_DIR/tvb_bb_QC/html_reparcellation.py "  # -s '-screen 0 640x480x24'
@@ -199,7 +199,7 @@ def tvb_reparcellate_pipeline(subject_, file_configuration, PARC_NAME):
         + "reparcellation"
     )
 
-    print(LT.format_to_info(logger, "QC html reparcellation dropdown complete."))
+    logger.info("QC html reparcellation dropdown complete.")
 
     LT.finish_logging(logger)
 

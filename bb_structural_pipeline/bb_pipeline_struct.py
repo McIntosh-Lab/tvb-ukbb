@@ -31,11 +31,12 @@ import json
 
 sys.path.insert(1, os.path.dirname(__file__) + "/..")
 import bb_pipeline_tools.bb_logging_tool as LT
+import logging
 
 
 def bb_pipeline_struct(subject, runTopup, fileConfiguration):
 
-    logger = LT.init_logging(__file__, subject)
+    logger = logging.getLogger()
     logDir = logger.logDir
     baseDir = logDir[0 : logDir.rfind("/logs/")]
     jobSTRUCTINIT = "-1"

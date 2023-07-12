@@ -27,7 +27,7 @@ import os
 import sys
 import argparse
 import os.path
-import shutil
+import time
 import bb_logging_tool as logging_tool
 
 from bb_file_manager import bb_file_manager
@@ -47,12 +47,8 @@ class MyParser(argparse.ArgumentParser):
         sys.exit(2)
 
 
-class Usage(Exception):
-    def __init__(self, msg):
-        self.msg = msg
-
-
 def main(cli_args=None):
+    # INPUT VALIDATION
     if cli_args is None:
         parser = MyParser(description="BioBank Pipeline Manager")
         parser.add_argument("subjectFolder", help="Subject Folder")
@@ -63,27 +59,32 @@ def main(cli_args=None):
         parser.add_argument("subjectFolder", help="Subject Folder")
         argsa = parser.parse_args(cli_args)
 
+    # SUBJECT PROCESSING
     subject = argsa.subjectFolder
     subject = subject.strip()
 
     if subject[-1] == "/":
         subject = subject[0: len(subject) - 1]
 
-    REPARCELLATE = os.environ['REPARCELLATE']
-    PARC_NAME = os.environ['PARC_NAME']
+    # LOGGING INITIALIZATION
+    logger = logging_tool.init_logging(__file__, subject)
 
-    if REPARCELLATE == "true":
-        # Logging initialization
-        logger = logging_tool.init_logging(__file__, subject)
-        logger.info("Running subject " + subject + " reparcellation.")
+    # WORKFLOW HANDLING
 
-        # Perform reparcellation
-        tvb_reparcellate_pipeline(subject, "none", PARC_NAME)
+    reparcellate = os.environ['REPARCELLATE']
+    parc_name = os.environ['PARC_NAME']
 
-        # Clean up 
-        logging_tool.finish_logging(logger)
+    if reparcellate == "true":
+        # REPARCELLATION PIPELINE
+        # reparcellation
+        logger.info("Running reparcellation...")
+        tvb_reparcellate_pipeline(subject, "none", parc_name)
+        logger.info("Reparcellation complete.")
 
-    if REPARCELLATE == "false":
+        # clean up
+        logger.info("Main reparcellation pipeline complete at: " + str(time.ctime(int(time.time()))))
+
+    if reparcellate == "false":
 
         # Remove old intermediate data from previous runs
         retain = ["rawdata"]
@@ -94,17 +95,13 @@ def main(cli_args=None):
             if item not in retain:
                 os.remove(item)
 
-        # Logging initialization
-        logger = logging_tool.init_logging(__file__, subject)
-        logger.info("Running file manager")
-
-        # Run pipeline
+        # PIPELINE
+        # file manager
+        logger.info("Running file manager...")
         file_config = bb_file_manager(subject)
-
         logger.info("File configuration before QC: " + str(file_config))
 
         file_config = bb_basic_QC(subject, file_config)
-
         logger.info("File configuration after running file manager: " + str(file_config))
 
         # run_top_up ==> Having fieldmap
@@ -114,35 +111,45 @@ def main(cli_args=None):
         ):
             logger.warn("There is no proper AP/PA data. Thus, TOPUP will not be run")
             run_top_up = False
-            print("NO TOPUP")
+            logger.warn("NO TOP UP")
         else:
             run_top_up = True
 
-        # set for now
-        # run_top_up = True
-
-        # Structural pipeline
+        # structural pipeline
+        logger.info("Running structural pipeline...")
         bb_pipeline_struct(subject, run_top_up, file_config)
+        logger.info("Structural pipeline complete.")
 
-        # Functional pipeline
+        # functional pipeline
+        logger.info("Running Functional pipeline...")
         bb_pipeline_func(subject, file_config)
+        logger.info("Functional pipeline complete...")
 
-        # Diffusion pipeline
+        # diffusion pipeline
+        logger.info("Running diffusion pipeline...")
         bb_pipeline_diff(subject, file_config)
+        logger.info("Diffusion pipeline complete.")
 
-        # Image dependent phenotype
+        # image dependent phenotype
+        logger.info("Running IDP...")
         bb_IDP(
             subject, file_config
         )
+        logger.info("IDP complete")
 
-        # Quality control
+        # quality control
+        logger.info("Running quality control.")
         tvb_bb_QC(
             subject,
             file_config
         )
+        logger.info("Quality control complete.")
 
-        # Clean up
-        logging_tool.finish_logging(logger)
+        # clean up
+        logger.info("Main pipeline complete at: " + str(time.ctime(int(time.time()))))
+
+    else:
+        logger.error("Invalid reparcellation argument\n Check environment variable \"REPARCELLATE\"")
 
 
 if __name__ == "__main__":
