@@ -28,7 +28,7 @@ import json
 import copy
 import nibabel as nib
 
-# import bb_logging_tool as LT
+# import bb_logging_tool as lt
 
 import sys
 from shutil import copyfile

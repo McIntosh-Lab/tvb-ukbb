@@ -22,7 +22,6 @@
 #
 
 import os
-import traceback
 import time
 import logging
 from subprocess import run
@@ -66,6 +65,7 @@ def init_logging(module_name, subject):
     logger.logDir = log_dir
 
     return logger
+
 
 def run_command(logger, command, job_name):
     """

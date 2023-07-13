@@ -7,7 +7,7 @@
 #
 # Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
 #
-# Contributers: Patrick Mahon (pmahon@sfu.ca)
+# Contributors: Patrick Mahon (pmahon@sfu.ca)
 #
 # Copyright 2017 University of Oxford
 #
@@ -25,26 +25,23 @@
 #
 import os
 import numpy as np
-import time
 import sys
 import json
 
-sys.path.insert(1, os.path.dirname(__file__) + "/..")
-import bb_pipeline_tools.bb_logging_tool as LT
+import bb_pipeline_tools.bb_logging_tool as lt
 import logging
 
+sys.path.insert(1, os.path.dirname(__file__) + "/..")
 
-def bb_pipeline_struct(subject, runTopup, fileConfiguration):
 
-    logger = logging.getLogger()
-    logDir = logger.logDir
-    baseDir = logDir[0 : logDir.rfind("/logs/")]
-    jobSTRUCTINIT = "-1"
-    jobSWI = "-1"
+def bb_pipeline_struct(subject, run_top_up, file_configuration):
 
-    subname = subject.replace("/", "_")
+    logger = logging.getLogger(__name__ + '.' + __file__)
+    job_swi = "-1"
 
-    if (not "T1" in fileConfiguration) or (fileConfiguration["T1"] == ""):
+    subject_name = subject.replace("/", "_")
+
+    if ("T1" not in file_configuration) or (file_configuration["T1"] == ""):
         logger.error("There is no T1. Subject " + subject + " cannot be processed.")
         return -1
 
@@ -56,18 +53,17 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
             np.loadtxt(os.environ["BB_BIN_DIR"] + "/bb_data/b0_threshold.txt")
         )
 
-        jobsB0 = []
+        jobs_b0 = []
 
-        if runTopup:
+        if run_top_up:
             # if encDir in ["dwi"]:
             # pass
             logger.info("Running topup setup...")
             for encDir in ["AP", "PA"]:
-                bvals = np.loadtxt(subject + "/dMRI/raw/" + encDir + ".bval")
-                numVols = int(sum(bvals <= b0_threshold))
+                b_vals = np.loadtxt(subject + "/dMRI/raw/" + encDir + ".bval")
+                num_vols = int(sum(b_vals <= b0_threshold))
 
-                # numVols= LT.runCommand(logger, "for f in `cat " + subject +"/dMRI/raw/" + encDir + ".bval` ; do echo $f; done | awk '{if($1==$1+0 && $1 < " + b0_threshold + " ) print $1}' |wc | awk '{print $1}'")
-                jobGETB01 = LT.run_command(
+                lt.run_command(
                     logger,
                     "$BB_BIN_DIR/bb_structural_pipeline/bb_get_b0s.py -i "
                     + subject
@@ -78,14 +74,15 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
                     + "/fieldmap/total_B0_"
                     + encDir
                     + ".nii.gz -n "
-                    + str(numVols)
+                    + str(num_vols)
                     + " -l "
                     + str(b0_threshold),
                     "bb_get_b0s_1_"
-                    + subname
+                    + subject_name
                 )
-                jobsB0.append(
-                    LT.run_command(
+
+                jobs_b0.append(
+                    lt.run_command(
                         logger,
                         "$BB_BIN_DIR/bb_structural_pipeline/bb_choose_bestB0 "
                         + subject
@@ -97,11 +94,11 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
                         + encDir
                         + ".nii.gz ",
                         "bb_choose_bestB0_1_"
-                        + subname
+                        + subject_name
                     )
                 )
 
-            jobMERGE = LT.run_command(
+            lt.run_command(
                 logger,
                 "${FSLDIR}/bin/fslmerge -t "
                 + subject
@@ -111,41 +108,45 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
                 + subject
                 + "/fieldmap/B0_PA",
                 "bb_fslmerge_"
-                + subname
+                + subject_name
             )
-            logger.info("Topup setup completed.")
+            logger.info("Top up setup completed.")
+
         # Registrations - T1 to MNI - T2 to T1 - T2 to MNI (Combining the 2 previous ones)
         logger.info("Running bb_struct_init...")
-        jobSTRUCTINIT = LT.run_command(
+        job_struct_init = lt.run_command(
             logger,
             "${BB_BIN_DIR}/bb_structural_pipeline/bb_struct_init "
             + subject,
-            "bb_structinit_"
-            + subname
+            "bb_struct_init_"
+            + subject_name
         )
         logger.info("bb_struct_init completed.")
+
         # TODO: Do a better check here. This one looks arbitrary
-        if "SWI_TOTAL_MAG_TE2" in fileConfiguration:
+        if "SWI_TOTAL_MAG_TE2" in file_configuration:
             print("Running SWI registration...")
-            jobSWI = LT.run_command(
+            job_swi = lt.run_command(
                 logger,
                 "$BB_BIN_DIR/bb_structural_pipeline/bb_swi_reg "
                 + subject,
                 "bb_swi_reg_"
-                + subname
+                + subject_name
             )
             logger.info("SWI registration complete.")
-        # Topup
-        if runTopup:
+
+        # Top up
+        if run_top_up:
             logger.info("Topup enabled. Running topup...")
-            jobPREPAREFIELDMAP = LT.run_command(
+            lt.run_command(
                 logger,
                 "$BB_BIN_DIR/bb_structural_pipeline/bb_prepare_struct_fieldmap "
                 + subject,
                 "bb_prepare_struct_fieldmap_"
-                + subname
+                + subject_name
             )
-            jobTOPUP = LT.run_command(
+
+            lt.run_command(
                 logger,
                 "${FSLDIR}/bin/topup --imain="
                 + subject
@@ -159,51 +160,50 @@ def bb_pipeline_struct(subject, runTopup, fileConfiguration):
                 + subject
                 + "/fieldmap/fieldmap_jacout -v",
                 "bb_topup_"
-                + subname
+                + subject_name
             )
             logger.info("Topup complete.")
         else:
             logger.error(
-                "There is not enough/correct DWI data. TOPUP cannot be run. Continuing to run DWI and fMRI processing without TOPUP."
+                "There is not enough/correct DWI data. TOPUP cannot be run. Continuing to run DWI and fMRI processing "
+                "without TOPUP."
             )
 
-        # HCP Structural pipeline
-        # jobHCPSTRUCT = LT.runCommand(logger, 'bb_HCP_structural ' + subject + ' ' + jobSTRUCTINIT + ' ' + str(boolT2))
-
-        if not runTopup:
+        if not run_top_up:
             logger.info("Structural pipeline complete. Logfiles located in subject's logs directory.")
-            return ",".join([jobSTRUCTINIT, jobSWI])
+            return ",".join([job_struct_init, job_swi])
         else:
             logger.info("Running post-topup...")
-            jobPOSTTOPUP = LT.run_command(
+            job_post_top_up = lt.run_command(
                 logger,
                 "$BB_BIN_DIR/bb_structural_pipeline/bb_post_topup "
                 + subject,
                 "bb_post_topup_"
-                + subname
+                + subject_name
             )
 
             logger.info("Post-topup complete.")
             logger.info("Structural pipeline complete. Logfiles located in subject's logs directory.")
-            return jobPOSTTOPUP
+            return job_post_top_up
 
 
 if __name__ == "__main__":
     # grab subject name from command
-    subject = sys.argv[1]
+    subject_ = sys.argv[1]
     fd_fileName = "logs/file_descriptor.json"
 
     # check if subject directory exists
-    if not os.path.isdir(subject):
-        print(f"{subject} is not a valid directory. Exiting")
+    json_path_name = f"./{subject_}/{fd_fileName}"
+    if not os.path.isdir(subject_):
+        print(f"{subject_} is not a valid directory. Exiting")
         sys.exit(1)
     # attempt to open the JSON file
     try:
-        json_path = os.path.abspath(f"./{subject}/{fd_fileName}")
-        with open(json_path, "r") as f:
+        json_path = os.path.abspath(json_path_name)
+        with open(json_path_name, "r") as f:
             fileConfig = json.load(f)
-    except:
-        print(f"{json_path} could not be loaded. Exiting")
+    except Exception:
+        print(f"{json_path_name} could not be loaded. Exiting")
         sys.exit(1)
     # call pipeline
-    bb_pipeline_struct(subject, False, fileConfig)
+    bb_pipeline_struct(subject_, False, fileConfig)

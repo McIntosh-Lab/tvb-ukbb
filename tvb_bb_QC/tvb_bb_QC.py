@@ -26,47 +26,47 @@
 import os.path
 import sys
 import json
+import bb_pipeline_tools.bb_logging_tool as lt
 
 sys.path.insert(1, os.path.dirname(__file__) + "/..")
-import bb_pipeline_tools.bb_logging_tool as LT
 
 
-def tvb_bb_QC(subject, fileConfiguration):
+def tvb_bb_qc(subject, file_configuration):
+    logger = lt.init_logging(__file__, subject)
+    log_dir = logger.logDir
+    base_dir = log_dir[0: log_dir.rfind("/logs/")]
 
-    logger = LT.init_logging(__file__, subject)
-    logDir = logger.logDir
-    baseDir = logDir[0 : logDir.rfind("/logs/")]
-
-    subname = subject.replace("/", "_")
+    subject_name = subject.replace("/", "_")
 
     print("Beginning QC pipeline...")
-    jobQC = LT.run_command(
+    job_qc = lt.run_command(
         logger,
         " xvfb-run -a $BB_BIN_DIR/tvb_bb_QC/tvb_bb_QC.sh "  # -s '-screen 0 640x480x24'
         + subject,
         "tvb_bb_QC_"
-        + subname
+        + subject_name
     )
     print("QC pipeline complete.")
-    return jobQC
+    return job_qc
 
 
 if __name__ == "__main__":
     # grab subject name from command
-    subject = sys.argv[1]
+    subject_ = sys.argv[1]
     fd_fileName = "logs/file_descriptor.json"
 
     # check if subject directory exists
-    if not os.path.isdir(subject):
-        print(f"{subject} is not a valid directory. Exiting")
+    json_path_name = f"./{subject_}/{fd_fileName}"
+    if not os.path.isdir(subject_):
+        print(f"{subject_} is not a valid directory. Exiting")
         sys.exit(1)
     # attempt to open the JSON file
     try:
-        json_path = os.path.abspath(f"./{subject}/{fd_fileName}")
-        with open(json_path, "r") as f:
+        json_path = os.path.abspath(json_path_name)
+        with open(json_path_name, "r") as f:
             fileConfig = json.load(f)
-    except:
-        print(f"{json_path} could not be loaded. Exiting")
+    except Exception:
+        print(f"{json_path_name} could not be loaded. Exiting")
         sys.exit(1)
     # call pipeline
-    tvb_bb_QC(subject, fileConfig)
+    tvb_bb_qc(subject_, fileConfig)

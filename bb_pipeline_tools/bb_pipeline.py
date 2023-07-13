@@ -5,8 +5,8 @@
 # Description: Main script. This script will call the rest of scripts.
 #
 # Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
-#
-# Contributers: Patrick Mahon (pmahon@sfu.ca)
+
+# Contributors: Patrick Mahon (pmahon@sfu.ca)
 #
 # Copyright 2017 University of Oxford
 #
@@ -28,6 +28,7 @@ import sys
 import argparse
 import os.path
 import time
+import shutil
 import bb_logging_tool as logging_tool
 
 from bb_file_manager import bb_file_manager
@@ -36,8 +37,8 @@ from tvb_reparcellate_pipeline import tvb_reparcellate_pipeline
 from bb_structural_pipeline.bb_pipeline_struct import bb_pipeline_struct
 from bb_functional_pipeline.bb_pipeline_func import bb_pipeline_func
 from bb_diffusion_pipeline.bb_pipeline_diff import bb_pipeline_diff
-from bb_IDP.bb_IDP import bb_IDP
-from tvb_bb_QC.tvb_bb_QC import tvb_bb_QC
+from bb_IDP.bb_IDP import bb_idp
+from tvb_bb_QC.tvb_bb_QC import tvb_bb_qc
 
 
 class MyParser(argparse.ArgumentParser):
@@ -53,14 +54,14 @@ def main(cli_args=None):
         parser = MyParser(description="BioBank Pipeline Manager")
         parser.add_argument("subjectFolder", help="Subject Folder")
 
-        argsa = parser.parse_args()
+        args = parser.parse_args()
     else:
         parser = MyParser(description="BioBank Pipeline Manager")
         parser.add_argument("subjectFolder", help="Subject Folder")
-        argsa = parser.parse_args(cli_args)
+        args = parser.parse_args(cli_args)
 
     # SUBJECT PROCESSING
-    subject = argsa.subjectFolder
+    subject = args.subjectFolder
     subject = subject.strip()
 
     if subject[-1] == "/":
@@ -70,7 +71,6 @@ def main(cli_args=None):
     logger = logging_tool.init_logging(__file__, subject)
 
     # WORKFLOW HANDLING
-
     reparcellate = os.environ['REPARCELLATE']
     parc_name = os.environ['PARC_NAME']
 
@@ -93,7 +93,10 @@ def main(cli_args=None):
         for item in os.listdir(os.getcwd()):
             # if file/folder not in retain list, remove
             if item not in retain:
-                os.remove(item)
+                if os.path.isdir(item):
+                    shutil.rmtree(item)
+                else:
+                    os.remove(item)
 
         # PIPELINE
         # file manager
@@ -104,12 +107,12 @@ def main(cli_args=None):
         file_config = bb_basic_QC(subject, file_config)
         logger.info("File configuration after running file manager: " + str(file_config))
 
-        # run_top_up ==> Having fieldmap
+        # run_top_up ==> Having field-map
         if not (
                 (("AP" in file_config) and (file_config["AP"] != ""))
                 and (("PA" in file_config) and (file_config["PA"] != ""))
         ):
-            logger.warn("There is no proper AP/PA data. Thus, TOPUP will not be run")
+            logger.warn("There is no proper AP/PA data. Thus, TOP UP will not be run")
             run_top_up = False
             logger.warn("NO TOP UP")
         else:
@@ -132,14 +135,12 @@ def main(cli_args=None):
 
         # image dependent phenotype
         logger.info("Running IDP...")
-        bb_IDP(
-            subject, file_config
-        )
+        bb_idp(subject, file_config)
         logger.info("IDP complete")
 
         # quality control
         logger.info("Running quality control.")
-        tvb_bb_QC(
+        tvb_bb_qc(
             subject,
             file_config
         )
