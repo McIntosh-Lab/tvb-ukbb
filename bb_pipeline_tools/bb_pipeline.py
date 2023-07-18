@@ -90,6 +90,7 @@ def main(cli_args=None):
         retain = ["rawdata"]
 
         # loop through all files/folders in subject directory
+        os.chdir(subject)
         for item in os.listdir(os.getcwd()):
             # if file/folder not in retain list, remove
             if item not in retain:
@@ -97,54 +98,57 @@ def main(cli_args=None):
                     shutil.rmtree(item)
                 else:
                     os.remove(item)
+        os.chdir("..")
 
         # PIPELINE
         # file manager
-        logger.info("Running file manager...")
+        logger.info("RUNNING file manager...")
         file_config = bb_file_manager(subject)
-        logger.info("File configuration before QC: " + str(file_config))
+        logger.info("bb_file_manager COMPLETE.")
+
+        logger.info("File configuration before QC:\n" + str(file_config))
 
         file_config = bb_basic_QC(subject, file_config)
-        logger.info("File configuration after running file manager: " + str(file_config))
+        logger.info("File configuration after running file manager:\n" + str(file_config))
 
         # run_top_up ==> Having field-map
         if not (
                 (("AP" in file_config) and (file_config["AP"] != ""))
                 and (("PA" in file_config) and (file_config["PA"] != ""))
         ):
-            logger.warn("There is no proper AP/PA data. Thus, TOP UP will not be run")
+            logger.warning("There is no proper AP/PA data. Thus, TOP UP will not be run")
             run_top_up = False
             logger.warn("NO TOP UP")
         else:
             run_top_up = True
 
         # structural pipeline
-        logger.info("Running structural pipeline...")
+        logger.info("RUNNING structural pipeline...")
         bb_pipeline_struct(subject, run_top_up, file_config)
-        logger.info("Structural pipeline complete.")
+        logger.info("Structural pipeline COMPLETE.")
 
         # functional pipeline
-        logger.info("Running Functional pipeline...")
+        logger.info("RUNNING Functional pipeline...")
         bb_pipeline_func(subject, file_config)
-        logger.info("Functional pipeline complete...")
+        logger.info("Functional pipeline COMPLETE.")
 
         # diffusion pipeline
-        logger.info("Running diffusion pipeline...")
+        logger.info("RUNNING diffusion pipeline...")
         bb_pipeline_diff(subject, file_config)
-        logger.info("Diffusion pipeline complete.")
+        logger.info("Diffusion pipeline COMPLETE.")
 
         # image dependent phenotype
-        logger.info("Running IDP...")
+        logger.info("RUNNING idp...")
         bb_idp(subject, file_config)
-        logger.info("IDP complete")
+        logger.info("idp COMPLETE")
 
         # quality control
-        logger.info("Running quality control.")
+        logger.info("RUNNING quality control.")
         tvb_bb_qc(
             subject,
             file_config
         )
-        logger.info("Quality control complete.")
+        logger.info("Quality control COMPLETE.")
 
         # clean up
         logger.info("Main pipeline complete at: " + str(time.ctime(int(time.time()))))
