@@ -134,24 +134,21 @@ def main(cli_args=None):
 
         # diffusion pipeline
         logger.info("RUNNING diffusion pipeline...")
-        bb_pipeline_diff(subject, file_config)
+        bb_pipeline_diff(subject)
         logger.info("Diffusion pipeline COMPLETE.")
 
         # image dependent phenotype
         logger.info("RUNNING idp...")
-        bb_idp(subject, file_config)
+        bb_idp(subject)
         logger.info("idp COMPLETE")
 
         # quality control
         logger.info("RUNNING quality control.")
-        tvb_bb_qc(
-            subject,
-            file_config
-        )
+        tvb_bb_qc(subject)
         logger.info("Quality control COMPLETE.")
 
         # clean up
-        logger.info("Main pipeline complete at: " + str(time.ctime(int(time.time()))))
+        logger.info("Main pipeline COMPLETE.")
 
     else:
         logger.error("Invalid reparcellation argument\n Check environment variable \"REPARCELLATE\"")

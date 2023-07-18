@@ -21,7 +21,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
+import logging
 import os.path
 import sys
 import json
@@ -31,7 +31,6 @@ sys.path.insert(1, os.path.dirname(__file__) + "/..")
 
 
 def bb_pipeline_func(subject, file_configuration):
-    logger = lt.init_logging(__file__, subject)
     log_dir = logger.logDir
     base_dir = log_dir[0: log_dir.rfind("/logs/")]
 
@@ -190,6 +189,7 @@ def bb_pipeline_func(subject, file_configuration):
 
 
 if __name__ == "__main__":
+    logger = logging.getLogger(__name__)
     # grab subject name from command
     subject_ = sys.argv[1]
     fd_fileName = "logs/file_descriptor.json"

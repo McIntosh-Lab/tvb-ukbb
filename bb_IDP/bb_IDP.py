@@ -21,7 +21,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
+import logging
 import os.path
 import sys
 import json
@@ -30,12 +30,7 @@ import bb_pipeline_tools.bb_logging_tool as lt
 sys.path.insert(1, os.path.dirname(__file__) + "/..")
 
 
-def bb_idp(subject, file_configuration):
-
-    logger = lt.init_logging(__file__, subject)
-    log_dir = logger.logDir
-    base_dir = log_dir[0 : log_dir.rfind("/logs/")]
-
+def bb_idp(subject):
     subject_name = subject.replace("/", "_")
 
     print("Running IDP pipeline...")
@@ -69,4 +64,5 @@ if __name__ == "__main__":
         print(f"{json_path_name} could not be loaded. Exiting")
         sys.exit(1)
     # call pipeline
-    bb_idp(subject_, fileConfig)
+    logger = logging.getLogger(__name__)
+    bb_idp(subject_)

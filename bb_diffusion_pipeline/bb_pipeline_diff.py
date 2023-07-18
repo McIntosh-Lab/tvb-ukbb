@@ -21,7 +21,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
+import logging
 import os.path
 import sys
 import json
@@ -30,8 +30,7 @@ import bb_pipeline_tools.bb_logging_tool as lt
 sys.path.insert(1, os.path.dirname(__file__) + "/..")
 
 
-def bb_pipeline_diff(subject, file_configuration):
-    logger = lt.init_logging(__file__, subject)
+def bb_pipeline_diff(subject):
     log_dir = logger.logDir
     base_dir = log_dir[0: log_dir.rfind("/logs/")]
 
@@ -184,7 +183,7 @@ def bb_pipeline_diff(subject, file_configuration):
     # jobPROBTRACKX = lt.runCommand(
     #     logger,
     #     base_dir
-    #     + "/dMRI/probtrackx/probtrackx_commands_$SGE_TASK_ID.txt'",
+    #     + "/dMRI/probtrackx/probtrackx_commands_$SGE_TASK_ID.txt",
     #     "bb_probtrackx_"
     #     + subject_name
     # )
@@ -205,6 +204,7 @@ def bb_pipeline_diff(subject, file_configuration):
 
 
 if __name__ == "__main__":
+
     # grab subject name from command
     subject_ = sys.argv[1]
     fd_fileName = "logs/file_descriptor.json"
@@ -223,4 +223,5 @@ if __name__ == "__main__":
         print(f"{json_path_name} could not be loaded. Exiting")
         sys.exit(1)
     # call pipeline
-    bb_pipeline_diff(subject_, fileConfig)
+    logger = logging.getLogger(__name__)
+    bb_pipeline_diff(subject_)
