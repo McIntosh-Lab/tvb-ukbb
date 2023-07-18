@@ -32,7 +32,7 @@ import shutil
 import bb_logging_tool as logging_tool
 
 from bb_file_manager import bb_file_manager
-from bb_basic_QC import bb_basic_QC
+from bb_basic_QC import bb_basic_qc
 from tvb_reparcellate_pipeline import tvb_reparcellate_pipeline
 from bb_structural_pipeline.bb_pipeline_struct import bb_pipeline_struct
 from bb_functional_pipeline.bb_pipeline_func import bb_pipeline_func
@@ -108,7 +108,7 @@ def main(cli_args=None):
 
         logger.info("File configuration before QC:\n" + str(file_config))
 
-        file_config = bb_basic_QC(subject, file_config)
+        file_config = bb_basic_qc(subject, file_config)
         logger.info("File configuration after running file manager:\n" + str(file_config))
 
         # run_top_up ==> Having field-map

@@ -22,14 +22,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
+import logging
 import os
 import glob
 import json
-import bb_logging_tool as lt
-import sys, argparse, os.path
+import sys
+import argparse
+import os.path
 
-logger = None
 idealConfig = {}
 fileConfig = {}
 
@@ -90,11 +90,8 @@ def make_unusable(file_name, list_dependent_dirs):
             os.chdir("..")
 
 
-def bb_basic_QC(subject, file_config):
+def bb_basic_qc(subject, file_config):
     keys_to_pop = []
-    global logger
-
-    logger = lt.init_logging(__file__, subject)
     os.chdir(subject)
 
     fd_file_name = "logs/file_descriptor.json"
@@ -115,20 +112,20 @@ def main():
     parser = MyParser(description="BioBank basic QC tool")
     parser.add_argument("subjectFolder", help="Subject Folder")
 
-    argsa = parser.parse_args()
-    subject = argsa.subjectFolder
+    args_a = parser.parse_args()
+    subject = args_a.subjectFolder
     subject = subject.strip()
 
     if subject[-1] == "/":
         subject = subject[0: len(subject) - 1]
-    logger = lt.init_logging(__file__, subject)
-    logger.info("Running file manager")
 
     ideal_config_file = os.environ["BB_BIN_DIR"] + "/bb_data/ideal_config.json"
     with open(ideal_config_file, "r") as f:
         file_config = json.load(f)
 
-    file_config = bb_basic_QC(subject, file_config)
+    logger = logging.getLogger(__name__)
+    logger.info("Running file manager")
+    bb_basic_qc(subject, file_config)
 
 
 if __name__ == "__main__":
