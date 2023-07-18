@@ -83,10 +83,10 @@ def run_command(logger, command, job_name):
     """
     try:
 
-        logger.info("COMMAND TO RUN: \t" + command.strip())
-
         # resolve environment var filepaths and parse
         command_list = shlex.split(os.path.expandvars(command))
+
+        logger.info("RUNNING: \t" + command.strip())
 
         # perform the designated commands and capture output
         job_output = run(command_list, capture_output=True, text=True)

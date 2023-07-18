@@ -91,7 +91,7 @@ def main(cli_args=None):
 
         # loop through all files/folders in subject directory
         os.chdir(subject)
-        for item in os.listdir(os.getcwd()):
+        for item in os.listdir(os.getcwd() + "/" + subject):
             # if file/folder not in retain list, remove
             if item not in retain:
                 if os.path.isdir(item):
