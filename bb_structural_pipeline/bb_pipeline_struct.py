@@ -110,7 +110,7 @@ def bb_pipeline_struct(subject, run_top_up, file_configuration):
                 "bb_fslmerge_"
                 + subject_name
             )
-            logger.info("Top up setup completed.")
+            logger.info("Top up setup COMPLETE.")
 
         # Registrations - T1 to MNI - T2 to T1 - T2 to MNI (Combining the 2 previous ones)
         logger.info("Running bb_struct_init...")
@@ -121,7 +121,7 @@ def bb_pipeline_struct(subject, run_top_up, file_configuration):
             "bb_struct_init_"
             + subject_name
         )
-        logger.info("bb_struct_init completed.")
+        logger.info("bb_struct_init COMPLETE.")
 
         # TODO: Do a better check here. This one looks arbitrary
         if "SWI_TOTAL_MAG_TE2" in file_configuration:
@@ -133,7 +133,7 @@ def bb_pipeline_struct(subject, run_top_up, file_configuration):
                 "bb_swi_reg_"
                 + subject_name
             )
-            logger.info("SWI registration complete.")
+            logger.info("SWI registration COMPLETE.")
 
         # Top up
         if run_top_up:
@@ -162,7 +162,7 @@ def bb_pipeline_struct(subject, run_top_up, file_configuration):
                 "bb_topup_"
                 + subject_name
             )
-            logger.info("Topup complete.")
+            logger.info("Topup COMPLETE.")
         else:
             logger.error(
                 "There is not enough/correct DWI data. TOPUP cannot be run. Continuing to run DWI and fMRI processing "
@@ -170,7 +170,6 @@ def bb_pipeline_struct(subject, run_top_up, file_configuration):
             )
 
         if not run_top_up:
-            logger.info("Structural pipeline complete. Logfiles located in subject's logs directory.")
             return ",".join([job_struct_init, job_swi])
         else:
             logger.info("Running post-topup...")
@@ -182,8 +181,8 @@ def bb_pipeline_struct(subject, run_top_up, file_configuration):
                 + subject_name
             )
 
-            logger.info("Post-topup complete.")
-            logger.info("Structural pipeline complete. Logfiles located in subject's logs directory.")
+            logger.info("Post-topup COMPLETE.")
+            logger.info("Logfiles located in subject's logs directory.")
             return job_post_top_up
 
 

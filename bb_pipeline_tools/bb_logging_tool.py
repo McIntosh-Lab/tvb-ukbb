@@ -26,7 +26,7 @@ import time
 import logging
 from subprocess import run
 import shlex
-
+import textwrap
 
 def init_logging(module_name, subject):
     """
@@ -81,6 +81,10 @@ def run_command(logger, command, job_name):
 
     Returns:    None: Writes to corresponding log files specified by the logger object.
     """
+
+    # Standard out/error printing indentation level
+    indent_level = 4
+
     try:
 
         # resolve environment var filepaths and parse
@@ -92,10 +96,10 @@ def run_command(logger, command, job_name):
         job_output = run(command_list, capture_output=True, text=True)
 
         logger.info("STANDARD OUT:")
-        logger.info(job_output.stdout)
+        logger.info(textwrap.indent("\n" + job_output.stdout, ' ' * indent_level))
 
         logger.info("STANDARD ERROR:")
-        logger.info(job_output.stderr)
+        logger.info(textwrap.indent("\n" + job_output.stderr, ' ' * indent_level))
 
     except Exception as e:
         logger.error("Exception raised during execution of: \n\t" + command.strip())
