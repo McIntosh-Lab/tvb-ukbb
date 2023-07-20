@@ -46,7 +46,9 @@ def init_logging(module_name, subject):
     print(module_name)
 
     # Set logger defaults
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s ")
+    formatter = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+    logging.basicConfig(level=logging.INFO, format=formatter)
     logger = logging.getLogger(module_name)
     logger.propagate = True
 
@@ -55,15 +57,20 @@ def init_logging(module_name, subject):
     if not os.path.isdir(log_dir):
         os.mkdir(log_dir)
 
-    # The log file name is given by <module_name>_<subject_name>_<process_id_name>.log
-    log_file_name = (
-            log_dir + "/" + module_name + "__" + subject + "__" + str(os.getpid()) + ".log"
-    )
-    file_handler = logging.FileHandler(log_file_name)
-    logger.addHandler(file_handler)
+    info_handler = logging.FileHandler(log_dir + "/log_info.txt")
+    info_handler.setLevel(logging.INFO)
+
+    error_handler = logging.FileHandler(log_dir + "/log_error.txt")
+    error_handler.setLevel(logging.ERROR)
+
+    debug_handler = logging.FileHandler(log_dir + '/log_debug.txt')
+    debug_handler.setLevel(logging.DEBUG)
 
     logger.info("Starting the subject processing: " + str(time.ctime(int(time.time()))))
     logger.info("Subject received as input: " + subject)
+
+    logger.debug("Starting the subject processing: " + str(time.ctime(int(time.time()))))
+    logger.debug("Subject received as input: " + subject)
 
     logger.log_dir = log_dir
 
