@@ -1,34 +1,55 @@
 #!/bin/env python
-#
-# Script name: bb_logging_tool.py
-#
-# Description: Set of functions to do proper logging for python scripts.
-#
-# Authors: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
-#
-# Copyright 2017 University of Oxford
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#    http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+"""
+Script name: bb_logging_tool.py
+
+Description:
+
+    A set of functions to do proper logging for python scripts.
+
+    Logs are designed to reflect the linear design of the pipeline. The logger naming hierarchy is designed to reflect
+    this is the logs themselves and the python logger objects. Logger names are determined by the current scripts base
+    name. For example, at the highest level, the pipeline is defined and run from bb_pipeline_tools/bb_pipeline.py,
+    where sub-pipelines are called. This results in a log file that looks like this:
+
+        #todo: include example
+
+    the naming in the log records reflects the pipeline call stack with bb_pipeline at the highest level of the main
+    pipeline and all sub-pipelines and processes following in a similar manner. Retrieving the logger object in the
+    sub-pipeline or sub-process files using the get_logger() ensures the integrity of this structure.
+
+Authors:
+
+        Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
+
+Contributors:
+
+        Patrick Mahon (pmahon@sfu.ca)
+
+License:
+
+    Copyright 2017 University of Oxford
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+"""
 
 import os
-import time
 import logging
 from subprocess import run
 import shlex
 import textwrap
 
-def init_logging(subject):
+
+def init_logging(module_name, subject):
     """
     init_logging initializes the logging system for the given python file and subject. The function creates and returns
     a formatted python logger object.
@@ -39,7 +60,7 @@ def init_logging(subject):
     Returns:
         A python logger object
     """
-    
+
     # Set logger defaults
     formatter = "%(asctime)s - %(module)s - %(filename)s - -%(levelname)s - %(message)s"
 
@@ -51,21 +72,6 @@ def init_logging(subject):
     log_dir = os.getcwd() + "/" + subject + "/logs/"
     if not os.path.isdir(log_dir):
         os.mkdir(log_dir)
-
-    info_handler = logging.FileHandler(log_dir + "/log_info.txt")
-    info_handler.setLevel(logging.INFO)
-
-    error_handler = logging.FileHandler(log_dir + "/log_error.txt")
-    error_handler.setLevel(logging.ERROR)
-
-    debug_handler = logging.FileHandler(log_dir + '/log_debug.txt')
-    debug_handler.setLevel(logging.DEBUG)
-
-    logger.info("Starting the subject processing: " + str(time.ctime(int(time.time()))))
-    logger.info("Subject received as input: " + subject)
-
-    logger.debug("Starting the subject processing: " + str(time.ctime(int(time.time()))))
-    logger.debug("Subject received as input: " + subject)
 
     logger.log_dir = log_dir
 
