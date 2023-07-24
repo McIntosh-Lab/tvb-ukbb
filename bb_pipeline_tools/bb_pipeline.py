@@ -68,7 +68,7 @@ def main(cli_args=None):
         subject = subject[0: len(subject) - 1]
 
     # LOGGING INITIALIZATION
-    logger = logging_tool.init_logging(__file__, subject)
+    logger = logging_tool.init_logging(subject)
 
     # WORKFLOW HANDLING
     reparcellate = os.environ['REPARCELLATE']

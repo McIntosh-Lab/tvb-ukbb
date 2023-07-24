@@ -28,25 +28,20 @@ from subprocess import run
 import shlex
 import textwrap
 
-def init_logging(module_name, subject):
+def init_logging(subject):
     """
     init_logging initializes the logging system for the given python file and subject. The function creates and returns
     a formatted python logger object.
 
     Args:
-        module_name:  The name of the current python module, supplied as '__name__'
         subject:    The name of the subject file being run.
 
     Returns:
         A python logger object
     """
-
-    # By convention the logger output file will be the name
-    module_name = os.path.splitext(os.path.basename(module_name))[0]
-    print(module_name)
-
+    
     # Set logger defaults
-    formatter = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    formatter = "%(asctime)s - %(module)s - %(filename)s - -%(levelname)s - %(message)s"
 
     logging.basicConfig(level=logging.INFO, format=formatter)
     logger = logging.getLogger(module_name)
