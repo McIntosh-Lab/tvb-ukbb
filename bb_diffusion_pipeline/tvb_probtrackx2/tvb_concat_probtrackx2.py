@@ -72,19 +72,19 @@ def tvb_concat_probtrackx2(subj, PARC_NAME, batch=True):
 
             if m == 1:
                 mat_lengths = np.loadtxt(batch_dir + "/fdt_network_matrix_lengths")
+                mat_lengths[np.isnan(mat_lengths)] = 0.0
                 fdt1 = np.loadtxt(batch_dir + "/fdt_network_matrix")
                 mtx = np.multiply(fdt1, mat_lengths)
                 mat_sum = fdt1
             else:
                 mat_lengths = np.loadtxt(batch_dir + "/fdt_network_matrix_lengths")
+                mat_lengths[np.isnan(mat_lengths)] = 0.0
                 fdt1 = np.loadtxt(batch_dir + "/fdt_network_matrix")
                 mtx = np.add(mtx, np.multiply(fdt1, mat_lengths))
                 mat_sum = np.add(mat_sum, fdt1)
 
-        fdt1_plus_transpose = fdt1 + fdt1.T 
-        tract_lengths = np.divide(mtx, mat_sum)
-        tract_lengths[np.isnan(tract_lengths)] = 0.0
-        tract_lengths_weighted = np.divide(np.multiply(tract_lengths,fdt1),fdt1_plus_transpose)
+        mat_sum_plus_transpose = mat_sum + mat_sum.T 
+        tract_lengths_weighted = np.divide(mtx, mat_sum_plus_transpose)
         tract_lengths_weighted[np.isnan(tract_lengths_weighted)] = 0.0
 
         # symmetrizing matrix
