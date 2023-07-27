@@ -38,17 +38,9 @@ export FSLOUTPUTTYPE="NIFTI_GZ"
 export FSLGECUDAQ=cuda.q                                                        #TO BE MODIFIED BY USER
 
 #TODO implement this in the files
-<<<<<<< HEAD
-export QUEUE_STANDARD="all.q"                                                   #TO BE MODIFIED BY USER
-export QUEUE_MORE_MEM="bigmem_16.q"                                             #TO BE MODIFIED BY USER
-export QUEUE_MAX_MEM="bigmem_64.q"                                              #TO BE MODIFIED BY USER
-# export QUEUE_MAX_MEM=$QUEUE_MORE_MEM                                              #TO BE MODIFIED BY USER
-export QUEUE_PARALLEL="parallel.q"
-=======
 export QUEUE_STANDARD="normal"                                                   #TO BE MODIFIED BY USER
 export QUEUE_MORE_MEM="normal"                                             #TO BE MODIFIED BY USER
 export QUEUE_MAX_MEM="normal"                                              #TO BE MODIFIED BY USER
->>>>>>> 27341bf (update init_vars, ANTs)
 
 # option 1: true; use full-GPU probtrackx call. default.
 # option 2: gpu_batch; split GPU probtrackx into 10 smaller batches.
