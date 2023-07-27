@@ -165,8 +165,7 @@ def bb_pipeline_struct(subject, run_top_up, file_configuration):
             logger.info("Topup COMPLETE.")
         else:
             logger.error(
-                "There is not enough/correct DWI data. TOPUP cannot be run. Continuing to run DWI and fMRI processing "
-                "without TOPUP."
+                "There is not enough/correct DWI data. TOPUP cannot be run. Continuing to run DWI and fMRI processing without TOPUP."
             )
 
         if not run_top_up:

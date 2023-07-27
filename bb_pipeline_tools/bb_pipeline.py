@@ -91,13 +91,18 @@ def main(cli_args=None):
 
         # loop through all files/folders in subject directory
         os.chdir(subject)
-        for item in os.listdir(os.getcwd() + "/" + subject):
+        for item in os.listdir(os.getcwd()):
             # if file/folder not in retain list, remove
             if item not in retain:
                 if os.path.isdir(item):
                     shutil.rmtree(item)
                 else:
                     os.remove(item)
+
+        # Create logs directory
+        if not os.path.isdir("logs"):
+            os.mkdir("logs")
+
         os.chdir("..")
 
         # PIPELINE
@@ -106,10 +111,10 @@ def main(cli_args=None):
         file_config = bb_file_manager(subject)
         logger.info("bb_file_manager COMPLETE.")
 
-        logger.info("File configuration before QC:\n" + str(file_config))
+        logger.info("File configuration before QC:\n\t" + str(file_config))
 
         file_config = bb_basic_qc(subject, file_config)
-        logger.info("File configuration after running file manager:\n" + str(file_config))
+        logger.info("File configuration after running file manager:\n\t" + str(file_config))
 
         # run_top_up ==> Having field-map
         if not (

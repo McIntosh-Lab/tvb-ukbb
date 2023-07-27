@@ -30,12 +30,12 @@ import sys
 import logging
 import nibabel as nib
 
-import bb_general_tools.bb_path as bb_path
-import bb_logging_tool as lt
-
 from shutil import copyfile
 
 sys.path.insert(1, os.path.dirname(__file__) + "/..")
+
+import bb_general_tools.bb_path as bb_path
+import bb_pipeline_tools.bb_logging_tool as lt
 
 logger = None
 idealConfig = {}
@@ -203,8 +203,6 @@ def move_file_add_to_config(old_path, key, bool_append):
     else:
         move_file(old_path, idealConfig[key])
         fileConfig[key] = idealConfig[key]
-        print(f"key: {key}, fileConfig: {fileConfig[key]}")
-
 
 def robust_sort(list_files):
     list_files.sort()
@@ -249,8 +247,6 @@ def manage_struct(list_files, flag):
     # bool_norm = [is_normalised(x) for x in listFiles]
     # ignore normalization for now
     bool_norm = [True for _ in list_files]
-
-    print(f"{flag} norm: {bool_norm}")
 
     if not any(bool_norm):
         logger.error("There was not an intensity-normalized " + flag + ".")
@@ -347,9 +343,7 @@ def manage_fmri(list_files, flag):
         move_file_add_to_config(list_files[ind_biggest_image], flag, False)
 
         file_name = list_files[ind_biggest_image]
-        print(f"files: {list_files}")
         plain_file_name = bb_path.removeImageExt(file_name)
-        print(f"file name: {plain_file_name}")
 
         ind = -1
         try:
@@ -718,8 +712,6 @@ def bb_file_manager(subject_):
         list_f.sort()
         list_files = [fl for fl in list_f if fl[-4:] != ".log"]
 
-        print("FILES: ")
-        print(list_files)
         # Organize the files in sets
         for patterns_action in patterns_actions:
             patterns = patterns_action[0]
@@ -728,9 +720,7 @@ def bb_file_manager(subject_):
 
             list_files = []
             for fileTy in patterns:
-                print(f"FILETYPE: {fileTy}")
                 pat = glob.glob(os.getcwd() + "/**/" + fileTy, recursive=True)
-                print(f"PATT: {pat}")
                 list_files.extend(
                     [
                         x
@@ -745,11 +735,10 @@ def bb_file_manager(subject_):
                 + str(patterns)
             )
 
-            # print(f"DOING {action.__name__} on {listFiles}")
             action(list_files, *args)
 
         # Create file descriptor
-        logger.info(f"FILECONFIG: {fileConfig}")
+        logger.info(f"FILECONFIG:\n\t{fileConfig}")
         fd = open(fd_file_name, "w")
         json.dump(fileConfig, fd, sort_keys=True, indent=4)
         fd.close()

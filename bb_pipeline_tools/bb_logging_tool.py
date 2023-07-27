@@ -44,12 +44,13 @@ License:
 
 import os
 import logging
+import sys
 from subprocess import run
 import shlex
 import textwrap
 
 
-def init_logging(module_name, subject):
+def init_logging(subject):
     """
     init_logging initializes the logging system for the given python file and subject. The function creates and returns
     a formatted python logger object.
@@ -62,18 +63,23 @@ def init_logging(module_name, subject):
     """
 
     # Set logger defaults
-    formatter = "%(asctime)s - %(module)s - %(filename)s - -%(levelname)s - %(message)s"
+    formatter = "%(asctime)s - %(module)s - %(filename)s - %(levelname)s - %(message)s"
 
     logging.basicConfig(level=logging.INFO, format=formatter)
-    logger = logging.getLogger(module_name)
-    logger.propagate = True
 
     # Make the requisite logging directory
     log_dir = os.getcwd() + "/" + subject + "/logs/"
     if not os.path.isdir(log_dir):
         os.mkdir(log_dir)
 
+    # Set log file output
+    log_file = subject + "/logs/" + subject + ".log"
+    file_handler = logging.FileHandler(log_file)
+    file_handler.setLevel(logging.INFO)
+    
+    logger = logging.getLogger()
     logger.log_dir = log_dir
+    logger.addHandler(file_handler)
 
     return logger
 
@@ -98,16 +104,14 @@ def run_command(logger, command, job_name):
         # resolve environment var filepaths and parse
         command_list = shlex.split(os.path.expandvars(command))
 
-        logger.info("RUNNING: \t" + command.strip())
+        logger.info("RUNNING:\n\t" + command.strip())
 
         # perform the designated commands and capture output
         job_output = run(command_list, capture_output=True, text=True)
 
-        logger.info("STANDARD OUT:")
-        logger.info(textwrap.indent("\n" + job_output.stdout, ' ' * indent_level))
+        logger.info("STANDARD OUT:\n" + textwrap.indent(job_output.stdout, ' ' * indent_level))
 
-        logger.info("STANDARD ERROR:")
-        logger.info(textwrap.indent("\n" + job_output.stderr, ' ' * indent_level))
+        logger.info("STANDARD ERROR:\n" + textwrap.indent(job_output.stderr, ' ' * indent_level))
 
     except Exception as e:
         logger.error("Exception raised during execution of: \n\t" + command.strip())
