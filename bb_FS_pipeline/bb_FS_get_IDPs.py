@@ -12,6 +12,7 @@ import os, sys, argparse
 
 sys.path.insert(1, os.path.dirname(__file__) + "/..")
 import bb_pipeline_tools.bb_logging_tool as LT
+import logging
 
 
 class MyParser(argparse.ArgumentParser):
@@ -626,7 +627,7 @@ def save_headers_info(data_dict, SUBJECTS_DIR):
 
 def bb_FS_get_IDPs(subject):
 
-    logger = LT.init_logging(__file__, subject)
+    logger = logging.getLogger(__name__)
     #    logger  = lt.initLogging('log', subject)
     logDir = logger.log_dir
     baseDir = logDir[0 : logDir.rfind("/logs/")]
@@ -683,7 +684,7 @@ def main():
         print("Error: The subject " + subject + " does not exist")
         exit(-1)
 
-    job1 = bb_FS_get_IDPs(subject)
+    bb_FS_get_IDPs(subject)
 
 
 if __name__ == "__main__":

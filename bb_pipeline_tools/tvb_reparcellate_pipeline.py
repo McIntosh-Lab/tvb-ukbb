@@ -40,7 +40,7 @@ def tvb_reparcellate_pipeline(subject_, file_configuration, PARC_NAME):
 
     """
 
-    logger = logging.getLogger(__name__ + '.' + __file__)
+    logger = logging.getLogger(__name__)
     log_dir = logger.log_dir
 
     # import fileconfig from json if none given

@@ -13,6 +13,7 @@ import os, sys, argparse
 sys.path.insert(1, os.path.dirname(__file__) + "/..")
 import bb_pipeline_tools.bb_logging_tool as LT
 import bb_pipeline_tools.bb_file_manager as FM
+import logging
 
 
 class MyParser(argparse.ArgumentParser):
@@ -29,7 +30,7 @@ class Usage(Exception):
 
 def bb_pipeline_FS(subject, jobHold, fileConfiguration):
 
-    logger = LT.init_logging(__file__, subject)
+    logger = logging.getLogger(__name__)
     logDir = logger.log_dir
     baseDir = logDir[0 : logDir.rfind("/logs/")]
 
