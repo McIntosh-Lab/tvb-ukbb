@@ -31,6 +31,9 @@ sys.path.insert(1, os.path.dirname(__file__) + "/..")
 
 
 def bb_idp(subject):
+
+    logger = logging.getLogger(__name__)
+
     subject_name = subject.replace("/", "_")
 
     print("Running IDP pipeline...")
@@ -63,6 +66,6 @@ if __name__ == "__main__":
     except Exception:
         print(f"{json_path_name} could not be loaded. Exiting")
         sys.exit(1)
+
     # call pipeline
-    logger = logging.getLogger(__name__)
     bb_idp(subject_)

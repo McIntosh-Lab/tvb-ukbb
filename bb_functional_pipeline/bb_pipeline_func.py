@@ -31,7 +31,9 @@ sys.path.insert(1, os.path.dirname(__file__) + "/..")
 
 
 def bb_pipeline_func(subject, file_configuration):
-    log_dir = logger.logDir
+
+    logger = logging.getLogger(__name__)
+    log_dir = logger.log_dir
     base_dir = log_dir[0: log_dir.rfind("/logs/")]
 
     jobs_to_wait_for = ""
@@ -189,7 +191,7 @@ def bb_pipeline_func(subject, file_configuration):
 
 
 if __name__ == "__main__":
-    logger = logging.getLogger(__name__)
+
     # grab subject name from command
     subject_ = sys.argv[1]
     fd_fileName = "logs/file_descriptor.json"
@@ -207,5 +209,6 @@ if __name__ == "__main__":
     except Exception:
         print(f"{json_path_name} could not be loaded. Exiting")
         sys.exit(1)
+
     # call pipeline
     bb_pipeline_func(subject_, fileConfig)

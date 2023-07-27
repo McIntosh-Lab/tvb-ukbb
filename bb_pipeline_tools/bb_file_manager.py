@@ -635,6 +635,7 @@ def bb_file_manager(subject_):
     global logger
     global idealConfig
     global fileConfig
+
     logger = logging.getLogger(__name__)
 
     ideal_config_file = os.environ["BB_BIN_DIR"] + "/bb_data/ideal_config.json"
@@ -749,7 +750,7 @@ def bb_file_manager(subject_):
 
 
 if __name__ == "__main__":
+
     # run bb_file_manager on subject
     subject = sys.argv[1]
-    logger = logging.getLogger(__name__)
     bb_file_manager(subject)

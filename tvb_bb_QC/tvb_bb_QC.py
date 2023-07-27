@@ -31,9 +31,12 @@ sys.path.insert(1, os.path.dirname(__file__) + "/..")
 
 
 def tvb_bb_qc(subject):
+
+    logger = logging.getLogger(__name__)
+
     subject_name = subject.replace("/", "_")
 
-    print("Beginning QC pipeline...")
+    logger.info("RUNNING QC pipeline...")
     job_qc = lt.run_command(
         logger,
         " xvfb-run -a $BB_BIN_DIR/tvb_bb_QC/tvb_bb_QC.sh "  # -s '-screen 0 640x480x24'
@@ -63,6 +66,6 @@ if __name__ == "__main__":
     except Exception:
         print(f"{json_path_name} could not be loaded. Exiting")
         sys.exit(1)
+
     # call pipeline
-    logger = logging.getLogger(__name__)
     tvb_bb_qc(subject_, fileConfig)

@@ -31,7 +31,10 @@ sys.path.insert(1, os.path.dirname(__file__) + "/..")
 
 
 def bb_pipeline_diff(subject):
-    log_dir = logger.logDir
+
+    logger = logging.getLogger(__name__)
+
+    log_dir = logger.log_dir
     base_dir = log_dir[0: log_dir.rfind("/logs/")]
 
     subject_name = subject.replace("/", "_")
@@ -222,6 +225,6 @@ if __name__ == "__main__":
     except Exception:
         print(f"{json_path_name} could not be loaded. Exiting")
         sys.exit(1)
+
     # call pipeline
-    logger = logging.getLogger(__name__)
     bb_pipeline_diff(subject_)

@@ -628,7 +628,7 @@ def bb_FS_get_IDPs(subject):
 
     logger = LT.init_logging(__file__, subject)
     #    logger  = lt.initLogging('log', subject)
-    logDir = logger.logDir
+    logDir = logger.log_dir
     baseDir = logDir[0 : logDir.rfind("/logs/")]
 
     SUBJECTS_DIR = os.getcwd() + "/" + subject + "/"

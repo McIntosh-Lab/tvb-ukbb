@@ -143,14 +143,14 @@ def main(cli_args=None):
         logger.info("Diffusion pipeline COMPLETE.")
 
         # image dependent phenotype
-        logger.info("RUNNING idp...")
+        logger.info("RUNNING IDP...")
         bb_idp(subject)
-        logger.info("idp COMPLETE")
+        logger.info("IDP COMPLETE")
 
         # quality control
-        logger.info("RUNNING quality control.")
+        logger.info("RUNNING QC pipeline...")
         tvb_bb_qc(subject)
-        logger.info("Quality control COMPLETE.")
+        logger.info("QC pipeline COMPLETE.")
 
         # clean up
         logger.info("Main pipeline COMPLETE.")
