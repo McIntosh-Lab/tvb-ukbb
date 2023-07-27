@@ -741,7 +741,7 @@ def bb_file_manager(subject_):
         # Create file descriptor
         logger.info(f"FILECONFIG:\n\t{fileConfig}")
         fd = open(fd_file_name, "w")
-        json.dump(fileConfig, fd, sort_keys=True, indent=4)
+        json.dump(fileConfig, fd, sort_keys=True, indent=4, separators=(',', ': '))
         fd.close()
 
     os.chdir("..")

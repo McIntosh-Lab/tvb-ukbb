@@ -84,7 +84,7 @@ def create_links(subject):
                         
                         os.remove(newName.replace(".nii.gz",".json"))
                         fd=open(newName.replace(".nii.gz",".json"), "w")
-                        json.dump(jsonBold,fd,sort_keys=True,indent=4)
+                        json.dump(jsonBold,fd,sort_keys=True,indent=4,separators=(',', ': '))
 
                     #Including the events tsv file associated with the task fMRI
                     if not "rest" in newName:

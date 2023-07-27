@@ -100,7 +100,7 @@ def bb_basic_qc(subject, file_config):
         file_config.pop(key_to_pop, None)
 
     fd = open(fd_file_name, "w")
-    json.dump(file_config, fd, sort_keys=True, indent=4)
+    json.dump(file_config, fd, sort_keys=True, indent=4, separators=(',', ': '))
     fd.close()
 
     os.chdir("..")

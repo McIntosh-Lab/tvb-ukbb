@@ -138,7 +138,7 @@ def main(cli_args=None):
         logger.info("Functional pipeline COMPLETE.")
 
         # diffusion pipeline
-        logger.info("RUNNING diffusion pipeline...")
+        logger.info("RUNNING diffusion pipeline...6")
         bb_pipeline_diff(subject)
         logger.info("Diffusion pipeline COMPLETE.")
 
