@@ -32,7 +32,7 @@ sys.path.insert(1, os.path.dirname(__file__) + "/..")
 
 def bb_idp(subject):
 
-    logger = logging.getLogger(__name__)
+    logger = logging.getLogger()
 
     subject_name = subject.replace("/", "_")
 

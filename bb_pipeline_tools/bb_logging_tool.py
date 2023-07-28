@@ -77,7 +77,7 @@ def init_logging(subject):
     file_handler = logging.FileHandler(log_file)
     file_handler.setLevel(logging.INFO)
     
-    logger = logging.getLogger(__name__)
+    logger = logging.getLogger()
     logger.log_dir = log_dir
     logger.addHandler(file_handler)
 

@@ -30,7 +30,7 @@ class Usage(Exception):
 
 def bb_pipeline_FS(subject, jobHold, fileConfiguration):
 
-    logger = logging.getLogger(__name__)
+    logger = logging.getLogger()
     logDir = logger.log_dir
     baseDir = logDir[0 : logDir.rfind("/logs/")]
 

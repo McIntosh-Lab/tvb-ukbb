@@ -32,7 +32,7 @@ sys.path.insert(1, os.path.dirname(__file__) + "/..")
 
 def bb_pipeline_diff(subject):
 
-    logger = logging.getLogger(__name__)
+    logger = logging.getLogger()
 
     log_dir = logger.log_dir
     base_dir = log_dir[0: log_dir.rfind("/logs/")]

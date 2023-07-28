@@ -112,7 +112,6 @@ def main(cli_args=None):
         logger.info("bb_file_manager COMPLETE.")
 
         logger.info("File configuration before QC:\n\t" + str(file_config))
-
         file_config = bb_basic_qc(subject, file_config)
         logger.info("File configuration after running file manager:\n\t" + str(file_config))
 

@@ -627,7 +627,7 @@ def save_headers_info(data_dict, SUBJECTS_DIR):
 
 def bb_FS_get_IDPs(subject):
 
-    logger = logging.getLogger(__name__)
+    logger = logging.getLogger()
     #    logger  = lt.initLogging('log', subject)
     logDir = logger.log_dir
     baseDir = logDir[0 : logDir.rfind("/logs/")]

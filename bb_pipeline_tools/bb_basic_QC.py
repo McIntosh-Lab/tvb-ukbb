@@ -123,7 +123,7 @@ def main():
     with open(ideal_config_file, "r") as f:
         file_config = json.load(f)
 
-    logger = logging.getLogger(__name__)
+    logger = logging.getLogger()
     logger.info("Running file manager")
     bb_basic_qc(subject, file_config)
 
