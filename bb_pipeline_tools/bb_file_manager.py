@@ -691,8 +691,7 @@ def bb_file_manager(subject_):
         ],
         [["SWI*nii.gz"], manage_swi],
         [["DIFF_*", "MB3_*", "*dwi*.*", "*DWI*.*"], manage_dwi],
-        [["SWI*.*"], move_to, "SWI/unclassified/"],
-        [["*.[^log]"], move_to, "unclassified/"],
+        [["SWI*.*"], move_to, "SWI/unclassified/"]
     ]
 
     os.chdir(subject_)
