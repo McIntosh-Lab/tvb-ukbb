@@ -44,7 +44,7 @@ License:
 
 import os
 import logging
-import sys
+import inspect
 from subprocess import run
 import shlex
 import textwrap
@@ -67,19 +67,21 @@ def init_logging(subject):
 
     logging.basicConfig(level=logging.INFO, format=formatter)
 
-    # Make the requisite logging directory
-    log_dir = os.getcwd() + "/" + subject + "/logs/"
-    if not os.path.isdir(log_dir):
-        os.mkdir(log_dir)
-
     # Set log file output
     log_file = subject + "/logs/" + subject + ".log"
     file_handler = logging.FileHandler(log_file)
     file_handler.setLevel(logging.INFO)
     
     logger = logging.getLogger()
+
+    # Make the requisite logging directory
+    log_dir = os.getcwd() + "/" + subject + "/logs/"
+    if not os.path.isdir(log_dir):
+        os.mkdir(log_dir)
     logger.log_dir = log_dir
     logger.addHandler(file_handler)
+
+    logging.info("Logging directory created at: " + logger.log_dir)
 
     return logger
 
@@ -106,9 +108,15 @@ def run_command(logger, command, job_name):
 
         logger.info("RUNNING:\n\t" + command.strip())
 
+        # create logging directory for the calling module if it doesn't exist.
+        calling_module = inspect.getmodule(inspect.stack()[1][0]).__name__ + "/"
+
+        if not os.path.isdir(logging.log_dir + calling_module):
+            os.mkdir(logging.log_dir + calling_module)
+
         # perform the designated commands and capture output
-        std_out_file = logger.log_dir + job_name + '.o'
-        std_error_file = logger.log_dir + job_name + '.e'
+        std_out_file = logger.log_dir + calling_module + job_name + '.o'
+        std_error_file = logger.log_dir + calling_module + job_name + '.e'
 
         std_out = open(std_out_file, 'w')
         std_error = open(std_error_file, 'w')

@@ -27,7 +27,7 @@ import os
 import sys
 import argparse
 import os.path
-import time
+import logging
 import shutil
 import bb_logging_tool as logging_tool
 
@@ -68,7 +68,10 @@ def main(cli_args=None):
         subject = subject[0: len(subject) - 1]
 
     # LOGGING INITIALIZATION
+    logger = logging.getLogger()
+    logger.info("Configuring logger...")
     logger = logging_tool.init_logging(subject)
+    logger.info("Logger configured.")
 
     # WORKFLOW HANDLING
     reparcellate = os.environ['REPARCELLATE']
@@ -77,15 +80,16 @@ def main(cli_args=None):
     if reparcellate == "true":
         # REPARCELLATION PIPELINE
         # reparcellation
-        logger.info("Running reparcellation...")
+        logger.info("RUNNING reparcellation...")
         tvb_reparcellate_pipeline(subject, "none", parc_name)
-        logger.info("Reparcellation complete.")
+        logger.info("Reparcellation COMPLETE.")
 
         # clean up
-        logger.info("Main reparcellation pipeline complete at: " + str(time.ctime(int(time.time()))))
+        logger.info("Main reparcellation pipeline COMPLETE.")
 
     if reparcellate == "false":
 
+        logger.info("Cleaning directory and removing old files...")
         # Remove old intermediate data from previous runs
         retain = ["rawdata"]
 
@@ -99,9 +103,7 @@ def main(cli_args=None):
                 else:
                     os.remove(item)
 
-        # Create logs directory
-        if not os.path.isdir("logs"):
-            os.mkdir("logs")
+        logger.info("Cleaning complete.")
 
         os.chdir("..")
 
