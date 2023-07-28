@@ -111,8 +111,8 @@ def run_command(logger, command, job_name):
         # create logging directory for the calling module if it doesn't exist.
         calling_module = inspect.getmodule(inspect.stack()[1][0]).__name__ + "/"
 
-        if not os.path.isdir(logging.log_dir + calling_module):
-            os.mkdir(logging.log_dir + calling_module)
+        if not os.path.isdir(logger.log_dir + calling_module):
+            os.mkdir(logger.log_dir + calling_module)
 
         # perform the designated commands and capture output
         std_out_file = logger.log_dir + calling_module + job_name + '.o'
