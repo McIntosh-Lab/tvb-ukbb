@@ -107,11 +107,21 @@ def run_command(logger, command, job_name):
         logger.info("RUNNING:\n\t" + command.strip())
 
         # perform the designated commands and capture output
-        job_output = run(command_list, capture_output=True, text=True)
+        std_out_file = logger.log_dir + job_name + '.o'
+        std_error_file = logger.log_dir + job_name + '.e'
 
-        logger.info("STANDARD OUT:\n" + textwrap.indent(job_output.stdout, ' ' * indent_level))
+        std_out = open(std_out_file, 'w')
+        std_error = open(std_error_file, 'w')
 
-        logger.info("STANDARD ERROR:\n" + textwrap.indent(job_output.stderr, ' ' * indent_level))
+        run(command_list, capture_output=True, text=True, stdout=std_out, stderr=std_error)
+
+        std_out.close()
+        std_error.close()
+
+        logger.info("STANDARD OUT: " + std_out_file)
+        logger.info("STANDARD ERROR: " + std_error_file)
+
+        logger.info("COMPLETE:\n\t" + command.strip())
 
     except Exception as e:
         logger.error("Exception raised during execution of: \n\t" + command.strip())
