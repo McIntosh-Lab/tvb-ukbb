@@ -37,7 +37,8 @@ sys.path.insert(1, os.path.dirname(__file__) + "/..")
 import bb_general_tools.bb_path as bb_path
 import bb_pipeline_tools.bb_logging_tool as lt
 
-logger = None
+logger: logging.RootLogger
+
 idealConfig = {}
 fileConfig = {}
 
@@ -203,6 +204,7 @@ def move_file_add_to_config(old_path, key, bool_append):
     else:
         move_file(old_path, idealConfig[key])
         fileConfig[key] = idealConfig[key]
+
 
 def robust_sort(list_files):
     list_files.sort()
@@ -710,7 +712,6 @@ def bb_file_manager(subject_):
         # listFiles = glob.glob("*.*")
         list_f = glob.glob(os.getcwd() + "/**/*.*", recursive=True)
         list_f.sort()
-        list_files = [fl for fl in list_f if fl[-4:] != ".log"]
 
         # Organize the files in sets
         for patterns_action in patterns_actions:
@@ -720,7 +721,6 @@ def bb_file_manager(subject_):
 
             list_files = []
             for fileTy in patterns:
-                pat = glob.glob(os.getcwd() + "/**/" + fileTy, recursive=True)
                 list_files.extend(
                     [
                         x
@@ -749,7 +749,6 @@ def bb_file_manager(subject_):
 
 
 if __name__ == "__main__":
-
     # run bb_file_manager on subject
     subject = sys.argv[1]
     bb_file_manager(subject)
