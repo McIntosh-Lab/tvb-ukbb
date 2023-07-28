@@ -68,17 +68,19 @@ def init_logging(subject):
     logging.basicConfig(level=logging.INFO, format=formatter)
 
     # Set log file output
-    log_file = subject + "/logs/" + subject + ".log"
-    file_handler = logging.FileHandler(log_file)
-    file_handler.setLevel(logging.INFO)
+    log_file = subject + "/logs/" + subject + ".log"i
     
-    logger = logging.getLogger()
-
     # Make the requisite logging directory
     log_dir = os.getcwd() + "/" + subject + "/logs/"
     if not os.path.isdir(log_dir):
-        os.mkdir(log_dir)
+        os.mkdir(log_dir) 
+    
+    logger = logging.getLogger()
     logger.log_dir = log_dir
+
+    # Set handlers
+    file_handler = logging.FileHandler(log_file)
+    file_handler.setLevel(logging.INFO)
     logger.addHandler(file_handler)
 
     logging.info("Logging directory created at: " + logger.log_dir)
