@@ -113,7 +113,7 @@ def run_command(logger, command, job_name):
         std_out = open(std_out_file, 'w')
         std_error = open(std_error_file, 'w')
 
-        run(command_list, capture_output=True, text=True, stdout=std_out, stderr=std_error)
+        run(command_list, text=True, stdout=std_out, stderr=std_error)
 
         std_out.close()
         std_error.close()
