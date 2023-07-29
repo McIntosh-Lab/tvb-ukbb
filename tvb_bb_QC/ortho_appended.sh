@@ -196,7 +196,7 @@ subject_folder=$2
 				yVoxelLoc=${yVoxelLoc%.*}
 				zVoxelLoc=${zVoxelLoc%.*}
 
-				${FSLDIR}/bin/fsleyes render --outfile $output_folder/$sub"_$3_""${axisNames[$j]}"_$(($i+1)).png  --scene ortho --voxelLoc $xVoxelLoc $yVoxelLoc $zVoxelLoc --displaySpace $subject_folder$underlay --xcentre  $xcentre --ycentre $ycentre --zcentre $zcentre --xzoom $xzoom --yzoom $yzoom --zzoom $zzoom --hideLabels --layout vertical ${hide_combo[$j]} --hideCursor --bgColour 0.0 0.0 0.0 --fgColour 1.0 1.0 1.0 --cursorColour 0.0 1.0 0.0 --colourBarLocation top --colourBarLabelSide top-left --colourBarSize 100.0 --labelSize 12 --performance 3 $subject_folder$underlay --name "underlay" --overlayType $underlay_type --alpha 100.0 --brightness 49.74999999999999 --contrast 49.90029860765409 --cmap greyscale  $overlay_args 
+				${FSLDIR}/bin/fsleyes render --outfile $output_folder/$sub"_$3_""${axisNames[$j]}"_$(($i+1)).png  --scene ortho --voxelLoc $xVoxelLoc $yVoxelLoc $zVoxelLoc --displaySpace $subject_folder$underlay --xcentre  $xcentre --ycentre $ycentre --zcentre $zcentre --xzoom $xzoom --yzoom $yzoom --zzoom $zzoom --hideLabels --layout vertical ${hide_combo[$j]} --hideCursor --bgColour 0.0 0.0 0.0 --fgColour 1.0 1.0 1.0 --cursorColour 0.0 1.0 0.0 --colourBarLocation top --colourBarLabelSide top-left --colourBarSize 100.0 --labelSize 12 $subject_folder$underlay --name "underlay" --overlayType $underlay_type --alpha 100.0 --brightness 49.74999999999999 --contrast 49.90029860765409 --cmap greyscale  $overlay_args 
 
 
 
