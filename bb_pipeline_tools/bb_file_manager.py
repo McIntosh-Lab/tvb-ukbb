@@ -417,7 +417,7 @@ def manage_dwi(list_files):
 
         # use single-direction if only one direction found
         if num_ap <= 1:
-            encoding_directions = ["dwi"]
+            encoding_directions = ["DTI"]
             logger.info("Single-direction DWI detected.")
         # assume AP/PA otherwise
         else:
@@ -540,7 +540,7 @@ def manage_dwi(list_files):
             if os.path.isfile(fileName):
                 fpath, fname = os.path.split(fileName)
                 # quick way to prevent dwi files from being copied into unclassified
-                if not ("dwi" in fileName and "dwi" in fileConfig):
+                if not ("DTI" in fileName and "DTI" in fileConfig):
                     move_file(fileName, "unclassified/" + fname)
 
 
@@ -679,13 +679,7 @@ def bb_file_manager(subject_):
         [["T2*FLAIR*.nii.gz", "*FLAIR*.nii.gz"], manage_struct, "T2"],
         [
             [
-                "*FMRI*RESTING*.nii.gz",
-                "MB8*RESTING*.nii.gz",
-                "*TASK*REST*.nii.gz",
-                "*task*rest*.nii.gz",
-                "*epi_rest*.nii.gz",
-                "*rsfMRI*.nii.gz",
-                "*fcMRI*.nii.gz",
+		"*fMRI*e2.nii.gz",
             ],
             manage_fmri,
             "rfMRI",
@@ -702,7 +696,7 @@ def bb_file_manager(subject_):
             "tfMRI",
         ],
         [["SWI*nii.gz"], manage_swi],
-        [["DIFF_*", "MB3_*", "*dwi*.*", "*DWI*.*"], manage_dwi],
+        [["*DTI_60*.*"], manage_dwi],
         [["SWI*.*"], move_to, "SWI/unclassified/"],
     ]
 
