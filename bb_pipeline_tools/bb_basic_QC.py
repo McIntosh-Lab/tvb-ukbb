@@ -70,7 +70,6 @@ def make_unusable(file_name, list_dependent_dirs):
 
     else:
         for directory in list_dependent_dirs:
-
             os.chdir(directory)
             files_in_dir = glob.glob("./*")
 
@@ -100,7 +99,7 @@ def bb_basic_qc(subject, file_config):
         file_config.pop(key_to_pop, None)
 
     fd = open(fd_file_name, "w")
-    json.dump(file_config, fd, sort_keys=True, indent=4, separators=(',', ': '))
+    json.dump(file_config, fd, sort_keys=True, indent=4, separators=(",", ": "))
     fd.close()
 
     os.chdir("..")
@@ -117,7 +116,7 @@ def main():
     subject = subject.strip()
 
     if subject[-1] == "/":
-        subject = subject[0: len(subject) - 1]
+        subject = subject[0 : len(subject) - 1]
 
     ideal_config_file = os.environ["BB_BIN_DIR"] + "/bb_data/ideal_config.json"
     with open(ideal_config_file, "r") as f:

@@ -31,11 +31,10 @@ sys.path.insert(1, os.path.dirname(__file__) + "/..")
 
 
 def bb_pipeline_diff(subject):
-
     logger = logging.getLogger()
 
     log_dir = logger.log_dir
-    base_dir = log_dir[0: log_dir.rfind("/logs/")]
+    base_dir = log_dir[0 : log_dir.rfind("/logs/")]
 
     subject_name = subject.replace("/", "_")
 
@@ -44,10 +43,8 @@ def bb_pipeline_diff(subject):
     logger.info("Running pre_eddy...")
     lt.run_command(
         logger,
-        "$BB_BIN_DIR/bb_diffusion_pipeline/bb_eddy/bb_pre_eddy "
-        + subject,
-        "bb_pre_eddy_"
-        + subject_name
+        "$BB_BIN_DIR/bb_diffusion_pipeline/bb_eddy/bb_pre_eddy " + subject,
+        "bb_pre_eddy_" + subject_name,
     )
     logger.info("pre_eddy completed.")
 
@@ -57,28 +54,23 @@ def bb_pipeline_diff(subject):
             logger,
             "$BB_BIN_DIR/bb_diffusion_pipeline/tvb_SynB0/tvb_SynB0_pipeline.sh "
             + subject,
-            "tvb_bb_SynB0_pipeline_"
-            + subject_name
+            "tvb_bb_SynB0_pipeline_" + subject_name,
         )
         logger.info("SynB0 unwarping done.")
 
     logger.info("Running eddy..")
     lt.run_command(
         logger,
-        "$BB_BIN_DIR/bb_diffusion_pipeline/bb_eddy/bb_eddy_wrap "
-        + base_dir,
-        "bb_eddy_"
-        + subject_name
+        "$BB_BIN_DIR/bb_diffusion_pipeline/bb_eddy/bb_eddy_wrap " + base_dir,
+        "bb_eddy_" + subject_name,
     )
     logger.info("eddy completed.")
 
     logger.info("Running post_eddy...")
     lt.run_command(
         logger,
-        "$BB_BIN_DIR/bb_diffusion_pipeline/bb_eddy/bb_post_eddy "
-        + base_dir,
-        "bb_post_eddy_"
-        + subject_name
+        "$BB_BIN_DIR/bb_diffusion_pipeline/bb_eddy/bb_post_eddy " + base_dir,
+        "bb_post_eddy_" + subject_name,
     )
 
     logger.info("post_eddy completed.")
@@ -97,18 +89,15 @@ def bb_pipeline_diff(subject):
         + "/dMRI/dMRI/data_1_shell.bval -o "
         + base_dir
         + "/dMRI/dMRI/dti",
-        "bb_dtifit_"
-        + subject_name
+        "bb_dtifit_" + subject_name,
     )
     logger.info("DTIFIT completed.")
 
     logger.info("Running TBSS...")
     lt.run_command(
         logger,
-        "$BB_BIN_DIR/bb_diffusion_pipeline/bb_tbss/bb_tbss_general "
-        + subject,
-        "bb_tbss_"
-        + subject_name
+        "$BB_BIN_DIR/bb_diffusion_pipeline/bb_tbss/bb_tbss_general " + subject,
+        "bb_tbss_" + subject_name,
     )
     logger.info("TBSS completed.")
     # jobNODDI = lt.runCommand(
@@ -130,8 +119,7 @@ def bb_pipeline_diff(subject):
         "$BB_BIN_DIR/bb_diffusion_pipeline/bb_bedpostx/bb_pre_bedpostx_gpu "
         + base_dir
         + "/dMRI",
-        "bb_pre_bedpostx_gpu_"
-        + subject_name
+        "bb_pre_bedpostx_gpu_" + subject_name,
     )
     logger.info("pre_bedpostx completed.")
 
@@ -141,8 +129,7 @@ def bb_pipeline_diff(subject):
         "$BB_BIN_DIR/bb_diffusion_pipeline/bb_bedpostx/bb_bedpostx_gpu "
         + base_dir
         + "/dMRI",
-        "bb_bedpostx_gpu_"
-        + subject_name
+        "bb_bedpostx_gpu_" + subject_name,
     )
     logger.info("bedpostx completed.")
 
@@ -175,10 +162,8 @@ def bb_pipeline_diff(subject):
     logger.info("Running tvb_probtrackx...")
     lt.run_command(
         logger,
-        "$BB_BIN_DIR/bb_diffusion_pipeline/tvb_probtrackx2/tvb_probtrackx2 "
-        + base_dir,
-        "tvb_probtrackx_"
-        + subject_name
+        "$BB_BIN_DIR/bb_diffusion_pipeline/tvb_probtrackx2/tvb_probtrackx2 " + base_dir,
+        "tvb_probtrackx_" + subject_name,
     )
     logger.info("tvb_probtrackx completed.")
 
@@ -197,8 +182,7 @@ def bb_pipeline_diff(subject):
         logger,
         "$BB_BIN_DIR/bb_diffusion_pipeline/tvb_probtrackx2/tvb_post_probtrackx2 "
         + subject,
-        "tvb_post_probtrackx_"
-        + subject_name
+        "tvb_post_probtrackx_" + subject_name,
     )
     logger.info("post_probrackx completed.")
 
@@ -207,7 +191,6 @@ def bb_pipeline_diff(subject):
 
 
 if __name__ == "__main__":
-
     # grab subject name from command
     subject_ = sys.argv[1]
     fd_fileName = "logs/file_descriptor.json"

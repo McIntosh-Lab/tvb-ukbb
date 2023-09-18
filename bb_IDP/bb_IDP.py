@@ -31,18 +31,13 @@ sys.path.insert(1, os.path.dirname(__file__) + "/..")
 
 
 def bb_idp(subject):
-
     logger = logging.getLogger()
 
     subject_name = subject.replace("/", "_")
 
     print("Running IDP pipeline...")
     job_idp = lt.run_command(
-        logger,
-        "$BB_BIN_DIR/bb_IDP/bb_IDP "
-        + subject,
-        "bb_IDP_"
-        + subject_name
+        logger, "$BB_BIN_DIR/bb_IDP/bb_IDP " + subject, "bb_IDP_" + subject_name
     )
     print("IDP pipeline complete.")
     return job_idp

@@ -4,7 +4,7 @@
 #
 # Description: This script will call all the parcellation-specific subpipes required to reparcellate a processed
 # subject.
-# 
+#
 # Author: Justin Wang, Patrick Mahon (pmahon@sfu.ca)
 #
 # Adapted from scripts by: Fidel Alfaro-Almagro, Stephen M. Smith & Mark Jenkinson
@@ -22,6 +22,7 @@ sys.path.insert(1, os.path.dirname(__file__) + "/..")
 
 # from tvb_bb_QC.html_reparcellation import html_reparcellation
 # EXPORT PARC stuff
+
 
 def tvb_reparcellate_pipeline(subject_, file_configuration, PARC_NAME):
     """
@@ -57,9 +58,9 @@ def tvb_reparcellate_pipeline(subject_, file_configuration, PARC_NAME):
     subject_ = subject_.strip()
 
     if subject_[-1] == "/":
-        subject_ = subject_[0: len(subject_) - 1]
+        subject_ = subject_[0 : len(subject_) - 1]
 
-    base_dir = log_dir[0: log_dir.rfind("/logs/")]
+    base_dir = log_dir[0 : log_dir.rfind("/logs/")]
 
     subject_name = subject_.replace("/", "_")
 
@@ -70,14 +71,13 @@ def tvb_reparcellate_pipeline(subject_, file_configuration, PARC_NAME):
 
     LT.run_command(
         logger,
-        "${BB_BIN_DIR}/bb_structural_pipeline/tvb_struct_parcellation.sh "
-        + subject_,
+        "${BB_BIN_DIR}/bb_structural_pipeline/tvb_struct_parcellation.sh " + subject_,
         "tvb_struct_parcellation_"
         + subject_name
         + "_"
         + PARC_NAME
         + "_"
-        + "reparcellation"
+        + "reparcellation",
     )
 
     logger.info("Structural reparcellation pipeline completed.")
@@ -94,14 +94,8 @@ def tvb_reparcellate_pipeline(subject_, file_configuration, PARC_NAME):
         # compute FC using parcellation
         LT.run_command(
             logger,
-            "$BB_BIN_DIR/bb_functional_pipeline/tvb_FC "
-            + subject_,
-            "tvb_FC_"
-            + subject_name
-            + "_"
-            + PARC_NAME
-            + "_"
-            + "reparcellation"
+            "$BB_BIN_DIR/bb_functional_pipeline/tvb_FC " + subject_,
+            "tvb_FC_" + subject_name + "_" + PARC_NAME + "_" + "reparcellation",
         )
 
         logger.info("FC reparcellation completed.")
@@ -121,14 +115,8 @@ def tvb_reparcellate_pipeline(subject_, file_configuration, PARC_NAME):
     logger.info("Running tvb_probtrackx reparcellation...")
     LT.run_command(
         logger,
-        "$BB_BIN_DIR/bb_diffusion_pipeline/tvb_probtrackx2/tvb_probtrackx2 "
-        + base_dir,
-        "tvb_probtrackx_"
-        + subject_name
-        + "_"
-        + PARC_NAME
-        + "_"
-        + "reparcellation"
+        "$BB_BIN_DIR/bb_diffusion_pipeline/tvb_probtrackx2/tvb_probtrackx2 " + base_dir,
+        "tvb_probtrackx_" + subject_name + "_" + PARC_NAME + "_" + "reparcellation",
     )
     logger.info("tvb_probtrackx reparcellation completed.")
 
@@ -142,7 +130,7 @@ def tvb_reparcellate_pipeline(subject_, file_configuration, PARC_NAME):
         + "_"
         + PARC_NAME
         + "_"
-        + "reparcellation"
+        + "reparcellation",
     )
     logger.info("post_probrackx reparcellation completed.")
 
@@ -155,14 +143,8 @@ def tvb_reparcellate_pipeline(subject_, file_configuration, PARC_NAME):
     logger.info("Running IDP reparcellation pipeline...")
     LT.run_command(
         logger,
-        "$BB_BIN_DIR/bb_IDP/bb_IDP "
-        + subject_,
-        "bb_IDP_"
-        + subject_name
-        + "_"
-        + PARC_NAME
-        + "_"
-        + "reparcellation"
+        "$BB_BIN_DIR/bb_IDP/bb_IDP " + subject_,
+        "bb_IDP_" + subject_name + "_" + PARC_NAME + "_" + "reparcellation",
     )
     logger.info("IDP reparcellation pipeline complete.")
 
@@ -175,12 +157,7 @@ def tvb_reparcellate_pipeline(subject_, file_configuration, PARC_NAME):
         logger,
         " xvfb-run -a $BB_BIN_DIR/tvb_bb_QC/tvb_bb_QC.sh "  # -s '-screen 0 640x480x24'
         + subject_,
-        "tvb_bb_QC_"
-        + subject_name
-        + "_"
-        + PARC_NAME
-        + "_"
-        + "reparcellation"
+        "tvb_bb_QC_" + subject_name + "_" + PARC_NAME + "_" + "reparcellation",
     )
     logger.info("QC reparcellation pipeline complete.")
 
@@ -196,7 +173,7 @@ def tvb_reparcellate_pipeline(subject_, file_configuration, PARC_NAME):
         + "_"
         + PARC_NAME
         + "_"
-        + "reparcellation"
+        + "reparcellation",
     )
 
     logger.info("QC html reparcellation dropdown complete.")
@@ -217,7 +194,9 @@ if __name__ == "__main__":
 
     # check if subject directory exists
     if not os.path.isdir(subject):
-        print(outer_logger.format_to_error(f"{subject} is not a valid directory. Exiting"))
+        print(
+            outer_logger.format_to_error(f"{subject} is not a valid directory. Exiting")
+        )
         sys.exit(1)
 
     # attempt to open the JSON file
@@ -228,7 +207,11 @@ if __name__ == "__main__":
         with open(json_absolute_path, "r") as f:
             fileConfig = json.load(f)
     except Exception:
-        print(outer_logger.format_to_error(f"{json_relative_path} could not be loaded. Exiting"))
+        print(
+            outer_logger.format_to_error(
+                f"{json_relative_path} could not be loaded. Exiting"
+            )
+        )
         sys.exit(1)
     # call pipeline
     tvb_reparcellate_pipeline(subject, fileConfig, PARC_NAME)

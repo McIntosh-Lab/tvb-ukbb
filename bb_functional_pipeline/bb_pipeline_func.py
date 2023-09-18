@@ -31,10 +31,9 @@ sys.path.insert(1, os.path.dirname(__file__) + "/..")
 
 
 def bb_pipeline_func(subject, file_configuration):
-
     logger = logging.getLogger()
     log_dir = logger.log_dir
-    base_dir = log_dir[0: log_dir.rfind("/logs/")]
+    base_dir = log_dir[0 : log_dir.rfind("/logs/")]
 
     jobs_to_wait_for = ""
 
@@ -59,10 +58,8 @@ def bb_pipeline_func(subject, file_configuration):
     logger.info("Running bb_postprocess_struct...")
     lt.run_command(
         logger,
-        "$BB_BIN_DIR/bb_functional_pipeline/bb_postprocess_struct "
-        + subject,
-        "bb_postprocess_struct_"
-        + subject_name
+        "$BB_BIN_DIR/bb_functional_pipeline/bb_postprocess_struct " + subject,
+        "bb_postprocess_struct_" + subject_name,
     )
     logger.info("bb_postprocess_struct completed")
 
@@ -72,45 +69,35 @@ def bb_pipeline_func(subject, file_configuration):
         logger.info("Running rfMRI prep...")
         lt.run_command(
             logger,
-            "$BB_BIN_DIR/bb_functional_pipeline/bb_prepare_rfMRI "
-            + subject,
-            "bb_prepare_rfMRI_"
-            + subject_name
+            "$BB_BIN_DIR/bb_functional_pipeline/bb_prepare_rfMRI " + subject,
+            "bb_prepare_rfMRI_" + subject_name,
         )
         logger.info("rfMRI prep completed.")
 
         logger.info("Running FEAT...")
         lt.run_command(
             logger,
-            "feat "
-            + base_dir
-            + "/fMRI/rfMRI.fsf "
-            + subject,
-            "bb_feat_rfMRI_ns_"
-            + subject_name
+            "feat " + base_dir + "/fMRI/rfMRI.fsf " + subject,
+            "bb_feat_rfMRI_ns_" + subject_name,
         )
         logger.info("FEAT completed.")
 
         logger.info("Running FIX...")
         lt.run_command(
             logger,
-            "$BB_BIN_DIR/bb_functional_pipeline/bb_fix "
-            + subject,
-            "bb_fix_"
-            + subject_name
+            "$BB_BIN_DIR/bb_functional_pipeline/bb_fix " + subject,
+            "bb_fix_" + subject_name,
         )
         logger.info("FIX completed.")
 
         logger.info("Running FC...")
 
         # Functional connectivity
-        logger.info('Running functional connectivity...')
+        logger.info("Running functional connectivity...")
         lt.run_command(
             logger,
-            "$BB_BIN_DIR/bb_functional_pipeline/tvb_FC "
-            + subject,
-            "tvb_FC_"
-            + subject_name
+            "$BB_BIN_DIR/bb_functional_pipeline/tvb_FC " + subject,
+            "tvb_FC_" + subject_name,
         )
         logger.info("FC completed.")
 
@@ -130,10 +117,8 @@ def bb_pipeline_func(subject, file_configuration):
         logger.info("Cleaning up rfMRI files...")
         job_clean = lt.run_command(
             logger,
-            "$BB_BIN_DIR/bb_functional_pipeline/bb_clean_fix_logs "
-            + subject,
-            "bb_rfMRI_clean_"
-            + subject_name
+            "$BB_BIN_DIR/bb_functional_pipeline/bb_clean_fix_logs " + subject,
+            "bb_rfMRI_clean_" + subject_name,
         )
         logger.info("Done.")
 
@@ -152,21 +137,16 @@ def bb_pipeline_func(subject, file_configuration):
         logger.info("Running tfMRI prep...")
         lt.run_command(
             logger,
-            "$BB_BIN_DIR/bb_functional_pipeline/bb_prepare_tfMRI "
-            + subject,
-            "bb_prepare_tfMRI_"
-            + subject_name
+            "$BB_BIN_DIR/bb_functional_pipeline/bb_prepare_tfMRI " + subject,
+            "bb_prepare_tfMRI_" + subject_name,
         )
         logger.info("tfMRI prep complete.")
 
         logger.info("Running FEAT...")
         job_feat_t = lt.run_command(
             logger,
-            "feat  "
-            + base_dir
-            + "/fMRI/tfMRI.fsf",
-            "bb_feat_tfMRI_"
-            + subject_name
+            "feat  " + base_dir + "/fMRI/tfMRI.fsf",
+            "bb_feat_tfMRI_" + subject_name,
         )
         logger.info("FEAT completed.")
 
@@ -191,7 +171,6 @@ def bb_pipeline_func(subject, file_configuration):
 
 
 if __name__ == "__main__":
-
     # grab subject name from command
     subject_ = sys.argv[1]
     fd_fileName = "logs/file_descriptor.json"

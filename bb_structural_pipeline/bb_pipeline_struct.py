@@ -35,7 +35,6 @@ sys.path.insert(1, os.path.dirname(__file__) + "/..")
 
 
 def bb_pipeline_struct(subject, run_top_up, file_configuration):
-
     logger = logging.getLogger()
     job_swi = "-1"
 
@@ -77,8 +76,7 @@ def bb_pipeline_struct(subject, run_top_up, file_configuration):
                     + str(num_vols)
                     + " -l "
                     + str(b0_threshold),
-                    "bb_get_b0s_1_"
-                    + subject_name
+                    "bb_get_b0s_1_" + subject_name,
                 )
 
                 jobs_b0.append(
@@ -93,8 +91,7 @@ def bb_pipeline_struct(subject, run_top_up, file_configuration):
                         + "/fieldmap/B0_"
                         + encDir
                         + ".nii.gz ",
-                        "bb_choose_bestB0_1_"
-                        + subject_name
+                        "bb_choose_bestB0_1_" + subject_name,
                     )
                 )
 
@@ -107,8 +104,7 @@ def bb_pipeline_struct(subject, run_top_up, file_configuration):
                 + "/fieldmap/B0_AP "
                 + subject
                 + "/fieldmap/B0_PA",
-                "bb_fslmerge_"
-                + subject_name
+                "bb_fslmerge_" + subject_name,
             )
             logger.info("Top up setup COMPLETE.")
 
@@ -116,10 +112,8 @@ def bb_pipeline_struct(subject, run_top_up, file_configuration):
         logger.info("Running bb_struct_init...")
         job_struct_init = lt.run_command(
             logger,
-            "${BB_BIN_DIR}/bb_structural_pipeline/bb_struct_init "
-            + subject,
-            "bb_struct_init_"
-            + subject_name
+            "${BB_BIN_DIR}/bb_structural_pipeline/bb_struct_init " + subject,
+            "bb_struct_init_" + subject_name,
         )
         logger.info("bb_struct_init COMPLETE.")
 
@@ -128,10 +122,8 @@ def bb_pipeline_struct(subject, run_top_up, file_configuration):
             print("Running SWI registration...")
             job_swi = lt.run_command(
                 logger,
-                "$BB_BIN_DIR/bb_structural_pipeline/bb_swi_reg "
-                + subject,
-                "bb_swi_reg_"
-                + subject_name
+                "$BB_BIN_DIR/bb_structural_pipeline/bb_swi_reg " + subject,
+                "bb_swi_reg_" + subject_name,
             )
             logger.info("SWI registration COMPLETE.")
 
@@ -142,8 +134,7 @@ def bb_pipeline_struct(subject, run_top_up, file_configuration):
                 logger,
                 "$BB_BIN_DIR/bb_structural_pipeline/bb_prepare_struct_fieldmap "
                 + subject,
-                "bb_prepare_struct_fieldmap_"
-                + subject_name
+                "bb_prepare_struct_fieldmap_" + subject_name,
             )
 
             lt.run_command(
@@ -159,8 +150,7 @@ def bb_pipeline_struct(subject, run_top_up, file_configuration):
                 + "/fieldmap/fieldmap_fout --jacout="
                 + subject
                 + "/fieldmap/fieldmap_jacout -v",
-                "bb_topup_"
-                + subject_name
+                "bb_topup_" + subject_name,
             )
             logger.info("Topup COMPLETE.")
         else:
@@ -174,10 +164,8 @@ def bb_pipeline_struct(subject, run_top_up, file_configuration):
             logger.info("Running post-topup...")
             job_post_top_up = lt.run_command(
                 logger,
-                "$BB_BIN_DIR/bb_structural_pipeline/bb_post_topup "
-                + subject,
-                "bb_post_topup_"
-                + subject_name
+                "$BB_BIN_DIR/bb_structural_pipeline/bb_post_topup " + subject,
+                "bb_post_topup_" + subject_name,
             )
 
             logger.info("Post-topup COMPLETE.")

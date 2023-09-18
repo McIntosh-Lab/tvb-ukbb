@@ -52,38 +52,27 @@ import textwrap
 
 def init_logging(subject):
     """
-    init_logging initializes the logging system for the given python file and subject. The function creates and returns
-    a formatted python logger object.
+    Initializes the logging system for the given python file and subject.
 
     Args:
-        subject:    The name of the subject file being run.
+        subject: The name of the subject file being run.
 
     Returns:
-        A python logger object
+        A python logger object.
     """
+    log_file = f"logs/{subject}.log"
+    os.makedirs(os.path.dirname(log_file), exist_ok=True)
 
-    # Set logger defaults
-    formatter = "%(asctime)s - %(module)s - %(filename)s - %(levelname)s - %(message)s"
+    logging.basicConfig(
+        filename=log_file,
+        level=logging.INFO,
+        format="%(asctime)s - %(module)s - %(filename)s - %(levelname)s - %(message)s",
+    )
 
-    logging.basicConfig(level=logging.INFO, format=formatter)
-
-    # Set log file output
-    log_file = subject + "/logs/" + subject + ".log"i
-    
-    # Make the requisite logging directory
-    log_dir = os.getcwd() + "/" + subject + "/logs/"
-    if not os.path.isdir(log_dir):
-        os.mkdir(log_dir) 
-    
     logger = logging.getLogger()
-    logger.log_dir = log_dir
+    logger.log_dir = os.path.dirname(log_file)
 
-    # Set handlers
-    file_handler = logging.FileHandler(log_file)
-    file_handler.setLevel(logging.INFO)
-    logger.addHandler(file_handler)
-
-    logging.info("Logging directory created at: " + logger.log_dir)
+    logging.info("Logging directory created at: " + os.getcwd() + "/" + log_file)
 
     return logger
 
@@ -104,24 +93,30 @@ def run_command(logger, command, job_name):
     indent_level = 4
 
     try:
-
         # resolve environment var filepaths and parse
         command_list = shlex.split(os.path.expandvars(command))
 
         logger.info("RUNNING:\n\t" + command.strip())
 
         # create logging directory for the calling module if it doesn't exist.
-        calling_module = inspect.getmodule(inspect.stack()[1][0]).__name__ + "/"
+        calling_module = "/" + inspect.getmodule(inspect.stack()[1][0]).__name__ + "/"
 
         if not os.path.isdir(logger.log_dir + calling_module):
             os.mkdir(logger.log_dir + calling_module)
 
         # perform the designated commands and capture output
-        std_out_file = logger.log_dir + calling_module + job_name + '.o'
-        std_error_file = logger.log_dir + calling_module + job_name + '.e'
+        std_out_file = (
+            logger.log_dir + "/" + calling_module.split(".")[0] + "/" + job_name + ".o"
+        )
+        std_error_file = (
+            logger.log_dir + "/" + calling_module.split(".")[0] + "/" + job_name + ".e"
+        )
 
-        std_out = open(std_out_file, 'w')
-        std_error = open(std_error_file, 'w')
+        os.makedirs(os.path.dirname(std_out_file), exist_ok=True)
+        os.makedirs(os.path.dirname(std_error_file), exist_ok=True)
+
+        std_out = open(std_out_file, "w+")
+        std_error = open(std_error_file, "w+")
 
         run(command_list, text=True, stdout=std_out, stderr=std_error)
 
@@ -131,7 +126,7 @@ def run_command(logger, command, job_name):
         logger.info("STANDARD OUT: " + std_out_file)
         logger.info("STANDARD ERROR: " + std_error_file)
 
-        logger.info("COMPLETE:\n\t" + command.strip())
+        logger.info("COMPLETE: " + command.strip())
 
     except Exception as e:
         logger.error("Exception raised during execution of: \n\t" + command.strip())

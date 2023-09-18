@@ -43,15 +43,15 @@ if __name__ == "__main__":
     """Function that generates distance, fdt_network_matrix.txt,
     SC, waytotal, fdt_network_matrix for a subject.
 
-    
+
     Usage
     ----------
     python  tvb_concat_probtrackx2.py  subj
-    
+
 
     Arguments
     ----------
-    subj : 
+    subj :
         Full path to subject's directory.
 
     """

@@ -29,7 +29,6 @@ class Usage(Exception):
 
 
 def bb_pipeline_FS(subject, jobHold, fileConfiguration):
-
     logger = logging.getLogger()
     logDir = logger.log_dir
     baseDir = logDir[0 : logDir.rfind("/logs/")]
@@ -65,7 +64,6 @@ def bb_pipeline_FS(subject, jobHold, fileConfiguration):
 
 
 def main():
-
     parser = MyParser(description="BioBank FreeSurfer Tool")
     parser.add_argument("subjectFolder", help="Subject Folder")
 

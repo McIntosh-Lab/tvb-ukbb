@@ -54,11 +54,11 @@ def format_file_config():
 
 def generate_sb_ref(orig_path, output_path):
     command_to_run = (
-            os.environ["BB_BIN_DIR"]
-            + "/bb_functional_pipeline/bb_generate_SBRef "
-            + orig_path
-            + " "
-            + output_path
+        os.environ["BB_BIN_DIR"]
+        + "/bb_functional_pipeline/bb_generate_SBRef "
+        + orig_path
+        + " "
+        + output_path
     )
     logger.warning("There was no SBRef data for the subject " + orig_path)
     logger.warning(
@@ -133,7 +133,9 @@ def image_type_contains(file_name, desired_type):
         image_type = image_type.split("_")
     elif not isinstance(image_type, list):
         raise NameError(
-            "The content of the json file associated with " + file_name + " is incorrect"
+            "The content of the json file associated with "
+            + file_name
+            + " is incorrect"
         )
 
     if desired_type in image_type:
@@ -212,8 +214,7 @@ def robust_sort(list_files):
     alternate = []
 
     for fileName in list_files:
-
-        rest = fileName[fileName.rfind("_") + 1:]
+        rest = fileName[fileName.rfind("_") + 1 :]
 
         try:
             cad_numb = rest[: rest.find(".")]
@@ -221,7 +222,7 @@ def robust_sort(list_files):
                 cad_numb = cad_numb[:-1]
             for phaseEnd in ["PH", "ph"]:
                 if cad_numb == phaseEnd:
-                    rest = fileName[fileName.rfind("_" + phaseEnd) - 2:]
+                    rest = fileName[fileName.rfind("_" + phaseEnd) - 2 :]
                     cad_numb = rest[: rest.find("_" + phaseEnd + ".")]
 
             numb = int(cad_numb)
@@ -262,14 +263,16 @@ def manage_struct(list_files, flag):
         bool_norm = bool_norm[:index_last_norm]
 
         if False in bool_norm:
-
             index_last_not_norm = (
-                                          len(bool_norm) - list(reversed(bool_norm[:index_last_norm])).index(False)
-                                  ) - 1
+                len(bool_norm)
+                - list(reversed(bool_norm[:index_last_norm])).index(False)
+            ) - 1
 
             if index_last_not_norm >= 0:
                 not_normalised_file_name = list_files[index_last_not_norm]
-                move_file_add_to_config(not_normalised_file_name, flag + "_notNorm", False)
+                move_file_add_to_config(
+                    not_normalised_file_name, flag + "_notNorm", False
+                )
                 list_files.remove(not_normalised_file_name)
 
     for fileName in list_files:
@@ -422,17 +425,23 @@ def manage_dwi(list_files):
 
         # Code needed for the inconsistency in the file names in Diffusion over the different phases
         if list_files[0].startswith("MB3"):
-
             sub_list_files_d["PA"] = [x for x in list_files if x.find("PA") != -1]
-            image_files_d["PA"] = [x for x in sub_list_files_d["PA"] if bb_path.isImage(x)]
+            image_files_d["PA"] = [
+                x for x in sub_list_files_d["PA"] if bb_path.isImage(x)
+            ]
 
-            sub_list_files_d["AP"] = [x for x in list_files if x not in sub_list_files_d["PA"]]
-            image_files_d["AP"] = [x for x in sub_list_files_d["AP"] if bb_path.isImage(x)]
+            sub_list_files_d["AP"] = [
+                x for x in list_files if x not in sub_list_files_d["PA"]
+            ]
+            image_files_d["AP"] = [
+                x for x in sub_list_files_d["AP"] if bb_path.isImage(x)
+            ]
 
         elif "dwi" in list_files[0] or "DWI" in list_files[0]:
-
             sub_list_files_d["dwi"] = [x for x in list_files if x.find("dwi") != -1]
-            image_files_d["dwi"] = [x for x in sub_list_files_d["dwi"] if bb_path.isImage(x)]
+            image_files_d["dwi"] = [
+                x for x in sub_list_files_d["dwi"] if bb_path.isImage(x)
+            ]
 
         else:
             for direction in encoding_directions:
@@ -443,9 +452,7 @@ def manage_dwi(list_files):
                     x for x in sub_list_files_d[direction] if bb_path.isImage(x)
                 ]
         try:
-
             for direction in encoding_directions:
-
                 dim = []
 
                 sub_list_files = sub_list_files_d[direction]
@@ -462,7 +469,7 @@ def manage_dwi(list_files):
                         "There should be at least one DWI image in the "
                         + direction
                         + " direction with more than one volume. DWI data is not correct."
-                          " There will be no diffusion processing."
+                        " There will be no diffusion processing."
                     )
 
                 biggest_image_dim = max(dim)
@@ -474,7 +481,7 @@ def manage_dwi(list_files):
                         "There should be at least one DWI image in the "
                         + direction
                         + " direction with more than one volume. DWI data is not correct."
-                          " There will be no diffusion processing."
+                        " There will be no diffusion processing."
                     )
 
                 if num_image_files > 1:
@@ -488,30 +495,35 @@ def manage_dwi(list_files):
 
                     # If there is at least one, take the last one.
                     else:
-
                         # Get the index of the last image with dimension = 1
-                        index_sb_ref = num_image_files - list(reversed(dim)).index(1) - 1
+                        index_sb_ref = (
+                            num_image_files - list(reversed(dim)).index(1) - 1
+                        )
                         move_file_add_to_config(
                             image_files[index_sb_ref], direction + "_SBRef", False
                         )
 
                 # Take the biggest image in the selected direction and set it as the DWI image for that direction
-                move_file_add_to_config(image_files[ind_biggest_image], direction, False)
+                move_file_add_to_config(
+                    image_files[ind_biggest_image], direction, False
+                )
 
                 # BVAL and BVEC files should have the same name as the image, changing the extension
                 bval_file_name = (
-                        bb_path.removeImageExt(image_files[ind_biggest_image]) + ".bval"
+                    bb_path.removeImageExt(image_files[ind_biggest_image]) + ".bval"
                 )
                 bvec_file_name = (
-                        bb_path.removeImageExt(image_files[ind_biggest_image]) + ".bvec"
+                    bb_path.removeImageExt(image_files[ind_biggest_image]) + ".bvec"
                 )
 
-                if (bval_file_name not in sub_list_files) or (bvec_file_name not in sub_list_files):
+                if (bval_file_name not in sub_list_files) or (
+                    bvec_file_name not in sub_list_files
+                ):
                     raise Exception(
                         "There should be 1 bval and 1 bvec file in "
                         + direction
                         + " direction. DWI data is not correct. There will be no"
-                          " diffusion processing."
+                        " diffusion processing."
                     )
 
                 move_file_add_to_config(bvec_file_name, direction + "_bvec", False)
@@ -525,7 +537,6 @@ def manage_dwi(list_files):
 
         # Set the rest of the files as unclassified
         for fileName in list_files:
-
             if os.path.isfile(fileName):
                 fpath, fname = os.path.split(fileName)
                 # quick way to prevent dwi files from being copied into unclassified
@@ -562,7 +573,6 @@ def manage_swi(list_files):
 
         # Classifying coil files
         for fileName in list_files:
-
             bool_phase = is_phase(fileName)
             # bool_phase= bb_path.removeImageExt(fileName).endswith('_PHA')
             bool_te1 = fileName.find("_ECHO1_") != -1
@@ -587,8 +597,8 @@ def manage_swi(list_files):
             mainFile
             for mainFile in main_files
             if (
-                    (not is_normalised(mainFile))
-                    and (not (bb_path.removeImageExt(mainFile).endswith("_PH")))
+                (not is_normalised(mainFile))
+                and (not (bb_path.removeImageExt(mainFile).endswith("_PH")))
             )
         ]
 
@@ -614,7 +624,6 @@ def manage_swi(list_files):
                 main_files.remove(notNormMagFile)
 
             for mainFile in main_files:
-
                 # bool_phase=is_phase(mainFile)
                 bool_phase = bb_path.removeImageExt(mainFile).endswith("_PH")
                 bool_te1 = mainFile.find("_ECHO1_") != -1
@@ -660,6 +669,7 @@ def bb_file_manager(subject_):
         "dMRI/raw",
         "fMRI",
         "fieldmap",
+        "logs",
     ]
 
     patterns_actions = [
@@ -693,7 +703,7 @@ def bb_file_manager(subject_):
         ],
         [["SWI*nii.gz"], manage_swi],
         [["DIFF_*", "MB3_*", "*dwi*.*", "*DWI*.*"], manage_dwi],
-        [["SWI*.*"], move_to, "SWI/unclassified/"]
+        [["SWI*.*"], move_to, "SWI/unclassified/"],
     ]
 
     os.chdir(subject_)
@@ -724,7 +734,9 @@ def bb_file_manager(subject_):
                 list_files.extend(
                     [
                         x
-                        for x in glob.glob(os.getcwd() + "/**/" + fileTy, recursive=True)
+                        for x in glob.glob(
+                            os.getcwd() + "/**/" + fileTy, recursive=True
+                        )
                         if x not in list_files
                     ]
                 )
@@ -740,7 +752,7 @@ def bb_file_manager(subject_):
         # Create file descriptor
         logger.info(f"FILECONFIG:\n\t{fileConfig}")
         fd = open(fd_file_name, "w")
-        json.dump(fileConfig, fd, sort_keys=True, indent=4, separators=(',', ': '))
+        json.dump(fileConfig, fd, sort_keys=True, indent=4, separators=(",", ": "))
         fd.close()
 
     os.chdir("..")

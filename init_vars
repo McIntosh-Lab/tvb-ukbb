@@ -31,7 +31,7 @@
 export BBDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && cd ..; pwd )"
 	
 #SETUP FSL  
-export FSLDIR=/opt/fsl                                       							#TO BE MODIFIED BY USER (DEFAULT FOR SINGULARITY)
+export FSLDIR=/apps/fsl                                      							#TO BE MODIFIED BY USER (DEFAULT FOR SINGULARITY)
 . $FSLDIR/etc/fslconf/fsl.sh
 export FSLCONFDIR="${FSLDIR}/config"
 export FSLOUTPUTTYPE="NIFTI_GZ"
@@ -49,28 +49,27 @@ export QUEUE_MAX_MEM="bigmem_64.q"                                              
 #           use for systems without CUDA GPU
 export PROBTRACKX_GPU="true"
 
-export REPARCELLATE="false" #TO BE MODIFIED BY USER
+export REPARCELLATE="false" 											#TO BE MODIFIED BY USER
 
 #SETUP AFNI
-# export AFNIDIR=/opt/afni                                                        				#TO BE MODIFIED BY USER
-export AFNIDIR="/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Compiler/gcc9/afni/20.3.05"
+export AFNIDIR=/apps/afni                                                        				#TO BE MODIFIED BY USER
+# export AFNIDIR="/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Compiler/gcc9/afni/20.3.05"
 
 #SETUP FREESURFER 
-# export FREESURFER_HOME=/cvmfs/soft.computecanada.ca/easybuild/software/2020/Core/freesurfer/5.3.0/bin/freesurfer	#TO BE MODIFIED BY USER
+export FREESURFER_HOME=/apps/freesurfer										#TO BE MODIFIED BY USER
 
 # if usin on Compute Canada, load module first
-source $EBROOTFREESURFER/FreeSurferEnv.sh
-# source $FREESURFER_HOME/SetUpFreeSurfer.sh  > /dev/null
+# source $EBROOTFREESURFER/FreeSurferEnv.sh
+source ${FREESURFER_HOME}/7.4.1/SetUpFreeSurfer.sh  > /dev/null
 
 #SETUP ANTS
-export ANTSPATH="/cvmfs/soft.computecanada.ca/easybuild/software/2020/avx2/Compiler/gcc9/ants/2.3.5/bin"
+export ANTSPATH="/apps/ANTs/install/bin/ANTS"
 
-export SOFTDIR="/opt/tvb-pipeline"										#TO BE MODIFIED BY USER (DEFAULT FOR SINGULARITY)
+export SOFTDIR="/apps/tvb-pipeline"										#TO BE MODIFIED BY USER (DEFAULT FOR SINGULARITY)
 
 
 # SET UP MATLAB
-export MCROOT="/opt/mcr"											#TO BE MODIFIED BY USER (DEFAULT FOR SINGULARITY)
-export MCRV="v93"
+export MCROOT="/cvmfs/rcg.sfu.ca/sw/local-linux/bin/matlab"							#TO BE MODIFIED BY USER (DEFAULT FOR SINGULARITY)
 
 #Move $FSLDIR/bin before $FREESURFER_HOME in the path
 FSLDIRseddable=`echo $FSLDIR | sed 's|/|\\\/|g'`

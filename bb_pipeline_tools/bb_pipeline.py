@@ -65,7 +65,7 @@ def main(cli_args=None):
     subject = subject.strip()
 
     if subject[-1] == "/":
-        subject = subject[0: len(subject) - 1]
+        subject = subject[0 : len(subject) - 1]
 
     # LOGGING INITIALIZATION
     logger = logging.getLogger()
@@ -74,8 +74,8 @@ def main(cli_args=None):
     logger.info("Logger configured.")
 
     # WORKFLOW HANDLING
-    reparcellate = os.environ['REPARCELLATE']
-    parc_name = os.environ['PARC_NAME']
+    reparcellate = os.environ["REPARCELLATE"]
+    parc_name = os.environ["PARC_NAME"]
 
     if reparcellate == "true":
         # REPARCELLATION PIPELINE
@@ -88,7 +88,6 @@ def main(cli_args=None):
         logger.info("Main reparcellation pipeline COMPLETE.")
 
     if reparcellate == "false":
-
         logger.info("Cleaning directory and removing old files...")
         # Remove old intermediate data from previous runs
         retain = ["rawdata"]
@@ -115,16 +114,20 @@ def main(cli_args=None):
 
         logger.info("File configuration before QC:\n\t" + str(file_config))
         file_config = bb_basic_qc(subject, file_config)
-        logger.info("File configuration after running file manager:\n\t" + str(file_config))
+        logger.info(
+            "File configuration after running file manager:\n\t" + str(file_config)
+        )
 
         # run_top_up ==> Having field-map
         if not (
-                (("AP" in file_config) and (file_config["AP"] != ""))
-                and (("PA" in file_config) and (file_config["PA"] != ""))
+            (("AP" in file_config) and (file_config["AP"] != ""))
+            and (("PA" in file_config) and (file_config["PA"] != ""))
         ):
-            logger.warning("There is no proper AP/PA data. Thus, TOP UP will not be run")
+            logger.warning(
+                "There is no proper AP/PA data. Thus, TOP UP will not be run"
+            )
             run_top_up = False
-            logger.warn("NO TOP UP")
+            logger.warning("NO TOP UP")
         else:
             run_top_up = True
 
@@ -157,7 +160,9 @@ def main(cli_args=None):
         logger.info("Main pipeline COMPLETE.")
 
     else:
-        logger.error("Invalid reparcellation argument\n Check environment variable \"REPARCELLATE\"")
+        logger.error(
+            'Invalid reparcellation argument\n Check environment variable "REPARCELLATE"'
+        )
 
 
 if __name__ == "__main__":

@@ -31,7 +31,6 @@ sys.path.insert(1, os.path.dirname(__file__) + "/..")
 
 
 def tvb_bb_qc(subject):
-
     logger = logging.getLogger()
 
     subject_name = subject.replace("/", "_")
@@ -41,8 +40,7 @@ def tvb_bb_qc(subject):
         logger,
         " xvfb-run -a $BB_BIN_DIR/tvb_bb_QC/tvb_bb_QC.sh "  # -s '-screen 0 640x480x24'
         + subject,
-        "tvb_bb_QC_"
-        + subject_name
+        "tvb_bb_QC_" + subject_name,
     )
     print("QC pipeline complete.")
     return job_qc

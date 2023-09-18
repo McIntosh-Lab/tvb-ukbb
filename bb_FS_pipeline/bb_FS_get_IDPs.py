@@ -46,7 +46,6 @@ def read_file(fileName):
 def generate_FS_IDP_files(
     SUBJECTS_DIR, subject_ID, subject, dataDir, headersDir, logger
 ):
-
     os.environ["SUBJECTS_DIR"] = SUBJECTS_DIR
     statsDir = SUBJECTS_DIR + subject_ID + "/stats/"
 
@@ -169,7 +168,6 @@ def generate_FS_IDP_files(
 
 # Quick consistency check
 def check_consistency(data_dict):
-
     for file_generated in data_dict.keys():
         if len(data_dict[file_generated]) > 2:
             print("Error in " + file_generated + ": File has more than 2 lines")
@@ -184,7 +182,6 @@ def check_consistency(data_dict):
 
 
 def fix_aseg_data(data_dict, subjectDir):
-
     # Split aseg_1 into aseg_global and aseg_volume
     data_dict["aseg_global"] = [[], []]
     data_dict["aseg_global"][0] = [data_dict["aseg_1"][0][0]] + data_dict["aseg_1"][0][
@@ -259,7 +256,6 @@ def fix_aseg_data(data_dict, subjectDir):
 
 
 def gen_aparc_special(data_dict, subjectDir):
-
     struct_data = []
 
     struct_data.append(
@@ -348,7 +344,6 @@ def gen_subsegmentation(data_dict, subjectDir, subject):
 
 
 def fix_aparc_data(data_dict, subjectDir):
-
     # Remove the column "temporalpole" in aparc files.
     # Unreliable measure: Very few subjects have that measure.
     for key in list(data_dict.keys()):
@@ -418,7 +413,6 @@ def remove_first_feature(data_dict, subject):
 
 
 def fix_headers(data_dict):
-
     # Applying some general replacing rules for the categories
     replace_rules = [
         [".", "-"],
@@ -575,7 +569,6 @@ def fix_headers(data_dict):
 
 
 def save_data(data_dict, SUBJECTS_DIR):
-
     with open(os.environ["BB_BIN_DIR"] + "/bb_data/FS_headers.txt") as f:
         final_headers = [x.replace("\n", "") for x in f.readlines()]
 
@@ -600,7 +593,6 @@ def save_data(data_dict, SUBJECTS_DIR):
 
 
 def save_headers_info(data_dict, SUBJECTS_DIR):
-
     with open(os.environ["BB_BIN_DIR"] + "/bb_data/FS_final_headers.txt") as f:
         final_headers = [x.replace("\n", "") for x in f.readlines()]
 
@@ -626,7 +618,6 @@ def save_headers_info(data_dict, SUBJECTS_DIR):
 
 
 def bb_FS_get_IDPs(subject):
-
     logger = logging.getLogger()
     #    logger  = lt.initLogging('log', subject)
     logDir = logger.log_dir
@@ -668,7 +659,6 @@ def bb_FS_get_IDPs(subject):
 
 
 def main():
-
     parser = MyParser(description="BioBank FreeSurfer IDP generation Tool")
     parser.add_argument("subjectFolder", help="Subject Folder")
 
