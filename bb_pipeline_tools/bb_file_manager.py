@@ -486,60 +486,60 @@ def manage_DWI(listFiles):
             imageFiles = imageFilesD[direction]
             for fileName in imageFiles:
                 epi_img = nib.load(fileName)
-                dim.append(epi_img.header[“dim”][4])
+                dim.append(epi_img.header["dim"][4])
             numImageFiles = len(imageFiles)
             if numImageFiles == 0:
                 raise Exception(
-                    “There should be at least one DWI image in the ”
+                    "There should be at least one DWI image in the "
                     + direction
-                    + ” direction with more than one volume. DWI data is not correct.”
-                    ” There will be no diffusion processing.”
+                    + " direction with more than one volume. DWI data is not correct."
+                    " There will be no diffusion processing."
                 )
             biggestImageDim = max(dim)
             indBiggestImage = dim.index(biggestImageDim)
             # There is no proper DWI image
             if biggestImageDim <= 1:
                 raise Exception(
-                    “There should be at least one DWI image in the ”
+                    "There should be at least one DWI image in the "
                     + direction
-                    + ” direction with more than one volume. DWI data is not correct.”
-                    ” There will be no diffusion processing.”
+                    + " direction with more than one volume. DWI data is not correct."
+                    " There will be no diffusion processing."
                 )
             if numImageFiles > 1:
                 # Check if there is SBRef file for the direction
                 if dim.count(1) == 0:
                     logger.warn(
-                        “There was no SBRef file in the ”
+                        "There was no SBRef file in the "
                         + direction
-                        + ” direction.”
+                        + " direction."
                     )
                 # If there is at least one, take the last one.
                 else:
                     # Get the index of the last image with dimension = 1
                     indexSBRef = numImageFiles - list(reversed(dim)).index(1) - 1
                     move_file_add_to_config(
-                        imageFiles[indexSBRef], direction + “_SBRef”, False
+                        imageFiles[indexSBRef], direction + "_SBRef", False
                     )
             # Take the biggest image in the selected direction and set it as the DWI image for that direction
             move_file_add_to_config(imageFiles[indBiggestImage], direction, False)
             # BVAL and BVEC files should have the same name as the image, changing the extension
             bvalFileName = (
-                bb_path.removeImageExt(imageFiles[indBiggestImage]) + “.bval”
+                bb_path.removeImageExt(imageFiles[indBiggestImage]) + ".bval"
             )
             bvecFileName = (
-                bb_path.removeImageExt(imageFiles[indBiggestImage]) + “.bvec”
+                bb_path.removeImageExt(imageFiles[indBiggestImage]) + ".bvec"
             )
             if (not bvalFileName in subListFiles) or (
                 not bvecFileName in subListFiles
             ):
                 raise Exception(
-                    “There should be 1 bval and 1 bvec file in ”
+                    "There should be 1 bval and 1 bvec file in "
                     + direction
-                    + ” direction. DWI data is not correct. There will be no”
-                    ” diffusion processing.”
+                    + " direction. DWI data is not correct. There will be no"
+                    " diffusion processing."
                 )
-            move_file_add_to_config(bvecFileName, direction + “_bvec”, False)
-            move_file_add_to_config(bvalFileName, direction + “_bval”, False)
+            move_file_add_to_config(bvecFileName, direction + "_bvec", False)
+            move_file_add_to_config(bvalFileName, direction + "_bval", False)
 
 
         # In case of any big error in the data, set DWI data as inexistent.
