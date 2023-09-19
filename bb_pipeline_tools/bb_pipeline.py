@@ -84,9 +84,9 @@ def main(cli_args=None):
 
         logger.info("File configuration before QC: " + str(fileConfig))
 
-        fileConfig = bb_basic_QC(subject, fileConfig)
+        #fileConfig = bb_basic_QC(subject, fileConfig)
 
-        logger.info("File configuration after running file manager: " + str(fileConfig))
+        #logger.info("File configuration after running file manager: " + str(fileConfig))
 
         # runTopup ==> Having fieldmap
         if not (
@@ -110,7 +110,7 @@ def main(cli_args=None):
         jobSTEP5 = "-1"
 
         # jobSTEP1 = bb_pipeline_struct(subject, runTopup, fileConfig)
-        bb_pipeline_struct(subject, runTopup, fileConfig)
+        #bb_pipeline_struct(subject, runTopup, fileConfig)
         #handle cases: when jobstep1 would typically trigger the following
         if isinstance(jobSTEP1, int):
             if jobSTEP1 == -1:
@@ -136,17 +136,17 @@ def main(cli_args=None):
         #     subject,
         #     fileConfig
         # )
-        bb_pipeline_func(subject, fileConfig)
-        bb_pipeline_diff(subject, fileConfig)
+        #bb_pipeline_func(subject, fileConfig)
+        #bb_pipeline_diff(subject, fileConfig)
 
-        bb_IDP(
-            subject, fileConfig
-        )
+        #bb_IDP(
+        #    subject, fileConfig
+        #)
 
-        tvb_bb_QC(
-            subject,
-            fileConfig
-        )
+        #tvb_bb_QC(
+        #    subject,
+        #    fileConfig
+        #)
 
     LT.finishLogging(logger)
     # return jobSTEP5

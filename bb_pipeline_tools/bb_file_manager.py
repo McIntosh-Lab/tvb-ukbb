@@ -418,6 +418,8 @@ def manage_DWI(listFiles):
 
     # listFiles = robustSort(listFiles)
     listFiles = [rename_no_coil_echo_info(x) for x in listFiles]
+    print("we are here")
+    print(f"files: {listFiles}")
 
     # ignore _ADC files from ADNI3
     for fpath in listFiles:
@@ -428,6 +430,8 @@ def manage_DWI(listFiles):
     imageFilesD = {}
 
     numFiles = len(listFiles)
+    print("we are now here")
+    print(f"numFiles: {numFiles}")
     if numFiles == 0:
         logger.error("There was no DWI data.  There will be no DWI processing.")
 
@@ -443,6 +447,9 @@ def manage_DWI(listFiles):
                 numAP += 1
 
         # use single-direction if only one direction found
+        print("and now here")
+        print(numAP)
+
         if numAP <= 1:
             encodingDirections = ["DTI"]
             logger.info("Single-direction DWI detected.")
@@ -723,7 +730,7 @@ def bb_file_manager(subject):
             "tfMRI",
         ],
         [["SWI*nii.gz"], manage_SWI],
-        [["*DTI_60*.*"], manage_DWI],
+        [["*DTI*.*"], manage_DWI],
         [["SWI*.*"], move_to, "SWI/unclassified/"],
         [["*.[^log]"], move_to, "unclassified/"],
     ]
