@@ -37,6 +37,7 @@ sys.path.insert(1, os.path.dirname(__file__) + "/..")
 def bb_pipeline_struct(subject, run_top_up, file_configuration):
     logger = logging.getLogger()
     job_swi = "-1"
+    job_struct_init = "-1"
 
     subject_name = subject.replace("/", "_")
 
