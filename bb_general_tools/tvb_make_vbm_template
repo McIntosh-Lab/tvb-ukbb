@@ -301,69 +301,90 @@ function create_GM_template () {
 }
 
 #-MAIN-----------------------------------------------------------------------------------------------------------------#
-
-# Input validation
-if [[ $# -ne 2 ]]; then
-  # shellcheck disable=SC2210
-  >&2 echo -e "$(date '+%Y-%m-%d %H:%M:%S'):\n\tUsage:\t bb_voxel_based_morphometry source destination [-n N] [-t template_list] [-N] [-a]"
-  exit 1
-fi
-
-T1_source_folder=$1
-T1_destination_folder=$2
-
-n_subjects=""
-template_list=""
-a_option=false
-N_option=false
-
-
-while getopts "n:t:Na" option; do
-  case $option in
-    n)
-      n_subjects=${OPTARG}
+# Function to execute specific parts of the script
+function execute_specific_function() {
+  case $1 in
+    brain_extraction)
+      brain_extraction "$2"
       ;;
-    t)
-      template_list=${OPTARG}
+    create_GM_template)
+      create_GM_template "$2"
       ;;
-    N)
-      N_option=true
-      exit;;
-   a)
-      a_option=true
-      exit;;
-    \?)
-      # shellcheck disable=SC2210
-      >&2 echo -e "$(date '+%Y-%m-%d %H:%M:%S'):\n\tError:\t Invalid option."
-      exit 1;;
+    *)
+      >&2 echo -e "Invalid function name. Available options: brain_extraction, create_GM_template"
+      exit 1
+      ;;
   esac
+}
 
-  # A)
-  # Copy folders to submission directory
-  if [[ -z $n_subjects ]]; then
-    collate_T1_data "$T1_source_folder" "$T1_destination_folder" -n n_subjects
-  elif [[ -z $template_list ]]; then
-    collate_T1_data "$T1_source_folder" "$T1_destination_folder" -t "$template_list"
-  else
-    collate_T1_data "$T1_source_folder" "$T1_destination_folder"
+# Check for special mode to execute specific functions
+if [[ $1 == "execute_function" ]]; then
+  execute_specific_function "$2" "$3"
+else
+
+  # Input validation
+  if [[ $# -ne 2 ]]; then
+    # shellcheck disable=SC2210
+    >&2 echo -e "$(date '+%Y-%m-%d %H:%M:%S'):\n\tUsage:\t bb_voxel_based_morphometry source destination [-n N] [-t template_list] [-N] [-a]"
+    exit 1
   fi
-
-  # B)
-  # Perform brain extraction
-  if [[ $N_option ]]; then
-    brain_extraction "$destination" -N
-  else
-    brain_extraction "$destination" -N
-  fi
-
-  # C)
-  # Build template
-  if [[ $a_option ]]; then
-    # affine registration
-    create_GM_template "$destination" -a
-  else
-    # nonlinear registration
-    create_GM_template "$destination"
-  fi
-
-done
+  
+  T1_source_folder=$1
+  T1_destination_folder=$2
+  
+  n_subjects=""
+  template_list=""
+  a_option=false
+  N_option=false
+  
+  
+  while getopts "n:t:Na" option; do
+    case $option in
+      n)
+        n_subjects=${OPTARG}
+        ;;
+      t)
+        template_list=${OPTARG}
+        ;;
+      N)
+        N_option=true
+        exit;;
+     a)
+        a_option=true
+        exit;;
+      \?)
+        # shellcheck disable=SC2210
+        >&2 echo -e "$(date '+%Y-%m-%d %H:%M:%S'):\n\tError:\t Invalid option."
+        exit 1;;
+    esac
+  
+    # A)
+    # Copy folders to submission directory
+    if [[ -z $n_subjects ]]; then
+      collate_T1_data "$T1_source_folder" "$T1_destination_folder" -n n_subjects
+    elif [[ -z $template_list ]]; then
+      collate_T1_data "$T1_source_folder" "$T1_destination_folder" -t "$template_list"
+    else
+      collate_T1_data "$T1_source_folder" "$T1_destination_folder"
+    fi
+  
+    # B)
+    # Perform brain extraction
+    if [[ $N_option ]]; then
+      brain_extraction "$destination" -N
+    else
+      brain_extraction "$destination" -N
+    fi
+  
+    # C)
+    # Build template
+    if [[ $a_option ]]; then
+      # affine registration
+      create_GM_template "$destination" -a
+    else
+      # nonlinear registration
+      create_GM_template "$destination"
+    fi
+  
+  done
+fi
