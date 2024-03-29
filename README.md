@@ -28,6 +28,12 @@ The original `UK_biobank_pipeline` is explained in detail in the paper [Image Pr
 Tractography for connectome construction is based on methods validated using tracer data in macaques (see Shen et al. 2019 https://doi.org/10.1016/j.neuroimage.2019.02.018).
 
 
+Where to get Help
+-------------
+
+We recommend checking out the [Wiki](https://github.com/McIntosh-Lab/tvb-ukbb/wiki), [FAQ](https://github.com/McIntosh-Lab/tvb-ukbb/wiki/FAQ), and [Discussions Page](https://github.com/McIntosh-Lab/tvb-ukbb/discussions) for help. Please direct any questions and support requests to our [Discussions Page](https://github.com/McIntosh-Lab/tvb-ukbb/discussions) and not in [Issues](https://github.com/McIntosh-Lab/tvb-ukbb/issues). 
+
+
 Notes
 -----
 
