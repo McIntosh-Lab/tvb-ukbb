@@ -11,7 +11,7 @@ contact_links:
     about: Discussions Board
   - name: 💡 Feature Requests
     url: https://github.com/McIntosh-Lab/tvb-ukbb/discussions/new/choose
-    about: tvb-ukbb missing something? Let us know.
+    about: Is tvb-ukbb missing something?
   - name: 🛠️ Support Requests
     url: https://github.com/McIntosh-Lab/tvb-ukbb/discussions/new/choose
     about: Something not working? Having trouble with installation or processing?
