@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 Documentation
+    url: https://github.com/McIntosh-Lab/tvb-ukbb/wiki
+    about: Official tvb-ukbb documentation
+  - name: ❓ FAQ
+    about: Frequently Asked Questions
+    url: https://github.com/McIntosh-Lab/tvb-ukbb/wiki/FAQ
+  - name: 💬 Questions & Discussion
+    about: Discussions Board
+    url: https://github.com/McIntosh-Lab/tvb-ukbb/discussions
+  - name: 💡 Feature Requests
+    url: https://github.com/McIntosh-Lab/tvb-ukbb/discussions/new/choose
+    about: tvb-ukbb missing something? Let us know.
