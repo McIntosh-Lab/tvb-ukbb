@@ -210,8 +210,10 @@ subject_folder=$2
 		
 		done
         else
+		for ((i=0; i<3; i++)); do
 			${FSLDIR}/bin/fsleyes render --outfile $output_folder/$sub"_$3_"${axisNames[$i]}.png  --crop 30 --size 6400 2400 --scene lightbox --displaySpace $subject_folder$underlay --zaxis $i --sliceSpacing ${sliceSpacing[$i]} --zrange ${zrange[2*$i]} ${zrange[2*$i+1]} --ncols 6 --nrows 3 --hideCursor --bgColour 0.0 0.0 0.0 --fgColour 1.0 1.0 1.0 --cursorColour 0.0 1.0 0.0 --colourBarLocation top --colourBarLabelSide top-left --colourBarSize 100.0 --labelSize 12 --performance 3 $subject_folder$underlay --name "underlay" --overlayType label --alpha 100.0 --brightness $brightness_var --contrast $contrast_var --lut $underlay_cmap --outlineWidth 1 --volume 0 $overlay_args        
-	fi
+		done
+ 	fi
 
 
  
