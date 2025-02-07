@@ -352,9 +352,9 @@ NOTE: Image sizes and therefore maintaining zooms between different analyses can
   <img src="../images/T1_extraction_unmasked/${sub}_T1_extraction_unmasked_sagittal.png" id="under_s" style="display: none">
 
 
-  <img src="../images/T1_segmentation_unlabelled_subcort_GM/${sub}_VBM_parcel_unmasked_axial.png" id="under_vbm_a" style="display: none">
-  <img src="../images/T1_segmentation_unlabelled_subcort_GM/${sub}_VBM_parcel_unmasked_coronal.png" id="under_vbm_c" style="display: none">
-  <img src="../images/T1_segmentation_unlabelled_subcort_GM/${sub}_VBM_parcel_unmasked_sagittal.png" id="under_vbm_s" style="display: none">
+  <img src="../images/VBM_parcel_unmasked/${sub}_VBM_parcel_unmasked_axial.png" id="under_vbm_a" style="display: none">
+  <img src="../images/VBM_parcel_unmasked/${sub}_VBM_parcel_unmasked_coronal.png" id="under_vbm_c" style="display: none">
+  <img src="../images/VBM_parcel_unmasked/${sub}_VBM_parcel_unmasked_sagittal.png" id="under_vbm_s" style="display: none">
 
   <!-- UNMASKED UNDERLAY SUBCORT -->
 
@@ -391,9 +391,9 @@ NOTE: Image sizes and therefore maintaining zooms between different analyses can
   <img src="../images/T1_segmentation_unlabelled_subcort_GM/${sub}_T1_segmentation_unlabelled_subcort_GM_coronal_appended.png" id="us_c" style="display: none">
   <img src="../images/T1_segmentation_unlabelled_subcort_GM/${sub}_T1_segmentation_unlabelled_subcort_GM_sagittal_appended.png" id="us_s" style="display: none">
 
-  <img src="../images/T1_segmentation_unlabelled_subcort_GM/${sub}_VBM_parcel_GM_overlay_axial.png" id="vbm_a" style="display: none">
-  <img src="../images/T1_segmentation_unlabelled_subcort_GM/${sub}_VBM_parcel_GM_overlay_coronal.png" id="vbm_c" style="display: none">
-  <img src="../images/T1_segmentation_unlabelled_subcort_GM/${sub}_VBM_parcel_GM_overlay_sagittal.png" id="vbm_s" style="display: none">
+  <img src="../images/VBM_parcel_GM_overlay/${sub}_VBM_parcel_GM_overlay_axial.png" id="vbm_a" style="display: none">
+  <img src="../images/VBM_parcel_GM_overlay/${sub}_VBM_parcel_GM_overlay_coronal.png" id="vbm_c" style="display: none">
+  <img src="../images/VBM_parcel_GM_overlay/${sub}_VBM_parcel_GM_overlay_sagittal.png" id="vbm_s" style="display: none">
 
   <img src="../images/T1_segmentation_labelled_subcort_GM/${sub}_T1_segmentation_labelled_subcort_GM_axial_appended.png" id="ls_a" style="display: none">
   <img src="../images/T1_segmentation_labelled_subcort_GM/${sub}_T1_segmentation_labelled_subcort_GM_coronal_appended.png" id="ls_c" style="display: none">
