@@ -6,7 +6,7 @@ import sys
 import os
 import csv
 
-def ukbb_IDP_list_gen(BB_BIN_DIR,PARC_LUT):
+def ukbb_IDP_list_gen(BB_BIN_DIR,PARC_LUT, PARC_NAME):
     """Function that updates the ukbb_IDP_list txt file
     Parameters
     ----------
@@ -32,7 +32,7 @@ def ukbb_IDP_list_gen(BB_BIN_DIR,PARC_LUT):
     #reading and cleaning each line of IDP list
     IDP_list = []
     IDP_list_path=os.path.join(BB_BIN_DIR,"bb_IDP","ukbb_IDP_list.tsv")
-
+    output_IDP_list_path=os.path.join(BB_BIN_DIR,"bb_IDP",f"dataset-ukbb_parc-{PARC_NAME}_IDPlist.tsv")
 
     data = list(csv.reader(open(IDP_list_path),delimiter='\t',))
     on_GM = False
@@ -82,7 +82,7 @@ def ukbb_IDP_list_gen(BB_BIN_DIR,PARC_LUT):
         row[0]=x
         x=x+1
 
-    with open(IDP_list_path, mode='w') as outputfile:
+    with open(output_IDP_list_path, mode='w') as outputfile:
         writer = csv.writer(outputfile, delimiter='\t')
 
         writer.writerows(data)
@@ -112,4 +112,4 @@ if __name__ == "__main__":
 
     """
     # try:
-    ukbb_IDP_list_gen(sys.argv[1],sys.argv[2])
+    ukbb_IDP_list_gen(sys.argv[1],sys.argv[2],sys.argv[3])
