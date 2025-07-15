@@ -89,12 +89,14 @@ elif [ $PROBTRACKX_GPU == "false" ]; then
 
     set -e
 
-# default behaviour is to run non-batch probtrackx2_gpu 
-# tell users to put "true" for this to work but really anything than than
-# the above two keywords will trigger this just to be safe
-else
+elif [ $PROBTRACKX_GPU == "true" ]; then
 
-    probtrackx2 -V 2 --network --omatrix1 --ompl --seed=${seeds} --loopcheck --onewaycondition --cthr=0.2 --nsteps=2000 --steplength=0.5 --nsamples=5000 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --avoid=${subjdir}/dMRI/probtrackx_${PARC_NAME}/exclude.nii.gz --forcedir --opd --samples=${subjdir}/dMRI/bedpostx.bedpostX/merged --mask=${DTI_mask} --dir=${output_dir}
+    probtrackx2_gpu -V 2 --rseed=1 --network --omatrix1 --ompl --seed=${seeds} --loopcheck --onewaycondition --cthr=0.2 --nsteps=2000 --steplength=0.5 --nsamples=5000 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --avoid=${subjdir}/dMRI/probtrackx_${PARC_NAME}/exclude.nii.gz --forcedir --opd --samples=${subjdir}/dMRI/bedpostx.bedpostX/merged --mask=${DTI_mask} --dir=${output_dir}
+
+
+elif [ $PROBTRACKX_GPU == "cpu_nonbatch" ]; then
+
+    probtrackx2 --rseed=1 --network --omatrix1 --ompl --seed=${seeds} --loopcheck --onewaycondition --cthr=0.2 --nsteps=2000 --steplength=0.5 --nsamples=500 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --avoid=$subjdir/dMRI/probtrackx_${PARC_NAME}/exclude.nii.gz --forcedir --opd --samples=$subjdir/dMRI/bedpostx.bedpostX/merged --mask=${DTI_mask} --dir=${output_dir}
 
 fi
 # 
