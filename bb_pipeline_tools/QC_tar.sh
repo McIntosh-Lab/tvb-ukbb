@@ -62,12 +62,12 @@ rsync -aR "${sub}/IDP_files"*/*.{txt,tsv} "${qc_dir}/"
 
 # Handle fMRI files with one rsync command per pattern
 rsync -aR "${sub}/fMRI"/*.ica/{.files,mc/*.png,filtered_func_data.ica/report,*.html} "${qc_dir}/"
-rsync -aR "${sub}/fMRI"/*.ica/reg/{*.png} "${qc_dir}/"
+rsync -aR "${sub}/fMRI"/*.ica/reg/*.png "${qc_dir}/"
 rsync -aR "${sub}/fMRI"/*.ica/reg/unwarp/{*.gif,*.png} "${qc_dir}/"
 
 # Same for .feat files
 rsync -aR "${sub}/fMRI"/*.feat/{.files,mc/*.png,*.html} "${qc_dir}/"
-rsync -aR "${sub}/fMRI"/*.feat/reg/{*.png} "${qc_dir}/"
+rsync -aR "${sub}/fMRI"/*.feat/reg/*.png "${qc_dir}/"
 rsync -aR "${sub}/fMRI"/*.feat/reg/unwarp/{*.png,*.gif} "${qc_dir}/"
 
 
