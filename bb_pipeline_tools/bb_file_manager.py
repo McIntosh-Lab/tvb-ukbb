@@ -325,17 +325,25 @@ def manage_fmap(listFiles):
 
     idx_to_remove = []
 
+
     for index, i in enumerate(listFiles):#TODO currently specific for openfMRI
-        if "magnitude1" in i or "01_fmap" in i:
-            move_file_add_to_config(i, "fmap_mag1", False)
+        if "smt" in i:
+            mode="smt"
+        elif "rest" in i:
+            mode="rest"
+        elif "movie" in i:
+            mode="movie"
+            
+        if "magnitude1" in i or "run-01_fmap" in i:
+            move_file_add_to_config(i, f"fmap_mode-{mode}_mag1", False)
             idx_to_remove.append(index)
 
-        elif "magnitude2" in i or "02_fmap" in i:
-            move_file_add_to_config(i, "fmap_mag2", False)
+        elif "magnitude2" in i or "run-02_fmap" in i:
+            move_file_add_to_config(i, f"fmap_mode-{mode}_mag2", False)
             idx_to_remove.append(index)
 
         elif "phasediff" in i or "fmap" in i:
-            move_file_add_to_config(i, "fmap_phase", False)
+            move_file_add_to_config(i, f"fmap_mode-{mode}_phase", False)
             idx_to_remove.append(index)
 
 
