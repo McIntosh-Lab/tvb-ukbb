@@ -25,7 +25,10 @@ while IFS= read -r subjname; do
             array+=("$REPLY")
         done < <(find fMRI -maxdepth 1 -type d -name "*.ica" -print0)
 
-
+        # Check if array is empty
+        if [ ${#array[@]} -eq 0 ]; then
+                echo "$subjname is missing .ica directories"
+        fi
 
         #for each .ica file, check ts and fc
         for t in ${array[@]}; do
