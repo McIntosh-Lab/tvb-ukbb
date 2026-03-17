@@ -15,7 +15,7 @@ See here for the paper: https://www.frontiersin.org/articles/10.3389/fninf.2022.
 Installation and Usage
 ----------------------
 
-Check out [the wiki](https://github.com/McIntosh-Lab/tvb-ukbb/wiki) to view [installation instructions](https://github.com/McIntosh-Lab/tvb-ukbb/wiki/General-HPC-Installation-and-Usage) and [usage instructions](https://github.com/McIntosh-Lab/tvb-ukbb/wiki/Basic-Usage) for the TVB-UKBB pipeline, as well as [an overview of the pipeline](https://github.com/McIntosh-Lab/tvb-ukbb/wiki/Pipeline-Overview) and information on [how to customize the pipeline for your datasets](https://github.com/McIntosh-Lab/tvb-ukbb/wiki/Customizing-the-Pipeline).
+Check out [the wiki](https://github.com/McIntosh-Lab/tvb-ukbb/wiki) to view [installation instructions](https://github.com/McIntosh-Lab/tvb-ukbb/wiki/Installation) and [usage instructions](https://github.com/McIntosh-Lab/tvb-ukbb/wiki/Basic-Usage) for the TVB-UKBB pipeline, as well as [an overview of the pipeline](https://github.com/McIntosh-Lab/tvb-ukbb/wiki/Pipeline-Overview) and information on [how to customize the pipeline for your datasets](https://github.com/McIntosh-Lab/tvb-ukbb/wiki/Customizing-the-Pipeline).
 
 We release bugfixes and introduce new features on a rolling basis. If you have been working on a local version or a fork of the pipeline, please be sure to pull the most recent version of the pipeline before you run your data.
 
