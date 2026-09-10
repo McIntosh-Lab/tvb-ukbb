@@ -35,9 +35,10 @@ if [[ "$origDir" =~ '/'$ ]]; then
 fi
 
 
-sub_original=${sub}
-sub=${sub}_QC
-mv ${origDir}/${sub_original} ${origDir}/${sub}
+#sub_original=${sub}
+#sub=${sub}_QC
+#mv ${origDir}/${sub_original} ${origDir}/${sub}
+
 
 
 if [[ "$1" == "" ]] ; then
@@ -45,59 +46,42 @@ if [[ "$1" == "" ]] ; then
     exit 0
 fi
 
-
-
-
-fMRI_files=""
-
-
-ica_array=()
-while IFS=  read -r -d $'\0'; do
-    ica_array+=("$REPLY")
-done < <(find ${origDir}/$sub/fMRI -maxdepth 1 -type d -name "*.ica" -print0)
-
-
-
-#for each .ica file
-for t in ${ica_array[@]}; do
-	fMRI_ver=`basename $t`
-	relative_path=$sub/fMRI/$fMRI_ver
-	fMRI_files="$fMRI_files $relative_path/.files $relative_path/mc/trans.png $relative_path/mc/rot.png $relative_path/mc/disp.png $relative_path/filtered_func_data.ica/report $relative_path/report_log.html $relative_path/report_prestats.html $relative_path/report_reg.html $relative_path/report_unwarp.html $relative_path/report.html $relative_path/reg/highres2standard.png $relative_path/reg/example_func2highres.png $relative_path/reg/example_func2standard.png $relative_path/reg/example_func2standard1.png $relative_path/reg/unwarp/.ramp.gif $relative_path/reg/unwarp/.ramp2.gif $relative_path/reg/unwarp/EF_UD_shift+mag.png $relative_path/reg/unwarp/example_func_distorted2highres.png $relative_path/reg/unwarp/fieldmap2edges.png $relative_path/reg/unwarp/FM_UD_fmap_mag_brain2str.png $relative_path/reg/unwarp/FM_UD_sigloss+mag.png $relative_path/reg/unwarp/fmap+mag.png $relative_path/reg/unwarp/EF_UD_movie.gif $relative_path/reg/unwarp/EF_D_edges.gif $relative_path/reg/unwarp/EF_U_edges.gif"
-
-done
- 
-
-
-
-feat_array=()
-while IFS=  read -r -d $'\0'; do
-    feat_array+=("$REPLY")
-done < <(find ${origDir}/$sub/fMRI -maxdepth 1 -type d -name "*.feat" -print0)
-
-
-
-#for each .feat file
-for t in ${feat_array[@]}; do
-	fMRI_ver=`basename $t`
-	relative_path=$sub/fMRI/$fMRI_ver
-	fMRI_files="$fMRI_files $relative_path/report_log.html $relative_path/report_poststats.html $relative_path/report_prestats.html $relative_path/report_reg.html $relative_path/report_stats.html $relative_path/report_unwarp.html $relative_path/report.html $relative_path/.files $relative_path/mc/trans.png $relative_path/mc/rot.png $relative_path/mc/disp.png $relative_path/reg/highres2standard.png $relative_path/reg/example_func2highres.png $relative_path/reg/example_func2standard.png $relative_path/reg/example_func2standard1.png $relative_path/reg/unwarp/EF_UD_shift+mag.png $relative_path/reg/unwarp/example_func_distorted2highres.png $relative_path/reg/unwarp/fieldmap2edges.png $relative_path/reg/unwarp/FM_UD_fmap_mag_brain2str.png $relative_path/reg/unwarp/FM_UD_sigloss+mag.png $relative_path/reg/unwarp/fmap+mag.png $relative_path/reg/unwarp/EF_UD_movie.gif $relative_path/reg/unwarp/EF_D_edges.gif $relative_path/reg/unwarp/EF_U_edges.gif $relative_path/reg/unwarp/.ramp2.gif $relative_path/reg/unwarp/.ramp.gif"
-
-done
-
 if [[ -d "$2" ]]; then
     cd ${2}
 fi
 
+if [[ -d "$1" ]]; then
 
-tar -cf $origDir/${sub}.tar $sub/QC* $sub/logs$fMRI_files $sub/IDP_files*/*.txt $sub/IDP_files*/*.tsv
-#may need --ignore-failed-read option for non existent files/folders
+qc_dir="${sub}_QC"
+mkdir -p "${qc_dir}"
+
+# Copy main QC files (preserves structure)
+rsync -aR "${sub}/QC"* "${qc_dir}/"
+rsync -aR "${sub}/logs" "${qc_dir}/"
+rsync -aR "${sub}/IDP_files"*/*.{txt,tsv} "${qc_dir}/"
+
+# Handle fMRI files with one rsync command per pattern
+rsync -aR "${sub}/fMRI"/*.ica/{.files,mc/*.png,filtered_func_data.ica/report,*.html} "${qc_dir}/"
+rsync -aR "${sub}/fMRI"/*.ica/reg/*.png "${qc_dir}/"
+rsync -aR "${sub}/fMRI"/*.ica/reg/unwarp/{*.gif,*.png} "${qc_dir}/"
+
+# Same for .feat files
+rsync -aR "${sub}/fMRI"/*.feat/{.files,mc/*.png,*.html} "${qc_dir}/"
+rsync -aR "${sub}/fMRI"/*.feat/reg/*.png "${qc_dir}/"
+rsync -aR "${sub}/fMRI"/*.feat/reg/unwarp/{*.png,*.gif} "${qc_dir}/"
+
+
+# Create tar from the copied structure
+tar -cf ${qc_dir}.tar "${qc_dir}"
+
+# Cleanup
+rm -rf "${qc_dir}"
+
+fi
 
 if [[ -d "$2" ]]; then
     cd ..
 fi
-
-mv ${origDir}/${sub} ${origDir}/${sub_original}
-
 
 set -e
  

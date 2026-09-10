@@ -125,5 +125,5 @@ if __name__ == "__main__":
     # try:
     if len(sys.argv) > 2 and (sys.argv[3] == "gpu_batch" or sys.argv[3] == "false"):
         tvb_concat_probtrackx2(sys.argv[1], sys.argv[2], batch=True)
-    else:
+    elif len(sys.argv) > 2 and (sys.argv[3] == "cpu_nonbatch" or sys.argv[3] == "true"):
         tvb_concat_probtrackx2(sys.argv[1], sys.argv[2], batch=False)
